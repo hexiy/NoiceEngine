@@ -1,0 +1,68 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/theheksiii/Dev/NoiceEngine/Noice/Noice.csproj": {}
+  },
+  "projects": {
+    "/home/theheksiii/Dev/NoiceEngine/Noice/Noice.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/theheksiii/Dev/NoiceEngine/Noice/Noice.csproj",
+        "projectName": "NoiceEngine",
+        "projectPath": "/home/theheksiii/Dev/NoiceEngine/Noice/Noice.csproj",
+        "packagesPath": "/home/theheksiii/.nuget/packages/",
+        "outputPath": "/home/theheksiii/Dev/NoiceEngine/Noice/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/theheksiii/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "MonoGame.Content.Builder.Task": {
+              "target": "Package",
+              "version": "[3.8.0.1641, )"
+            },
+            "MonoGame.Framework.DesktopGL": {
+              "target": "Package",
+              "version": "[3.8.0.1641, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.412/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

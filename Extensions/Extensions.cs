@@ -1,0 +1,259 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Color = System.Drawing.Color;
+
+public static class Extensions
+{
+	public static Vector2 MaxY(Vector2 vector1, Vector2 vector2)
+	{
+		if (vector1.Y > vector2.Y)
+		{
+			return vector1;
+		}
+		else
+		{
+			return vector2;
+		}
+	}
+	public static float MaxVectorMember(this Vector2 vector)
+	{
+		if (vector.X > vector.Y)
+		{
+			return vector.X;
+		}
+		else
+		{
+			return vector.Y;
+		}
+	}
+	public static float MaxVectorMember(this Vector3 vector)
+	{
+		if (vector.X >= vector.Y && vector.X >= vector.Z)
+		{
+			return vector.X;
+		}
+		if (vector.Y >= vector.X && vector.Y >= vector.Z)
+		{
+			return vector.Y;
+		}
+		else
+		{
+			return vector.Z;
+		}
+	}
+	public static Vector2 MinY(Vector2 vector1, Vector2 vector2)
+	{
+		if (vector1.Y < vector2.Y)
+		{
+			return vector1;
+		}
+		else
+		{
+			return vector2;
+		}
+	}
+
+
+	//  Vector2
+	public static Vector3 VectorX(this Vector2 vector)
+	{
+		return new Vector3(vector.X, 0, 0);
+	}
+	public static Vector3 VectorY(this Vector2 vector)
+	{
+		return new Vector3(0, vector.Y, 0);
+	}
+
+	//  Vector3
+	public static Vector3 VectorX(this Vector3 vector)
+	{
+		return new Vector3(vector.X, 0, 0);
+	}
+	public static Vector3 VectorY(this Vector3 vector)
+	{
+		return new Vector3(0, vector.Y, 0);
+	}
+
+
+
+
+	public static MonoGame.Extended.Point2 ToPoint2(this Vector2 vector)
+	{
+		return new MonoGame.Extended.Point2(vector.X, vector.Y);
+	}
+	public static MonoGame.Extended.Point2 ToPoint2(this Vector3 vector)
+	{
+		return new MonoGame.Extended.Point2(vector.X, vector.Y);
+	}
+
+	public static Microsoft.Xna.Framework.Color ToColor(this Vector3 vector)
+	{
+		return new Microsoft.Xna.Framework.Color(vector.X, vector.Y, vector.Z);
+	}
+	public static List<MemberInfo> GetPropertiesOrFields(this Type t, BindingFlags bf = BindingFlags.Public | BindingFlags.Instance) =>
+		t.GetMembers(bf).Where(mi => mi.MemberType == MemberTypes.Field || mi.MemberType == MemberTypes.Property).ToList();
+	
+	public static System.Drawing.Point ToSystemPoint(this Microsoft.Xna.Framework.Point point)
+	{
+		return new System.Drawing.Point(point.X, point.Y);
+	}
+	public static Microsoft.Xna.Framework.Point ToGamePoint(this System.Drawing.Point point)
+	{
+		return new Microsoft.Xna.Framework.Point(point.X, point.Y);
+	}
+	public static Vector2 ToVector2(this MonoGame.Extended.Point2 point)
+	{
+		return new Vector2(point.X, point.Y);
+	}
+	public static Vector2 ToVector2(this Vector3 point)
+	{
+		return new Vector2(point.X, point.Y);
+	}
+	public static Vector3 ToVector3(this Vector2 point)
+	{
+		return new Vector3(point.X, point.Y, 0);
+	}
+	public static Vector2 ToVector2(this MonoGame.Extended.Size2 point)
+	{
+		return new Vector2(point.Width, point.Height);
+	}
+	public static Vector3 ToVector3(this Microsoft.Xna.Framework.Point point)
+	{
+		return new Vector3(point.X, point.Y, 0);
+	}
+	public static Vector3 Normalized(this Vector3 vec)
+	{
+		Vector3 v = new Vector3(vec.X / vec.Length(), vec.Y / vec.Length(), vec.Z / vec.Length());
+		if (vec.Length() == 0)
+		{
+			v = Vector3.Zero;
+		}
+		return v;
+	}
+	public static Vector3 Abs(this Vector3 vec)
+	{
+		Vector3 v = new Vector3(Math.Abs(vec.X), Math.Abs(vec.Y), Math.Abs(vec.Z));
+		return v;
+	}
+
+	public static System.Drawing.Color ToOtherColor(this Microsoft.Xna.Framework.Color color)
+	{
+		return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+	}
+	public static Microsoft.Xna.Framework.Color ToOtherColor(this System.Drawing.Color color)
+	{
+		return new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
+	}
+	public static Microsoft.Xna.Framework.Color ColorFromHSVToXna(double hue, double saturation, double value)
+	{
+		int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+		double f = hue / 60 - Math.Floor(hue / 60);
+
+		value = value * 255;
+		int v = Convert.ToInt32(value);
+		int p = Convert.ToInt32(value * (1 - saturation));
+		int q = Convert.ToInt32(value * (1 - f * saturation));
+		int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+
+		if (hi == 0)
+			return new Microsoft.Xna.Framework.Color(v, t, p, 255);
+		else if (hi == 1)
+			return new Microsoft.Xna.Framework.Color(q, v, p, 255);
+		else if (hi == 2)
+			return new Microsoft.Xna.Framework.Color(p, v, t, 255);
+		else if (hi == 3)
+			return new Microsoft.Xna.Framework.Color(p, q, v, 255);
+		else if (hi == 4)
+			return new Microsoft.Xna.Framework.Color(t, p, v, 255);
+		else
+			return new Microsoft.Xna.Framework.Color(v, p, q, 255);
+	}
+	public static Color ColorFromHSV(double hue, double saturation, double value)
+	{
+		int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+		double f = hue / 60 - Math.Floor(hue / 60);
+
+		value = value * 255;
+		int v = Convert.ToInt32(value);
+		int p = Convert.ToInt32(value * (1 - saturation));
+		int q = Convert.ToInt32(value * (1 - f * saturation));
+		int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+
+		if (hi == 0)
+			return Color.FromArgb(255, v, t, p);
+		else if (hi == 1)
+			return Color.FromArgb(255, q, v, p);
+		else if (hi == 2)
+			return Color.FromArgb(255, p, v, t);
+		else if (hi == 3)
+			return Color.FromArgb(255, p, q, v);
+		else if (hi == 4)
+			return Color.FromArgb(255, t, p, v);
+		else
+			return Color.FromArgb(255, v, p, q);
+	}
+	public static int Clamp(int value, int min, int max)
+	{
+		if (value < min) { return min; }
+		if (value > max) { return max; }
+		return value;
+	}
+	public static Vector2 Clamp(Vector2 value, float minX, float maxX, float minY, float maxY)
+	{
+		if (value.X < minX) { value.X = minX; }
+		if (value.X > maxX) { value.X = maxX; }
+		if (value.Y < minY) { value.Y = minY; }
+		if (value.Y > maxY) { value.Y = maxY; }
+		return value;
+	}
+	public static float Clamp(float value, float min, float max)
+	{
+		if (value < min) { return min; }
+		if (value > max) { return max; }
+		return value;
+	}
+	public static float ClampMin(float value, float min)
+	{
+		if (value < min) { return min; }
+		return value;
+	}
+	public static float Clamp01(float value)
+	{
+		if (value < 0) { return 0; }
+		if (value > 1) { return 1; }
+		return value;
+	}
+	public static Vector2 Round(this Vector2 vector)
+	{
+		return new Vector2((float)Math.Round((decimal)vector.X, 2), (float)Math.Round((decimal)vector.Y, 2));
+	}
+	public static Vector3 Round(this Vector3 vector)
+	{
+		return new Vector3((float)Math.Round((decimal)vector.X, 2), (float)Math.Round((decimal)vector.Y, 2), (float)Math.Round((decimal)vector.Z, 2));
+	}
+	public static System.Drawing.Point Round(this System.Drawing.Point point, int scale)
+	{
+		return new System.Drawing.Point((int)Math.Floor(point.X / (float)scale) * scale, (int)Math.Floor(point.Y / (float)scale) * scale);
+	}
+	public static Vector2 TranslateToGrid(this Vector2 vector, int gridSize = 10)
+	{
+		return new Vector2((int)((decimal)vector.X / gridSize) * gridSize, (int)((decimal)vector.Y / gridSize) * gridSize);
+	}
+	public static Vector3 TranslateToGrid(this Vector3 vector, int gridSize = 10)
+	{
+		return new Vector3((int)((decimal)vector.X / gridSize) * gridSize, (int)((decimal)vector.Y / gridSize) * gridSize, (int)((decimal)vector.Z / gridSize) * gridSize);
+	}
+	public static float AngleBetween(Vector2 vector1, Vector2 vector2)
+	{
+		float returnAngle = (float)Math.Acos(Vector2.Dot(vector1, vector2) / (vector1.Length() * vector2.Length()));
+		if (returnAngle == float.NaN)
+		{
+			returnAngle = 0;
+		}
+		return returnAngle;
+	}
+}
+

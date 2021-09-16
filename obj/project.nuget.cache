@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "FM8YH/8k39UJMrK3Qh89N07R4S2N7Dr4U+z7D+NsMD423wOhpZEq+dNuox94uJC/rDm2dZ8b/hyQasmZuv2i1A==",
+  "success": true,
+  "projectFilePath": "/home/theheksiii/Dev/Noice/NoiceEngine/NoiceEngine.csproj",
+  "expectedPackageFiles": [
+    "/home/theheksiii/.nuget/packages/monogame.content.builder.task/3.8.0.1641/monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "/home/theheksiii/.nuget/packages/monogame.extended/3.7.0/monogame.extended.3.7.0.nupkg.sha512",
+    "/home/theheksiii/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/home/theheksiii/.nuget/packages/imgui.net/1.78.0/imgui.net.1.78.0.nupkg.sha512"
+  ],
+  "logs": []
+}
