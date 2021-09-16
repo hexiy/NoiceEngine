@@ -1,82 +1,38 @@
 {
   "format": 1,
   "restore": {
-    "/home/theheksiii/Dev/Noice/NoiceEngine/NoiceEngine.csproj": {}
+    "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj": {}
   },
   "projects": {
-    "/home/theheksiii/Dev/Noice/ImGui.NET/ImGui.NET.csproj": {
-      "version": "1.78.0",
-      "restore": {
-        "projectUniqueName": "/home/theheksiii/Dev/Noice/ImGui.NET/ImGui.NET.csproj",
-        "projectName": "ImGui.NET",
-        "projectPath": "/home/theheksiii/Dev/Noice/ImGui.NET/ImGui.NET.csproj",
-        "packagesPath": "/home/theheksiii/.nuget/packages/",
-        "outputPath": "/home/theheksiii/Dev/Noice/ImGui.NET/obj/",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "/home/theheksiii/.nuget/NuGet/NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "netcoreapp3.1"
-        ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "netcoreapp3.1": {
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "netcoreapp3.1": {
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "/home/theheksiii/dotnet/sdk/3.1.412/RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "/home/theheksiii/Dev/Noice/NoiceEngine/NoiceEngine.csproj": {
+    "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/theheksiii/Dev/Noice/NoiceEngine/NoiceEngine.csproj",
+        "projectUniqueName": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
         "projectName": "NoiceEngine",
-        "projectPath": "/home/theheksiii/Dev/Noice/NoiceEngine/NoiceEngine.csproj",
-        "packagesPath": "/home/theheksiii/.nuget/packages/",
-        "outputPath": "/home/theheksiii/Dev/Noice/NoiceEngine/obj/",
+        "projectPath": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
+        "packagesPath": "C:\\Users\\slavk\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Noice\\NoiceEngine\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/theheksiii/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\slavk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "/home/theheksiii/Dev/Noice/ImGui.NET/ImGui.NET.csproj": {
-                "projectPath": "/home/theheksiii/Dev/Noice/ImGui.NET/ImGui.NET.csproj"
+              "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj": {
+                "projectPath": "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj"
+              },
+              "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj": {
+                "projectPath": "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj"
               }
             }
           }
@@ -89,6 +45,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "MonoGame.Content.Builder.Task": {
               "target": "Package",
@@ -114,7 +71,132 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/theheksiii/dotnet/sdk/3.1.412/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.1.21458.32\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj": {
+      "version": "1.78.0",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj",
+        "projectName": "ImGui.NET",
+        "projectPath": "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj",
+        "packagesPath": "C:\\Users\\slavk\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Noice\\NoiceImGui\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\slavk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj": {
+                "projectPath": "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.1.21458.32\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj": {
+      "version": "3.6.0.1625",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj",
+        "projectName": "MonoGame.Framework.DesktopGL",
+        "projectPath": "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj",
+        "packagesPath": "C:\\Users\\slavk\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\obj\\DesktopGL\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "configFilePaths": [
+          "C:\\Users\\slavk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "System.Numerics.Vectors": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.1.21458.32\\RuntimeIdentifierGraph.json"
         }
       }
     }

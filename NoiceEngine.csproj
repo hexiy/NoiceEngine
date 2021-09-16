@@ -36,12 +36,8 @@
     <PackageReference Include="MonoGame.Extended" Version="3.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImGui.NET\ImGui.NET.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.8.0.1641, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\MonoGame\Artifacts\MonoGame.Framework\DesktopGL\Release\netcoreapp3.1\MonoGame.Framework.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\NoiceImGui\ImGui.NET.csproj" />
+    <ProjectReference Include="..\NoiceMG\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="cimgui.dll" />

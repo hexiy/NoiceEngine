@@ -4,7 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/theheksiii/Dev/Noice/NoiceEngine/Content/font_Borda.spritefont</File>
+    <File>C:/Dev/Noice/NoiceEngine/Content/font_Borda.spritefont</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
