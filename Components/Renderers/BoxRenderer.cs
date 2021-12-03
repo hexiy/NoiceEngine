@@ -20,7 +20,10 @@ namespace Scripts
 			}
 			RectangleF drawRect = new RectangleF (Vector2.Zero, boxCollider.rect.Size * transform.scale.ToVector2 ());
 
-			drawRect.Offset (-boxCollider.rect.Size.Width * transform.anchor.X, -boxCollider.rect.Size.Height * transform.anchor.Y);
+			drawRect.Offset (-boxCollider.rect.Size.Width * transform.anchor.X+((boxCollider.rect.Size.Width * transform.anchor.X)*(1-transform.scale.X)),
+				-boxCollider.rect.Size.Height * transform.anchor.Y + +((boxCollider.rect.Size.Height * transform.anchor.Y) * (1 - transform.scale.Y)));
+
+			//Vector2 anchorOffset = ()
 			//drawRect.Position = Vector2.Zero;
 
 			batch.End ();

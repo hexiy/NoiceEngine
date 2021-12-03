@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Microsoft.CodeDom.Providers.DotNetCompilerPlatform/3.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll": {}
+        },
+        "build": {
+          "build/net46/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets": {}
+        }
+      },
       "MonoGame.Content.Builder.Task/3.8.0.1641": {
         "type": "package",
         "build": {
@@ -28,6 +40,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "System.CodeDom/5.0.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.CodeDom.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {}
         }
       },
       "System.Numerics.Vectors/4.5.0": {
@@ -68,6 +89,148 @@
     }
   },
   "libraries": {
+    "Microsoft.CodeDom.Providers.DotNetCompilerPlatform/3.6.0": {
+      "sha512": "Wxo1vjgqJDawdtSBYegfe7fqUfdKn5vMtAMgHHxjV5rW9rSyQZMQ5t0YTCxyQ/IUyAOoUkrHMVXNLCdqAtH72w==",
+      "type": "package",
+      "path": "microsoft.codedom.providers.dotnetcompilerplatform/3.6.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Extensions.targets",
+        "build/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets",
+        "build/net46/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Extensions.targets",
+        "build/net46/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets",
+        "build/net472/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Extensions.targets",
+        "build/net472/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets",
+        "content/net45/app.config.install.xdt",
+        "content/net45/app.config.uninstall.xdt",
+        "content/net45/web.config.install.xdt",
+        "content/net45/web.config.uninstall.xdt",
+        "content/net46/app.config.install.xdt",
+        "content/net46/app.config.uninstall.xdt",
+        "content/net46/web.config.install.xdt",
+        "content/net46/web.config.uninstall.xdt",
+        "content/net472/app.config.install.xdt",
+        "content/net472/app.config.uninstall.xdt",
+        "content/net472/web.config.install.xdt",
+        "content/net472/web.config.uninstall.xdt",
+        "lib/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll",
+        "lib/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml",
+        "microsoft.codedom.providers.dotnetcompilerplatform.3.6.0.nupkg.sha512",
+        "microsoft.codedom.providers.dotnetcompilerplatform.nuspec",
+        "tasks/DotNetCompilerPlatformTasks.dll",
+        "tasks/System.Management.dll",
+        "tools/Roslyn45/Microsoft.Build.Tasks.CodeAnalysis.dll",
+        "tools/Roslyn45/Microsoft.CSharp.Core.targets",
+        "tools/Roslyn45/Microsoft.CodeAnalysis.CSharp.Scripting.dll",
+        "tools/Roslyn45/Microsoft.CodeAnalysis.CSharp.dll",
+        "tools/Roslyn45/Microsoft.CodeAnalysis.Scripting.dll",
+        "tools/Roslyn45/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "tools/Roslyn45/Microsoft.CodeAnalysis.dll",
+        "tools/Roslyn45/Microsoft.DiaSymReader.Native.amd64.dll",
+        "tools/Roslyn45/Microsoft.DiaSymReader.Native.x86.dll",
+        "tools/Roslyn45/Microsoft.VisualBasic.Core.targets",
+        "tools/Roslyn45/System.AppContext.dll",
+        "tools/Roslyn45/System.Collections.Immutable.dll",
+        "tools/Roslyn45/System.Diagnostics.StackTrace.dll",
+        "tools/Roslyn45/System.IO.FileSystem.Primitives.dll",
+        "tools/Roslyn45/System.IO.FileSystem.dll",
+        "tools/Roslyn45/System.Reflection.Metadata.dll",
+        "tools/Roslyn45/VBCSCompiler.exe",
+        "tools/Roslyn45/VBCSCompiler.exe.config",
+        "tools/Roslyn45/csc.exe",
+        "tools/Roslyn45/csc.exe.config",
+        "tools/Roslyn45/csc.rsp",
+        "tools/Roslyn45/csi.exe",
+        "tools/Roslyn45/csi.rsp",
+        "tools/Roslyn45/vbc.exe",
+        "tools/Roslyn45/vbc.exe.config",
+        "tools/Roslyn45/vbc.rsp",
+        "tools/Roslyn46/Microsoft.Build.Tasks.CodeAnalysis.dll",
+        "tools/Roslyn46/Microsoft.CSharp.Core.targets",
+        "tools/Roslyn46/Microsoft.CodeAnalysis.CSharp.Scripting.dll",
+        "tools/Roslyn46/Microsoft.CodeAnalysis.CSharp.dll",
+        "tools/Roslyn46/Microsoft.CodeAnalysis.Scripting.dll",
+        "tools/Roslyn46/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "tools/Roslyn46/Microsoft.CodeAnalysis.dll",
+        "tools/Roslyn46/Microsoft.DiaSymReader.Native.amd64.dll",
+        "tools/Roslyn46/Microsoft.DiaSymReader.Native.x86.dll",
+        "tools/Roslyn46/Microsoft.Managed.Core.targets",
+        "tools/Roslyn46/Microsoft.VisualBasic.Core.targets",
+        "tools/Roslyn46/Microsoft.Win32.Primitives.dll",
+        "tools/Roslyn46/System.AppContext.dll",
+        "tools/Roslyn46/System.Collections.Immutable.dll",
+        "tools/Roslyn46/System.Console.dll",
+        "tools/Roslyn46/System.Diagnostics.DiagnosticSource.dll",
+        "tools/Roslyn46/System.Diagnostics.FileVersionInfo.dll",
+        "tools/Roslyn46/System.Diagnostics.StackTrace.dll",
+        "tools/Roslyn46/System.Globalization.Calendars.dll",
+        "tools/Roslyn46/System.IO.Compression.ZipFile.dll",
+        "tools/Roslyn46/System.IO.Compression.dll",
+        "tools/Roslyn46/System.IO.FileSystem.Primitives.dll",
+        "tools/Roslyn46/System.IO.FileSystem.dll",
+        "tools/Roslyn46/System.Net.Http.dll",
+        "tools/Roslyn46/System.Net.Sockets.dll",
+        "tools/Roslyn46/System.Reflection.Metadata.dll",
+        "tools/Roslyn46/System.Runtime.InteropServices.RuntimeInformation.dll",
+        "tools/Roslyn46/System.Security.Cryptography.Algorithms.dll",
+        "tools/Roslyn46/System.Security.Cryptography.Encoding.dll",
+        "tools/Roslyn46/System.Security.Cryptography.Primitives.dll",
+        "tools/Roslyn46/System.Security.Cryptography.X509Certificates.dll",
+        "tools/Roslyn46/System.Text.Encoding.CodePages.dll",
+        "tools/Roslyn46/System.Threading.Tasks.Extensions.dll",
+        "tools/Roslyn46/System.ValueTuple.dll",
+        "tools/Roslyn46/System.Xml.ReaderWriter.dll",
+        "tools/Roslyn46/System.Xml.XPath.XDocument.dll",
+        "tools/Roslyn46/System.Xml.XPath.dll",
+        "tools/Roslyn46/System.Xml.XmlDocument.dll",
+        "tools/Roslyn46/VBCSCompiler.exe",
+        "tools/Roslyn46/VBCSCompiler.exe.config",
+        "tools/Roslyn46/csc.exe",
+        "tools/Roslyn46/csc.exe.config",
+        "tools/Roslyn46/csc.rsp",
+        "tools/Roslyn46/csi.exe",
+        "tools/Roslyn46/csi.exe.config",
+        "tools/Roslyn46/csi.rsp",
+        "tools/Roslyn46/vbc.exe",
+        "tools/Roslyn46/vbc.exe.config",
+        "tools/Roslyn46/vbc.rsp",
+        "tools/Roslyn472/Microsoft.Build.Tasks.CodeAnalysis.dll",
+        "tools/Roslyn472/Microsoft.CSharp.Core.targets",
+        "tools/Roslyn472/Microsoft.CodeAnalysis.CSharp.Scripting.dll",
+        "tools/Roslyn472/Microsoft.CodeAnalysis.CSharp.dll",
+        "tools/Roslyn472/Microsoft.CodeAnalysis.Scripting.dll",
+        "tools/Roslyn472/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "tools/Roslyn472/Microsoft.CodeAnalysis.dll",
+        "tools/Roslyn472/Microsoft.DiaSymReader.Native.amd64.dll",
+        "tools/Roslyn472/Microsoft.DiaSymReader.Native.x86.dll",
+        "tools/Roslyn472/Microsoft.Managed.Core.targets",
+        "tools/Roslyn472/Microsoft.VisualBasic.Core.targets",
+        "tools/Roslyn472/System.Buffers.dll",
+        "tools/Roslyn472/System.Collections.Immutable.dll",
+        "tools/Roslyn472/System.Memory.dll",
+        "tools/Roslyn472/System.Numerics.Vectors.dll",
+        "tools/Roslyn472/System.Reflection.Metadata.dll",
+        "tools/Roslyn472/System.Runtime.CompilerServices.Unsafe.dll",
+        "tools/Roslyn472/System.Text.Encoding.CodePages.dll",
+        "tools/Roslyn472/System.Threading.Tasks.Extensions.dll",
+        "tools/Roslyn472/VBCSCompiler.exe",
+        "tools/Roslyn472/VBCSCompiler.exe.config",
+        "tools/Roslyn472/csc.exe",
+        "tools/Roslyn472/csc.exe.config",
+        "tools/Roslyn472/csc.rsp",
+        "tools/Roslyn472/csi.exe",
+        "tools/Roslyn472/csi.exe.config",
+        "tools/Roslyn472/csi.rsp",
+        "tools/Roslyn472/vbc.exe",
+        "tools/Roslyn472/vbc.exe.config",
+        "tools/Roslyn472/vbc.rsp",
+        "tools/net45/common.ps1",
+        "tools/net45/install.ps1",
+        "tools/net45/uninstall.ps1"
+      ]
+    },
     "MonoGame.Content.Builder.Task/3.8.0.1641": {
       "sha512": "oHA60q9MhkqGnSiJlXosdynD400sQ/j1Ef+0XkJYIQT4Io9RQ6Zk8i0vjpnIbQ0PgsoaQN3IRYjNzkhqq3uUGA==",
       "type": "package",
@@ -193,6 +356,30 @@
         "newtonsoft.json.nuspec"
       ]
     },
+    "System.CodeDom/5.0.0": {
+      "sha512": "JPJArwA1kdj8qDAkY2XGjSWoYnqiM7q/3yRNkt6n28Mnn95MuEGkZXUbPBf7qc3IjwrGY5ttQon7yqHZyQJmOQ==",
+      "type": "package",
+      "path": "system.codedom/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.CodeDom.dll",
+        "lib/net461/System.CodeDom.xml",
+        "lib/netstandard2.0/System.CodeDom.dll",
+        "lib/netstandard2.0/System.CodeDom.xml",
+        "ref/net461/System.CodeDom.dll",
+        "ref/net461/System.CodeDom.xml",
+        "ref/netstandard2.0/System.CodeDom.dll",
+        "ref/netstandard2.0/System.CodeDom.xml",
+        "system.codedom.5.0.0.nupkg.sha512",
+        "system.codedom.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Numerics.Vectors/4.5.0": {
       "sha512": "QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
       "type": "package",
@@ -254,9 +441,11 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "ImGui.NET >= 1.78.0",
+      "Microsoft.CodeDom.Providers.DotNetCompilerPlatform >= 3.6.0",
       "MonoGame.Content.Builder.Task >= 3.8.0.1641",
       "MonoGame.Extended >= 3.7.0",
-      "MonoGame.Framework.DesktopGL >= 3.6.0.1625"
+      "MonoGame.Framework.DesktopGL >= 3.6.0.1625",
+      "System.CodeDom >= 5.0.0"
     ]
   },
   "packageFolders": {
@@ -305,6 +494,10 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": {
+            "target": "Package",
+            "version": "[3.6.0, )"
+          },
           "MonoGame.Content.Builder.Task": {
             "target": "Package",
             "version": "[3.8.0.1641, )"
@@ -312,6 +505,10 @@
           "MonoGame.Extended": {
             "target": "Package",
             "version": "[3.7.0, )"
+          },
+          "System.CodeDom": {
+            "target": "Package",
+            "version": "[5.0.0, )"
           }
         },
         "imports": [
@@ -329,8 +526,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.1.21458.32\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-rc.2.21505.57\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

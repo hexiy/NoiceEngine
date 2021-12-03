@@ -107,7 +107,7 @@ namespace Engine
 
 					Vector2 boxCenter = boxCollider.rect.Center;
 					RectangleF rect = boxCollider.rect;
-					rect.Position = boxCollider.transform.position.ToVector2();
+					rect.Position = boxCollider.transform.position.ToVector2()- rect.Size.ToVector2()*boxCollider.transform.anchor;
 
 					isIn = (point.X < rect.Right &&
 							point.X > rect.Left &&

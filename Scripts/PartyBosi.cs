@@ -18,7 +18,7 @@ namespace Scripts
 		public override void Update ()
 		{
 			hue += Time.deltaTime*300;
-			if (hue > 360)
+			/*if (hue > 360)
 			{
 				hue = 0;
 				if (text.Value == "uwu")
@@ -29,7 +29,7 @@ namespace Scripts
 				{
 					text.Value = "uwu";
 				}
-			}
+			}*/
 			boxRenderer.Color = Extensions.ColorFromHSVToXna (hue, 0.6f, 0.4f);
 			transform.rotation.Z += Time.deltaTime*3;
 			base.Update ();

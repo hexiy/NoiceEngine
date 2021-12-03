@@ -88,7 +88,7 @@ namespace Engine
 
 			image.AddComponent<TextRenderer> ();
 
-			image.AddComponent<PartyBoi> ();
+			image.AddComponent<Button> ();
 			image.Awake ();
 			image.transform.anchor = new Vector2 (0.5f, 0.5f);
 
@@ -338,50 +338,32 @@ namespace Engine
 				//transformHandle.SelectObject(null);
 			}
 		}
-
-		void HandleInput ()
-		{
-			if (this.IsActive == false)
-			{
-				return;
-			}
-
-			if (GamePad.GetState (PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState ().IsKeyDown (Keys.Escape)) Exit ();
-		}
 		protected override void Update (GameTime gameTime)
 		{
-			updateStopwatch.Start ();
+			//updateStopwatch.Start ();
 
 			if (Global.GameRunning == false)
 			{
 				return;
 			}
-			Time.deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
-			Time.elapsedTime += Time.deltaTime;
-			Time.elapsedTicks++;
+			Time.Update(gameTime);
 
 			MouseInput.Update (Mouse.GetState ());
-
-			if (Global.EditorAttached && ColliderEditor.editing == false)
-			{
-				HandleInput ();
-			}
 
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				gameObjects[i].Update ();
 			}
 
-			//colliderEditor.Update();
 			SceneUpdated?.Invoke (this, new SceneData () {gameObjects = this.gameObjects});
 
 			Editor.I.Update ();
 
 			base.Update (gameTime);
 
-			updateStopwatch.Stop ();
-			updateTime = updateStopwatch.ElapsedMilliseconds;
-			updateStopwatch.Reset ();
+			//pdateStopwatch.Stop ();
+			//pdateTime = updateStopwatch.ElapsedMilliseconds;
+			//pdateStopwatch.Reset ();
 		}
 		protected override void Draw (GameTime gameTime)
 		{

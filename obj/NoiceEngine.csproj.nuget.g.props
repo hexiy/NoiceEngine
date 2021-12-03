@@ -17,5 +17,6 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMonoGame_Content_Builder_Task Condition=" '$(PkgMonoGame_Content_Builder_Task)' == '' ">C:\Users\slavk\.nuget\packages\monogame.content.builder.task\3.8.0.1641</PkgMonoGame_Content_Builder_Task>
+    <PkgMicrosoft_CodeDom_Providers_DotNetCompilerPlatform Condition=" '$(PkgMicrosoft_CodeDom_Providers_DotNetCompilerPlatform)' == '' ">C:\Users\slavk\.nuget\packages\microsoft.codedom.providers.dotnetcompilerplatform\3.6.0</PkgMicrosoft_CodeDom_Providers_DotNetCompilerPlatform>
   </PropertyGroup>
 </Project>

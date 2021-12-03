@@ -10,8 +10,6 @@ namespace Engine.UI
 {
 	public class ButtonTween : Component
 	{
-		public new bool allowMultiple { get; set; } = false;
-
 		private bool clicked = false;
 		private float scaleSpeed = 20;
 		private float scaleTarget = 0.9f;
@@ -19,12 +17,7 @@ namespace Engine.UI
 		public override void Awake()
 		{
 			Button btn = GetComponent<Button>();
-			if (btn)
-			{
-				GetComponent<Button>().onReleasedAction += () =>
-				{
-				};
-			}
+
 			base.Awake();
 		}
 		public override void Update()

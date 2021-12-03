@@ -1,4 +1,4 @@
-﻿/*using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
+﻿using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Scripts;
@@ -46,17 +46,6 @@ namespace Engine
 			parameters.GenerateInMemory = true;
 			parameters.GenerateExecutable = false;
 
-			System.ComponentModel.TypeDescriptor.AddAttributes(typeof(UInt16), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.Vector2Editor), typeof(System.Drawing.Design.UITypeEditor)) });
-			//System.ComponentModel.TypeDescriptor.AddAttributes(typeof(Microsoft.Xna.Framework.Vector2), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.BoolEditor), typeof(System.Drawing.Design.UITypeEditor)) });
-			System.ComponentModel.TypeDescriptor.AddAttributes(typeof(Action), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.MethodEditor), typeof(System.Drawing.Design.UITypeEditor)) });
-			System.ComponentModel.TypeDescriptor.AddAttributes(typeof(Color), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.ColorPickerEditor), typeof(System.Drawing.Design.UITypeEditor)) });
-			System.ComponentModel.TypeDescriptor.AddAttributes(typeof(Texture2D), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.TextureEditor), typeof(System.Drawing.Design.UITypeEditor)) });
-			System.ComponentModel.TypeDescriptor.AddAttributes(typeof(Effect), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.EffectEditor), typeof(System.Drawing.Design.UITypeEditor)) });
-			//System.ComponentModel.TypeDescriptor.AddAttributes(typeof(Enum), new Attribute[] { new System.ComponentModel.EditorAttribute(typeof(Engine.UITypeEditors.EnumEditor), typeof(System.Drawing.Design.UITypeEditor)) });
-
-
-
-
 			CompilerResults results = provider.CompileAssemblyFromFile(parameters, files);
 
 			if (results.Errors.HasErrors)
@@ -76,4 +65,4 @@ namespace Engine
 			ScriptsAssembly = assembly;
 		}
 	}
-}*/
+}

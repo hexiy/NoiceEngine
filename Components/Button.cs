@@ -8,8 +8,6 @@ namespace Engine
 {
 	public class Button : Component
 	{
-		public new bool AllowMultiple { get; set; } = false;
-
 		public delegate void MouseAction();
 		[XmlIgnore] MouseAction onClickedAction;
 		[XmlIgnore] public MouseAction onReleasedAction;
@@ -22,7 +20,7 @@ namespace Engine
 		bool clicked = false;
 		public override void Awake()
 		{
-			onClickedAction += () => renderer.Color = Color.Red;
+			onClickedAction += () => renderer.Color = new Color(215,125,125);
 			onReleasedAction += () => renderer.Color = Color.White;
 			base.Awake();
 
