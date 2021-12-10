@@ -133,6 +133,15 @@ public static class Extensions
 		}
 		return v;
 	}
+	public static Vector2 Normalized(this Vector2 vec)
+	{
+		Vector2 v = new Vector2(vec.X / vec.Length(), vec.Y / vec.Length());
+		if (vec.Length() == 0)
+		{
+			v = Vector2.Zero;
+		}
+		return v;
+	}
 	public static Vector3 Abs(this Vector3 vec)
 	{
 		Vector3 v = new Vector3(Math.Abs(vec.X), Math.Abs(vec.Y), Math.Abs(vec.Z));

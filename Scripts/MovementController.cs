@@ -16,14 +16,15 @@ namespace Scripts
 		public float MoveSpeed { get; set; } = 10;
 		[LinkableComponent]
 		private Rigidbody rb;
-
+		private Vector2 targetVelocity = Vector2.Zero;
+		bool jumpKeyDown = false;
 		public override void Awake()
 		{
 			rb = GetComponent<Rigidbody>();
 			base.Awake();
 		}
 
-		public override void Update()
+		public override void FixedUpdate()
 		{
 			if (rb == null) return;
 			Vector2 input = Vector2.Zero;
@@ -35,7 +36,17 @@ namespace Scripts
 			{
 				input.X = MoveSpeed * Time.deltaTime;
 			}
-			rb.Velocity = new Vector2(input.X, rb.Velocity.Y);
+			if (jumpKeyDown == false && KeyboardInput.state.IsKeyDown(Keys.W))
+			{
+				transform.position.Y -= 10f;
+				rb.Velocity = new Vector2(rb.Velocity.X, -450);
+				//rb.ApplyVelocity(new Vector2(0, -450));
+			}
+			jumpKeyDown = KeyboardInput.state.IsKeyDown(Keys.W);
+
+			targetVelocity = Vector2.Lerp(targetVelocity, input, Time.deltaTime * 5);
+
+			rb.Velocity = new Vector2(targetVelocity.X, rb.Velocity.Y);
 			base.Update();
 		}
 	}

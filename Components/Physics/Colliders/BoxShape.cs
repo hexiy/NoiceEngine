@@ -17,6 +17,7 @@ namespace Scripts
 		public override void Update()
 		{
 			rect.Position = transform.position.ToPoint2();
+			rect.Offset(-rect.Width * transform.anchor.X, -rect.Height * transform.anchor.Y);
 			base.Update();
 		}
 	}

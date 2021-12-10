@@ -1,10 +1,13 @@
 ﻿using Engine;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using tainicom.Aether.Physics2D.Dynamics;
+
 namespace Scripts
 {
 	public class Rigidbody : Component
 	{
+		[System.Xml.Serialization.XmlIgnore] public Body body;
 		[System.Xml.Serialization.XmlIgnore]
 		public List<Rigidbody> touchingRigidbodies = new List<Rigidbody>();
 
@@ -19,6 +22,8 @@ namespace Scripts
 		[ShowInEditor] public bool IsButton { get; set; } = false;
 		[ShowInEditor] public Vector3 Velocity { get; set; } = new Vector3(0, 0, 0);
 
+		[ShowInEditor] public float Mass { get; set; } = 1f;
+
 		public float velocityDrag = 0.99f;
 		[ShowInEditor] public float Bounciness { get; set; } = 0f;
 
@@ -28,29 +33,12 @@ namespace Scripts
 		public float friction = 1;
 		public float mass = 1;
 
-
 		public override void Awake()
 		{
 			//gameObject.OnComponentAdded += CheckForColliderAdded;
-			if (IsButton == false)
-			{
-				Physics.AddRigidbody(this);
-			}
-		}
-		/// <summary>
-		/// Called from Physics thread after collision check
-		/// </summary>
-		public void FixedUpdatePreCollisions()
-		{
-			if (Scene.I?.GraphicsDevice == null || IsStatic || IsButton)
-			{
-				return;
-			}
-			if (UseGravity)
-			{
-				ApplyGravity();
-			}
+			if (IsButton) { return; }
 
+			Physics.AddRigidbody(this);
 
 		}
 		public void FixedUpdatePostCollisions()
@@ -61,31 +49,10 @@ namespace Scripts
 			}
 
 			TranslateVelocityToTransform();
-			TranslateAngularRotationToTransform();
 
 		}
 
-		public Vector3 GetPositionOnNextFrame(bool ignoreGravity = false)
-		{
-			if (IsStatic)
-			{
-				return transform.position;
-			}
-			Vector3 pos = transform.position;
-			Vector3 vel = new Vector2(Velocity.X, Velocity.Y);
 
-			if (UseGravity && ignoreGravity == false)
-			{
-				vel -= Physics.gravity * Time.fixedDeltaTime * mass;
-			}
-			//vel = new Vector2(vel.X * velocitySlowDown, vel.Y* velocitySlowDown);
-			pos += Velocity * Time.fixedDeltaTime;
-			return pos;
-		}
-		public void ApplyGravity()
-		{
-			Velocity -= Physics.gravity * Time.fixedDeltaTime;
-		}
 		public void ApplyVelocity(Vector2 vel)
 		{
 			if (IsStatic == false)
@@ -99,11 +66,7 @@ namespace Scripts
 		}
 		public void TranslateAngularRotationToTransform()
 		{
-			transform.rotation += new Vector3(0, 0, AngularVelocity * Time.fixedDeltaTime);
-			if (touchingRigidbodies.Count > 0) // only move from rotating, when friciton from other object
-			{
-				transform.position += new Vector2(AngularVelocity, 0);
-			}
+			transform.rotation.Z = body.Rotation;
 		}
 		public override void OnDestroyed()
 		{
@@ -112,10 +75,6 @@ namespace Scripts
 				touchingRigidbodies[i].OnCollisionExit(this);
 				OnCollisionExit(touchingRigidbodies[i]);
 			}
-			/*if (Physics.rigidbodies.Contains(this))
-			{
-				  Physics.rigidbodies.Remove(this);
-			}*/
 		}
 
 		public override void OnCollisionEnter(Rigidbody rigidbody) // TODO-TRANSLATE CURRENT VELOCITY TO COLLIDED RIGIDBODY, ADD FORCE (MassRatio2/MassRatio1)

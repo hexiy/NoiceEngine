@@ -24,19 +24,23 @@ namespace Scripts
 		[ShowInEditor] public float radius { get; set; } = 100;
 		[ShowInEditor] public float speed { get; set; } = 2;
 		[ShowInEditor] public float StartSize { get; set; } = 20;
+		[ShowInEditor] public float EndSize { get; set; } = 0;
 		[ShowInEditor] public Color StartColor { get; set; } = Color.Green;
 		[ShowInEditor] public int MaxParticles { get; set; } = 3000;
 		[ShowInEditor] public float MaxLifetime { get; set; } = 1;
 		[ShowInEditor] public float StartVelocityVariation { get; set; } = 70;
-		[ShowInEditor] public float SpawnRate { get; set; } = 0.0004f;
+		[ShowInEditor] public float SpawnRate { get; set; } = 0.5f; // spawn every half second
 
-		Vector2 lastMousePos = new Vector2(0, 0);
 		private Random rnd = new Random();
 		float time = 0;
 		public Particle latestParticle;
 		public override void Awake()
 		{
 			renderer = GameObject.AddComponent<ParticleSystemRenderer>();
+			if (renderer == null)
+			{
+				renderer = GameObject.AddComponent<ParticleSystemRenderer>();
+			}
 			renderer.particleSystem = this;
 			// BuildShape();
 
@@ -59,7 +63,7 @@ namespace Scripts
 					{
 						//particles[i].velocity -= Physics.gravity * Time.deltaTime;
 
-						particles[i].localPosition += particles[i].velocity * Time.deltaTime;
+						particles[i].worldPosition += particles[i].velocity * Time.deltaTime;
 
 						particles[i].lifetime += Time.deltaTime;
 
@@ -67,10 +71,19 @@ namespace Scripts
 						/*particles[i].color = new Color((int)((0.1f / particles[i].lifetime) * 255),
 							20, 20, (int)((0.1f / particles[i].lifetime) * 255));*/
 
-						particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
-								((int)((0.01f / particles[i].lifetime) * 255)));
+						if (particles[i].lifetime < 0.2f)
+						{
+							particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
+								((int)(particles[i].lifetime / 0.2f * 255)));
+						}
+						else
+						{
+							particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
+									((int)((1 - (particles[i].lifetime / MaxLifetime)) * 255)));
+						}
 
-						//particles[i].radius = Extensions.Clamp((1f / particles[i].lifetime * 3), 0, StartSize);
+
+						particles[i].radius = MathHelper.Lerp(StartSize, 0, particles[i].lifetime / MaxLifetime);
 
 						if (particles[i].lifetime > MaxLifetime)
 						{
@@ -86,38 +99,22 @@ namespace Scripts
 		}
 		void SpawnParticle()
 		{
-			/*Particle p = pool.GetObject();
+			Particle p = pool.GetObject();
 			latestParticle = p;
 			p.visible = true;
 			p.lifetime = 0;
 			p.radius = StartSize;
-			//float sineY = (float)Math.Sin(Time.elapsedTime * 4) * 200 * (Extensions.Clamp((float)Math.Abs(Math.Sin(Time.elapsedTime)), 0.6f, 1f));
-			//float sineX = (float)Math.Cos(Time.elapsedTime * 4) * 200 * (Extensions.Clamp((float)Math.Abs(Math.Cos(Time.elapsedTime)), 0.6f, 1f));
 
-			Vector3 center = Camera.Instance.Size / 2 + Camera.Instance.transform.Position;
-
-			float sineX = (float)Math.Cos(Time.elapsedTime * speed) * radius;
-			float sineY = (float)Math.Sin(Time.elapsedTime * speed) * radius;
-
-			Vector2 wiggle = new Vector2(sineX, sineY).NormalizedCopy() * (float)Math.Sin(Time.elapsedTime * 25) * 10;
-
-			if (Vector3.Distance(lastMousePos, center + new Vector3(sineX, sineY)) < 250)
-			{
-				wiggle *= 0;
-			}
-
-			//p.position = Engine.MouseInput.Position- transform.Position;//new Vector2(center.X + sineX + wiggle.X, center.Y + sineY + wiggle.Y);
-			p.localPosition = Vector2.Zero;//new Vector2(center.X + sineX + wiggle.X, center.Y + sineY + wiggle.Y);
+			p.worldPosition = transform.position;
 
 			p.velocity = StartVelocity + new Vector2(rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation), rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation));
-			//p.velocity = (lastMousePos - MouseInput.Position).NormalizedCopy() * 80;
-			//p.color = StartColor;
+
 			p.color = Extensions.ColorFromHSVToXna(Time.elapsedTime * 50, 1, 1);
 			lock (listLock)
 			{
 				particles.Add(p);
 
-				/*if (particles.Count > MaxParticles)
+				if (particles.Count > MaxParticles)
 				{
 					int num = particles.Count - MaxParticles;
 					for (int i = 0; i < num; i++)
@@ -126,12 +123,13 @@ namespace Scripts
 						pool.PutObject(particles[i]);
 						particles.RemoveAt(i);
 					}
-					//particles.RemoveRange(0, particles.Count - MaxParticles);*/
+					particles.RemoveRange(0, particles.Count - MaxParticles);
+				}
+
+			}
+
 		}
-
 	}
-
-	//}
 }
 
 

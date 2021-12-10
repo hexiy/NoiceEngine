@@ -21,7 +21,7 @@ namespace Engine
 		{
 			get { return Camera.Instance; }
 		}
-		public List<GameObject> gameObjects = new List<GameObject> ();
+		public List<GameObject> gameObjects = new List<GameObject>();
 
 		public GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
@@ -29,34 +29,34 @@ namespace Engine
 		public event EventHandler<GameObject> GameObjectCreated;
 		public event EventHandler<GameObject> GameObjectDestroyed;
 		public event EventHandler SceneLoad;
-
+		Serializer serializer;
 		public event EventHandler<SceneData> SceneUpdated;
 
-		Stopwatch updateStopwatch = new Stopwatch ();
-		Stopwatch renderStopwatch = new Stopwatch ();
+		Stopwatch updateStopwatch = new Stopwatch();
+		Stopwatch renderStopwatch = new Stopwatch();
 
 		public float updateTime = 0;
 		public float renderTime = 0;
 
-		public Scene ()
+		public Scene()
 		{
 			I = this;
-
+			serializer = new Serializer();
 			IsMouseVisible = true;
 
-			graphics = new GraphicsDeviceManager (this)
+			graphics = new GraphicsDeviceManager(this)
 			{
 				PreferredBackBufferWidth = 1600,
 				PreferredBackBufferHeight = 720,
 				//PreferMultiSampling = true,
 				SynchronizeWithVerticalRetrace = false,
 
-				//GraphicsProfile = GraphicsProfile.HiDef
+				GraphicsProfile = GraphicsProfile.HiDef
 			};
-			graphics.ApplyChanges ();
+			graphics.ApplyChanges();
 			this.IsFixedTimeStep = false;
 			//Window.IsBorderless = true;
-			Window.Position = new Point (0, 100);
+			Window.Position = new Point(0, 100);
 
 			MouseInput.Mouse1Down += OnMouse1Clicked;
 			MouseInput.Mouse1Up += OnMouse1Released;
@@ -66,43 +66,27 @@ namespace Engine
 
 			Content.RootDirectory = "Content";
 		}
-		private void CreateDefaultObjects ()
+		private void CreateDefaultObjects()
 		{
 			//colliderEditor = new ColliderEditor();
 
-			CreateTransformHandle ();
-			var CameraGO = GameObject.Create (name: "Camera");
-			CameraGO.AddComponent<Camera> ();
+			CreateTransformHandle();
+			var CameraGO = GameObject.Create(name: "Camera");
+			CameraGO.AddComponent<Camera>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Awake ();
+				gameObjects[i].Awake();
 			}
-			GameObject image = GameObject.Create (name: "Image");
-			image.AddComponent<BoxShape> ();
-			image.GetComponent<BoxShape> ().Size = new Vector2 (30, 30);
-			var renderer = image.AddComponent<BoxRenderer> ();
-			renderer.Fill = true;
-
-			var text = image.AddComponent<Text> ();
-			text.Value = "owo";
-
-			image.AddComponent<TextRenderer> ();
-
-			image.AddComponent<Button> ();
-			image.Awake ();
-			image.transform.anchor = new Vector2 (0.5f, 0.5f);
-
-			image.transform.position = new Vector2 ((int) Camera.Instance.Size.X / 2, (int) Camera.Instance.Size.Y / 2);
 		}
-		void CreateTransformHandle ()
+		void CreateTransformHandle()
 		{
-			GameObject transformHandleGameObject = GameObject.Create (_silent: true);
-			transformHandle = transformHandleGameObject.AddComponent<TransformHandle> ();
+			GameObject transformHandleGameObject = GameObject.Create(_silent: true);
+			transformHandle = transformHandleGameObject.AddComponent<TransformHandle>();
 			transformHandleGameObject.Name = "Transform Handle";
 			transformHandleGameObject.Active = false;
-			transformHandleGameObject.Awake ();
+			transformHandleGameObject.Awake();
 		}
-		public void SelectGameObject (GameObject go)
+		public void SelectGameObject(GameObject go)
 		{
 			if (go != null)
 			{
@@ -116,96 +100,98 @@ namespace Engine
 				go.selected = true;
 			}
 
-			transformHandle.SelectObject (go);
+			transformHandle.SelectObject(go);
 		}
-		public List<GameObject> GetSelectedGameObjects ()
+		public List<GameObject> GetSelectedGameObjects()
 		{
-			List<GameObject> selectedGameObjects = new List<GameObject> ();
+			List<GameObject> selectedGameObjects = new List<GameObject>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				if (gameObjects[i].selected) selectedGameObjects.Add (gameObjects[i]);
+				if (gameObjects[i].selected) selectedGameObjects.Add(gameObjects[i]);
 			}
 			return selectedGameObjects;
 		}
-		public void SelectGameObject (int gameObjectIndex)
+		public void SelectGameObject(int gameObjectIndex)
 		{
 			if (gameObjectIndex == -1)
 			{
-				SelectGameObject (null);
+				SelectGameObject(null);
 			}
 			else
 			{
-				SelectGameObject (gameObjects[gameObjectIndex]);
+				SelectGameObject(gameObjects[gameObjectIndex]);
 			}
 		}
-		public SpriteBatch CreateSpriteBatch ()
+		public SpriteBatch CreateSpriteBatch()
 		{
-			return new SpriteBatch (GraphicsDevice);
+			return new SpriteBatch(GraphicsDevice);
 		}
-		protected override void Initialize ()
+		protected override void Initialize()
 		{
-			CreateDefaultObjects ();
+			CreateDefaultObjects();
 
-			TargetElapsedTime = TimeSpan.FromMilliseconds (15);
+			TargetElapsedTime = TimeSpan.FromMilliseconds(15);
 
 			Window.AllowUserResizing = true;
-			spriteBatch = new SpriteBatch (GraphicsDevice);
-			uiBatch = new SpriteBatch (GraphicsDevice);
+			spriteBatch = new SpriteBatch(GraphicsDevice);
+			uiBatch = new SpriteBatch(GraphicsDevice);
 
-			Editor.I.Init ();
+			Editor.I.Init();
 
-			if (Serializer.lastScene != "" && File.Exists (Serializer.lastScene))
+			if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
 			{
-				LoadScene (Serializer.lastScene);
+				LoadScene(Serializer.lastScene);
 			}
-			base.Initialize ();
+
+			Physics.Init();
+			base.Initialize();
 		}
 
-		protected override void LoadContent ()
+		protected override void LoadContent()
 		{
 			// Create a new SpriteBatch, which can be used to draw textures.
-			spriteFont = Content.Load<SpriteFont> ("font_Borda");
+			spriteFont = Content.Load<SpriteFont>("font_Borda");
 		}
-		public static Texture2D CreateTexture (GraphicsDevice device, int width, int height, Func<int, Color> paint)
+		public static Texture2D CreateTexture(GraphicsDevice device, int width, int height, Func<int, Color> paint)
 		{
 			//initialize a texture
-			var texture = new Texture2D (device, width, height);
+			var texture = new Texture2D(device, width, height);
 
 			//the array holds the color for each pixel in the texture
 			Color[] data = new Color[width * height];
 			for (var pixel = 0; pixel < data.Length; pixel++)
 			{
 				//the function applies the color according to the specified pixel
-				data[pixel] = paint (pixel);
+				data[pixel] = paint(pixel);
 			}
 
 			//set the color
-			texture.SetData (data);
+			texture.SetData(data);
 
 			return texture;
 		}
-		protected override void UnloadContent ()
+		protected override void UnloadContent()
 		{
 		}
-		public SceneFile GetSceneFile ()
+		public SceneFile GetSceneFile()
 		{
-			SceneFile sf = new SceneFile ();
-			sf.Components = new List<Component> ();
-			sf.GameObjects = new List<GameObject> ();
+			SceneFile sf = new SceneFile();
+			sf.Components = new List<Component>();
+			sf.GameObjects = new List<GameObject>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				if (gameObjects[i] == transformHandle.GameObject) continue;
-				sf.Components.AddRange (gameObjects[i].Components);
-				sf.GameObjects.Add (gameObjects[i]);
+				sf.Components.AddRange(gameObjects[i].Components);
+				sf.GameObjects.Add(gameObjects[i]);
 			}
 			sf.gameObjectNextID = IDsManager.gameObjectNextID;
 			return sf;
 		}
-		public GameObject FindGameObject (Type type)
+		public GameObject FindGameObject(Type type)
 		{
 			foreach (var gameObject in gameObjects)
 			{
-				var bl = gameObject.GetComponent (type);
+				var bl = gameObject.GetComponent(type);
 				if (bl != null)
 				{
 					return gameObject;
@@ -213,7 +199,7 @@ namespace Engine
 			}
 			return null;
 		}
-		public int GetGameObjectIndex (int ID)
+		public int GetGameObjectIndex(int ID)
 		{
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
@@ -224,61 +210,67 @@ namespace Engine
 			}
 			return -1;
 		}
-		public void OnGameObjectCreated (GameObject gameObject)
+		public void OnGameObjectCreated(GameObject gameObject)
 		{
-			gameObjects.Add (gameObject);
+			gameObjects.Add(gameObject);
 
-			GameObjectCreated?.Invoke (this, gameObject);
+			GameObjectCreated?.Invoke(this, gameObject);
 		}
-		public bool LoadScene (string path = null)
+		public bool LoadScene(string path = null)
 		{
 			//Add method to clean scene
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Destroy ();
+				gameObjects[i].Destroy();
 			}
-			gameObjects.Clear ();
+			gameObjects.Clear();
 
 			//Physics.rigidbodies.Clear();
 
-			gameObjects = new List<GameObject> ();
-			SceneFile sceneFile = Serializer.GetInstance ().LoadGameObjects (path);
+			gameObjects = new List<GameObject>();
+			SceneFile sceneFile = Serializer.GetInstance().LoadGameObjects(path);
 
-			Serializer.GetInstance ().ConnectGameObjectsWithComponents (sceneFile);
+			Serializer.GetInstance().ConnectGameObjectsWithComponents(sceneFile);
 			IDsManager.gameObjectNextID = sceneFile.gameObjectNextID;
 
 			for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 			{
-				Scene.I.OnGameObjectCreated (sceneFile.GameObjects[i]);
+				Scene.I.OnGameObjectCreated(sceneFile.GameObjects[i]);
 
-				sceneFile.GameObjects[i].Awake ();
+				sceneFile.GameObjects[i].Awake();
 			}
 
-			CreateTransformHandle ();
+			CreateTransformHandle();
 
-			SceneLoad?.Invoke (this, null);
+			SceneLoad?.Invoke(this, null);
 
 			scenePath = path;
 
 			return true;
 		}
-		public void OnGameObjectDestroyed (GameObject gameObject)
+		public void SaveScene(string path = null)
 		{
-			if (gameObjects.Contains (gameObject))
+			path = path ?? Serializer.lastScene;
+
+			Serializer.GetInstance().SaveGameObjects(GetSceneFile(), path);
+		}
+		public void OnGameObjectDestroyed(GameObject gameObject)
+		{
+			if (gameObjects.Contains(gameObject))
 			{
-				gameObjects.Remove (gameObject);
+				gameObjects.Remove(gameObject);
 			}
-			GameObjectDestroyed?.Invoke (this, gameObject);
+			GameObjectDestroyed?.Invoke(this, gameObject);
 		}
 
-		private void OnMouse3Clicked ()
+		private void OnMouse3Clicked()
 		{
 		}
-		private void OnMouse3Released ()
+		private void OnMouse3Released()
 		{
 		}
 
-		private void OnMouse1Released ()
+		private void OnMouse1Released()
 		{
 			if (ColliderEditor.editing == true)
 			{
@@ -289,56 +281,56 @@ namespace Engine
 				transformHandle.CurrentAxisSelected = null;
 			}
 		}
-		private void OnMouse1Clicked ()
+		private void OnMouse1Clicked()
 		{
 			if (ColliderEditor.editing == true)
 			{
 				return;
 			}
-			float minDistance = float.PositiveInfinity;
-			GameObject closestGameObject = null;
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				if (gameObjects[i] == transformHandle.GameObject || gameObjects[i].Active == false)
-				{
-					continue;
-				}
-				(bool intersects, float distance) detection = MouseInput.Position.In (gameObjects[i].GetComponent<Shape> ());
-				if (detection.distance < minDistance && detection.intersects)
-				{
-					closestGameObject = gameObjects[i];
-					minDistance = detection.distance;
-				}
-				gameObjects[i].selected = false;
-			}
+			//float minDistance = float.PositiveInfinity;
+			//GameObject closestGameObject = null;
+			//for (int i = 0; i < gameObjects.Count; i++)
+			//{
+			//	if (gameObjects[i] == transformHandle.GameObject || gameObjects[i].Active == false)
+			//	{
+			//		continue;
+			//	}
+			//	(bool intersects, float distance) detection = MouseInput.Position.In(gameObjects[i].GetComponent<Shape>());
+			//	if (detection.distance < minDistance && detection.intersects)
+			//	{
+			//		closestGameObject = gameObjects[i];
+			//		minDistance = detection.distance;
+			//	}
+			//	gameObjects[i].selected = false;
+			//}
 			transformHandle.clicked = false;
-			if (MouseInput.Position.In (transformHandle.boxColliderX).intersects)
+			if (MouseInput.Position.In(transformHandle.boxColliderX).intersects)
 			{
 				transformHandle.CurrentAxisSelected = TransformHandle.Axis.X;
 				transformHandle.clicked = true;
 			}
-			if (MouseInput.Position.In (transformHandle.boxColliderY).intersects)
+			if (MouseInput.Position.In(transformHandle.boxColliderY).intersects)
 			{
 				transformHandle.CurrentAxisSelected = TransformHandle.Axis.Y;
 				transformHandle.clicked = true;
 			}
-			if (MouseInput.Position.In (transformHandle.boxColliderXY).intersects)
+			if (MouseInput.Position.In(transformHandle.boxColliderXY).intersects)
 			{
 				transformHandle.CurrentAxisSelected = TransformHandle.Axis.XY;
 				transformHandle.clicked = true;
 			}
 
-			if (closestGameObject != null && minDistance < 100)
-			{
-				SelectGameObject (closestGameObject);
-			}
-			else if (transformHandle.clicked == false)
-			{
-				// todo uncomment
-				//transformHandle.SelectObject(null);
-			}
+			//if (closestGameObject != null && minDistance < 100)
+			//{
+			//	SelectGameObject(closestGameObject);
+			//}
+			//else if (transformHandle.clicked == false)
+			//{
+			//	// todo uncomment
+			//	//transformHandle.SelectObject(null);
+			//}
 		}
-		protected override void Update (GameTime gameTime)
+		protected override void Update(GameTime gameTime)
 		{
 			//updateStopwatch.Start ();
 
@@ -348,67 +340,82 @@ namespace Engine
 			}
 			Time.Update(gameTime);
 
-			MouseInput.Update (Mouse.GetState ());
+			MouseInput.Update(Mouse.GetState());
+
+			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
+			{
+				SaveScene();
+			}
+			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.L))
+			{
+				LoadScene(Serializer.lastScene);
+			}
 
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Update ();
+				gameObjects[i].Update();
 			}
+			Physics.Step();
 
-			SceneUpdated?.Invoke (this, new SceneData () {gameObjects = this.gameObjects});
+			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
 
-			Editor.I.Update ();
+			Editor.I.Update();
 
-			base.Update (gameTime);
+			base.Update(gameTime);
 
 			//pdateStopwatch.Stop ();
 			//pdateTime = updateStopwatch.ElapsedMilliseconds;
 			//pdateStopwatch.Reset ();
 		}
-		protected override void Draw (GameTime gameTime)
+		public void SpriteBatch_Begin()
+		{
+			spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.Instance.effect);
+
+		}
+		protected override void Draw(GameTime gameTime)
 		{
 			if (camera?.renderTarget == null)
 			{
 				return;
 			}
-			renderStopwatch.Start ();
-			DrawSceneToTarget ();
+			renderStopwatch.Start();
+			DrawSceneToTarget();
 
-			GraphicsDevice.Clear (new Color (33, 36, 38));
+			GraphicsDevice.Clear(new Color(33, 36, 38));
 
-			spriteBatch.Begin (SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.Instance.effect);
+			SpriteBatch_Begin();
 
-			spriteBatch.Draw (texture: camera.renderTarget, destinationRectangle: new Rectangle ((int) Editor.gameViewPosition.X, (int) Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
+			spriteBatch.Draw(texture: camera.renderTarget, destinationRectangle: new Rectangle((int)Editor.gameViewPosition.X, (int)Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
 
-			spriteBatch.End ();
+			spriteBatch.End();
 
-			Editor.I.Draw (gameTime);
+			Editor.I.Draw(gameTime);
 
-			base.Draw (gameTime);
+			base.Draw(gameTime);
 
-			renderStopwatch.Stop ();
+			renderStopwatch.Stop();
 			renderTime = renderStopwatch.ElapsedMilliseconds;
-			renderStopwatch.Reset ();
+			renderStopwatch.Reset();
 		}
-		void DrawSceneToTarget ()
+		void DrawSceneToTarget()
 		{
-			GraphicsDevice.SetRenderTarget (camera.renderTarget);
-			GraphicsDevice.DepthStencilState = new DepthStencilState () {DepthBufferEnable = true};
+			GraphicsDevice.SetRenderTarget(camera.renderTarget);
+			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
 
-			GraphicsDevice.Clear (camera.color);
+			GraphicsDevice.Clear(camera.color);
 
-			spriteBatch.Begin (transformMatrix: camera.TranslationMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
+			spriteBatch.Begin(transformMatrix: camera.TranslationMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Draw (spriteBatch);
+				gameObjects[i].Draw(spriteBatch);
 			}
 			if (transformHandle.GameObject != null)
 			{
-				transformHandle.GameObject.Draw (spriteBatch);
+				transformHandle.GameObject.Draw(spriteBatch);
 			}
-			spriteBatch.End ();
+			spriteBatch.End();
 
-			GraphicsDevice.SetRenderTarget (null);
+			GraphicsDevice.SetRenderTarget(null);
 		}
 	}
 }

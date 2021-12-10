@@ -6,7 +6,7 @@ namespace Engine
 {
 	public class TransformHandle : Component
 	{
-		public new bool enabled { get { return true; } }
+		//public new bool enabled { get { return true; } }
 		/*public static TransformHandle instance;
 		public static TransformHandle GetInstance()
 		{

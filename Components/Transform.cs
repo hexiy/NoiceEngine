@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Scripts
 {
-
 	public class Transform : Component
 	{
 
-		public new bool enabled { get { return true; } }
+		//public new bool enabled { get { return true; } }
 
 		[ShowInEditor] public Vector3 scale= Vector3.One;
 		[ShowInEditor] public Vector3 rotation = Vector3.Zero;
@@ -50,9 +50,9 @@ namespace Scripts
 
 
 			var a = Quaternion.CreateFromRotationMatrix(
-	Matrix.CreateRotationX(90 * (float)Math.PI / 180) *
-	Matrix.CreateRotationY(0) *
-	Matrix.CreateRotationZ(0));
+				Matrix.CreateRotationX(90 * (float)Math.PI / 180) *
+				Matrix.CreateRotationY(0) *
+				Matrix.CreateRotationZ(0));
 			var b = Matrix.CreateFromQuaternion(a);
 
 			var q = Quaternion.CreateFromRotationMatrix(

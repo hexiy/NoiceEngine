@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Engine
@@ -20,24 +21,19 @@ namespace Engine
 		{
 			instance = this;
 
-			lastScene = "";//Properties.Settings.Default.lastScene.ToString();
+			lastScene = "scene1.scene";//Properties.Settings.Default.lastScene.ToString();
 		}
 		void UpdateSerializableTypes()
 		{
-			/*var typs = ScriptsManager.ScriptsAssembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component)));
 			SerializableTypes = new List<Type>();
 
 			SerializableTypes.AddRange(typeof(Engine.GameObject).Assembly.GetTypes()
 					 .Where(type => (type.IsSubclassOf(typeof(Scripts.Component)))));
 
-			SerializableTypes.AddRange(ScriptsManager.ScriptsAssembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component))));
-
 			SerializableTypes.AddRange(typeof(Scripts.Component).Assembly.GetTypes()
 				 .Where(type => (type.IsSubclassOf(typeof(Scripts.Component)) ||
 				 (type.IsSubclassOf(typeof(GameObject)))))
 				 .ToList());
-
-			SerializableTypes.AddRange(typs);*/
 		}
 		public void SaveGameObjects(SceneFile sceneFile, string scenePath, bool isPrefab = false)
 		{
@@ -60,10 +56,8 @@ namespace Engine
 				}
 				UpdateSerializableTypes();
 
-				XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile),
-							SerializableTypes.ToArray());
+				XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile), SerializableTypes.ToArray());
 
-				//SerializableTypes.ToArray());
 				xmlSerializer.Serialize(sw, sceneFile);
 
 				for (int i = 0; i < sceneFile.GameObjects.Count; i++)
@@ -82,10 +76,12 @@ namespace Engine
 			{
 				UpdateSerializableTypes();
 
-				XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile),
-					SerializableTypes.ToArray());
+				var bb = SerializableTypes.ToArray();
+
+				XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile), SerializableTypes.ToArray());
 
 				var a = ((SceneFile)xmlSerializer.Deserialize(sr));
+
 				return a;
 			}
 		}
@@ -101,7 +97,7 @@ namespace Engine
 					if (comps[j].gameObjectID == gos[i].ID)
 					{
 						gos[i].AddExistingComponent(comps[j]);
-						gos[i].LinkComponents(gos[i],comps[j]);
+						gos[i].LinkComponents(gos[i], comps[j]);
 						/*gos[i].Components.Add(comps[j]);
 						gos[i].Awake();
 						comps[j].GameObject = gos[i];*/

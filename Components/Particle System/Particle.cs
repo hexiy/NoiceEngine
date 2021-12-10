@@ -5,8 +5,7 @@ namespace Engine
     public class Particle
     {
 		public bool visible = false;
-        public Vector2 originalPosition = new Vector2(0, 0);
-        public Vector2 localPosition = new Vector2(0, 0);
+        public Vector2 worldPosition = new Vector2(0, 0);
         public Vector2 velocity = new Vector2(0, 0);
         public Color color = Color.White;
         public float lifetime = 0;

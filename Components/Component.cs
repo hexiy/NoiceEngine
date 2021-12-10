@@ -18,7 +18,7 @@ namespace Scripts
 				gameObjectID = value.ID;
 			}
 		}
-		public int gameObjectID { get; internal set; }
+		public int gameObjectID { get; set; }
 
 		[System.Xml.Serialization.XmlIgnore] [System.ComponentModel.DefaultValue (false)]
 		public bool awoken = false;
@@ -76,6 +76,9 @@ namespace Scripts
 		{
 		}
 		public virtual void Update ()
+		{
+		}
+		public virtual void FixedUpdate()
 		{
 		}
 		public virtual void OnDestroyed ()

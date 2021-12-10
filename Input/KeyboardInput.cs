@@ -27,6 +27,5 @@ namespace Engine
 		{
 			return GetState().IsKeyUp(key);
 		}
-
 	}
 }

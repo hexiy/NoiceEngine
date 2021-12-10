@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 
 namespace Engine
 {
-	[XmlRootAttribute("GameObject")]
 	public class GameObject
 	{
 		[XmlIgnore]
@@ -66,7 +65,7 @@ namespace Engine
 
 		public bool mouseOver = false;
 
-		public Transform transform { get; set; }
+		[System.Xml.Serialization.XmlIgnore] public Transform transform { get; set; }
 
 		//private List<Component> ComponentsWaitingToBePaired = new List<Component>();
 
@@ -111,7 +110,7 @@ namespace Engine
 
 		private void CheckForTransformComponent(GameObject gameObject, Component component)
 		{
-			if(component is Transform)
+			if (component is Transform)
 			{
 				transform = component as Transform;
 			}
@@ -296,6 +295,13 @@ namespace Engine
 
 			UpdateComponents();
 		}
+		public virtual void FixedUpdate()
+		{
+			if (Active == false && updateWhenDisabled == false)
+			{ return; }
+
+			FixedUpdateComponents();
+		}
 		public Component AddExistingComponent(Component comp)
 		{
 			comp.GameObject = this;
@@ -359,6 +365,14 @@ namespace Engine
 			Active = false;
 			Components[index].OnDestroyed();
 			Components.RemoveAt(index);
+			Active = true;
+
+		}
+		public void RemoveComponent(Component component)
+		{
+			Active = false;
+			component.OnDestroyed();
+			Components.Remove(component);
 			Active = true;
 
 		}
@@ -449,6 +463,16 @@ namespace Engine
 					{
 						Components[i].Update();
 					}
+				}
+			}
+		}
+		private void FixedUpdateComponents()
+		{
+			for (int i = 0; i < Components.Count; i++)
+			{
+				if (Components[i].enabled && Components[i].awoken)
+				{
+					Components[i].FixedUpdate();
 				}
 			}
 		}

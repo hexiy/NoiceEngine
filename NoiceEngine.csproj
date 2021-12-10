@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <PublishReadyToRun>false</PublishReadyToRun>
     <InvariantGlobalization>true</InvariantGlobalization>
     <TieredCompilation>false</TieredCompilation>
@@ -34,10 +34,13 @@
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aether.Physics2D" Version="1.6.1" />
+    <PackageReference Include="Aether.Physics2D.MG" Version="1.6.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.0.1" />
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="3.6.0" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Extended" Version="3.7.0" />
-    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NoiceImGui\ImGui.NET.csproj" />
@@ -56,5 +59,8 @@
     <Content Include="cimgui.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripting\" />
   </ItemGroup>
 </Project>

@@ -10,13 +10,14 @@ using System.Diagnostics;
 
 namespace Scripts
 {
-	public class ParticleSystemRenderer : Renderer
+	public class ParticleSystemRenderer : Renderer, ITexture
 	{
 		public new bool allowMultiple = false;
 
 		[XmlIgnore] public SpriteBatch spriteBatch;
-		[XmlIgnore] [ShowInEditor] public Texture2D circleTexture { get; set; }
-		public string texturePath=@"2D\particle.png";
+
+		[XmlIgnore] [ShowInEditor] public Texture2D texture { get; set; }
+		public string texturePath { get; set; } = @"2D\particle.png";
 
 		CircleF circle = new CircleF(new Vector2(0, 0), 10);
 		public ParticleSystem particleSystem;
@@ -34,17 +35,18 @@ namespace Scripts
 		}
 		public void LoadTexture(string _texturePath)
 		{
-			Stream stream = TitleContainer.OpenStream(_texturePath);
-			circleTexture = Texture2D.FromStream(Scene.I.GraphicsDevice, stream);
-			stream.Close();
+			if (File.Exists(_texturePath) == false) { return; }
 			texturePath = _texturePath;
+			Stream stream = TitleContainer.OpenStream(_texturePath);
+			texture = Texture2D.FromStream(Scene.I.GraphicsDevice, stream);
+			stream.Close();
 		}
 		public override void Draw(SpriteBatch batch)
 		{
-			if (circleTexture == null) { return; }
+			if (texture == null) { return; }
 			if (particleSystem == null) { return; }
-			
-			spriteBatch.Begin(blendState: BlendState.Additive,sortMode:SpriteSortMode.Texture);
+
+			spriteBatch.Begin(blendState: BlendState.NonPremultiplied, sortMode: SpriteSortMode.Texture);
 			//Parallel.For(0, particleSystem.particles.Count, (i) =>
 			//{
 			for (int i = 0; i < particleSystem.particles.Count; i++)
@@ -52,11 +54,11 @@ namespace Scripts
 
 				if (particleSystem.particles.Count > i && particleSystem.particles[i] != null && particleSystem.particles[i].visible)
 				{
-					circle.Center = particleSystem.particles[i].localPosition + transform.localPosition;
+					circle.Center = particleSystem.particles[i].worldPosition;
 
-					circle.Radius = particleSystem.particles[i].radius*transform.scale.X;
+					circle.Radius = particleSystem.particles[i].radius * transform.scale.X;
 
-					spriteBatch.Draw(circleTexture, destinationRectangle: new Rectangle((int)circle.Center.X - (int)circle.Radius / 2, (int)circle.Center.Y - (int)circle.Radius / 2, (int)circle.Radius, (int)circle.Radius),
+					spriteBatch.Draw(texture, destinationRectangle: new Rectangle((int)circle.Center.X - (int)circle.Radius / 2, (int)circle.Center.Y - (int)circle.Radius / 2, (int)circle.Radius, (int)circle.Radius),
 							color: particleSystem.particles[i].color);
 				}
 			}

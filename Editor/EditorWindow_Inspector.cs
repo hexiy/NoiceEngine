@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using Scripts;
@@ -25,7 +26,14 @@ namespace Engine
 		}
 		public void SelectGameObject(int gameObjectIndex)
 		{
-			selectedGameObject = Scene.I.gameObjects[gameObjectIndex];
+			if (gameObjectIndex == -1)
+			{
+				selectedGameObject = null;
+			}
+			else
+			{
+				selectedGameObject = Scene.I.gameObjects[gameObjectIndex];
+			}
 		}
 		private int currentID = 0;
 		private void ResetID()
@@ -64,10 +72,19 @@ namespace Engine
 			{
 				for (int i = 0; i < selectedGameObject.Components.Count; i++)
 				{
+					PushNextID();
+
 					//ImGui.SetNextItemWidth (300);
 					ImGui.Checkbox("", ref selectedGameObject.Components[i].enabled);
 					ImGui.SameLine();
-					PushNextID();
+
+					if (ImGui.Button("-"))
+					{
+						selectedGameObject.RemoveComponent(selectedGameObject.Components[i]);
+						ImGui.PopID();
+						continue;
+					}
+					ImGui.SameLine();
 					if (ImGui.CollapsingHeader(selectedGameObject.Components[i].GetType().Name + "##" + currentID))
 					{
 						FieldOrPropertyInfo[] infos;
@@ -117,6 +134,21 @@ namespace Engine
 								if (ImGui.DragFloat2("", ref fieldValue, 0.01f))
 								{
 									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+								}
+							}
+							else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture2D))
+							{
+								float itemWidth = 200;
+								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
+								ImGui.SetNextItemWidth(itemWidth);
+
+								//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));
+
+								string fieldValue = (selectedGameObject.Components[i] as ITexture).texturePath;
+
+								if (ImGui.InputText("oh", ref fieldValue, 100))
+								{
+									(selectedGameObject.Components[i] as ITexture).LoadTexture(fieldValue);
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(Color))
