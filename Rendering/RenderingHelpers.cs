@@ -20,7 +20,7 @@ namespace Engine
 		//public static BlendStatesEnum BlendStates;
 		public static SpriteEffects GetSpriteFlipEffects(Transform transform)
 		{
-			return (transform.scale.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None) | (transform.scale.Y < 0 ? SpriteEffects.FlipVertically : SpriteEffects.None);
+			return (System.MathF.Abs(transform.rotation.Y) % 360 >= 180 ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 		}
 	}
 }

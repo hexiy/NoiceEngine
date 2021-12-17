@@ -48,10 +48,6 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
-            "Aether.Physics2D": {
-              "target": "Package",
-              "version": "[1.6.1, )"
-            },
             "Aether.Physics2D.MG": {
               "target": "Package",
               "version": "[1.6.1, )"

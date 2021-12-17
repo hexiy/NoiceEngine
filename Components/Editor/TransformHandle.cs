@@ -52,13 +52,13 @@ namespace Engine
 			else
 			{
 				boxColliderXY = GameObject.AddComponent<BoxShape>();
-				boxColliderXY.rect = new Rectangle(0, 0, 20, 20);
+				boxColliderXY.rect = new RectangleFloat(0, 0, 2, 2);
 
 				boxColliderX = GameObject.AddComponent<BoxShape>();
-				boxColliderX.rect = new Rectangle(0, 0, 50, 5);
+				boxColliderX.rect = new RectangleFloat(0, 0, 5, 0.5f);
 
 				boxColliderY = GameObject.AddComponent<BoxShape>();
-				boxColliderY.rect = new Rectangle(0, 0, 5, 50);
+				boxColliderY.rect = new RectangleFloat(0, 0, 0.5f, 5);
 
 				boxRendererXY = GameObject.AddComponent<BoxRenderer>();
 				boxRendererX = GameObject.AddComponent<BoxRenderer>();
@@ -68,26 +68,31 @@ namespace Engine
 				boxRendererX.Color = Color.Red;
 				boxRendererY.Color = Color.Cyan;
 
-				boxRendererX.boxCollider = boxColliderX;
-				boxRendererXY.boxCollider = boxColliderXY;
-				boxRendererY.boxCollider = boxColliderY;
+				boxRendererX.boxShape = boxColliderX;
+				boxRendererXY.boxShape = boxColliderXY;
+				boxRendererY.boxShape = boxColliderY;
 			}
 			base.Awake();
+		}
+		private void SetSelectedObjectRigidbodyAwake(bool tgl)
+		{
+			if (selectedTransform?.HasComponent<Rigidbody>() == true && selectedTransform?.GetComponent<Rigidbody>().body?.Awake == false)
+			{
+				selectedTransform.GetComponent<Rigidbody>().body.Awake = tgl;
+			}
 		}
 		public override void Update()
 		{
 			//Debug.Console.Log("TransformHandle.GameObject.Active: " + GameObject.Active);
-			
-			if (MouseInput.MouseButton1State == ButtonState.Pressed)
-			{
-				if (GameObject.Active)
-				{
-					if (clicked)
-					{
-						Move(MouseInput.Delta);
-					}
-				}
 
+			if (MouseInput.MouseButton1State == ButtonState.Pressed && GameObject.Active && clicked)
+			{
+				SetSelectedObjectRigidbodyAwake(false);
+				Move(MouseInput.Delta);
+			}
+			else
+			{
+				SetSelectedObjectRigidbodyAwake(true);
 			}
 
 
@@ -104,29 +109,29 @@ namespace Engine
 
 			transform.position = selectedTransform.position;
 
-			if (MouseInput.Position.In(boxColliderX).intersects)
+			if (MouseInput.Position.In(boxColliderX))
 			{
-				boxRendererX.Color = Color.AntiqueWhite;
+				boxRendererX.Fill = true;
 			}
 			else
 			{
-				boxRendererX.Color = Color.Red;
+				boxRendererX.Fill = false;
 			}
-			if (MouseInput.Position.In(boxColliderY).intersects)
+			if (MouseInput.Position.In(boxColliderY))
 			{
-				boxRendererY.Color = Color.AntiqueWhite;
-			}
-			else
-			{
-				boxRendererY.Color = Color.Cyan;
-			}
-			if (MouseInput.Position.In(boxColliderXY).intersects)
-			{
-				boxRendererXY.Color = Color.AntiqueWhite;
+				boxRendererY.Fill = true;
 			}
 			else
 			{
-				boxRendererXY.Color = Color.Orange;
+				boxRendererY.Fill = false;
+			}
+			if (MouseInput.Position.In(boxColliderXY))
+			{
+				boxRendererXY.Fill = true;
+			}
+			else
+			{
+				boxRendererXY.Fill = false;
 			}
 			base.Update();
 		}
@@ -148,6 +153,15 @@ namespace Engine
 			}
 			transform.position += moveVector;// we will grab it with offset, soe we want to move it only by change of mouse position
 			selectedTransform.position = transform.position;
+			if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().IsButton == false)
+			{
+				lock (Physics.World)
+				{
+					Rigidbody rigidbody = selectedTransform.GetComponent<Rigidbody>();
+					rigidbody.Velocity = Vector2.Zero;
+					rigidbody.body.Position = selectedTransform.position;
+				}
+			}
 			KeyboardState state = Keyboard.GetState();
 
 			if (KeyboardInput.IsKeyDown(Keys.LeftShift))
@@ -155,10 +169,10 @@ namespace Engine
 				switch (CurrentAxisSelected)
 				{
 					case Axis.X:
-						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(25).X, selectedTransform.position.Y,0);
+						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(25).X, selectedTransform.position.Y, 0);
 						break;
 					case Axis.Y:
-						selectedTransform.position = new Vector3(selectedTransform.position.Y, MouseInput.Position.TranslateToGrid(25).Y,0);
+						selectedTransform.position = new Vector3(selectedTransform.position.Y, MouseInput.Position.TranslateToGrid(25).Y, 0);
 						break;
 					case Axis.XY:
 						selectedTransform.position = MouseInput.Position.TranslateToGrid(25);

@@ -20,11 +20,12 @@ namespace Scripts
 		}
 		public int gameObjectID { get; set; }
 
-		[System.Xml.Serialization.XmlIgnore] [System.ComponentModel.DefaultValue (false)]
+		[System.Xml.Serialization.XmlIgnore]
+		[System.ComponentModel.DefaultValue(false)]
 		public bool awoken = false;
 
 		public bool allowMultiple = true;
-		public Component ()
+		public Component()
 		{
 		}
 		[System.Xml.Serialization.XmlIgnore]
@@ -34,87 +35,92 @@ namespace Scripts
 			set { GameObject.transform = value; }
 		}
 		public bool enabled = true;
-		public T GetComponent<T> (int? index = null) where T : Component
+		public T GetComponent<T>(int? index = null) where T : Component
 		{
-			return GameObject.GetComponent<T> (index);
-		}
-		public List<T> GetComponents<T> () where T : Component
-		{
-			return GameObject.GetComponents<T> ();
+			return GameObject.GetComponent<T>(index);
 		}
 
-		public Vector2 TransformToWorld (Vector2 localPoint)
+		public bool HasComponent<T>() where T : Component
+		{
+			return GameObject.HasComponent<T>();
+		}
+		public List<T> GetComponents<T>() where T : Component
+		{
+			return GameObject.GetComponents<T>();
+		}
+
+		public Vector2 TransformToWorld(Vector2 localPoint)
 		{
 			return localPoint + transform.position;
 		}
 
 		// Callbacks
-		private void RegisterInputCallbacks ()
+		private void RegisterInputCallbacks()
 		{
 			MouseInput.Mouse1Down += () =>
 			{
 				if (GameObject.mouseOver)
 				{
-					OnMouse1Down ();
+					OnMouse1Down();
 				}
 			};
 			MouseInput.Mouse1Up += () =>
 			{
 				if (GameObject.mouseOver)
 				{
-					OnMouse1Up ();
+					OnMouse1Up();
 				}
 			};
 			MouseInput.Mouse1 += OnMouse1;
 		}
-		public virtual void Awake ()
+		public virtual void Awake()
 		{
 			awoken = true;
-			RegisterInputCallbacks ();
+			RegisterInputCallbacks();
 		}
-		public virtual void Start ()
+		public virtual void Start()
 		{
 		}
-		public virtual void Update ()
+		public virtual void Update()
 		{
 		}
 		public virtual void FixedUpdate()
 		{
 		}
-		public virtual void OnDestroyed ()
+		public virtual void OnDestroyed()
 		{
 		}
 
-		public virtual void OnCollisionEnter (Rigidbody rigidbody)
+		public virtual void OnCollisionEnter(Rigidbody rigidbody)
 		{
 		}
-		public virtual void OnCollisionExit (Rigidbody rigidbody)
-		{
-		}
-
-		public virtual void OnTriggerEnter (Rigidbody rigidbody)
-		{
-		}
-		public virtual void OnTriggerExit (Rigidbody rigidbody)
+		public virtual void OnCollisionExit(Rigidbody rigidbody)
 		{
 		}
 
-		public virtual void OnMouse1Down ()
+		public virtual void OnTriggerEnter(Rigidbody rigidbody)
+		{
+		}
+		public virtual void OnTriggerExit(Rigidbody rigidbody)
 		{
 		}
 
-		public virtual void OnMouse1Up ()
+		public virtual void OnMouse1Down()
 		{
 		}
 
-		public virtual void OnMouse1 ()
-		{
-		}
-		public virtual void OnNewComponentAdded ()
+		public virtual void OnMouse1Up()
 		{
 		}
 
-		public int CompareTo (bool other)
+		public virtual void OnMouse1()
+		{
+		}
+		public virtual void OnNewComponentAdded()
+		{
+		}
+
+		public int CompareTo(bool other)
 		{
 			if (this == null)
 			{
@@ -126,7 +132,7 @@ namespace Scripts
 			}
 		}
 
-		public static implicit operator bool (Component instance)
+		public static implicit operator bool(Component instance)
 		{
 			if (instance == null)
 			{

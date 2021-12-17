@@ -10,16 +10,14 @@ namespace Engine
 	public class Camera : Component
 	{
 		[System.Xml.Serialization.XmlIgnore] [ShowInEditor] public Effect effect { get; set; }
-		//public Vector2 ReferenceResolution { get; set; } = new Vector2(800, 600);
 		[XmlIgnore] public RenderTarget2D renderTarget;
 		//public new bool enabled { get { return true; } }
 
-		public static Camera Instance { get; private set; }
+		public static Camera I { get; private set; }
 
 		public override void Awake()
 		{
-			Instance = this;
-			Zoom = 1f;
+			I = this;
 
 			renderTarget = new RenderTarget2D(
 		  Scene.I.GraphicsDevice,
@@ -40,28 +38,20 @@ namespace Engine
 		[ShowInEditor] public float Zoom { get; set; }
 
 		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(600, 500);
+		[ShowInEditor] public float CameraSize { get; set; } = 0.1f;
 
-		public Matrix TranslationMatrix
+		public Matrix TransformMatrix
 		{
 			get
 			{
 				return
-				Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+				Matrix.CreateScale(Vector3.One / CameraSize) *
 				Matrix.CreateRotationX(transform.rotation.X) *
 				Matrix.CreateRotationY(transform.rotation.Y) *
 				Matrix.CreateRotationZ(transform.rotation.Z) *
 				Matrix.CreateTranslation(-(int)transform.position.X,
 				   -(int)transform.position.Y, 0);
 				//Matrix.CreateRotationZ(Rotation);
-			}
-		}
-
-		public void AdjustZoom(float amount)
-		{
-			Zoom += amount;
-			if (Zoom < 0.1f)
-			{
-				Zoom = 0.1f;
 			}
 		}
 
@@ -72,20 +62,20 @@ namespace Engine
 
 		public Vector2 WorldToScreen(Vector2 worldPosition)
 		{
-			return Vector2.Transform(worldPosition, TranslationMatrix);
+			return Vector2.Transform(worldPosition, TransformMatrix);
 		}
 
 		public Vector2 ScreenToWorld(Vector2 screenPosition)
 		{
 			return Vector2.Transform(screenPosition,
-				Matrix.Invert(TranslationMatrix));
+				Matrix.Invert(TransformMatrix));
 		}
 		public override void Update()
 		{
-			if (Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount != AntialiasingStrength*2)
+			if (Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount != AntialiasingStrength * 2)
 			{
 				Scene.I.graphics.PreferMultiSampling = AntialiasingStrength == 0 ? false : true;
-				Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount = AntialiasingStrength*2;
+				Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount = AntialiasingStrength * 2;
 				Scene.I.graphics.ApplyChanges();
 			}
 			//if (Scene.Instance.graphics.PreferredBackBufferWidth != Size.X || Scene.Instance.graphics.PreferredBackBufferHeight != Size.Y)

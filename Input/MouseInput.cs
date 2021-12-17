@@ -28,7 +28,7 @@ namespace Engine
 
 		public static Vector2 Delta;
 		public static Vector2 Position = Vector2.Zero;
-		
+
 		public static void Update(MouseState state)
 		{
 
@@ -51,7 +51,7 @@ namespace Engine
 				{
 					if (Scene.I.gameObjects[i].Active)
 					{
-						Scene.I.gameObjects[i].mouseOver = MouseInput.Position.In(Scene.I.gameObjects[i].GetComponent<Shape>()).intersects;
+						Scene.I.gameObjects[i].mouseOver = MouseInput.Position.In(Scene.I.gameObjects[i].GetComponent<Shape>());
 
 					}
 				}
@@ -86,9 +86,8 @@ namespace Engine
 
 
 
-			Delta = state.Position.ToVector2() - Position;
-
-			Position = Editor.ScreenToViewport(state.Position.ToVector2());
+			Delta = Editor.ScreenToWorld(state.Position.ToVector2()) - Position;
+			Position = Editor.ScreenToWorld(state.Position.ToVector2());
 		}
 	}
 }

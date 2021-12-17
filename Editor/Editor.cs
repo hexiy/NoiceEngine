@@ -10,9 +10,9 @@ namespace Engine
 		public static Editor I { get; private set; }
 
 		public static Vector2 gameViewPosition = new Vector2 (0, 0);
-		public static Vector2 ScreenToViewport (Vector2 screenPosition)
+		public static Vector2 ScreenToWorld (Vector2 screenPosition)
 		{
-			return screenPosition - gameViewPosition;
+			return (screenPosition - gameViewPosition)*Camera.I.CameraSize;
 		}
 		public Editor ()
 		{

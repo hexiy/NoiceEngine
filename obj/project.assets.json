@@ -2,15 +2,6 @@
   "version": 3,
   "targets": {
     "net6.0-windows7.0": {
-      "Aether.Physics2D/1.6.1": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Aether.Physics2D.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Aether.Physics2D.dll": {}
-        }
-      },
       "Aether.Physics2D.MG/1.6.1": {
         "type": "package",
         "compile": {
@@ -1614,19 +1605,6 @@
     }
   },
   "libraries": {
-    "Aether.Physics2D/1.6.1": {
-      "sha512": "IGb7Hivg+jtHN5A6tMz4ZlYkc/nKUOZCKG2EGbU1VTrRC8z9dK3CQVoFFpo2iewpEX7Dstciuy603DYeWoNWlA==",
-      "type": "package",
-      "path": "aether.physics2d/1.6.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "aether.physics2d.1.6.1.nupkg.sha512",
-        "aether.physics2d.nuspec",
-        "lib/net40/Aether.Physics2D.dll",
-        "lib/netstandard2.0/Aether.Physics2D.dll"
-      ]
-    },
     "Aether.Physics2D.MG/1.6.1": {
       "sha512": "bOC4A9hPppTBvSZ/D9dD8zTLnEI3ImDPNsJsoKApWgYrQHV/R854/KN7KAkgk6JqcSkXUymai32h9+v/F8mibw==",
       "type": "package",
@@ -5772,7 +5750,6 @@
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
-      "Aether.Physics2D >= 1.6.1",
       "Aether.Physics2D.MG >= 1.6.1",
       "ImGui.NET >= 1.78.0",
       "Microsoft.CodeAnalysis.Workspaces.Common >= 4.0.1",
@@ -5830,10 +5807,6 @@
       "net6.0-windows7.0": {
         "targetAlias": "net6.0-windows",
         "dependencies": {
-          "Aether.Physics2D": {
-            "target": "Package",
-            "version": "[1.6.1, )"
-          },
           "Aether.Physics2D.MG": {
             "target": "Package",
             "version": "[1.6.1, )"

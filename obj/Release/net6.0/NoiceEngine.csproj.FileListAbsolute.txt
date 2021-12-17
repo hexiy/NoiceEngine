@@ -1,0 +1,5 @@
+C:\Dev\Noice\NoiceEngine\obj\Release\net6.0\NoiceEngine.csproj.AssemblyReference.cache
+C:\Dev\Noice\NoiceEngine\obj\Release\net6.0\NoiceEngine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Dev\Noice\NoiceEngine\obj\Release\net6.0\NoiceEngine.AssemblyInfoInputs.cache
+C:\Dev\Noice\NoiceEngine\obj\Release\net6.0\NoiceEngine.AssemblyInfo.cs
+C:\Dev\Noice\NoiceEngine\obj\Release\net6.0\NoiceEngine.csproj.CoreCompileInputs.cache

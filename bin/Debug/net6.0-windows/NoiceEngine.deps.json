@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "NoiceEngine/1.0.0": {
         "dependencies": {
-          "Aether.Physics2D": "1.6.1",
           "Aether.Physics2D.MG": "1.6.1",
           "ImGui.NET": "1.78.0",
           "Microsoft.CodeAnalysis.Workspaces.Common": "4.0.1",
@@ -22,7 +21,7 @@
           "NoiceEngine.dll": {}
         }
       },
-      "Aether.Physics2D/1.6.1": {
+      "Aether.Physics2D.MG/1.6.1": {
         "runtime": {
           "lib/netstandard2.0/Aether.Physics2D.dll": {
             "assemblyVersion": "1.6.1.0",
@@ -30,7 +29,6 @@
           }
         }
       },
-      "Aether.Physics2D.MG/1.6.1": {},
       "Humanizer.Core/2.2.0": {
         "dependencies": {
           "NETStandard.Library": "1.6.1"
@@ -1011,13 +1009,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "Aether.Physics2D/1.6.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-IGb7Hivg+jtHN5A6tMz4ZlYkc/nKUOZCKG2EGbU1VTrRC8z9dK3CQVoFFpo2iewpEX7Dstciuy603DYeWoNWlA==",
-      "path": "aether.physics2d/1.6.1",
-      "hashPath": "aether.physics2d.1.6.1.nupkg.sha512"
     },
     "Aether.Physics2D.MG/1.6.1": {
       "type": "package",

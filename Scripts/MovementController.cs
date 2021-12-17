@@ -12,41 +12,57 @@ namespace Scripts
 {
 	public class MovementController : Component
 	{
-		[ShowInEditor]
-		public float MoveSpeed { get; set; } = 10;
+		[ShowInEditor] public float MoveSpeed { get; set; } = 10;
+		[ShowInEditor] public float JumpForce { get; set; } = 10000;
 		[LinkableComponent]
 		private Rigidbody rb;
-		private Vector2 targetVelocity = Vector2.Zero;
 		bool jumpKeyDown = false;
+
+		[LinkableComponent] private AnimationController animationController;
 		public override void Awake()
 		{
 			rb = GetComponent<Rigidbody>();
+			animationController = GetComponent<AnimationController>();
+
 			base.Awake();
 		}
 
 		public override void FixedUpdate()
 		{
 			if (rb == null) return;
+
+			bool pressedLeft = KeyboardInput.IsKeyDown(Keys.A);
+			bool pressedRight = KeyboardInput.IsKeyDown(Keys.D);
+
+			if (pressedLeft || pressedRight)
+			{
+				animationController.SetAnimRange(AnimationController.AnimState.Run);
+			}
+			else
+			{
+				animationController.SetAnimRange(AnimationController.AnimState.Idle);
+			}
+
 			Vector2 input = Vector2.Zero;
-			if (KeyboardInput.IsKeyDown(Keys.A))
+			if (pressedLeft)
 			{
-				input.X = -MoveSpeed * Time.deltaTime;
+				input.X = -MoveSpeed;
+				animationController.Turn(Vector2.Left);
 			}
-			if (KeyboardInput.IsKeyDown(Keys.D))
+			else if (pressedRight)
 			{
-				input.X = MoveSpeed * Time.deltaTime;
+				input.X = MoveSpeed;
+				animationController.Turn(Vector2.Right);
 			}
+
 			if (jumpKeyDown == false && KeyboardInput.state.IsKeyDown(Keys.W))
 			{
-				transform.position.Y -= 10f;
-				rb.Velocity = new Vector2(rb.Velocity.X, -450);
-				//rb.ApplyVelocity(new Vector2(0, -450));
+				rb.body.ApplyForce(new Vector2(0, -JumpForce));
 			}
 			jumpKeyDown = KeyboardInput.state.IsKeyDown(Keys.W);
+			rb.body.ApplyForce(new Vector2(input.X, 0));
 
-			targetVelocity = Vector2.Lerp(targetVelocity, input, Time.deltaTime * 5);
 
-			rb.Velocity = new Vector2(targetVelocity.X, rb.Velocity.Y);
 			base.Update();
 		}
 	}

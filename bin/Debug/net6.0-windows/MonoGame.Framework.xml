@@ -7211,7 +7211,35 @@
             <param name="effects">Modificators for drawing. Can be combined.</param>
             <param name="layerDepth">A depth of the layer of this sprite.</param>
         </member>
+        <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2,System.Nullable{Microsoft.Xna.Framework.RectangleFloat},Microsoft.Xna.Framework.Color,System.Single,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Single)">
+            <summary>
+            Submit a sprite for drawing in the current batch.
+            </summary>
+            <param name="texture">A texture.</param>
+            <param name="position">The drawing location on screen.</param>
+            <param name="sourceRectangleFloat">An optional region on the texture which will be rendered. If null - draws full texture.</param>
+            <param name="color">A color mask.</param>
+            <param name="rotation">A rotation of this sprite.</param>
+            <param name="origin">Center of the rotation. 0,0 by default.</param>
+            <param name="scale">A scaling of this sprite.</param>
+            <param name="effects">Modificators for drawing. Can be combined.</param>
+            <param name="layerDepth">A depth of the layer of this sprite.</param>
+        </member>
         <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2,System.Nullable{Microsoft.Xna.Framework.Rectangle},Microsoft.Xna.Framework.Color,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Single)">
+            <summary>
+            Submit a sprite for drawing in the current batch.
+            </summary>
+            <param name="texture">A texture.</param>
+            <param name="position">The drawing location on screen.</param>
+            <param name="sourceRectangle">An optional region on the texture which will be rendered. If null - draws full texture.</param>
+            <param name="color">A color mask.</param>
+            <param name="rotation">A rotation of this sprite.</param>
+            <param name="origin">Center of the rotation. 0,0 by default.</param>
+            <param name="scale">A scaling of this sprite.</param>
+            <param name="effects">Modificators for drawing. Can be combined.</param>
+            <param name="layerDepth">A depth of the layer of this sprite.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2,System.Nullable{Microsoft.Xna.Framework.RectangleFloat},Microsoft.Xna.Framework.Color,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Single)">
             <summary>
             Submit a sprite for drawing in the current batch.
             </summary>
@@ -7238,6 +7266,19 @@
             <param name="effects">Modificators for drawing. Can be combined.</param>
             <param name="layerDepth">A depth of the layer of this sprite.</param>
         </member>
+        <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.RectangleFloat,System.Nullable{Microsoft.Xna.Framework.RectangleFloat},Microsoft.Xna.Framework.Color,System.Single,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Graphics.SpriteEffects,System.Single)">
+            <summary>
+            Submit a sprite for drawing in the current batch.
+            </summary>
+            <param name="texture">A texture.</param>
+            <param name="destinationRectangleFloat">The drawing bounds on screen.</param>
+            <param name="sourceRectangleFloat">An optional region on the texture which will be rendered. If null - draws full texture.</param>
+            <param name="color">A color mask.</param>
+            <param name="rotation">A rotation of this sprite.</param>
+            <param name="origin">Center of the rotation. 0,0 by default.</param>
+            <param name="effects">Modificators for drawing. Can be combined.</param>
+            <param name="layerDepth">A depth of the layer of this sprite.</param>
+        </member>
         <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2,System.Nullable{Microsoft.Xna.Framework.Rectangle},Microsoft.Xna.Framework.Color)">
             <summary>
             Submit a sprite for drawing in the current batch.
@@ -7256,6 +7297,15 @@
             <param name="sourceRectangle">An optional region on the texture which will be rendered. If null - draws full texture.</param>
             <param name="color">A color mask.</param>
         </member>
+        <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.RectangleFloat,System.Nullable{Microsoft.Xna.Framework.RectangleFloat},Microsoft.Xna.Framework.Color)">
+            <summary>
+            Submit a sprite for drawing in the current batch.
+            </summary>
+            <param name="texture">A texture.</param>
+            <param name="destinationRectangleFloat">The drawing bounds on screen.</param>
+            <param name="sourceRectangleFloat">An optional region on the texture which will be rendered. If null - draws full texture.</param>
+            <param name="color">A color mask.</param>
+        </member>
         <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
             <summary>
             Submit a sprite for drawing in the current batch.
@@ -7270,6 +7320,14 @@
             </summary>
             <param name="texture">A texture.</param>
             <param name="destinationRectangle">The drawing bounds on screen.</param>
+            <param name="color">A color mask.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.Draw(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.RectangleFloat,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Submit a sprite for drawing in the current batch.
+            </summary>
+            <param name="texture">A texture.</param>
+            <param name="destinationRectangleFloat">The drawing bounds on screen.</param>
             <param name="color">A color mask.</param>
         </member>
         <member name="M:Microsoft.Xna.Framework.Graphics.SpriteBatch.DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color)">
@@ -15079,6 +15137,275 @@
             <param name="width"></param>
             <param name="height"></param>
         </member>
+        <member name="T:Microsoft.Xna.Framework.RectangleFloat">
+            <summary>
+            Describes a 2D-RectangleF. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.RectangleFloat.X">
+            <summary>
+            The x coordinate of the top-left corner of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.RectangleFloat.Y">
+            <summary>
+            The y coordinate of the top-left corner of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.RectangleFloat.Width">
+            <summary>
+            The width of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.RectangleFloat.Height">
+            <summary>
+            The height of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Empty">
+            <summary>
+            Returns a <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> with X=0, Y=0, Width=0, Height=0.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Left">
+            <summary>
+            Returns the x coordinate of the left edge of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Right">
+            <summary>
+            Returns the x coordinate of the right edge of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Top">
+            <summary>
+            Returns the y coordinate of the top edge of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Bottom">
+            <summary>
+            Returns the y coordinate of the bottom edge of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.IsEmpty">
+            <summary>
+            Whether or not this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> has a <see cref="F:Microsoft.Xna.Framework.RectangleFloat.Width"/> and
+            <see cref="F:Microsoft.Xna.Framework.RectangleFloat.Height"/> of 0, and a <see cref="P:Microsoft.Xna.Framework.RectangleFloat.Position"/> of (0, 0).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Position">
+            <summary>
+            The top-left coordinates of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Size">
+            <summary>
+            The width-height coordinates of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.RectangleFloat.Center">
+            <summary>
+            A <see cref="T:Microsoft.Xna.Framework.Vector2"/> located in the center of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <remarks>
+            If <see cref="F:Microsoft.Xna.Framework.RectangleFloat.Width"/> or <see cref="F:Microsoft.Xna.Framework.RectangleFloat.Height"/> is an odd number,
+            the center Vector2 will be rounded down.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a new instance of <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> struct, with the specified
+            position, width, and height.
+            </summary>
+            <param name="x">The x coordinate of the top-left corner of the created <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="y">The y coordinate of the top-left corner of the created <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="width">The width of the created <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="height">The height of the created <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates a new instance of <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> struct, with the specified
+            location and size.
+            </summary>
+            <param name="location">The x and y coordinates of the top-left corner of the created <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="size">The width and height of the created <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.op_Equality(Microsoft.Xna.Framework.RectangleFloat,Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Compares whether two <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> instances are equal.
+            </summary>
+            <param name="a"><see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> instance on the left of the equal sign.</param>
+            <param name="b"><see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> instance on the right of the equal sign.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.op_Inequality(Microsoft.Xna.Framework.RectangleFloat,Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Compares whether two <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> instances are not equal.
+            </summary>
+            <param name="a"><see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> instance on the left of the not equal sign.</param>
+            <param name="b"><see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> instance on the right of the not equal sign.</param>
+            <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Contains(System.Int32,System.Single)">
+            <summary>
+            Gets whether or not the provided coordinates lie within the bounds of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="x">The x coordinate of the Vector2 to check for containment.</param>
+            <param name="y">The y coordinate of the Vector2 to check for containment.</param>
+            <returns><c>true</c> if the provided coordinates lie inside this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Contains(System.Single,System.Single)">
+            <summary>
+            Gets whether or not the provided coordinates lie within the bounds of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="x">The x coordinate of the Vector2 to check for containment.</param>
+            <param name="y">The y coordinate of the Vector2 to check for containment.</param>
+            <returns><c>true</c> if the provided coordinates lie inside this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Contains(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Microsoft.Xna.Framework.Vector2"/> lies within the bounds of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="value">The coordinates to check for inclusion in this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <returns><c>true</c> if the provided <see cref="T:Microsoft.Xna.Framework.Vector2"/> lies inside this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Contains(Microsoft.Xna.Framework.Vector2@,System.Boolean@)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Microsoft.Xna.Framework.Vector2"/> lies within the bounds of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="value">The coordinates to check for inclusion in this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="result"><c>true</c> if the provided <see cref="T:Microsoft.Xna.Framework.Vector2"/> lies inside this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Contains(Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> lies within the bounds of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="value">The <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> to check for inclusion in this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <returns><c>true</c> if the provided <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>'s bounds lie entirely inside this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Contains(Microsoft.Xna.Framework.RectangleFloat@,System.Boolean@)">
+            <summary>
+            Gets whether or not the provided <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> lies within the bounds of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="value">The <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> to check for inclusion in this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="result"><c>true</c> if the provided <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>'s bounds lie entirely inside this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Equals(System.Object)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Equals(Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Compares whether current instance is equal to specified <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="other">The <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> to compare.</param>
+            <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.GetHashCode">
+            <summary>
+            Gets the hash code of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <returns>Hash code of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Inflate(System.Int32,System.Single)">
+            <summary>
+            Adjusts the edges of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> by specified horizontal and vertical amounts. 
+            </summary>
+            <param name="horizontalAmount">Value to adjust the left and right edges.</param>
+            <param name="verticalAmount">Value to adjust the top and bottom edges.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Inflate(System.Single,System.Single)">
+            <summary>
+            Adjusts the edges of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> by specified horizontal and vertical amounts. 
+            </summary>
+            <param name="horizontalAmount">Value to adjust the left and right edges.</param>
+            <param name="verticalAmount">Value to adjust the top and bottom edges.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Intersects(Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Gets whether or not the other <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> intersects with this RectangleF.
+            </summary>
+            <param name="value">The other RectangleF for testing.</param>
+            <returns><c>true</c> if other <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> intersects with this RectangleF; <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Intersects(Microsoft.Xna.Framework.RectangleFloat@,System.Boolean@)">
+            <summary>
+            Gets whether or not the other <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> intersects with this RectangleF.
+            </summary>
+            <param name="value">The other RectangleF for testing.</param>
+            <param name="result"><c>true</c> if other <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> intersects with this RectangleF; <c>false</c> otherwise. As an output parameter.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Intersect(Microsoft.Xna.Framework.RectangleFloat,Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> that contains overlapping region of two other RectangleFs.
+            </summary>
+            <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <returns>Overlapping region of the two RectangleFs.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Intersect(Microsoft.Xna.Framework.RectangleFloat@,Microsoft.Xna.Framework.RectangleFloat@,Microsoft.Xna.Framework.RectangleFloat@)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> that contains overlapping region of two other RectangleFs.
+            </summary>
+            <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="result">Overlapping region of the two RectangleFs as an output parameter.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Offset(System.Int32,System.Single)">
+            <summary>
+            Changes the <see cref="P:Microsoft.Xna.Framework.RectangleFloat.Position"/> of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="offsetX">The x coordinate to add to this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="offsetY">The y coordinate to add to this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Offset(System.Single,System.Single)">
+            <summary>
+            Changes the <see cref="P:Microsoft.Xna.Framework.RectangleFloat.Position"/> of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="offsetX">The x coordinate to add to this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="offsetY">The y coordinate to add to this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Offset(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Changes the <see cref="P:Microsoft.Xna.Framework.RectangleFloat.Position"/> of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="amount">The x and y components to add to this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> in the format:
+            {X:[<see cref="F:Microsoft.Xna.Framework.RectangleFloat.X"/>] Y:[<see cref="F:Microsoft.Xna.Framework.RectangleFloat.Y"/>] Width:[<see cref="F:Microsoft.Xna.Framework.RectangleFloat.Width"/>] Height:[<see cref="F:Microsoft.Xna.Framework.RectangleFloat.Height"/>]}
+            </summary>
+            <returns><see cref="T:System.String"/> representation of this <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Union(Microsoft.Xna.Framework.RectangleFloat,Microsoft.Xna.Framework.RectangleFloat)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> that completely contains two other RectangleFs.
+            </summary>
+            <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <returns>The union of the two RectangleFs.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Union(Microsoft.Xna.Framework.RectangleFloat@,Microsoft.Xna.Framework.RectangleFloat@,Microsoft.Xna.Framework.RectangleFloat@)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/> that completely contains two other RectangleFs.
+            </summary>
+            <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.</param>
+            <param name="result">The union of the two RectangleFs as an output parameter.</param>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.RectangleFloat.Deconstruct(System.Single@,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            Deconstruction method for <see cref="T:Microsoft.Xna.Framework.RectangleFloat"/>.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+        </member>
         <member name="T:Microsoft.Xna.Framework.TextInputEventArgs">
             <summary>
             This class is used in the <see cref="E:Microsoft.Xna.Framework.GameWindow.TextInput"/> event as <see cref="T:System.EventArgs"/>.
@@ -15131,14 +15458,24 @@
             Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components 1, 1.
             </summary>
         </member>
-        <member name="P:Microsoft.Xna.Framework.Vector2.UnitX">
+        <member name="P:Microsoft.Xna.Framework.Vector2.Left">
             <summary>
-            Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components 1, 0.
+            Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components -1, 0.
             </summary>
         </member>
-        <member name="P:Microsoft.Xna.Framework.Vector2.UnitY">
+        <member name="P:Microsoft.Xna.Framework.Vector2.Right">
             <summary>
-            Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components 0, 1.
+            Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components -1, 0.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Vector2.Up">
+            <summary>
+            Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components -1, 0.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Xna.Framework.Vector2.Down">
+            <summary>
+            Returns a <see cref="T:Microsoft.Xna.Framework.Vector2"/> with components -1, 0.
             </summary>
         </member>
         <member name="M:Microsoft.Xna.Framework.Vector2.#ctor(System.Single,System.Single)">

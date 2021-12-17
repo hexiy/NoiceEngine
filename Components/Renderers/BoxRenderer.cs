@@ -2,46 +2,54 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
-
 namespace Scripts
 {
 	public class BoxRenderer : Renderer
 	{
-		public float StrokeSize { get; set; } = 1;
-		[LinkableComponent] public BoxShape boxCollider;
+		[ShowInEditor] public float StrokeSize { get; set; } = 0.1f;
+		[System.Xml.Serialization.XmlIgnore]
+		public BoxShape boxShape;
 
 		[ShowInEditor] public bool Fill { get; set; } = false;
 
-		public override void Draw (SpriteBatch batch)
+		public override void Awake()
 		{
-			if (GameObject == null || boxCollider == null)
+			if (boxShape == null)
+			{
+				boxShape = GetComponent<BoxShape>();
+			}
+		}
+		public override void Draw(SpriteBatch batch)
+		{
+			if (GameObject == null || boxShape == null)
 			{
 				return;
 			}
-			RectangleF drawRect = new RectangleF (Vector2.Zero, boxCollider.rect.Size * transform.scale.ToVector2 ());
 
-			drawRect.Offset (-boxCollider.rect.Size.Width * transform.anchor.X+((boxCollider.rect.Size.Width * transform.anchor.X)*(1-transform.scale.X)),
-				-boxCollider.rect.Size.Height * transform.anchor.Y + +((boxCollider.rect.Size.Height * transform.anchor.Y) * (1 - transform.scale.Y)));
+			MonoGame.Extended.RectangleF drawRect = new MonoGame.Extended.RectangleF(Vector2.Zero, boxShape.rect.Size * transform.scale.ToVector2());
+
+			drawRect.Offset(-boxShape.rect.Size.X * transform.anchor.X + ((boxShape.rect.Size.X * transform.anchor.X) * (1 - transform.scale.X)) + transform.position.X,
+				-boxShape.rect.Size.Y * transform.anchor.Y + ((boxShape.rect.Size.Y * transform.anchor.Y) * (1 - transform.scale.Y)) + transform.position.Y);
 
 			//Vector2 anchorOffset = ()
 			//drawRect.Position = Vector2.Zero;
 
-			batch.End ();
+			//batch.End ();
 
-			batch.Begin (transformMatrix: Matrix.CreateRotationZ (transform.rotation.Z) * Matrix.CreateTranslation (transform.position));
+			//batch.Begin (transformMatrix: Matrix.CreateRotationZ (transform.rotation.Z) * Matrix.CreateTranslation (transform.position));
 
 			if (Fill)
 			{
-				batch.FillRectangle (drawRect, Color);
+				batch.FillRectangle(drawRect, Color);
 			}
 			else
 			{
-				batch.DrawRectangle (drawRect, Color, StrokeSize);
+				batch.DrawRectangle(drawRect, Color, StrokeSize);
 			}
-			batch.End ();
-			batch.Begin (SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.Instance.effect);
+			//batch.End ();
+			//batch.Begin (SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.Instance.effect);
 
-			base.Draw (batch);
+			base.Draw(batch);
 		}
 	}
 }

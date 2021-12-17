@@ -17,7 +17,7 @@ namespace Scripts
 		{
 			if (GameObject == null || circleShape == null) { return; }
 			circle.Radius = circleShape.Radius * Extensions.MaxVectorMember(transform.scale);
-			circle.Center = new Point2((int)transform.position.X, (int)transform.position.Y);
+			circle.Center = new Point2(transform.position.X, transform.position.Y);
 			if (Fill)
 			{
 				batch.DrawCircle(circle, Sides != null ? (int)Sides : (int)(circle.Radius), Color, circle.Radius);

@@ -19,7 +19,7 @@ namespace Engine
 		public SpriteFont spriteFont;
 		private Camera camera
 		{
-			get { return Camera.Instance; }
+			get { return Camera.I; }
 		}
 		public List<GameObject> gameObjects = new List<GameObject>();
 
@@ -128,7 +128,11 @@ namespace Engine
 		}
 		protected override void Initialize()
 		{
+
+			Physics.Init();
+
 			CreateDefaultObjects();
+
 
 			TargetElapsedTime = TimeSpan.FromMilliseconds(15);
 
@@ -143,7 +147,6 @@ namespace Engine
 				LoadScene(Serializer.lastScene);
 			}
 
-			Physics.Init();
 			base.Initialize();
 		}
 
@@ -272,10 +275,10 @@ namespace Engine
 
 		private void OnMouse1Released()
 		{
-			if (ColliderEditor.editing == true)
-			{
-				return;
-			}
+			//if (ColliderEditor.editing == true)
+			//{
+			//	return;
+			//}
 			if (true) //Tools.CurrentTool == Tools.ToolTypes.Select)
 			{
 				transformHandle.CurrentAxisSelected = null;
@@ -283,10 +286,10 @@ namespace Engine
 		}
 		private void OnMouse1Clicked()
 		{
-			if (ColliderEditor.editing == true)
-			{
-				return;
-			}
+			//if (ColliderEditor.editing == true)
+			//{
+			//	return;
+			//}
 			//float minDistance = float.PositiveInfinity;
 			//GameObject closestGameObject = null;
 			//for (int i = 0; i < gameObjects.Count; i++)
@@ -304,17 +307,17 @@ namespace Engine
 			//	gameObjects[i].selected = false;
 			//}
 			transformHandle.clicked = false;
-			if (MouseInput.Position.In(transformHandle.boxColliderX).intersects)
+			if (MouseInput.Position.In(transformHandle.boxColliderX))
 			{
 				transformHandle.CurrentAxisSelected = TransformHandle.Axis.X;
 				transformHandle.clicked = true;
 			}
-			if (MouseInput.Position.In(transformHandle.boxColliderY).intersects)
+			if (MouseInput.Position.In(transformHandle.boxColliderY))
 			{
 				transformHandle.CurrentAxisSelected = TransformHandle.Axis.Y;
 				transformHandle.clicked = true;
 			}
-			if (MouseInput.Position.In(transformHandle.boxColliderXY).intersects)
+			if (MouseInput.Position.In(transformHandle.boxColliderXY))
 			{
 				transformHandle.CurrentAxisSelected = TransformHandle.Axis.XY;
 				transformHandle.clicked = true;
@@ -339,6 +342,7 @@ namespace Engine
 				return;
 			}
 			Time.Update(gameTime);
+			//Physics.Step();
 
 			MouseInput.Update(Mouse.GetState());
 
@@ -346,7 +350,7 @@ namespace Engine
 			{
 				SaveScene();
 			}
-			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.L))
+			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
 			{
 				LoadScene(Serializer.lastScene);
 			}
@@ -354,8 +358,8 @@ namespace Engine
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				gameObjects[i].Update();
+				gameObjects[i].FixedUpdate();
 			}
-			Physics.Step();
 
 			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
 
@@ -369,7 +373,7 @@ namespace Engine
 		}
 		public void SpriteBatch_Begin()
 		{
-			spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.Instance.effect);
+			spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.I.effect);
 
 		}
 		protected override void Draw(GameTime gameTime)
@@ -385,7 +389,7 @@ namespace Engine
 
 			SpriteBatch_Begin();
 
-			spriteBatch.Draw(texture: camera.renderTarget, destinationRectangle: new Rectangle((int)Editor.gameViewPosition.X, (int)Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
+			spriteBatch.Draw(texture: camera.renderTarget, destinationRectangleFloat: new RectangleFloat(Editor.gameViewPosition.X, Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
 
 			spriteBatch.End();
 
@@ -404,7 +408,7 @@ namespace Engine
 
 			GraphicsDevice.Clear(camera.color);
 
-			spriteBatch.Begin(transformMatrix: camera.TranslationMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
+			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				gameObjects[i].Draw(spriteBatch);

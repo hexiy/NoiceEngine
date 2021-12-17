@@ -1,28 +1,29 @@
 ﻿using Engine;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Scripts
 {
 	public class Rigidbody : Component
 	{
-		[System.Xml.Serialization.XmlIgnore] public Body body;
-		[System.Xml.Serialization.XmlIgnore]
+		[XmlIgnore] public Body body;
+		[XmlIgnore]
 		public List<Rigidbody> touchingRigidbodies = new List<Rigidbody>();
 
 		public new bool allowMultiple = false;
 
-		[System.Xml.Serialization.XmlIgnore]
+		[XmlIgnore]
 		[LinkableComponent]
 		public Shape shape;
 		[ShowInEditor] public bool UseGravity { get; set; } = true;
 		[ShowInEditor] public bool IsStatic { get; set; } = false;
 		[ShowInEditor] public bool IsTrigger { get; set; } = false;
 		[ShowInEditor] public bool IsButton { get; set; } = false;
-		[ShowInEditor] public Vector3 Velocity { get; set; } = new Vector3(0, 0, 0);
+		[XmlIgnore] [ShowInEditor] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
+		[ShowInEditor] public float Mass { get; set; } = 1;
 
-		[ShowInEditor] public float Mass { get; set; } = 1f;
 
 		public float velocityDrag = 0.99f;
 		[ShowInEditor] public float Bounciness { get; set; } = 0f;
@@ -38,31 +39,22 @@ namespace Scripts
 			//gameObject.OnComponentAdded += CheckForColliderAdded;
 			if (IsButton) { return; }
 
-			Physics.AddRigidbody(this);
-
+			Physics.CreateBody(this);
 		}
-		public void FixedUpdatePostCollisions()
+		public override void FixedUpdate()
 		{
 			if (Scene.I?.GraphicsDevice == null || IsStatic || IsButton)
 			{
 				return;
 			}
 
-			TranslateVelocityToTransform();
+			UpdateTransform();
 
 		}
 
-
-		public void ApplyVelocity(Vector2 vel)
+		public void UpdateTransform()
 		{
-			if (IsStatic == false)
-			{
-				Velocity += vel;
-			}
-		}
-		public void TranslateVelocityToTransform()
-		{
-			transform.position += Velocity * Time.fixedDeltaTime;
+			transform.position = body.Position;
 		}
 		public void TranslateAngularRotationToTransform()
 		{
@@ -70,6 +62,11 @@ namespace Scripts
 		}
 		public override void OnDestroyed()
 		{
+			if (body != null)
+			{
+				body.Enabled = false;
+				Physics.World.Remove(body);
+			}
 			for (int i = 0; i < touchingRigidbodies.Count; i++)
 			{
 				touchingRigidbodies[i].OnCollisionExit(this);

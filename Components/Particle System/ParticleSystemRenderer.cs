@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Engine;
 using System.Diagnostics;
+using CircleF = MonoGame.Extended.CircleF;
 
 namespace Scripts
 {
@@ -58,7 +58,7 @@ namespace Scripts
 
 					circle.Radius = particleSystem.particles[i].radius * transform.scale.X;
 
-					spriteBatch.Draw(texture, destinationRectangle: new Rectangle((int)circle.Center.X - (int)circle.Radius / 2, (int)circle.Center.Y - (int)circle.Radius / 2, (int)circle.Radius, (int)circle.Radius),
+					spriteBatch.Draw(texture, destinationRectangleFloat: new RectangleFloat((int)circle.Center.X - (int)circle.Radius / 2, (int)circle.Center.Y - (int)circle.Radius / 2, (int)circle.Radius, (int)circle.Radius),
 							color: particleSystem.particles[i].color);
 				}
 			}

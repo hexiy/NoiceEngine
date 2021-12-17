@@ -31,7 +31,7 @@ namespace Engine
 		public override void Update()
 		{
 			if (renderer == false || collider == false) { return; }
-			mouseIsOver = Camera.Instance.ScreenToWorld(MouseInput.Position).In(collider).intersects;
+			mouseIsOver = Camera.I.ScreenToWorld(MouseInput.Position).In(collider);
 
 			if (clicked == false)
 			{

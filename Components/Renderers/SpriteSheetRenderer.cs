@@ -1,5 +1,4 @@
-﻿
-using Engine;
+﻿using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,8 +8,7 @@ namespace Scripts
 	{
 		private Vector2 spritesCount = new Vector2(1, 1);
 
-		[ShowInEditor]
-		public int MissingFrames { get; set; } = 0;
+		[ShowInEditor] public Vector2 FrameRange { get; set; } = new Vector2(0, 0);
 
 		[ShowInEditor]
 		public Vector2 SpritesCount
@@ -23,12 +21,8 @@ namespace Scripts
 				{
 					SpriteSize = new Vector2(texture.Width / SpritesCount.X, texture.Height / SpritesCount.Y);
 				}
-				MaxFrame = (int)(spritesCount.X * spritesCount.Y);
 			}
 		}
-		//[ShowInEditor]
-		public int MaxFrame { get; set; } = 1;
-
 		[ShowInEditor]
 		public float AnimationSpeed { get; set; } = 1;
 		[ShowInEditor] public int CurrentSpriteIndex { get; set; }
@@ -42,9 +36,9 @@ namespace Scripts
 			while (timeOnCurrentFrame > 1 / AnimationSpeed)
 			{
 				timeOnCurrentFrame -= 1 / AnimationSpeed;
-				if (CurrentSpriteIndex + 1 >= MaxFrame-MissingFrames)
+				if (CurrentSpriteIndex + 1 >= FrameRange.Y)
 				{
-					CurrentSpriteIndex = 0;
+					CurrentSpriteIndex = (int)FrameRange.X;
 				}
 				else
 				{
@@ -53,13 +47,22 @@ namespace Scripts
 			}
 			base.Update();
 		}
+		public void ResetCurrentAnimation()
+		{
+			timeOnCurrentFrame = 0;
+			CurrentSpriteIndex = (int)FrameRange.X;
+		}
 		public override void Draw(SpriteBatch batch)
 		{
 			if (GameObject == null || texture == null) { return; }
 			batch.Draw(texture: texture,
-				destinationRectangle: new Rectangle((int)transform.position.X - (int)(transform.anchor.X * SpriteSize.X * transform.scale.Abs().X), (int)transform.position.Y - (int)(transform.anchor.Y * SpriteSize.Y * transform.scale.Abs().X), (int)(SpriteSize.X * transform.scale.Abs().X), (int)(SpriteSize.Y * transform.scale.Abs().Y)),
-				sourceRectangle: new Rectangle((int)SpriteSize.X * (int)(CurrentSpriteIndex % SpritesCount.X), (int)SpriteSize.Y * (int)(CurrentSpriteIndex / (SpritesCount.X)), (int)SpriteSize.X, (int)SpriteSize.Y),
-				color: Color.White);// effects: RenderingHelpers.GetSpriteFlipEffects(transform), rotation: transform.Rotation
+				destinationRectangleFloat: new RectangleFloat(transform.position.X - (transform.anchor.X * SpriteSize.X * transform.scale.Abs().X), transform.position.Y - (transform.anchor.Y * SpriteSize.Y * transform.scale.Abs().X), (SpriteSize.X * transform.scale.Abs().X), (SpriteSize.Y * transform.scale.Abs().Y)),
+				sourceRectangleFloat: new RectangleFloat(SpriteSize.X * (int)(CurrentSpriteIndex % SpritesCount.X), SpriteSize.Y * (int)(CurrentSpriteIndex / (SpritesCount.X)), SpriteSize.X, SpriteSize.Y),
+				color: Color.White,
+				rotation: 0,
+				origin: Vector2.Zero,
+				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
+				layerDepth: 0);
 		}
 		public override void OnTextureLoaded(Texture2D _texture, string _path)
 		{

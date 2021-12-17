@@ -250,9 +250,6 @@ namespace Engine
 				{
 					rb.touchingRigidbodies[i].touchingRigidbodies.Remove(rb);
 				}
-
-				Physics.rigidbodies.Remove(rb);
-
 			}
 			lock (ComponentsLock)
 			{
@@ -417,6 +414,17 @@ namespace Engine
 				}
 			}
 			return null;
+		}
+		public bool HasComponent<T>() where T : Component
+		{
+			for (int i = 0; i < Components.Count; i++)
+			{
+				if (Components[i] is T)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		public List<T> GetComponents<T>() where T : Component
 		{
