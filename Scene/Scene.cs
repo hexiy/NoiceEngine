@@ -355,6 +355,7 @@ namespace Engine
 				LoadScene(Serializer.lastScene);
 			}
 
+
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				gameObjects[i].Update();
@@ -371,10 +372,9 @@ namespace Engine
 			//pdateTime = updateStopwatch.ElapsedMilliseconds;
 			//pdateStopwatch.Reset ();
 		}
-		public void SpriteBatch_Begin()
+		public void SpriteBatch_Begin(BlendState blend)
 		{
-			spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.I.effect);
-
+			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, blendState: blend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
 		}
 		protected override void Draw(GameTime gameTime)
 		{
@@ -387,7 +387,7 @@ namespace Engine
 
 			GraphicsDevice.Clear(new Color(33, 36, 38));
 
-			SpriteBatch_Begin();
+			spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.I.effect);
 
 			spriteBatch.Draw(texture: camera.renderTarget, destinationRectangleFloat: new RectangleFloat(Editor.gameViewPosition.X, Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
 

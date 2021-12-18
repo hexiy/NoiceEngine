@@ -23,6 +23,7 @@ namespace Scripts
 		[System.Xml.Serialization.XmlIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool awoken = false;
+		public bool started = false;
 
 		public bool allowMultiple = true;
 		public Component()
@@ -80,6 +81,7 @@ namespace Scripts
 		}
 		public virtual void Start()
 		{
+			started = true;
 		}
 		public virtual void Update()
 		{

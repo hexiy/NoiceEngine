@@ -37,7 +37,7 @@ namespace Engine
 
 		[ShowInEditor] public float Zoom { get; set; }
 
-		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(600, 500);
+		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(700, 500);
 		[ShowInEditor] public float CameraSize { get; set; } = 0.1f;
 
 		public Matrix TransformMatrix
@@ -49,8 +49,8 @@ namespace Engine
 				Matrix.CreateRotationX(transform.rotation.X) *
 				Matrix.CreateRotationY(transform.rotation.Y) *
 				Matrix.CreateRotationZ(transform.rotation.Z) *
-				Matrix.CreateTranslation(-(int)transform.position.X,
-				   -(int)transform.position.Y, 0);
+				Matrix.CreateTranslation(-transform.position.X / CameraSize,
+				   -transform.position.Y, 0);
 				//Matrix.CreateRotationZ(Rotation);
 			}
 		}
@@ -69,6 +69,10 @@ namespace Engine
 		{
 			return Vector2.Transform(screenPosition,
 				Matrix.Invert(TransformMatrix));
+		}
+		public Vector2 CenterOfScreenToWorld()
+		{
+			return ScreenToWorld(new Vector2(Size.X / 2, Size.Y / 2));
 		}
 		public override void Update()
 		{

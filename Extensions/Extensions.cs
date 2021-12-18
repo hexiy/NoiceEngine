@@ -95,7 +95,7 @@ public static class Extensions
 	}
 	public static List<MemberInfo> GetPropertiesOrFields(this Type t, BindingFlags bf = BindingFlags.Public | BindingFlags.Instance) =>
 		t.GetMembers(bf).Where(mi => mi.MemberType == MemberTypes.Field || mi.MemberType == MemberTypes.Property).ToList();
-	
+
 	public static System.Drawing.Point ToSystemPoint(this Microsoft.Xna.Framework.Point point)
 	{
 		return new System.Drawing.Point(point.X, point.Y);
@@ -247,13 +247,17 @@ public static class Extensions
 	{
 		return new System.Drawing.Point((int)Math.Floor(point.X / (float)scale) * scale, (int)Math.Floor(point.Y / (float)scale) * scale);
 	}
-	public static Vector2 TranslateToGrid(this Vector2 vector, int gridSize = 10)
+	public static float TranslateToGrid(this float value, int gridSize = 10)
 	{
-		return new Vector2((int)((decimal)vector.X / gridSize) * gridSize, (int)((decimal)vector.Y / gridSize) * gridSize);
+		return (int)((decimal)value / gridSize) * gridSize;
 	}
-	public static Vector3 TranslateToGrid(this Vector3 vector, int gridSize = 10)
+	public static Vector2 TranslateToGrid(this Vector2 vector, float gridSize = 10)
 	{
-		return new Vector3((int)((decimal)vector.X / gridSize) * gridSize, (int)((decimal)vector.Y / gridSize) * gridSize, (int)((decimal)vector.Z / gridSize) * gridSize);
+		return new Vector2((int)((float)vector.X / gridSize) * gridSize, (int)((float)vector.Y / gridSize) * gridSize);
+	}
+	public static Vector3 TranslateToGrid(this Vector3 vector, float gridSize = 10)
+	{
+		return new Vector3((int)((float)vector.X / gridSize) * gridSize, (int)((float)vector.Y / gridSize) * gridSize, (int)((float)vector.Z / gridSize) * gridSize);
 	}
 	public static float AngleBetween(Vector2 vector1, Vector2 vector2)
 	{

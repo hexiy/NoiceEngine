@@ -62,7 +62,8 @@ namespace Scripts
 			jumpKeyDown = KeyboardInput.state.IsKeyDown(Keys.W);
 			rb.body.ApplyForce(new Vector2(input.X, 0));
 
-
+			Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize), Camera.I.transform.position.Y);
+			Camera.I.transform.position = Vector2.Lerp(Camera.I.transform.position, targetPos, Time.deltaTime * 9);
 			base.Update();
 		}
 	}

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {
+    "net6.0-windows10.0.22000": {
       "Aether.Physics2D.MG/1.6.1": {
         "type": "package",
         "compile": {
@@ -5749,7 +5749,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": [
+    "net6.0-windows10.0.22000": [
       "Aether.Physics2D.MG >= 1.6.1",
       "ImGui.NET >= 1.78.0",
       "Microsoft.CodeAnalysis.Workspaces.Common >= 4.0.1",
@@ -5777,7 +5777,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0-windows7.0"
+        "net6.0-windows10.0.22000"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -5785,8 +5785,8 @@
         "https://packages.stride3d.net/nuget": {}
       },
       "frameworks": {
-        "net6.0-windows7.0": {
-          "targetAlias": "net6.0-windows",
+        "net6.0-windows10.0.22000": {
+          "targetAlias": "net6.0-windows10.0.22000.0",
           "projectReferences": {
             "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj": {
               "projectPath": "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj"
@@ -5804,8 +5804,8 @@
       }
     },
     "frameworks": {
-      "net6.0-windows7.0": {
-        "targetAlias": "net6.0-windows",
+      "net6.0-windows10.0.22000": {
+        "targetAlias": "net6.0-windows10.0.22000.0",
         "dependencies": {
           "Aether.Physics2D.MG": {
             "target": "Package",
@@ -5842,8 +5842,17 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.Windows.SDK.NET.Ref",
+            "version": "[10.0.22000.21, 10.0.22000.21]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.Windows.SDK.NET.Ref": {
             "privateAssets": "all"
           }
         },
@@ -5856,10 +5865,10 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
+      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows10.0.22000'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
       "targetGraphs": [
-        "net6.0-windows7.0"
+        "net6.0-windows10.0.22000"
       ]
     }
   ]

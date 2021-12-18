@@ -13,7 +13,7 @@ namespace Engine
 	{
 		public static World World;
 
-		public static readonly Vector2 gravity = new Vector2(0, 5);
+		public static readonly Vector2 gravity = new Vector2(0, 2);
 
 		public static bool Running = true;
 
@@ -27,10 +27,14 @@ namespace Engine
 		}
 		public static void PhysicsLoop()
 		{
-			while (Running)
+			while (true)
 			{
-				Step();
-				Wait(Time.fixedDeltaTime);
+				while (Running)
+				{
+					Step();
+					Wait(Time.fixedDeltaTime);
+				}
+				Wait(300); // wait if physics is disabled
 			}
 		}
 		public static void Step()

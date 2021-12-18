@@ -50,6 +50,7 @@ namespace Engine
 
 		[System.ComponentModel.DefaultValue(false)]
 		public bool Awoken { get; set; } = false;
+		public bool Started { get; set; } = false;
 		[ShowInEditor] public int ID { get; set; } = -1;
 		[ShowInEditor] public string Name { get; set; } = "";
 		public bool selected = false;
@@ -60,8 +61,6 @@ namespace Engine
 		//[System.Xml.Serialization.XmlArrayItem(type: typeof(Component))]
 		[System.Xml.Serialization.XmlIgnore]
 		public List<Component> Components = new List<Component>();
-
-		public List<GameObject> GameObjects = new List<GameObject>();
 
 		public bool mouseOver = false;
 
@@ -102,12 +101,22 @@ namespace Engine
 		public GameObject()
 		{
 			OnDestroyed += RemoveFromLists;
+			OnDestroyed += DestroyChildren;
 
 			OnComponentAdded += LinkComponents;
 			OnComponentAdded += InvokeOnComponentAddedOnComponents;
 			OnComponentAdded += CheckForTransformComponent;
 		}
-
+		private void DestroyChildren(GameObject go)
+		{
+			for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+			{
+				if (Scene.I.gameObjects[i].Parent == go)
+				{
+					Scene.I.gameObjects[i].Destroy();
+				}
+			}
+		}
 		private void CheckForTransformComponent(GameObject gameObject, Component component)
 		{
 			if (component is Transform)
@@ -240,6 +249,7 @@ namespace Engine
 			{
 				Components[i].Start();
 			}
+			Started = true;
 		}
 		private void RemoveFromLists(GameObject gameObject)
 		{
@@ -345,6 +355,7 @@ namespace Engine
 
 			OnComponentAdded?.Invoke(this, component);
 			if (Awoken && component.awoken == false) { component.Awake(); }
+			if (Started && component.started == false) { component.Start(); }
 
 			/* for (int i = 0; i < ComponentsWaitingToBePaired.Count; i++)
 			 {

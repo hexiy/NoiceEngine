@@ -70,6 +70,15 @@ namespace Engine
 			}
 			if (selectedGameObject != null)
 			{
+				ImGui.SameLine();
+				string gameObjectName = selectedGameObject.Name;
+				ImGui.SetNextItemWidth(265);
+				if (ImGui.InputText("", ref gameObjectName, 100))
+				{
+					selectedGameObject.Name = gameObjectName;
+				}
+
+
 				for (int i = 0; i < selectedGameObject.Components.Count; i++)
 				{
 					PushNextID();

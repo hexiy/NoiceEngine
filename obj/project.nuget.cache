@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "g6SwS5XJy5B6FEx7QpWwG37Wq9UmXq8yh3lakIVUMnx4u+j0tUzlVz3Q8PX9cepShINSKJnr20fgHqpFlU++sA==",
+  "dgSpecHash": "4+SzoMFTPMhDPE+kWPRe/OMVqnoYYZir2IYRNAp0JxH6ogXPEU2qPigbeBdsNm2jw2RH1rMAX8LkokliGMByoA==",
   "success": true,
   "projectFilePath": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
   "expectedPackageFiles": [
@@ -100,17 +100,18 @@
     "C:\\Users\\slavk\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
-    "C:\\Users\\slavk\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\slavk\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\slavk\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22000.21\\microsoft.windows.sdk.net.ref.10.0.22000.21.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
+      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows10.0.22000'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
       "targetGraphs": [
-        "net6.0-windows7.0"
+        "net6.0-windows10.0.22000"
       ]
     }
   ]

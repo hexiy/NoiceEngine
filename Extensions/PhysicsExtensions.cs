@@ -51,7 +51,7 @@ namespace Engine
 
 					Vector2 boxCenter = boxCollider.rect.Center;
 					RectangleFloat rect = boxCollider.rect;
-					rect.Position = boxCollider.transform.position.ToVector2() - rect.Size * boxCollider.transform.anchor;
+					rect.Position = boxCollider.transform.position - rect.Size * boxCollider.transform.anchor;
 
 					isIn = (point.X < rect.Right &&
 							point.X > rect.Left &&

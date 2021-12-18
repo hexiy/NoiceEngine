@@ -108,7 +108,11 @@ namespace Engine
 			}
 
 			transform.position = selectedTransform.position;
-
+			if (KeyboardInput.IsKeyDown(Keys.Space))
+			{
+				
+				var a = 1212;
+			}
 			if (MouseInput.Position.In(boxColliderX))
 			{
 				boxRendererX.Fill = true;
@@ -153,6 +157,15 @@ namespace Engine
 			}
 			transform.position += moveVector;// we will grab it with offset, soe we want to move it only by change of mouse position
 			selectedTransform.position = transform.position;
+
+			for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+			{
+				if (Scene.I.gameObjects[i].Parent == selectedTransform.GameObject)
+				{
+					Scene.I.gameObjects[i].transform.position += moveVector;
+				}
+			}
+
 			if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().IsButton == false)
 			{
 				lock (Physics.World)
@@ -169,13 +182,13 @@ namespace Engine
 				switch (CurrentAxisSelected)
 				{
 					case Axis.X:
-						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(25).X, selectedTransform.position.Y, 0);
+						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(1).X, selectedTransform.position.Y, 0);
 						break;
 					case Axis.Y:
-						selectedTransform.position = new Vector3(selectedTransform.position.Y, MouseInput.Position.TranslateToGrid(25).Y, 0);
+						selectedTransform.position = new Vector3(selectedTransform.position.Y, MouseInput.Position.TranslateToGrid(1).Y, 0);
 						break;
 					case Axis.XY:
-						selectedTransform.position = MouseInput.Position.TranslateToGrid(25);
+						selectedTransform.position = MouseInput.Position.TranslateToGrid(1);
 						break;
 				}
 

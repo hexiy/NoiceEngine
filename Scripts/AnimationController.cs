@@ -16,6 +16,11 @@ namespace Scripts
 		[ShowInEditor] public Vector2 AnimRange_Run { get; set; } = new Vector2(0, 0);
 
 		[ShowInEditor] public Vector2 CurrentAnimRange { get; set; } = new Vector2(0, 0);
+		[ShowInEditor]
+		public float AnimationSpeed { get; set; } = 1;
+		private float timeOnCurrentFrame = 0;
+
+
 
 		public override void Awake()
 		{
@@ -30,11 +35,27 @@ namespace Scripts
 		}
 		public override void Update()
 		{
-			//spriteSheetRenderer.FrameRange = CurrentAnimRange;
-
+			if (AnimationSpeed == 0) return;
+			timeOnCurrentFrame += Time.deltaTime * AnimationSpeed;
+			while (timeOnCurrentFrame > 1 / AnimationSpeed)
+			{
+				timeOnCurrentFrame -= 1 / AnimationSpeed;
+				if (spriteSheetRenderer.CurrentSpriteIndex + 1 >= CurrentAnimRange.Y)
+				{
+					spriteSheetRenderer.CurrentSpriteIndex = (int)CurrentAnimRange.X;
+				}
+				else
+				{
+					spriteSheetRenderer.CurrentSpriteIndex++;
+				}
+			}
 			base.Update();
 		}
-
+		public void ResetCurrentAnimation()
+		{
+			timeOnCurrentFrame = 0;
+			spriteSheetRenderer.CurrentSpriteIndex = (int)CurrentAnimRange.X;
+		}
 		public void Turn(Vector2 direction)
 		{
 			if (direction == Vector2.Right)
@@ -60,11 +81,10 @@ namespace Scripts
 				default:
 					break;
 			}
-			spriteSheetRenderer.FrameRange = CurrentAnimRange;
 
 			if (oldAnim != CurrentAnimRange)
 			{
-				spriteSheetRenderer.ResetCurrentAnimation();
+				ResetCurrentAnimation();
 			}
 		}
 

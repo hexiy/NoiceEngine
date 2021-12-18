@@ -47,7 +47,7 @@ namespace Scripts
 				origin: new Vector2(transform.anchor.X * texture.Width, transform.anchor.Y * texture.Height),
 				scale: transform.scale,
 				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
-				layerDepth: 0);
+				layerDepth: Layer);
 
 			base.Draw(batch);
 		}
