@@ -11,16 +11,18 @@ namespace Scripts
 	public class AnimationController : Component
 	{
 		private SpriteSheetRenderer spriteSheetRenderer;
-		public enum AnimState { Idle, Run };
+
 		[ShowInEditor] public Vector2 AnimRange_Idle { get; set; } = new Vector2(0, 0);
 		[ShowInEditor] public Vector2 AnimRange_Run { get; set; } = new Vector2(0, 0);
-
+		[ShowInEditor] public Vector2 AnimRange_Jump { get; set; } = new Vector2(0, 0);
+		private Action OnAnimationFinished = new Action(() => { });
 		[ShowInEditor] public Vector2 CurrentAnimRange { get; set; } = new Vector2(0, 0);
 		[ShowInEditor]
 		public float AnimationSpeed { get; set; } = 1;
 		private float timeOnCurrentFrame = 0;
 
 
+		public bool jumping = false;
 
 		public override void Awake()
 		{
@@ -29,7 +31,7 @@ namespace Scripts
 		}
 		public override void Start()
 		{
-			SetAnimRange(AnimState.Idle);
+			SetAnimation(AnimRange_Idle);
 
 			base.Start();
 		}
@@ -43,6 +45,7 @@ namespace Scripts
 				if (spriteSheetRenderer.CurrentSpriteIndex + 1 >= CurrentAnimRange.Y)
 				{
 					spriteSheetRenderer.CurrentSpriteIndex = (int)CurrentAnimRange.X;
+					OnAnimationFinished?.Invoke();
 				}
 				else
 				{
@@ -67,20 +70,27 @@ namespace Scripts
 				transform.rotation.Y = 180;
 			}
 		}
-		public void SetAnimRange(AnimState state)
+		public void Jump()
 		{
-			Vector2 oldAnim = CurrentAnimRange;
-			switch (state)
+			jumping = true;
+			SetAnimation(AnimRange_Jump);
+			AnimationSpeed = 4.5f;
+			OnAnimationFinished += () =>
 			{
-				case AnimState.Idle:
-					CurrentAnimRange = AnimRange_Idle;
-					break;
-				case AnimState.Run:
-					CurrentAnimRange = AnimRange_Run;
-					break;
-				default:
-					break;
-			}
+				SetAnimation(AnimRange_Run);
+				AnimationSpeed = 3;
+
+				jumping = false;
+				OnAnimationFinished = new Action(() => { });
+			};
+		}
+		public void SetAnimation(Vector2 animRange)
+		{
+			if (jumping && animRange != AnimRange_Jump) { return; }
+
+			Vector2 oldAnim = CurrentAnimRange;
+
+			CurrentAnimRange = animRange;
 
 			if (oldAnim != CurrentAnimRange)
 			{

@@ -31,12 +31,9 @@ namespace Scripts
 		public override void Draw(SpriteBatch batch)
 		{
 			if (GameObject == null || texture == null) { return; }
-			if (blendState != null)
-			{
-				batch.End();
-				Scene.I.SpriteBatch_Begin(blendState);
-			}
-			batch.Draw(texture: texture,
+			CheckForSpriteBatch();
+
+			SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(texture: texture,
 				destinationRectangleFloat: new RectangleFloat(transform.position.X - (transform.anchor.X * SpriteSize.X * transform.scale.Abs().X), transform.position.Y - (transform.anchor.Y * SpriteSize.Y * transform.scale.Abs().X), (SpriteSize.X * transform.scale.Abs().X), (SpriteSize.Y * transform.scale.Abs().Y)),
 				sourceRectangleFloat: new RectangleFloat(SpriteSize.X * (int)(CurrentSpriteIndex % SpritesCount.X), SpriteSize.Y * (int)(CurrentSpriteIndex / (SpritesCount.X)), SpriteSize.X, SpriteSize.Y),
 				color: Color,

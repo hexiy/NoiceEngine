@@ -17,10 +17,10 @@ namespace Scripts
 		[XmlIgnore]
 		[LinkableComponent]
 		public Shape shape;
-		[ShowInEditor] public bool UseGravity { get; set; } = true;
-		[ShowInEditor] public bool IsStatic { get; set; } = false;
-		[ShowInEditor] public bool IsTrigger { get; set; } = false;
-		[ShowInEditor] public bool IsButton { get; set; } = false;
+		[ShowInEditor] public bool useGravity = false;
+		[ShowInEditor] public bool isStatic = false;
+		[ShowInEditor] public bool isTrigger = false;
+		[ShowInEditor] public bool isButton = false;
 		[XmlIgnore] [ShowInEditor] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
 		[ShowInEditor] public float Mass { get; set; } = 1;
 
@@ -37,13 +37,13 @@ namespace Scripts
 		public override void Awake()
 		{
 			//gameObject.OnComponentAdded += CheckForColliderAdded;
-			if (IsButton) { return; }
+			if (isButton) { return; }
 
 			Physics.CreateBody(this);
 		}
 		public override void FixedUpdate()
 		{
-			if (Scene.I?.GraphicsDevice == null || IsStatic || IsButton)
+			if (Scene.I?.GraphicsDevice == null || isStatic || isButton)
 			{
 				return;
 			}
@@ -64,8 +64,11 @@ namespace Scripts
 		{
 			if (body != null)
 			{
-				body.Enabled = false;
-				Physics.World.Remove(body);
+				lock (Physics.World)
+				{
+					body.Enabled = false;
+					Physics.World.Remove(body);
+				}
 			}
 			for (int i = 0; i < touchingRigidbodies.Count; i++)
 			{

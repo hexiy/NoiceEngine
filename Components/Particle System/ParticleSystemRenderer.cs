@@ -17,7 +17,7 @@ namespace Scripts
 		[XmlIgnore] public SpriteBatch spriteBatch;
 
 		[XmlIgnore] [ShowInEditor] public Texture2D texture { get; set; }
-		public string texturePath { get; set; } = @"2D\particle.png";
+		public string texturePath { get; set; } = @"2D\rect.png";
 
 		CircleF circle = new CircleF(new Vector2(0, 0), 10);
 		public ParticleSystem particleSystem;
@@ -37,16 +37,14 @@ namespace Scripts
 		{
 			if (File.Exists(_texturePath) == false) { return; }
 			texturePath = _texturePath;
-			Stream stream = TitleContainer.OpenStream(_texturePath);
-			texture = Texture2D.FromStream(Scene.I.GraphicsDevice, stream);
-			stream.Close();
+			texture = TextureCache.LoadTexture(_texturePath);
 		}
 		public override void Draw(SpriteBatch batch)
 		{
 			if (texture == null) { return; }
 			if (particleSystem == null) { return; }
 
-			spriteBatch.Begin(blendState: BlendState.NonPremultiplied, sortMode: SpriteSortMode.Texture);
+			spriteBatch.Begin(transformMatrix: Camera.I.TransformMatrix, blendState: BlendState.NonPremultiplied, sortMode: SpriteSortMode.Texture);
 			//Parallel.For(0, particleSystem.particles.Count, (i) =>
 			//{
 			for (int i = 0; i < particleSystem.particles.Count; i++)
@@ -58,7 +56,8 @@ namespace Scripts
 
 					circle.Radius = particleSystem.particles[i].radius * transform.scale.X;
 
-					spriteBatch.Draw(texture, destinationRectangleFloat: new RectangleFloat((int)circle.Center.X - (int)circle.Radius / 2, (int)circle.Center.Y - (int)circle.Radius / 2, (int)circle.Radius, (int)circle.Radius),
+					Vector2 pos = new Vector2(circle.Center.X - circle.Radius / 2, circle.Center.Y - circle.Radius / 2).TranslateToGrid(0.5f);
+					spriteBatch.Draw(texture, destinationRectangleFloat: new RectangleFloat(pos.X, pos.Y, circle.Radius, circle.Radius),
 							color: particleSystem.particles[i].color);
 				}
 			}

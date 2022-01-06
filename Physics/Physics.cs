@@ -48,7 +48,7 @@ namespace Engine
 		{
 			lock (World)
 			{
-				Body body = World.CreateBody(rb.transform.position, 0, rb.IsStatic ? BodyType.Static : BodyType.Dynamic);
+				Body body = World.CreateBody(rb.transform.position, 0, rb.isStatic ? BodyType.Static : BodyType.Dynamic);
 				body.SleepingAllowed = false;
 
 				if (rb.GetComponent<BoxShape>() != null)

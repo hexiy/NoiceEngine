@@ -82,6 +82,7 @@ namespace Engine
 		{
 			GameObject transformHandleGameObject = GameObject.Create(_silent: true);
 			transformHandle = transformHandleGameObject.AddComponent<TransformHandle>();
+			transformHandleGameObject.dynamicallyCreated = true;
 			transformHandleGameObject.Name = "Transform Handle";
 			transformHandleGameObject.Active = false;
 			transformHandleGameObject.Awake();
@@ -183,7 +184,8 @@ namespace Engine
 			sf.GameObjects = new List<GameObject>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				if (gameObjects[i] == transformHandle.GameObject) continue;
+				if (gameObjects[i].dynamicallyCreated) continue;
+
 				sf.Components.AddRange(gameObjects[i].Components);
 				sf.GameObjects.Add(gameObjects[i]);
 			}
@@ -212,6 +214,29 @@ namespace Engine
 				}
 			}
 			return -1;
+		}
+		public GameObject GetGameObject(int ID)
+		{
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				if (gameObjects[i].ID == ID)
+				{
+					return gameObjects[i];
+				}
+			}
+			return null;
+		}
+		public List<GameObject> GetChildrenOfGameObject(GameObject go)
+		{
+			List<GameObject> children = new List<GameObject>();
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				if (gameObjects[i].parentID == go.ID)
+				{
+					children.Add(gameObjects[i]);
+				}
+			}
+			return children;
 		}
 		public void OnGameObjectCreated(GameObject gameObject)
 		{
@@ -251,6 +276,7 @@ namespace Engine
 
 			return true;
 		}
+
 		public void SaveScene(string path = null)
 		{
 			path = path ?? Serializer.lastScene;
@@ -349,6 +375,7 @@ namespace Engine
 			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
 			{
 				SaveScene();
+
 			}
 			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
 			{
@@ -408,6 +435,8 @@ namespace Engine
 
 			GraphicsDevice.Clear(camera.color);
 
+			SpriteBatchCache.UpdateAllTransformMatrices();
+			SpriteBatchCache.BeginAll();
 			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
@@ -417,6 +446,7 @@ namespace Engine
 			{
 				transformHandle.GameObject.Draw(spriteBatch);
 			}
+			SpriteBatchCache.EndAll();
 			spriteBatch.End();
 
 			GraphicsDevice.SetRenderTarget(null);

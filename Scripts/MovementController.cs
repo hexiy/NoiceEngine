@@ -13,10 +13,13 @@ namespace Scripts
 	public class MovementController : Component
 	{
 		[ShowInEditor] public float MoveSpeed { get; set; } = 10;
-		[ShowInEditor] public float JumpForce { get; set; } = 10000;
+		[ShowInEditor] public float jumpForce = 10000;
 		[LinkableComponent]
 		private Rigidbody rb;
 		bool jumpKeyDown = false;
+		float targetSpeedX = 0;
+
+		[ShowInEditor] public float CameraOffsetY = 10;
 
 		[LinkableComponent] private AnimationController animationController;
 		public override void Awake()
@@ -26,7 +29,7 @@ namespace Scripts
 
 			base.Awake();
 		}
-
+		float jumpXSpeedMultiplier = 1;
 		public override void FixedUpdate()
 		{
 			if (rb == null) return;
@@ -36,33 +39,53 @@ namespace Scripts
 
 			if (pressedLeft || pressedRight)
 			{
-				animationController.SetAnimRange(AnimationController.AnimState.Run);
+				animationController.SetAnimation(animationController.AnimRange_Run);
 			}
 			else
 			{
-				animationController.SetAnimRange(AnimationController.AnimState.Idle);
+				animationController.SetAnimation(animationController.AnimRange_Idle);
 			}
 
 			Vector2 input = Vector2.Zero;
 			if (pressedLeft)
 			{
-				input.X = -MoveSpeed;
+				input.X = -1;
 				animationController.Turn(Vector2.Left);
 			}
 			else if (pressedRight)
 			{
-				input.X = MoveSpeed;
+				input.X = 1;
 				animationController.Turn(Vector2.Right);
 			}
 
 			if (jumpKeyDown == false && KeyboardInput.state.IsKeyDown(Keys.W))
 			{
-				rb.body.ApplyForce(new Vector2(0, -JumpForce));
+				jumpXSpeedMultiplier = 5f;
+				rb.body.ApplyForce(new Vector2(0, -jumpForce));
+				animationController.Jump();
+			}
+			if (animationController.jumping)
+			{
+				jumpXSpeedMultiplier = MathHelper.Lerp(jumpXSpeedMultiplier, 1.8f, Time.deltaTime * 10);
+			}
+			else
+			{
+				jumpXSpeedMultiplier = 1;
 			}
 			jumpKeyDown = KeyboardInput.state.IsKeyDown(Keys.W);
-			rb.body.ApplyForce(new Vector2(input.X, 0));
+
+			if (pressedLeft || pressedRight)
+			{
+				targetSpeedX = MathHelper.Lerp(targetSpeedX, input.X * MoveSpeed * jumpXSpeedMultiplier, Time.deltaTime * 6);
+			}
+			else
+			{
+				targetSpeedX = MathHelper.Lerp(targetSpeedX, input.X * MoveSpeed, Time.deltaTime * 15);
+			}
+			rb.body.ApplyForce(new Vector2(targetSpeedX, 0));
 
 			Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize), Camera.I.transform.position.Y);
+			//Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize), (Player.I.transform.position.Y + CameraOffsetY)*3f);
 			Camera.I.transform.position = Vector2.Lerp(Camera.I.transform.position, targetPos, Time.deltaTime * 9);
 			base.Update();
 		}

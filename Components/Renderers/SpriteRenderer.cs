@@ -27,17 +27,13 @@ namespace Scripts
 		{
 			if (File.Exists(_texturePath) == false) { return; }
 			texturePath = _texturePath;
-			Stream stream = TitleContainer.OpenStream(_texturePath);
-			texture = Texture2D.FromStream(Scene.I.GraphicsDevice, stream);
-			stream.Close();
-
+			texture = TextureCache.LoadTexture(_texturePath);
 			OnTextureLoaded(texture, _texturePath);
 		}
 
 		public override void Draw(SpriteBatch batch)
 		{
 			if (GameObject == null || texture == null) { return; }
-
 			batch.Draw(
 				texture: texture,
 				position: transform.position,
@@ -54,5 +50,20 @@ namespace Scripts
 		public virtual void OnTextureLoaded(Texture2D _texture, string _path)
 		{
 		}
+		public void CheckForSpriteBatch()
+		{
+			if (SpriteBatchCache.HasSpriteBatchForTexture(texture.Name) == false)
+			{
+				SpriteBatchCache.CreateBatchForTexture(texture, new DrawParameters()
+				{
+					transformMatrix = Camera.I.TransformMatrix,
+					blendState = BlendState.AlphaBlend,
+					samplerState = SamplerState.PointClamp,
+					depthStencilState = DepthStencilState.Default
+				});
+				SpriteBatchCache.BeginOne(texture.Name);
+			}
+		}
+
 	}
 }

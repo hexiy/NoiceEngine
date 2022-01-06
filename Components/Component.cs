@@ -18,7 +18,7 @@ namespace Scripts
 				gameObjectID = value.ID;
 			}
 		}
-		public int gameObjectID { get; set; }
+		public int gameObjectID;
 
 		[System.Xml.Serialization.XmlIgnore]
 		[System.ComponentModel.DefaultValue(false)]
@@ -90,6 +90,9 @@ namespace Scripts
 		{
 		}
 		public virtual void OnDestroyed()
+		{
+		}
+		public virtual void PreSceneSave()
 		{
 		}
 

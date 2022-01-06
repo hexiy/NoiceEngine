@@ -11,7 +11,7 @@ namespace Scripts
 		{
 			boxRenderer = GetComponent<BoxRenderer> ();
 			text = GetComponent<Text> ();
-			hue = Rendom.Next (0, 360);
+			hue = Rendom.Range (0, 360);
 			
 			base.Awake ();
 		}

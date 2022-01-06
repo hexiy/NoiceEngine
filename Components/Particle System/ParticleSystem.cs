@@ -30,13 +30,14 @@ namespace Scripts
 		[ShowInEditor] public float MaxLifetime { get; set; } = 1;
 		[ShowInEditor] public float StartVelocityVariation { get; set; } = 70;
 		[ShowInEditor] public float SpawnRate { get; set; } = 0.5f; // spawn every half second
+		[ShowInEditor] public Vector2 SpawnBoundsSize { get; set; } = new Vector2(5,5); // spawn every half second
 
 		private Random rnd = new Random();
 		float time = 0;
 		public Particle latestParticle;
 		public override void Awake()
 		{
-			renderer = GameObject.AddComponent<ParticleSystemRenderer>();
+			renderer = GameObject.GetComponent<ParticleSystemRenderer>();
 			if (renderer == null)
 			{
 				renderer = GameObject.AddComponent<ParticleSystemRenderer>();
@@ -71,19 +72,19 @@ namespace Scripts
 						/*particles[i].color = new Color((int)((0.1f / particles[i].lifetime) * 255),
 							20, 20, (int)((0.1f / particles[i].lifetime) * 255));*/
 
-						if (particles[i].lifetime < 0.2f)
-						{
-							particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
-								((int)(particles[i].lifetime / 0.2f * 255)));
-						}
-						else
-						{
-							particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
-									((int)((1 - (particles[i].lifetime / MaxLifetime)) * 255)));
-						}
+						//if (particles[i].lifetime < 0.2f)
+						//{
+						//	particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
+						//		((int)(particles[i].lifetime / 0.2f * 255)));
+						//}
+						//else
+						//{
+						//	particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
+						//			((int)((1 - (particles[i].lifetime / MaxLifetime)) * 255)));
+						//}
 
 
-						particles[i].radius = MathHelper.Lerp(StartSize, 0, particles[i].lifetime / MaxLifetime);
+						particles[i].radius = MathHelper.Lerp(StartSize, EndSize, particles[i].lifetime / MaxLifetime);
 
 						if (particles[i].lifetime > MaxLifetime)
 						{
@@ -104,12 +105,12 @@ namespace Scripts
 			p.visible = true;
 			p.lifetime = 0;
 			p.radius = StartSize;
-
 			p.worldPosition = transform.position;
+			p.worldPosition += new Vector2(Rendom.Range(-SpawnBoundsSize.X, SpawnBoundsSize.X), Rendom.Range(-SpawnBoundsSize.Y, SpawnBoundsSize.Y));
 
 			p.velocity = StartVelocity + new Vector2(rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation), rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation));
 
-			p.color = Extensions.ColorFromHSVToXna(Time.elapsedTime * 50, 1, 1);
+			p.color = StartColor;
 			lock (listLock)
 			{
 				particles.Add(p);

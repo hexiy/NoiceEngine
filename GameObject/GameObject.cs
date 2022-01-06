@@ -55,7 +55,7 @@ namespace Engine
 		[ShowInEditor] public string Name { get; set; } = "";
 		public bool selected = false;
 		public bool silent = false;
-
+		public bool dynamicallyCreated = false;
 		public bool Active { get; set; } = true;
 
 		//[System.Xml.Serialization.XmlArrayItem(type: typeof(Component))]
@@ -242,6 +242,13 @@ namespace Engine
 
 			Awoken = true;
 			Start();
+		}
+		public virtual void PreSceneSave()
+		{
+			for (int i = 0; i < Components.Count; i++)
+			{
+				Components[i].PreSceneSave();
+			}
 		}
 		public virtual void Start()
 		{

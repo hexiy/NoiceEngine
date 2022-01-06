@@ -5,7 +5,7 @@
     <PublishReadyToRun>false</PublishReadyToRun>
     <InvariantGlobalization>true</InvariantGlobalization>
     <TieredCompilation>false</TieredCompilation>
-    <LangVersion>9</LangVersion>
+    <LangVersion>10</LangVersion>
     <AssemblyName>NoiceEngine</AssemblyName>
     <RootNamespace>Engine</RootNamespace>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
@@ -20,6 +20,11 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Scripting\**" />
+    <EmbeddedResource Remove="Scripting\**" />
+    <None Remove="Scripting\**" />
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
@@ -59,8 +64,5 @@
     <Content Include="cimgui.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripting\" />
   </ItemGroup>
 </Project>

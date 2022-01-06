@@ -36,8 +36,9 @@ namespace Engine
 			objectSelected = false;
 			GameObject.updateWhenDisabled = true;
 
-			GameObject.AddComponent<Rigidbody>().IsStatic = true;
-			GetComponent<Rigidbody>().IsButton = true;
+			GameObject.AddComponent<Rigidbody>().useGravity = true;
+			GetComponent<Rigidbody>().isStatic = false;
+			GetComponent<Rigidbody>().isButton = true;
 
 			if (GetComponents<BoxRenderer>().Count > 2)
 			{
@@ -110,7 +111,7 @@ namespace Engine
 			transform.position = selectedTransform.position;
 			if (KeyboardInput.IsKeyDown(Keys.Space))
 			{
-				
+
 				var a = 1212;
 			}
 			if (MouseInput.Position.In(boxColliderX))
@@ -166,7 +167,7 @@ namespace Engine
 				}
 			}
 
-			if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().IsButton == false)
+			if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().isButton == false)
 			{
 				lock (Physics.World)
 				{
