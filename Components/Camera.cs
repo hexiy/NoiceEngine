@@ -50,7 +50,7 @@ namespace Engine
 				Matrix.CreateRotationY(transform.rotation.Y) *
 				Matrix.CreateRotationZ(transform.rotation.Z) *
 				Matrix.CreateTranslation(-transform.position.X / CameraSize,
-				   -transform.position.Y, 0);
+				   -transform.position.Y / CameraSize, 0);
 				//Matrix.CreateRotationZ(Rotation);
 			}
 		}
