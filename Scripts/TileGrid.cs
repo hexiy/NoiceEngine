@@ -34,6 +34,7 @@ namespace Scripts
 						SpriteSheetRenderer spriteSheetRenderer = tile.GetComponent<SpriteSheetRenderer>();
 						tile.Awake();
 						spriteSheetRenderer.blendState = BlendState.Opaque;
+						spriteSheetRenderer.Layer = 5;
 						tile.SetParent(GameObject);
 						tile.transform.localPosition = new Vector3(x * 3.2f, y * 3.2f, 0);
 						tile.transform.scale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -98,11 +99,19 @@ namespace Scripts
 			if (Player.I == null) return;
 
 			playerSmoothPosition = Vector2.Lerp(playerSmoothPosition, Player.I.transform.position, Time.deltaTime * 7);
+			List<LightSource> lights = Scene.I.FindComponentsInScene<LightSource>();
 			for (int i = 0; i < tiles.Count; i++)
 			{
-				float distanceFromPlayer = Vector2.Distance(playerSmoothPosition.TranslateToGrid(2.4f), tiles[i].transform.position) + MathF.Sin(Time.elapsedTime * 1f) * 1;
+				//float distanceFromPlayer = Vector2.Distance(playerSmoothPosition.TranslateToGrid(2.4f), tiles[i].transform.position) + MathF.Sin(Time.elapsedTime * 1f) * 1;
+				float intensity = 0;
 
-				tiles[i].GetComponent<Renderer>().Color = new Color(Color.White * MathHelper.Clamp((1 / (distanceFromPlayer * 0.12f)), 0, 0.9f), 255);
+				for (int j = 0; j < lights.Count; j++)
+				{
+					float distance = Vector2.Distance(lights[j].transform.position.TranslateToGrid(2.4f), tiles[i].transform.position) + MathF.Sin(Time.elapsedTime * 1f) * (1 / lights[j].flickerStrength) * 0.12f;
+					distance = (float)Math.Pow(distance, lights[j].falloff);
+					intensity += lights[j].parameteridk / (distance * lights[j].intensity);
+				}
+				tiles[i].GetComponent<Renderer>().Color = new Color(Color.White * MathHelper.Clamp(intensity, 0, 0.9f), 255);
 
 			}
 		}

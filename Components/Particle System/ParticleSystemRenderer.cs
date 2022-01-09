@@ -43,10 +43,8 @@ namespace Scripts
 		{
 			if (texture == null) { return; }
 			if (particleSystem == null) { return; }
+			CheckForSpriteBatch();
 
-			spriteBatch.Begin(transformMatrix: Camera.I.TransformMatrix, blendState: BlendState.NonPremultiplied, sortMode: SpriteSortMode.Texture);
-			//Parallel.For(0, particleSystem.particles.Count, (i) =>
-			//{
 			for (int i = 0; i < particleSystem.particles.Count; i++)
 			{
 
@@ -57,12 +55,25 @@ namespace Scripts
 					circle.Radius = particleSystem.particles[i].radius * transform.scale.X;
 
 					Vector2 pos = new Vector2(circle.Center.X - circle.Radius / 2, circle.Center.Y - circle.Radius / 2).TranslateToGrid(0.5f);
-					spriteBatch.Draw(texture, destinationRectangleFloat: new RectangleFloat(pos.X, pos.Y, circle.Radius, circle.Radius),
-							color: particleSystem.particles[i].color);
+					SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(texture, destinationRectangleFloat: new RectangleFloat(pos.X, pos.Y, circle.Radius, circle.Radius),
+						sourceRectangleFloat: null,
+							color: particleSystem.particles[i].color, rotation: 0, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 1/(Layer+1));
 				}
 			}
-			spriteBatch.End();
-			//});
+		}
+		public void CheckForSpriteBatch()
+		{
+			if (SpriteBatchCache.HasSpriteBatchForTexture(texture.Name) == false)
+			{
+				SpriteBatchCache.CreateBatchForTexture(texture, new DrawParameters()
+				{
+					transformMatrix = Camera.I.TransformMatrix,
+					blendState = BlendState.NonPremultiplied,
+					samplerState = SamplerState.PointClamp,
+					depthStencilState = DepthStencilState.Default
+				});
+				SpriteBatchCache.BeginOne(texture.Name);
+			}
 		}
 	}
 }

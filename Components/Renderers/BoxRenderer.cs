@@ -40,11 +40,11 @@ namespace Scripts
 
 			if (Fill)
 			{
-				batch.FillRectangle(drawRect, Color);
+				batch.FillRectangle(drawRect, Color, layerDepth: (int)(1 / (Layer + 1)));
 			}
 			else
 			{
-				batch.DrawRectangle(drawRect, Color, StrokeSize);
+				batch.DrawRectangle(drawRect, Color, StrokeSize, layerDepth: (int)(1 / (Layer + 1)));
 			}
 			//batch.End ();
 			//batch.Begin (SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.Instance.effect);

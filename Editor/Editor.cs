@@ -140,7 +140,7 @@ namespace Engine
 			{
 				new EditorWindow_Hierarchy (),
 				new EditorWindow_Inspector (),
-				new EditorWindow_Physics (),
+				new EditorWindow_Controls (),
 			};
 			for (int i = 0; i < editorWindows.Length; i++)
 			{

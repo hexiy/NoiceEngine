@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
@@ -13,6 +13,7 @@ namespace Engine
 		private bool[] opened;
 		public Action<int> GameObjectSelected;
 		bool canDelete = true;
+
 		public void Init()
 		{
 			I = this;
@@ -48,6 +49,30 @@ namespace Engine
 		{
 			ImGui.PushID(currentID++);
 		}
+		enum MoveDirection { up, down };
+		private void MoveSelectedGameObject(int addToIndex = 1)
+		{
+			int direction = addToIndex;
+			if (Scene.I.GetSelectedGameObjects().Count == 0) { return; }
+
+			GameObject go = Scene.I.GetSelectedGameObjects()[0];
+			int oldIndex = Scene.I.GetGameObjectIndex(go.ID);
+
+			if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0)
+			{
+				return;
+			}
+			while (Scene.I.gameObjects[oldIndex + direction].Parent != null)
+			{
+				direction += addToIndex;
+			}
+
+			Scene.I.gameObjects.RemoveAt(oldIndex);
+			Scene.I.gameObjects.Insert(oldIndex + direction, go);
+
+			selectedGameObjectIndex = oldIndex + direction;
+			GameObjectSelected.Invoke(oldIndex + direction);
+		}
 		private List<GameObject> gameObjectsChildrened = new List<GameObject>();
 		public void Draw()
 		{
@@ -69,6 +94,18 @@ namespace Engine
 			if (ImGui.Button("-"))
 			{
 				DestroySelectedGameObjects();
+			}
+
+			ImGui.SameLine();
+			if (ImGui.Button("^"))
+			{
+				MoveSelectedGameObject(-1);
+			}
+
+			ImGui.SameLine();
+			if (ImGui.Button("V"))
+			{
+				MoveSelectedGameObject(1);
 			}
 
 			for (int goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)

@@ -166,9 +166,9 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								Vector3 fieldValue = ((Color)infos[infoIndex].GetValue(selectedGameObject.Components[i])).ToVector3();
+								Vector4 fieldValue = ((Color)infos[infoIndex].GetValue(selectedGameObject.Components[i])).ToVector4();
 
-								if (ImGui.ColorEdit3("", ref fieldValue))
+								if (ImGui.ColorEdit4("", ref fieldValue))
 								{
 									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue.ToColor());
 								}

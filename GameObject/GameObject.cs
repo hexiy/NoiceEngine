@@ -38,6 +38,7 @@ namespace Engine
 		public int parentID { get; set; } = -1;
 
 		public bool updateWhenDisabled = false;
+		public bool alwaysUpdate = false;
 		private object ComponentsLock = new object();
 		public delegate void ComponentAdded(GameObject gameObject, Component component);
 		public event ComponentAdded OnComponentAdded;
@@ -529,5 +530,6 @@ namespace Engine
 		{
 			return worldPoint - transform.position;
 		}
+
 	}
 }

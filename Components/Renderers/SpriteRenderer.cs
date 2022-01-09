@@ -34,7 +34,9 @@ namespace Scripts
 		public override void Draw(SpriteBatch batch)
 		{
 			if (GameObject == null || texture == null) { return; }
-			batch.Draw(
+			CheckForSpriteBatch();
+
+			SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(
 				texture: texture,
 				position: transform.position,
 				sourceRectangle: null,
@@ -43,9 +45,8 @@ namespace Scripts
 				origin: new Vector2(transform.anchor.X * texture.Width, transform.anchor.Y * texture.Height),
 				scale: transform.scale,
 				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
-				layerDepth: Layer);
+				layerDepth: 1 / (Layer + 1));
 
-			base.Draw(batch);
 		}
 		public virtual void OnTextureLoaded(Texture2D _texture, string _path)
 		{
@@ -56,10 +57,11 @@ namespace Scripts
 			{
 				SpriteBatchCache.CreateBatchForTexture(texture, new DrawParameters()
 				{
+					sortMode = SpriteSortMode.Deferred,
 					transformMatrix = Camera.I.TransformMatrix,
 					blendState = BlendState.AlphaBlend,
 					samplerState = SamplerState.PointClamp,
-					depthStencilState = DepthStencilState.Default
+					depthStencilState = DepthStencilState.DepthRead
 				});
 				SpriteBatchCache.BeginOne(texture.Name);
 			}

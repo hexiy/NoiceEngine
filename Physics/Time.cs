@@ -13,8 +13,12 @@ namespace Engine
 		public static void Update(GameTime gameTime)
 		{
 			deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-			elapsedTime += deltaTime;
-			elapsedTicks++;
+
+			if (Global.GameRunning)
+			{
+				elapsedTime += deltaTime;
+				elapsedTicks++;
+			}
 
 		}
 	}

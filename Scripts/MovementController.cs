@@ -84,7 +84,7 @@ namespace Scripts
 			}
 			rb.body.ApplyForce(new Vector2(targetSpeedX, 0));
 
-			Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize), (Player.I.transform.position.Y + CameraOffsetY)*0.4f);
+			Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize)+35, (Player.I.transform.position.Y + CameraOffsetY)*0.4f);
 			Camera.I.transform.position = Vector2.Lerp(Camera.I.transform.position, targetPos, Time.deltaTime * 9);
 			base.Update();
 		}

@@ -13,9 +13,9 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace Engine
 {
-	public class EditorWindow_Physics : IEditorWindow
+	public class EditorWindow_Controls : IEditorWindow
 	{
-		public static EditorWindow_Physics I { get; private set; }
+		public static EditorWindow_Controls I { get; private set; }
 		public void Init()
 		{
 			I = this;
@@ -42,6 +42,11 @@ namespace Engine
 				{
 					Physics.StopPhysics();
 				}
+			}
+			bool playButtonClicked = ImGui.Button(Global.GameRunning ? "playing" : "stopped");
+			if (playButtonClicked)
+			{
+				Global.GameRunning = !Global.GameRunning;
 			}
 
 			ImGui.End();

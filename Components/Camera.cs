@@ -45,7 +45,7 @@ namespace Engine
 			get
 			{
 				return
-				Matrix.CreateScale(Vector3.One / CameraSize) *
+				Matrix.CreateScale(new Vector3(1 / CameraSize, 1 / CameraSize, 0.001f)) *
 				Matrix.CreateRotationX(transform.rotation.X) *
 				Matrix.CreateRotationY(transform.rotation.Y) *
 				Matrix.CreateRotationZ(transform.rotation.Z) *

@@ -40,7 +40,7 @@ namespace Scripts
 				rotation: 0,
 				origin: Vector2.Zero,
 				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
-				layerDepth: Layer);
+				layerDepth: 1 / (Layer + 1));
 		}
 		public override void OnTextureLoaded(Texture2D _texture, string _path)
 		{

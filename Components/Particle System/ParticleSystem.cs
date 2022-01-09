@@ -25,12 +25,13 @@ namespace Scripts
 		[ShowInEditor] public float speed { get; set; } = 2;
 		[ShowInEditor] public float StartSize { get; set; } = 20;
 		[ShowInEditor] public float EndSize { get; set; } = 0;
-		[ShowInEditor] public Color StartColor { get; set; } = Color.Green;
+		[ShowInEditor] public Color StartColor1 { get; set; } = Color.White;
+		[ShowInEditor] public Color StartColor2 { get; set; } = Color.Gray;
 		[ShowInEditor] public int MaxParticles { get; set; } = 3000;
 		[ShowInEditor] public float MaxLifetime { get; set; } = 1;
 		[ShowInEditor] public float StartVelocityVariation { get; set; } = 70;
 		[ShowInEditor] public float SpawnRate { get; set; } = 0.5f; // spawn every half second
-		[ShowInEditor] public Vector2 SpawnBoundsSize { get; set; } = new Vector2(5,5); // spawn every half second
+		[ShowInEditor] public Vector2 SpawnBoundsSize { get; set; } = new Vector2(5, 5); // spawn every half second
 
 		private Random rnd = new Random();
 		float time = 0;
@@ -110,7 +111,7 @@ namespace Scripts
 
 			p.velocity = StartVelocity + new Vector2(rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation), rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation));
 
-			p.color = StartColor;
+			p.color = Rendom.ColorRange(StartColor1, StartColor2);
 			lock (listLock)
 			{
 				particles.Add(p);

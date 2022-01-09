@@ -83,6 +83,7 @@ namespace Engine
 			GameObject transformHandleGameObject = GameObject.Create(_silent: true);
 			transformHandle = transformHandleGameObject.AddComponent<TransformHandle>();
 			transformHandleGameObject.dynamicallyCreated = true;
+			transformHandleGameObject.alwaysUpdate = true;
 			transformHandleGameObject.Name = "Transform Handle";
 			transformHandleGameObject.Active = false;
 			transformHandleGameObject.Awake();
@@ -203,6 +204,19 @@ namespace Engine
 				}
 			}
 			return null;
+		}
+		public List<T> FindComponentsInScene<T>() where T : Component
+		{
+			List<T> components = new List<T>();
+			foreach (var gameObject in gameObjects)
+			{
+				T bl = gameObject.GetComponent<T>();
+				if (bl != null)
+				{
+					components.Add(bl);
+				}
+			}
+			return components;
 		}
 		public int GetGameObjectIndex(int ID)
 		{
@@ -363,10 +377,6 @@ namespace Engine
 		{
 			//updateStopwatch.Start ();
 
-			if (Global.GameRunning == false)
-			{
-				return;
-			}
 			Time.Update(gameTime);
 			//Physics.Step();
 
@@ -375,18 +385,19 @@ namespace Engine
 			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
 			{
 				SaveScene();
-
 			}
 			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
 			{
 				LoadScene(Serializer.lastScene);
 			}
 
-
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Update();
-				gameObjects[i].FixedUpdate();
+				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
+				{
+					gameObjects[i].Update();
+					gameObjects[i].FixedUpdate();
+				}
 			}
 
 			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
@@ -428,6 +439,7 @@ namespace Engine
 			renderTime = renderStopwatch.ElapsedMilliseconds;
 			renderStopwatch.Reset();
 		}
+		List<Renderer> sortedRenderers = new List<Renderer>();
 		void DrawSceneToTarget()
 		{
 			GraphicsDevice.SetRenderTarget(camera.renderTarget);
@@ -438,16 +450,28 @@ namespace Engine
 			SpriteBatchCache.UpdateAllTransformMatrices();
 			SpriteBatchCache.BeginAll();
 			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
+
+			sortedRenderers.Clear();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Draw(spriteBatch);
+				if (gameObjects[i].GetComponent<Renderer>())
+				{
+					sortedRenderers.AddRange(gameObjects[i].GetComponents<Renderer>());
+				}
+				//gameObjects[i].Draw(spriteBatch);
+			}
+			sortedRenderers.Sort();
+
+			for (int i = 0; i < sortedRenderers.Count; i++)
+			{
+				sortedRenderers[i].Draw(spriteBatch);
 			}
 			if (transformHandle.GameObject != null)
 			{
 				transformHandle.GameObject.Draw(spriteBatch);
 			}
-			SpriteBatchCache.EndAll();
 			spriteBatch.End();
+			SpriteBatchCache.EndAll();
 
 			GraphicsDevice.SetRenderTarget(null);
 		}

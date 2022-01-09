@@ -29,12 +29,12 @@ namespace Engine
 		{
 			while (true)
 			{
-				while (Running)
+				while (Running && Global.GameRunning)
 				{
 					Step();
 					Wait(Time.fixedDeltaTime);
 				}
-				Wait(300); // wait if physics is disabled
+				Wait(30); // wait if physics is disabled
 			}
 		}
 		public static void Step()

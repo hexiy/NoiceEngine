@@ -93,6 +93,10 @@ public static class Extensions
 	{
 		return new Microsoft.Xna.Framework.Color(vector.X, vector.Y, vector.Z);
 	}
+	public static Microsoft.Xna.Framework.Color ToColor(this Vector4 vector)
+	{
+		return new Microsoft.Xna.Framework.Color(vector.X, vector.Y, vector.Z, vector.W);
+	}
 	public static List<MemberInfo> GetPropertiesOrFields(this Type t, BindingFlags bf = BindingFlags.Public | BindingFlags.Instance) =>
 		t.GetMembers(bf).Where(mi => mi.MemberType == MemberTypes.Field || mi.MemberType == MemberTypes.Property).ToList();
 

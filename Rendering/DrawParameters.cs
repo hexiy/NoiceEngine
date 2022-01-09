@@ -12,7 +12,7 @@ public class DrawParameters
 	public SpriteSortMode sortMode = SpriteSortMode.Deferred;
 	public BlendState blendState = null;
 	public SamplerState samplerState = null;
-	public DepthStencilState depthStencilState = null;
+	public DepthStencilState depthStencilState=null;
 	public RasterizerState rasterizerState = null;
 	public Effect effect = null;
 	public Matrix? transformMatrix = null;
