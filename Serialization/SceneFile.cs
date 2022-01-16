@@ -10,7 +10,7 @@ namespace Engine
         public List<Scripts.Component> Components;
 		public int gameObjectNextID;
 
-		public SceneFile CreateForOneGameObject(GameObject go)
+		public static SceneFile CreateForOneGameObject(GameObject go)
         {
             return new SceneFile() { GameObjects = new List<GameObject>() { go }, Components = go.Components };
         }

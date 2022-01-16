@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 public class DrawParameters
 {
-	public SpriteSortMode sortMode = SpriteSortMode.Deferred;
+	public SpriteSortMode sortMode = SpriteSortMode.FrontToBack;
 	public BlendState blendState = null;
 	public SamplerState samplerState = null;
-	public DepthStencilState depthStencilState=null;
+	public DepthStencilState depthStencilState=DepthStencilState.None;
 	public RasterizerState rasterizerState = null;
 	public Effect effect = null;
 	public Matrix? transformMatrix = null;

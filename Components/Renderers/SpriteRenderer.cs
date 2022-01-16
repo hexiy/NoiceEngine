@@ -45,7 +45,7 @@ namespace Scripts
 				origin: new Vector2(transform.anchor.X * texture.Width, transform.anchor.Y * texture.Height),
 				scale: transform.scale,
 				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
-				layerDepth: 1 / (Layer + 1));
+				layerDepth: Layer);
 
 		}
 		public virtual void OnTextureLoaded(Texture2D _texture, string _path)

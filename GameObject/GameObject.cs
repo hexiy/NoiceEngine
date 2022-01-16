@@ -69,7 +69,7 @@ namespace Engine
 
 		//private List<Component> ComponentsWaitingToBePaired = new List<Component>();
 
-		void Setup(bool linkComponents = true)
+		public void Setup()
 		{
 			if (ID == -1)
 			{
@@ -87,7 +87,7 @@ namespace Engine
 
 			go.Name = name;
 			go.silent = _silent;
-			go.Setup(linkComponents);
+			go.Setup();
 			if (position != null)
 			{
 				go.transform.position = position.Value;

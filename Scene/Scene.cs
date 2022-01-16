@@ -113,6 +113,14 @@ namespace Engine
 			}
 			return selectedGameObjects;
 		}
+		public GameObject GetSelectedGameObject()
+		{
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				if (gameObjects[i].selected) return gameObjects[i];
+			}
+			return null;
+		}
 		public void SelectGameObject(int gameObjectIndex)
 		{
 			if (gameObjectIndex == -1)
@@ -270,9 +278,9 @@ namespace Engine
 			//Physics.rigidbodies.Clear();
 
 			gameObjects = new List<GameObject>();
-			SceneFile sceneFile = Serializer.GetInstance().LoadGameObjects(path);
+			SceneFile sceneFile = Serializer.I.LoadGameObjects(path);
 
-			Serializer.GetInstance().ConnectGameObjectsWithComponents(sceneFile);
+			Serializer.I.ConnectGameObjectsWithComponents(sceneFile);
 			IDsManager.gameObjectNextID = sceneFile.gameObjectNextID;
 
 			for (int i = 0; i < sceneFile.GameObjects.Count; i++)
@@ -295,7 +303,7 @@ namespace Engine
 		{
 			path = path ?? Serializer.lastScene;
 
-			Serializer.GetInstance().SaveGameObjects(GetSceneFile(), path);
+			Serializer.I.SaveGameObjects(GetSceneFile(), path);
 		}
 		public void OnGameObjectDestroyed(GameObject gameObject)
 		{
@@ -390,6 +398,19 @@ namespace Engine
 			{
 				LoadScene(Serializer.lastScene);
 			}
+			if (KeyboardInput.IsKeyDown(Keys.O) && GetSelectedGameObjects() != null)
+			{
+				serializer.SaveGameObject(GetSelectedGameObject(), "Prefabs/yo.prefab");
+			}
+			if (KeyboardInput.IsKeyDown(Keys.P))
+			{
+				GameObject go = serializer.LoadGameObject("Prefabs/yo.prefab");
+				//go.ID = IDsManager.gameObjectNextID;
+				//IDsManager.gameObjectNextID++;
+				//go.Setup();
+				//go.Awake();
+			}
+
 
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
@@ -409,10 +430,6 @@ namespace Engine
 			//pdateStopwatch.Stop ();
 			//pdateTime = updateStopwatch.ElapsedMilliseconds;
 			//pdateStopwatch.Reset ();
-		}
-		public void SpriteBatch_Begin(BlendState blend)
-		{
-			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, blendState: blend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
 		}
 		protected override void Draw(GameTime gameTime)
 		{
@@ -439,7 +456,6 @@ namespace Engine
 			renderTime = renderStopwatch.ElapsedMilliseconds;
 			renderStopwatch.Reset();
 		}
-		List<Renderer> sortedRenderers = new List<Renderer>();
 		void DrawSceneToTarget()
 		{
 			GraphicsDevice.SetRenderTarget(camera.renderTarget);
@@ -449,29 +465,18 @@ namespace Engine
 
 			SpriteBatchCache.UpdateAllTransformMatrices();
 			SpriteBatchCache.BeginAll();
-			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
+			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, sortMode: SpriteSortMode.FrontToBack, blendState:null, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
 
-			sortedRenderers.Clear();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				if (gameObjects[i].GetComponent<Renderer>())
-				{
-					sortedRenderers.AddRange(gameObjects[i].GetComponents<Renderer>());
-				}
-				//gameObjects[i].Draw(spriteBatch);
-			}
-			sortedRenderers.Sort();
-
-			for (int i = 0; i < sortedRenderers.Count; i++)
-			{
-				sortedRenderers[i].Draw(spriteBatch);
+				gameObjects[i].Draw(spriteBatch);
 			}
 			if (transformHandle.GameObject != null)
 			{
 				transformHandle.GameObject.Draw(spriteBatch);
 			}
-			spriteBatch.End();
 			SpriteBatchCache.EndAll();
+			spriteBatch.End();
 
 			GraphicsDevice.SetRenderTarget(null);
 		}

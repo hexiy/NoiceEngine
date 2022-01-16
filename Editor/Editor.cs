@@ -141,6 +141,7 @@ namespace Engine
 				new EditorWindow_Hierarchy (),
 				new EditorWindow_Inspector (),
 				new EditorWindow_Controls (),
+				new EditorWindow_Browser (),
 			};
 			for (int i = 0; i < editorWindows.Length; i++)
 			{

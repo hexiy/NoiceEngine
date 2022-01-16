@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4+SzoMFTPMhDPE+kWPRe/OMVqnoYYZir2IYRNAp0JxH6ogXPEU2qPigbeBdsNm2jw2RH1rMAX8LkokliGMByoA==",
+  "dgSpecHash": "LXKMHjDdTa39NzJN8tdi+gih6Gtm1UcfqKhttibzghNhvroit8/MdIQk9gcqNj8xB2g/jl8JtwZ1GSIxqsarSA==",
   "success": true,
   "projectFilePath": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
   "expectedPackageFiles": [
@@ -14,7 +14,6 @@
     "C:\\Users\\slavk\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.2\\microsoft.netcore.platforms.2.1.2.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
-    "C:\\Users\\slavk\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\monogame.extended\\3.7.0\\monogame.extended.3.7.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",

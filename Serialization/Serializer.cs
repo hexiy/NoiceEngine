@@ -11,15 +11,11 @@ namespace Engine
 	public class Serializer
 	{
 		public static string lastScene = "";
-		public static Serializer instance;
-		public static Serializer GetInstance()
-		{
-			return instance;
-		}
+		public static Serializer I { get; set; }
 		List<Type> SerializableTypes = new List<Type>();
 		public Serializer()
 		{
-			instance = this;
+			I = this;
 
 			lastScene = "scene1.scene";//Properties.Settings.Default.lastScene.ToString();
 		}
@@ -35,14 +31,43 @@ namespace Engine
 				 (type.IsSubclassOf(typeof(GameObject)))))
 				 .ToList());
 		}
-		public void SaveGameObjects(SceneFile sceneFile, string scenePath, bool isPrefab = false)
+		public void SaveGameObject(GameObject go, string prefabPath)
 		{
-			if (isPrefab == false)
-			{
-				lastScene = scenePath;
+			SceneFile prefabSceneFile = SceneFile.CreateForOneGameObject(go);
 
-				//Properties.Settings.Default.lastScene = lastScene;
+			SaveGameObjects(prefabSceneFile, prefabPath);
+		}
+		public GameObject LoadGameObject(string prefabPath)
+		{
+			using (StreamReader sr = new StreamReader(prefabPath))
+			{
+				UpdateSerializableTypes();
+
+				var bb = SerializableTypes.ToArray();
+
+				XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile), SerializableTypes.ToArray());
+
+				var sceneFile = ((SceneFile)xmlSerializer.Deserialize(sr));
+				GameObject go = sceneFile.GameObjects[0];
+				IDsManager.gameObjectNextID = go.ID + 1;
+
+
+
+				ConnectGameObjectsWithComponents(sceneFile);
+
+				for (int i = 0; i < sceneFile.GameObjects.Count; i++)
+				{
+					Scene.I.OnGameObjectCreated(sceneFile.GameObjects[i]);
+
+					sceneFile.GameObjects[i].Awake();
+				}
+
+				return sceneFile.GameObjects[0];
 			}
+		}
+		public void SaveGameObjects(SceneFile sceneFile, string scenePath)
+		{
+			lastScene = scenePath;
 
 			using (StreamWriter sw = new StreamWriter(scenePath))
 			{
