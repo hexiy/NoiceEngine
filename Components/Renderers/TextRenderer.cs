@@ -1,6 +1,6 @@
-﻿using Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿/*using Engine;
+
+
 
 namespace Scripts
 {
@@ -23,3 +23,4 @@ namespace Scripts
             }
       }
 }
+*/

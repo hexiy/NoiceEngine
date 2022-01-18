@@ -1,5 +1,5 @@
 ﻿using Engine;
-using Microsoft.Xna.Framework;
+
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -43,7 +43,7 @@ namespace Scripts
 		}
 		public override void FixedUpdate()
 		{
-			if (Scene.I?.GraphicsDevice == null || isStatic || isButton)
+			if (isStatic || isButton)
 			{
 				return;
 			}
@@ -54,7 +54,7 @@ namespace Scripts
 
 		public void UpdateTransform()
 		{
-			transform.position = body.Position;
+			//transform.position = body.Position;
 		}
 		public void TranslateAngularRotationToTransform()
 		{

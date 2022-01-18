@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Scripts;
+﻿using Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -512,13 +510,13 @@ namespace Engine
 			   }
 		 }*/
 
-		public void Draw(SpriteBatch batch)
+		public void Draw()
 		{
 			if (Active == false) { return; }
 			for (int i = 0; i < Components.Count; i++)
 			{
 				if (Components[i] is Renderer && Components[i].enabled && Components[i].awoken && Active)
-					(Components[i] as Renderer).Draw(batch);
+					(Components[i] as Renderer).Draw();
 			}
 		}
 

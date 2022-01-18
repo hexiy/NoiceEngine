@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 
 namespace Scripts
 {
@@ -33,7 +33,7 @@ namespace Scripts
 
 						SpriteSheetRenderer spriteSheetRenderer = tile.GetComponent<SpriteSheetRenderer>();
 						tile.Awake();
-						spriteSheetRenderer.blendState = BlendState.Opaque;
+						//spriteSheetRenderer.blendState = BlendState.Opaque;
 						spriteSheetRenderer.Layer = 5;
 						tile.SetParent(GameObject);
 						tile.transform.localPosition = new Vector3(x * 3.2f, y * 3.2f, 0);
@@ -77,7 +77,7 @@ namespace Scripts
 		//}
 		public override void Update()
 		{
-			if (KeyboardInput.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
+			if (KeyboardInput.IsKeyDown(GLFW.Keys.Space))
 			{
 				for (int i = Scene.I.gameObjects.Count - 1; i > 0; i--)
 				{

@@ -8,12 +8,9 @@
     ".NETCoreApp,Version=v6.0": {
       "NoiceEngine/1.0.0": {
         "dependencies": {
-          "Aether.Physics2D.MG": "1.6.1",
-          "ImGui.NET": "1.78.0",
+          "Aether.Physics2D": "1.6.1",
           "Microsoft.CodeAnalysis.Workspaces.Common": "4.0.1",
           "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "3.6.0",
-          "MonoGame.Extended": "3.7.0",
-          "MonoGame.Framework.DesktopGL": "3.6.0.1625",
           "System.CodeDom": "6.0.0",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.22000.21"
         },
@@ -33,7 +30,7 @@
           }
         }
       },
-      "Aether.Physics2D.MG/1.6.1": {
+      "Aether.Physics2D/1.6.1": {
         "runtime": {
           "lib/netstandard2.0/Aether.Physics2D.dll": {
             "assemblyVersion": "1.6.1.0",
@@ -192,17 +189,6 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "MonoGame.Extended/3.7.0": {
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.2"
-        },
-        "runtime": {
-          "lib/netstandard2.0/MonoGame.Extended.dll": {
-            "assemblyVersion": "3.7.0.0",
-            "fileVersion": "3.7.0.0"
-          }
-        }
-      },
       "NETStandard.Library/1.6.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.2",
@@ -249,14 +235,6 @@
           "System.Threading.Timer": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0"
-        }
-      },
-      "Newtonsoft.Json/11.0.2": {
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "11.0.0.0",
-            "fileVersion": "11.0.2.21924"
-          }
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -668,7 +646,6 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
-      "System.Numerics.Vectors/4.5.0": {},
       "System.ObjectModel/4.3.0": {
         "dependencies": {
           "System.Collections": "4.3.0",
@@ -996,22 +973,6 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
-      },
-      "ImGui.NET/1.78.0": {
-        "dependencies": {
-          "MonoGame.Framework.DesktopGL": "3.6.0.1625"
-        },
-        "runtime": {
-          "ImGui.NET.dll": {}
-        }
-      },
-      "MonoGame.Framework.DesktopGL/3.6.0.1625": {
-        "dependencies": {
-          "System.Numerics.Vectors": "4.5.0"
-        },
-        "runtime": {
-          "MonoGame.Framework.dll": {}
-        }
       }
     }
   },
@@ -1026,12 +987,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Aether.Physics2D.MG/1.6.1": {
+    "Aether.Physics2D/1.6.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-bOC4A9hPppTBvSZ/D9dD8zTLnEI3ImDPNsJsoKApWgYrQHV/R854/KN7KAkgk6JqcSkXUymai32h9+v/F8mibw==",
-      "path": "aether.physics2d.mg/1.6.1",
-      "hashPath": "aether.physics2d.mg.1.6.1.nupkg.sha512"
+      "sha512": "sha512-IGb7Hivg+jtHN5A6tMz4ZlYkc/nKUOZCKG2EGbU1VTrRC8z9dK3CQVoFFpo2iewpEX7Dstciuy603DYeWoNWlA==",
+      "path": "aether.physics2d/1.6.1",
+      "hashPath": "aether.physics2d.1.6.1.nupkg.sha512"
     },
     "Humanizer.Core/2.2.0": {
       "type": "package",
@@ -1096,26 +1057,12 @@
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
     },
-    "MonoGame.Extended/3.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-gnxfWcMLWke1I21T+0h8ckZnum2jzybfaDtMTk5LUaPTdLCIt4nHpRYM467JdpOte2wtUzsuTAtQtKICqYk9rg==",
-      "path": "monogame.extended/3.7.0",
-      "hashPath": "monogame.extended.3.7.0.nupkg.sha512"
-    },
     "NETStandard.Library/1.6.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-WcSp3+vP+yHNgS8EV5J7pZ9IRpeDuARBPN28by8zqff1wJQXm26PVU8L3/fYLBJVU7BtDyqNVWq2KlCVvSSR4A==",
       "path": "netstandard.library/1.6.1",
       "hashPath": "netstandard.library.1.6.1.nupkg.sha512"
-    },
-    "Newtonsoft.Json/11.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
-      "path": "newtonsoft.json/11.0.2",
-      "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -1453,13 +1400,6 @@
       "path": "system.net.sockets/4.3.0",
       "hashPath": "system.net.sockets.4.3.0.nupkg.sha512"
     },
-    "System.Numerics.Vectors/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
-      "path": "system.numerics.vectors/4.5.0",
-      "hashPath": "system.numerics.vectors.4.5.0.nupkg.sha512"
-    },
     "System.ObjectModel/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -1697,16 +1637,6 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
-    },
-    "ImGui.NET/1.78.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "MonoGame.Framework.DesktopGL/3.6.0.1625": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

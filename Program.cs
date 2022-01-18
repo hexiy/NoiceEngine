@@ -5,13 +5,10 @@ namespace Noice
 {
     public static class Program
     {
-        [STAThread]
         static void Main()
         {
-            Editor _ = new Editor ();
-            
-            using (var game = new Scene())
-                game.Run();
+            Scene scene = new Scene(1000, 500, "Yay!");
+            scene.Run();
         }
     }
 }

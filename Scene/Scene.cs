@@ -1,31 +1,31 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿
+
+
+using GLFW;
 using Scripts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using ImGuiNET;
+using static OpenGLMystery.OpenGL.GL;
+
+//using ImGuiNET;
 
 namespace Engine
 {
-	public class Scene : Game
+	class Scene : Game
 	{
 		public static Scene I { get; private set; }
 
 		public string scenePath = "";
 		public TransformHandle transformHandle;
-		public SpriteFont spriteFont;
+		public Camera2D cam;
 		private Camera camera
 		{
 			get { return Camera.I; }
 		}
 		public List<GameObject> gameObjects = new List<GameObject>();
 
-		public GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
-		SpriteBatch uiBatch;
 		public event EventHandler<GameObject> GameObjectCreated;
 		public event EventHandler<GameObject> GameObjectDestroyed;
 		public event EventHandler SceneLoad;
@@ -37,46 +37,32 @@ namespace Engine
 
 		public float updateTime = 0;
 		public float renderTime = 0;
-
-		public Scene()
+		public Scene(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
 		{
 			I = this;
 			serializer = new Serializer();
-			IsMouseVisible = true;
-
-			graphics = new GraphicsDeviceManager(this)
-			{
-				PreferredBackBufferWidth = 1600,
-				PreferredBackBufferHeight = 720,
-				//PreferMultiSampling = true,
-				SynchronizeWithVerticalRetrace = false,
-
-				GraphicsProfile = GraphicsProfile.HiDef
-			};
-			graphics.ApplyChanges();
-			this.IsFixedTimeStep = false;
-			//Window.IsBorderless = true;
-			Window.Position = new Point(0, 100);
-
-			MouseInput.Mouse1Down += OnMouse1Clicked;
-			MouseInput.Mouse1Up += OnMouse1Released;
 
 			MouseInput.Mouse3Down += OnMouse3Clicked;
 			MouseInput.Mouse3Up += OnMouse3Released;
-
-			Content.RootDirectory = "Content";
 		}
 		private void CreateDefaultObjects()
 		{
-			//colliderEditor = new ColliderEditor();
+			cam = new Camera2D(Vector2.Zero, 1f);
 
-			CreateTransformHandle();
+			GameObject go = GameObject.Create();
+			go.AddComponent<BoxShape>();
+			go.AddComponent<BoxRenderer>();
+
+			go.Awake();
+			go.transform.scale = new Vector2(300, 100);
+
+			/*CreateTransformHandle();
 			var CameraGO = GameObject.Create(name: "Camera");
 			CameraGO.AddComponent<Camera>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				gameObjects[i].Awake();
-			}
+			}*/
 		}
 		void CreateTransformHandle()
 		{
@@ -132,59 +118,18 @@ namespace Engine
 				SelectGameObject(gameObjects[gameObjectIndex]);
 			}
 		}
-		public SpriteBatch CreateSpriteBatch()
-		{
-			return new SpriteBatch(GraphicsDevice);
-		}
 		protected override void Initialize()
 		{
-
 			Physics.Init();
 
 			CreateDefaultObjects();
 
+			//Editor.I.Init();
 
-			TargetElapsedTime = TimeSpan.FromMilliseconds(15);
-
-			Window.AllowUserResizing = true;
-			spriteBatch = new SpriteBatch(GraphicsDevice);
-			uiBatch = new SpriteBatch(GraphicsDevice);
-
-			Editor.I.Init();
-
-			if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
+			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
 			{
 				LoadScene(Serializer.lastScene);
-			}
-
-			base.Initialize();
-		}
-
-		protected override void LoadContent()
-		{
-			// Create a new SpriteBatch, which can be used to draw textures.
-			spriteFont = Content.Load<SpriteFont>("font_Borda");
-		}
-		public static Texture2D CreateTexture(GraphicsDevice device, int width, int height, Func<int, Color> paint)
-		{
-			//initialize a texture
-			var texture = new Texture2D(device, width, height);
-
-			//the array holds the color for each pixel in the texture
-			Color[] data = new Color[width * height];
-			for (var pixel = 0; pixel < data.Length; pixel++)
-			{
-				//the function applies the color according to the specified pixel
-				data[pixel] = paint(pixel);
-			}
-
-			//set the color
-			texture.SetData(data);
-
-			return texture;
-		}
-		protected override void UnloadContent()
-		{
+			}*/
 		}
 		public SceneFile GetSceneFile()
 		{
@@ -321,164 +266,129 @@ namespace Engine
 		{
 		}
 
-		private void OnMouse1Released()
+
+		protected override void Update()
 		{
-			//if (ColliderEditor.editing == true)
-			//{
-			//	return;
-			//}
-			if (true) //Tools.CurrentTool == Tools.ToolTypes.Select)
-			{
-				transformHandle.CurrentAxisSelected = null;
-			}
-		}
-		private void OnMouse1Clicked()
-		{
-			//if (ColliderEditor.editing == true)
-			//{
-			//	return;
-			//}
-			//float minDistance = float.PositiveInfinity;
-			//GameObject closestGameObject = null;
-			//for (int i = 0; i < gameObjects.Count; i++)
-			//{
-			//	if (gameObjects[i] == transformHandle.GameObject || gameObjects[i].Active == false)
-			//	{
-			//		continue;
-			//	}
-			//	(bool intersects, float distance) detection = MouseInput.Position.In(gameObjects[i].GetComponent<Shape>());
-			//	if (detection.distance < minDistance && detection.intersects)
-			//	{
-			//		closestGameObject = gameObjects[i];
-			//		minDistance = detection.distance;
-			//	}
-			//	gameObjects[i].selected = false;
-			//}
-			transformHandle.clicked = false;
-			if (MouseInput.Position.In(transformHandle.boxColliderX))
-			{
-				transformHandle.CurrentAxisSelected = TransformHandle.Axis.X;
-				transformHandle.clicked = true;
-			}
-			if (MouseInput.Position.In(transformHandle.boxColliderY))
-			{
-				transformHandle.CurrentAxisSelected = TransformHandle.Axis.Y;
-				transformHandle.clicked = true;
-			}
-			if (MouseInput.Position.In(transformHandle.boxColliderXY))
-			{
-				transformHandle.CurrentAxisSelected = TransformHandle.Axis.XY;
-				transformHandle.clicked = true;
-			}
-
-			//if (closestGameObject != null && minDistance < 100)
-			//{
-			//	SelectGameObject(closestGameObject);
-			//}
-			//else if (transformHandle.clicked == false)
-			//{
-			//	// todo uncomment
-			//	//transformHandle.SelectObject(null);
-			//}
-		}
-		protected override void Update(GameTime gameTime)
-		{
-			//updateStopwatch.Start ();
-
-			Time.Update(gameTime);
-			//Physics.Step();
-
-			MouseInput.Update(Mouse.GetState());
-
-			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
-			{
-				SaveScene();
-			}
-			if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
-			{
-				LoadScene(Serializer.lastScene);
-			}
-			if (KeyboardInput.IsKeyDown(Keys.O) && GetSelectedGameObjects() != null)
-			{
-				serializer.SaveGameObject(GetSelectedGameObject(), "Prefabs/yo.prefab");
-			}
-			if (KeyboardInput.IsKeyDown(Keys.P))
-			{
-				GameObject go = serializer.LoadGameObject("Prefabs/yo.prefab");
-				//go.ID = IDsManager.gameObjectNextID;
-				//IDsManager.gameObjectNextID++;
-				//go.Setup();
-				//go.Awake();
-			}
-
+			Time.Update();
+			MouseInput.Update();
 
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
 				{
+					gameObjects[i].transform.rotation.Z += Time.deltaTime*10;
 					gameObjects[i].Update();
 					gameObjects[i].FixedUpdate();
 				}
 			}
 
 			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
-
-			Editor.I.Update();
-
-			base.Update(gameTime);
-
-			//pdateStopwatch.Stop ();
-			//pdateTime = updateStopwatch.ElapsedMilliseconds;
-			//pdateStopwatch.Reset ();
 		}
-		protected override void Draw(GameTime gameTime)
+		protected override void Render()
 		{
-			if (camera?.renderTarget == null)
-			{
-				return;
-			}
-			renderStopwatch.Start();
-			DrawSceneToTarget();
-
-			GraphicsDevice.Clear(new Color(33, 36, 38));
-
-			spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.I.effect);
-
-			spriteBatch.Draw(texture: camera.renderTarget, destinationRectangleFloat: new RectangleFloat(Editor.gameViewPosition.X, Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
-
-			spriteBatch.End();
-
-			Editor.I.Draw(gameTime);
-
-			base.Draw(gameTime);
-
-			renderStopwatch.Stop();
-			renderTime = renderStopwatch.ElapsedMilliseconds;
-			renderStopwatch.Reset();
-		}
-		void DrawSceneToTarget()
-		{
-			GraphicsDevice.SetRenderTarget(camera.renderTarget);
-			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
-
-			GraphicsDevice.Clear(camera.color);
-
-			SpriteBatchCache.UpdateAllTransformMatrices();
-			SpriteBatchCache.BeginAll();
-			spriteBatch.Begin(transformMatrix: camera.TransformMatrix, sortMode: SpriteSortMode.FrontToBack, blendState:null, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
+			glClearColor(0.11f, 0.11f, 0.11f, 0);
+			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				gameObjects[i].Draw(spriteBatch);
+				gameObjects[i].Draw();
 			}
-			if (transformHandle.GameObject != null)
-			{
-				transformHandle.GameObject.Draw(spriteBatch);
-			}
-			SpriteBatchCache.EndAll();
-			spriteBatch.End();
 
-			GraphicsDevice.SetRenderTarget(null);
+			Glfw.SwapBuffers(DisplayManager.Window);
 		}
+
+		protected override void LoadContent()
+		{
+		}
+		//  mgremoval       protected override void Update()
+		//  mgremoval       {
+		//  mgremoval       
+		//  mgremoval       	Time.Update(gameTime);
+		//  mgremoval       
+		//  mgremoval       
+		//  mgremoval       	MouseInput.Update(Mouse.GetState());
+		//  mgremoval       
+		//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
+		//  mgremoval       	{
+		//  mgremoval       		SaveScene();
+		//  mgremoval       	}
+		//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
+		//  mgremoval       	{
+		//  mgremoval       		LoadScene(Serializer.lastScene);
+		//  mgremoval       	}
+		//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.O) && GetSelectedGameObjects() != null)
+		//  mgremoval       	{
+		//  mgremoval       		serializer.SaveGameObject(GetSelectedGameObject(), "Prefabs/yo.prefab");
+		//  mgremoval       	}
+		//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.P))
+		//  mgremoval       	{
+		//  mgremoval       		GameObject go = serializer.LoadGameObject("Prefabs/yo.prefab");
+		//  mgremoval       	}
+		//  mgremoval       
+		//  mgremoval       
+		//  mgremoval       	for (int i = 0; i < gameObjects.Count; i++)
+		//  mgremoval       	{
+		//  mgremoval       		if (Global.GameRunning || gameObjects[i].alwaysUpdate)
+		//  mgremoval       		{
+		//  mgremoval       			gameObjects[i].Update();
+		//  mgremoval       			gameObjects[i].FixedUpdate();
+		//  mgremoval       		}
+		//  mgremoval       	}
+		//  mgremoval       
+		//  mgremoval       	SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
+		//  mgremoval       
+		//  mgremoval       	Editor.I.Update();
+		//  mgremoval       }
+		//  mgremoval       protected override void Draw(GameTime gameTime)
+		//  mgremoval       {
+		//  mgremoval       	if (camera?.renderTarget == null)
+		//  mgremoval       	{
+		//  mgremoval       		return;
+		//  mgremoval       	}
+		//  mgremoval       	renderStopwatch.Start();
+		//  mgremoval       	DrawSceneToTarget();
+		//  mgremoval       
+		//  mgremoval       	GraphicsDevice.Clear(new Color(33, 36, 38));
+		//  mgremoval       
+		//  mgremoval       	spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.I.effect);
+		//  mgremoval       
+		//  mgremoval       	spriteBatch.Draw(texture: camera.renderTarget, destinationRectangleFloat: new RectangleFloat(Editor.gameViewPosition.X, Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
+		//  mgremoval       
+		//  mgremoval       	spriteBatch.End();
+		//  mgremoval       
+		//  mgremoval       	Editor.I.Draw(gameTime);
+		//  mgremoval       
+		//  mgremoval       	base.Draw(gameTime);
+		//  mgremoval       
+		//  mgremoval       	renderStopwatch.Stop();
+		//  mgremoval       	renderTime = renderStopwatch.ElapsedMilliseconds;
+		//  mgremoval       	renderStopwatch.Reset();
+		//  mgremoval       }
+		//  mgremoval       void DrawSceneToTarget()
+		//  mgremoval       {
+		//  mgremoval       	GraphicsDevice.SetRenderTarget(camera.renderTarget);
+		//  mgremoval       	GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+		//  mgremoval       
+		//  mgremoval       	GraphicsDevice.Clear(camera.color);
+		//  mgremoval       
+		//  mgremoval       	SpriteBatchCache.UpdateAllTransformMatrices();
+		//  mgremoval       	SpriteBatchCache.BeginAll();
+		//  mgremoval       	spriteBatch.Begin(transformMatrix: camera.TransformMatrix, sortMode: SpriteSortMode.FrontToBack, blendState: null, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
+		//  mgremoval       
+		//  mgremoval       	for (int i = 0; i < gameObjects.Count; i++)
+		//  mgremoval       	{
+		//  mgremoval       		gameObjects[i].Draw(spriteBatch);
+		//  mgremoval       	}
+		//  mgremoval       	if (transformHandle.GameObject != null)
+		//  mgremoval       	{
+		//  mgremoval       		transformHandle.GameObject.Draw(spriteBatch);
+		//  mgremoval       	}
+		//  mgremoval       	SpriteBatchCache.EndAll();
+		//  mgremoval       	spriteBatch.End();
+		//  mgremoval       
+		//  mgremoval       	GraphicsDevice.SetRenderTarget(null);
+		//  mgremoval       }
+
+
 	}
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GLFW;
 
 namespace Engine
 {
@@ -10,9 +10,9 @@ namespace Engine
 		public static ulong elapsedTicks = 0;
 		public static ulong timeScale = 0;
 
-		public static void Update(GameTime gameTime)
+		public static void Update()
 		{
-			deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+			//deltaTime = ((float)Glfw.Time - elapsedTime)/100f;
 
 			if (Global.GameRunning)
 			{

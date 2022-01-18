@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Color = System.Drawing.Color;
+using Engine;
 
 public static class Extensions
 {
@@ -77,54 +77,22 @@ public static class Extensions
 		return new Vector3(0, vector.Y, 0);
 	}
 
-
-
-
-	public static MonoGame.Extended.Point2 ToPoint2(this Vector2 vector)
+	public static Color ToColor(this Vector3 vector)
 	{
-		return new MonoGame.Extended.Point2(vector.X, vector.Y);
+		return new Color(vector.X, vector.Y, vector.Z);
 	}
-	public static MonoGame.Extended.Point2 ToPoint2(this Vector3 vector)
+	public static Color ToColor(this Vector4 vector)
 	{
-		return new MonoGame.Extended.Point2(vector.X, vector.Y);
-	}
-
-	public static Microsoft.Xna.Framework.Color ToColor(this Vector3 vector)
-	{
-		return new Microsoft.Xna.Framework.Color(vector.X, vector.Y, vector.Z);
-	}
-	public static Microsoft.Xna.Framework.Color ToColor(this Vector4 vector)
-	{
-		return new Microsoft.Xna.Framework.Color(vector.X, vector.Y, vector.Z, vector.W);
+		return new Color(vector.X, vector.Y, vector.Z, vector.W);
 	}
 	public static List<MemberInfo> GetPropertiesOrFields(this Type t, BindingFlags bf = BindingFlags.Public | BindingFlags.Instance) =>
 		t.GetMembers(bf).Where(mi => mi.MemberType == MemberTypes.Field || mi.MemberType == MemberTypes.Property).ToList();
 
-	public static System.Drawing.Point ToSystemPoint(this Microsoft.Xna.Framework.Point point)
-	{
-		return new System.Drawing.Point(point.X, point.Y);
-	}
-	public static Microsoft.Xna.Framework.Point ToGamePoint(this System.Drawing.Point point)
-	{
-		return new Microsoft.Xna.Framework.Point(point.X, point.Y);
-	}
-	public static Vector2 ToVector2(this MonoGame.Extended.Point2 point)
-	{
-		return new Vector2(point.X, point.Y);
-	}
 	public static Vector2 ToVector2(this Vector3 point)
 	{
 		return new Vector2(point.X, point.Y);
 	}
 	public static Vector3 ToVector3(this Vector2 point)
-	{
-		return new Vector3(point.X, point.Y, 0);
-	}
-	public static Vector2 ToVector2(this MonoGame.Extended.Size2 point)
-	{
-		return new Vector2(point.Width, point.Height);
-	}
-	public static Vector3 ToVector3(this Microsoft.Xna.Framework.Point point)
 	{
 		return new Vector3(point.X, point.Y, 0);
 	}
@@ -152,15 +120,15 @@ public static class Extensions
 		return v;
 	}
 
-	public static System.Drawing.Color ToOtherColor(this Microsoft.Xna.Framework.Color color)
+	public static System.Drawing.Color ToOtherColor(this Color color)
 	{
 		return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
 	}
-	public static Microsoft.Xna.Framework.Color ToOtherColor(this System.Drawing.Color color)
+	public static Color ToOtherColor(this System.Drawing.Color color)
 	{
-		return new Microsoft.Xna.Framework.Color(color.R, color.G, color.B, color.A);
+		return new Color(color.R, color.G, color.B, color.A);
 	}
-	public static Microsoft.Xna.Framework.Color ColorFromHSVToXna(double hue, double saturation, double value)
+	public static Color ColorFromHSVToXna(double hue, double saturation, double value)
 	{
 		int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
 		double f = hue / 60 - Math.Floor(hue / 60);
@@ -172,17 +140,17 @@ public static class Extensions
 		int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
 		if (hi == 0)
-			return new Microsoft.Xna.Framework.Color(v, t, p, 255);
+			return new Color(v, t, p, 255);
 		else if (hi == 1)
-			return new Microsoft.Xna.Framework.Color(q, v, p, 255);
+			return new Color(q, v, p, 255);
 		else if (hi == 2)
-			return new Microsoft.Xna.Framework.Color(p, v, t, 255);
+			return new Color(p, v, t, 255);
 		else if (hi == 3)
-			return new Microsoft.Xna.Framework.Color(p, q, v, 255);
+			return new Color(p, q, v, 255);
 		else if (hi == 4)
-			return new Microsoft.Xna.Framework.Color(t, p, v, 255);
+			return new Color(t, p, v, 255);
 		else
-			return new Microsoft.Xna.Framework.Color(v, p, q, 255);
+			return new Color(v, p, q, 255);
 	}
 	public static Color ColorFromHSV(double hue, double saturation, double value)
 	{
@@ -196,17 +164,17 @@ public static class Extensions
 		int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
 		if (hi == 0)
-			return Color.FromArgb(255, v, t, p);
+			return new Color(255, v, t, p);
 		else if (hi == 1)
-			return Color.FromArgb(255, q, v, p);
+			return new Color(255, q, v, p);
 		else if (hi == 2)
-			return Color.FromArgb(255, p, v, t);
+			return new Color(255, p, v, t);
 		else if (hi == 3)
-			return Color.FromArgb(255, p, q, v);
+			return new Color(255, p, q, v);
 		else if (hi == 4)
-			return Color.FromArgb(255, t, p, v);
+			return new Color(255, t, p, v);
 		else
-			return Color.FromArgb(255, v, p, q);
+			return new Color(255, v, p, q);
 	}
 	public static int Clamp(int value, int min, int max)
 	{

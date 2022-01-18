@@ -1,8 +1,8 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows10.0.22000": {
-      "Aether.Physics2D.MG/1.6.1": {
+    "net5.0": {
+      "Aether.Physics2D/1.6.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Aether.Physics2D.dll": {}
@@ -195,18 +195,6 @@
           "ref/netstandard1.3/_._": {}
         }
       },
-      "MonoGame.Extended/3.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.2"
-        },
-        "compile": {
-          "lib/netstandard2.0/MonoGame.Extended.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/MonoGame.Extended.dll": {}
-        }
-      },
       "NETStandard.Library/1.6.1": {
         "type": "package",
         "dependencies": {
@@ -254,15 +242,6 @@
           "System.Threading.Timer": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0"
-        }
-      },
-      "Newtonsoft.Json/11.0.2": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -467,10 +446,10 @@
       "System.CodeDom/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.CodeDom.dll": {}
+          "lib/netstandard2.0/System.CodeDom.dll": {}
         },
         "runtime": {
-          "lib/net6.0/System.CodeDom.dll": {}
+          "lib/netstandard2.0/System.CodeDom.dll": {}
         },
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
@@ -964,15 +943,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        }
-      },
-      "System.Numerics.Vectors/4.5.0": {
-        "type": "package",
-        "compile": {
-          "ref/netcoreapp2.0/_._": {}
-        },
-        "runtime": {
-          "lib/netcoreapp2.0/_._": {}
         }
       },
       "System.ObjectModel/4.3.0": {
@@ -1568,50 +1538,21 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
-      },
-      "ImGui.NET/1.78.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "MonoGame.Framework.DesktopGL": "3.6.0.1625"
-        },
-        "compile": {
-          "bin/placeholder/ImGui.NET.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ImGui.NET.dll": {}
-        }
-      },
-      "MonoGame.Framework.DesktopGL/3.6.0.1625": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "System.Numerics.Vectors": "4.5.0"
-        },
-        "compile": {
-          "bin/placeholder/MonoGame.Framework.DesktopGL.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/MonoGame.Framework.DesktopGL.dll": {}
-        }
       }
     }
   },
   "libraries": {
-    "Aether.Physics2D.MG/1.6.1": {
-      "sha512": "bOC4A9hPppTBvSZ/D9dD8zTLnEI3ImDPNsJsoKApWgYrQHV/R854/KN7KAkgk6JqcSkXUymai32h9+v/F8mibw==",
+    "Aether.Physics2D/1.6.1": {
+      "sha512": "IGb7Hivg+jtHN5A6tMz4ZlYkc/nKUOZCKG2EGbU1VTrRC8z9dK3CQVoFFpo2iewpEX7Dstciuy603DYeWoNWlA==",
       "type": "package",
-      "path": "aether.physics2d.mg/1.6.1",
+      "path": "aether.physics2d/1.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "aether.physics2d.mg.1.6.1.nupkg.sha512",
-        "aether.physics2d.mg.nuspec",
+        "aether.physics2d.1.6.1.nupkg.sha512",
+        "aether.physics2d.nuspec",
         "lib/net40/Aether.Physics2D.dll",
-        "lib/netcore50/Aether.Physics2D.dll",
-        "lib/netstandard2.0/Aether.Physics2D.dll",
-        "lib/portable-net40+win8/Aether.Physics2D.dll",
-        "lib/portable-net45+win8+wpa81/Aether.Physics2D.dll"
+        "lib/netstandard2.0/Aether.Physics2D.dll"
       ]
     },
     "Humanizer.Core/2.2.0": {
@@ -2060,18 +2001,6 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MonoGame.Extended/3.7.0": {
-      "sha512": "gnxfWcMLWke1I21T+0h8ckZnum2jzybfaDtMTk5LUaPTdLCIt4nHpRYM467JdpOte2wtUzsuTAtQtKICqYk9rg==",
-      "type": "package",
-      "path": "monogame.extended/3.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netstandard2.0/MonoGame.Extended.dll",
-        "monogame.extended.3.7.0.nupkg.sha512",
-        "monogame.extended.nuspec"
-      ]
-    },
     "NETStandard.Library/1.6.1": {
       "sha512": "WcSp3+vP+yHNgS8EV5J7pZ9IRpeDuARBPN28by8zqff1wJQXm26PVU8L3/fYLBJVU7BtDyqNVWq2KlCVvSSR4A==",
       "type": "package",
@@ -2083,36 +2012,6 @@
         "dotnet_library_license.txt",
         "netstandard.library.1.6.1.nupkg.sha512",
         "netstandard.library.nuspec"
-      ]
-    },
-    "Newtonsoft.Json/11.0.2": {
-      "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
-      "type": "package",
-      "path": "newtonsoft.json/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "lib/net20/Newtonsoft.Json.dll",
-        "lib/net20/Newtonsoft.Json.xml",
-        "lib/net35/Newtonsoft.Json.dll",
-        "lib/net35/Newtonsoft.Json.xml",
-        "lib/net40/Newtonsoft.Json.dll",
-        "lib/net40/Newtonsoft.Json.xml",
-        "lib/net45/Newtonsoft.Json.dll",
-        "lib/net45/Newtonsoft.Json.xml",
-        "lib/netstandard1.0/Newtonsoft.Json.dll",
-        "lib/netstandard1.0/Newtonsoft.Json.xml",
-        "lib/netstandard1.3/Newtonsoft.Json.dll",
-        "lib/netstandard1.3/Newtonsoft.Json.xml",
-        "lib/netstandard2.0/Newtonsoft.Json.dll",
-        "lib/netstandard2.0/Newtonsoft.Json.xml",
-        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.11.0.2.nupkg.sha512",
-        "newtonsoft.json.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -3773,53 +3672,6 @@
         "ref/xamarinwatchos10/_._",
         "system.net.sockets.4.3.0.nupkg.sha512",
         "system.net.sockets.nuspec"
-      ]
-    },
-    "System.Numerics.Vectors/4.5.0": {
-      "sha512": "QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
-      "type": "package",
-      "path": "system.numerics.vectors/4.5.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net46/System.Numerics.Vectors.dll",
-        "lib/net46/System.Numerics.Vectors.xml",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.0/System.Numerics.Vectors.dll",
-        "lib/netstandard1.0/System.Numerics.Vectors.xml",
-        "lib/netstandard2.0/System.Numerics.Vectors.dll",
-        "lib/netstandard2.0/System.Numerics.Vectors.xml",
-        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
-        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
-        "lib/uap10.0.16299/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net45/System.Numerics.Vectors.dll",
-        "ref/net45/System.Numerics.Vectors.xml",
-        "ref/net46/System.Numerics.Vectors.dll",
-        "ref/net46/System.Numerics.Vectors.xml",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard1.0/System.Numerics.Vectors.dll",
-        "ref/netstandard1.0/System.Numerics.Vectors.xml",
-        "ref/netstandard2.0/System.Numerics.Vectors.dll",
-        "ref/netstandard2.0/System.Numerics.Vectors.xml",
-        "ref/uap10.0.16299/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "system.numerics.vectors.4.5.0.nupkg.sha512",
-        "system.numerics.vectors.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
       ]
     },
     "System.ObjectModel/4.3.0": {
@@ -5646,26 +5498,13 @@
         "system.xml.xdocument.4.3.0.nupkg.sha512",
         "system.xml.xdocument.nuspec"
       ]
-    },
-    "ImGui.NET/1.78.0": {
-      "type": "project",
-      "path": "../NoiceImGui/ImGui.NET.csproj",
-      "msbuildProject": "../NoiceImGui/ImGui.NET.csproj"
-    },
-    "MonoGame.Framework.DesktopGL/3.6.0.1625": {
-      "type": "project",
-      "path": "../NoiceMG/MonoGame.Framework/MonoGame.Framework.DesktopGL.csproj",
-      "msbuildProject": "../NoiceMG/MonoGame.Framework/MonoGame.Framework.DesktopGL.csproj"
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0-windows10.0.22000": [
-      "Aether.Physics2D.MG >= 1.6.1",
-      "ImGui.NET >= 1.78.0",
+    "net5.0": [
+      "Aether.Physics2D >= 1.6.1",
       "Microsoft.CodeAnalysis.Workspaces.Common >= 4.0.1",
       "Microsoft.CodeDom.Providers.DotNetCompilerPlatform >= 3.6.0",
-      "MonoGame.Extended >= 3.7.0",
-      "MonoGame.Framework.DesktopGL >= 3.6.0.1625",
       "System.CodeDom >= 6.0.0"
     ]
   },
@@ -5686,7 +5525,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0-windows10.0.22000"
+        "net5.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -5694,16 +5533,9 @@
         "https://packages.stride3d.net/nuget": {}
       },
       "frameworks": {
-        "net6.0-windows10.0.22000": {
-          "targetAlias": "net6.0-windows10.0.22000.0",
-          "projectReferences": {
-            "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj": {
-              "projectPath": "C:\\Dev\\Noice\\NoiceImGui\\ImGui.NET.csproj"
-            },
-            "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj": {
-              "projectPath": "C:\\Dev\\Noice\\NoiceMG\\MonoGame.Framework\\MonoGame.Framework.DesktopGL.csproj"
-            }
-          }
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -5713,10 +5545,10 @@
       }
     },
     "frameworks": {
-      "net6.0-windows10.0.22000": {
-        "targetAlias": "net6.0-windows10.0.22000.0",
+      "net5.0": {
+        "targetAlias": "net5.0",
         "dependencies": {
-          "Aether.Physics2D.MG": {
+          "Aether.Physics2D": {
             "target": "Package",
             "version": "[1.6.1, )"
           },
@@ -5727,10 +5559,6 @@
           "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": {
             "target": "Package",
             "version": "[3.6.0, )"
-          },
-          "MonoGame.Extended": {
-            "target": "Package",
-            "version": "[3.7.0, )"
           },
           "System.CodeDom": {
             "target": "Package",
@@ -5749,15 +5577,24 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.Windows.SDK.NET.Ref",
-            "version": "[10.0.22000.21, 10.0.22000.21]"
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[5.0.12, 5.0.12]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
           }
         ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
-            "privateAssets": "all"
-          },
-          "Microsoft.Windows.SDK.NET.Ref": {
             "privateAssets": "all"
           }
         },
@@ -5770,10 +5607,10 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows10.0.22000'. This package may not be fully compatible with your project.",
+      "message": "Package 'Microsoft.CodeDom.Providers.DotNetCompilerPlatform 3.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
       "targetGraphs": [
-        "net6.0-windows10.0.22000"
+        "net5.0"
       ]
     }
   ]

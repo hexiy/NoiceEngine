@@ -1,31 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Scripts;
+﻿using Scripts;
 
 namespace Engine
 {
 	public static class KeyboardInput
 	{
-
-		public static KeyboardState state;
-		private static ulong lastTick = 0;
-
-		private static KeyboardState GetState()
+		public static bool IsKeyDown(GLFW.Keys key)
 		{
-			if (Time.elapsedTicks != lastTick)
-			{
-				state = Keyboard.GetState();
-			}
-			return state;
+			return GLFW.Glfw.GetKey(DisplayManager.Window, GLFW.Keys.S) == GLFW.InputState.Press;
 		}
-
-		public static bool IsKeyDown(Keys key)
+		public static bool IsKeyUp(GLFW.Keys key)
 		{
-			return GetState().IsKeyDown(key);
-		}
-		public static bool IsKeyUp(Keys key)
-		{
-			return GetState().IsKeyUp(key);
+			return GLFW.Glfw.GetKey(DisplayManager.Window, GLFW.Keys.S) == GLFW.InputState.Release;
 		}
 	}
 }

@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿
+
 using Scripts;
 
 namespace Engine
@@ -21,73 +21,76 @@ namespace Engine
 		public static MouseEvent Mouse3Up;
 		public static MouseEvent Mouse3;
 
-		public static ButtonState MouseButton1State;
-		public static ButtonState MouseButton2State;
-		public static ButtonState MouseButton3State;
+		public static GLFW.InputState MouseButton1State;
+		public static GLFW.InputState MouseButton2State;
+		public static GLFW.InputState MouseButton3State;
 
 
 		public static Vector2 Delta;
 		public static Vector2 Position = Vector2.Zero;
 
-		public static void Update(MouseState state)
+		public static void Update()
 		{
-
 			// Middle Button
-			if (MouseButton3State == ButtonState.Released && state.MiddleButton == ButtonState.Pressed)
+			GLFW.InputState state = GLFW.Glfw.GetMouseButton(DisplayManager.Window, GLFW.MouseButton.Middle);
+			if (MouseButton3State == GLFW.InputState.Release && state == GLFW.InputState.Press)
 			{
 				Mouse3Down?.Invoke();
 			}
-			if (MouseButton3State == ButtonState.Pressed && state.MiddleButton == ButtonState.Released)
+			if (MouseButton3State == GLFW.InputState.Press && state == GLFW.InputState.Release)
 			{
 				Mouse3Up?.Invoke();
 			}
-			MouseButton3State = state.MiddleButton;
+			MouseButton3State = state;
+
 
 			// Left Button
-			if (MouseButton1State == ButtonState.Released && state.LeftButton == ButtonState.Pressed)
+			state = GLFW.Glfw.GetMouseButton(DisplayManager.Window, GLFW.MouseButton.Left);
+			if (MouseButton1State == GLFW.InputState.Release && state == GLFW.InputState.Press)
 			{
-
 				for (int i = 0; i < Scene.I.gameObjects.Count; i++)
 				{
 					if (Scene.I.gameObjects[i].Active)
 					{
 						Scene.I.gameObjects[i].mouseOver = MouseInput.Position.In(Scene.I.gameObjects[i].GetComponent<Shape>());
-
 					}
 				}
 
 				Mouse1Down?.Invoke();
 			}
-			if (MouseButton1State == ButtonState.Pressed && state.LeftButton == ButtonState.Released)
+			if (MouseButton1State == GLFW.InputState.Press && state == GLFW.InputState.Release)
 			{
 				Mouse1Up?.Invoke();
 			}
-			MouseButton1State = state.LeftButton;
+			MouseButton1State = state;
+
+
 
 			// Right Button
-			if (MouseButton2State == ButtonState.Released && state.RightButton == ButtonState.Pressed)
+			state = GLFW.Glfw.GetMouseButton(DisplayManager.Window, GLFW.MouseButton.Right);
+			if (MouseButton2State == GLFW.InputState.Release && state == GLFW.InputState.Press)
 			{
 				Mouse2Down?.Invoke();
 			}
-			if (MouseButton2State == ButtonState.Pressed && state.RightButton == ButtonState.Released)
+			if (MouseButton2State == GLFW.InputState.Press && state == GLFW.InputState.Release)
 			{
 				Mouse2Up?.Invoke();
 			}
-			MouseButton2State = state.RightButton;
+			MouseButton2State = state;
 
-			if (MouseButton1State == ButtonState.Pressed)
+			if (MouseButton1State == GLFW.InputState.Press)
 			{
 				Mouse1?.Invoke();
 			}
-			if (MouseButton2State == ButtonState.Pressed)
+			if (MouseButton2State == GLFW.InputState.Press)
 			{
 				Mouse2?.Invoke();
 			}
 
 
 
-			Delta = Editor.ScreenToWorld(state.Position.ToVector2()) - Position;
-			Position = Editor.ScreenToWorld(state.Position.ToVector2());
+			//Delta = Editor.ScreenToWorld(state.Position.ToVector2()) - Position;
+			//Position = Editor.ScreenToWorld(state.Position.ToVector2());
 		}
 	}
 }

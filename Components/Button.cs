@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿
+
 using Scripts;
 using Engine.UI;
 using System.Xml.Serialization;

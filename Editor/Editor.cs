@@ -1,5 +1,5 @@
-using ImGuiNET;
-using Microsoft.Xna.Framework;
+/*using ImGuiNET;
+using System.Numerics;
 
 namespace Engine
 {
@@ -170,4 +170,4 @@ namespace Engine
 			_imGuiRenderer.AfterLayout();
 		}
 	}
-}
+}*/

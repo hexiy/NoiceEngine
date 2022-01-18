@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿
+
 using Scripts;
 
 namespace Engine
@@ -36,6 +36,9 @@ namespace Engine
 			objectSelected = false;
 			GameObject.updateWhenDisabled = true;
 
+			MouseInput.Mouse1Down += OnMouse1Clicked;
+			MouseInput.Mouse1Up += OnMouse1Released;
+
 			GameObject.AddComponent<Rigidbody>().useGravity = true;
 			GetComponent<Rigidbody>().isStatic = false;
 			GetComponent<Rigidbody>().isButton = true;
@@ -53,13 +56,13 @@ namespace Engine
 			else
 			{
 				boxColliderXY = GameObject.AddComponent<BoxShape>();
-				boxColliderXY.rect = new RectangleFloat(0, 0, 2, 2);
+				boxColliderXY.size = new Vector2(2, 2);
 
 				boxColliderX = GameObject.AddComponent<BoxShape>();
-				boxColliderX.rect = new RectangleFloat(0, 0, 5, 0.5f);
+				boxColliderX.size = new Vector2(5, 0.5f);
 
 				boxColliderY = GameObject.AddComponent<BoxShape>();
-				boxColliderY.rect = new RectangleFloat(0, 0, 0.5f, 5);
+				boxColliderY.size = new Vector2(0.5f, 5);
 
 				boxRendererXY = GameObject.AddComponent<BoxRenderer>();
 				boxRendererX = GameObject.AddComponent<BoxRenderer>();
@@ -86,7 +89,7 @@ namespace Engine
 		{
 			//Debug.Console.Log("TransformHandle.GameObject.Active: " + GameObject.Active);
 
-			if (MouseInput.MouseButton1State == ButtonState.Pressed && GameObject.Active && clicked)
+			if (MouseInput.MouseButton1State == GLFW.InputState.Press && GameObject.Active && clicked)
 			{
 				SetSelectedObjectRigidbodyAwake(false);
 				Move(MouseInput.Delta);
@@ -109,34 +112,34 @@ namespace Engine
 			}
 
 			transform.position = selectedTransform.position;
-			if (KeyboardInput.IsKeyDown(Keys.Space))
+			if (KeyboardInput.IsKeyDown(GLFW.Keys.Space))
 			{
 
 				var a = 1212;
 			}
 			if (MouseInput.Position.In(boxColliderX))
 			{
-				boxRendererX.Fill = true;
+				boxRendererX.fill = true;
 			}
 			else
 			{
-				boxRendererX.Fill = false;
+				boxRendererX.fill = false;
 			}
 			if (MouseInput.Position.In(boxColliderY))
 			{
-				boxRendererY.Fill = true;
+				boxRendererY.fill = true;
 			}
 			else
 			{
-				boxRendererY.Fill = false;
+				boxRendererY.fill = false;
 			}
 			if (MouseInput.Position.In(boxColliderXY))
 			{
-				boxRendererXY.Fill = true;
+				boxRendererXY.fill = true;
 			}
 			else
 			{
-				boxRendererXY.Fill = false;
+				boxRendererXY.fill = false;
 			}
 			base.Update();
 		}
@@ -173,12 +176,11 @@ namespace Engine
 				{
 					Rigidbody rigidbody = selectedTransform.GetComponent<Rigidbody>();
 					rigidbody.Velocity = Vector2.Zero;
-					rigidbody.body.Position = selectedTransform.position;
+					//rigidbody.body.Position = selectedTransform.position;
 				}
 			}
-			KeyboardState state = Keyboard.GetState();
 
-			if (KeyboardInput.IsKeyDown(Keys.LeftShift))
+			if (KeyboardInput.IsKeyDown(GLFW.Keys.LeftShift))
 			{
 				switch (CurrentAxisSelected)
 				{
@@ -209,6 +211,32 @@ namespace Engine
 			transform.position = selectedGO.transform.position;
 			selectedTransform = selectedGO.transform;
 			objectSelected = true;
+		}
+		private void OnMouse1Released()
+		{
+			if (true) //Tools.CurrentTool == Tools.ToolTypes.Select)
+			{
+				CurrentAxisSelected = null;
+			}
+		}
+		private void OnMouse1Clicked()
+		{
+			clicked = false;
+			if (MouseInput.Position.In(boxColliderX))
+			{
+				CurrentAxisSelected = Axis.X;
+				clicked = true;
+			}
+			if (MouseInput.Position.In(boxColliderY))
+			{
+				CurrentAxisSelected = Axis.Y;
+				clicked = true;
+			}
+			if (MouseInput.Position.In(boxColliderXY))
+			{
+				CurrentAxisSelected = Axis.XY;
+				clicked = true;
+			}
 		}
 	}
 }

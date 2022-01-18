@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿/*
+
 using MonoGame.Extended;
 using Engine;
 namespace Scripts
@@ -33,3 +33,4 @@ namespace Scripts
 		}
 	}
 }
+*/

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿/*
 using Engine;
 using System;
 using System.Collections.Generic;
@@ -70,8 +69,8 @@ namespace Scripts
 						particles[i].lifetime += Time.deltaTime;
 
 						//particles[i].color = new Color((int)particles[i].color.R, particles[i].color.G, particles[i].color.B, (int)((0.1f / particles[i].lifetime) * 255));
-						/*particles[i].color = new Color((int)((0.1f / particles[i].lifetime) * 255),
-							20, 20, (int)((0.1f / particles[i].lifetime) * 255));*/
+						*//*particles[i].color = new Color((int)((0.1f / particles[i].lifetime) * 255),
+							20, 20, (int)((0.1f / particles[i].lifetime) * 255));*//*
 
 						//if (particles[i].lifetime < 0.2f)
 						//{
@@ -132,7 +131,7 @@ namespace Scripts
 
 		}
 	}
-}
+}*/
 
 
 #region BACKUP
@@ -142,12 +141,12 @@ namespace Scripts
 //using System.Text;
 //using System.Threading.Tasks;
 //using Scripts;
-//using Microsoft.Xna.Framework;
+//
 //using System.Diagnostics;
-//using Microsoft.Xna.Framework.Input;
+//
 //using System.Threading;
 //using MonoGame.Extended;
-//using Microsoft.Xna.Framework.Graphics;
+//
 //using System.Drawing.Design;
 //
 //namespace Engine

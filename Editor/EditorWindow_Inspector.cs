@@ -1,15 +1,10 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using ImGuiNET;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
 using Scripts;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace Engine
 {
@@ -268,4 +263,4 @@ namespace Engine
 			ResetID();
 		}
 	}
-}
+}*/

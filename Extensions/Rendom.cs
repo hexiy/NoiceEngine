@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
 using System;
-
 namespace Engine
 {
 	public static class Rendom

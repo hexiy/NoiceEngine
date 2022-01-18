@@ -1,13 +1,13 @@
 ﻿using Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 using System.IO;
 
 namespace Scripts
 {
 	public class SpriteRenderer : Renderer, ITexture
 	{
-		[System.Xml.Serialization.XmlIgnore] [ShowInEditor] public Texture2D texture { get; set; }
+		//[System.Xml.Serialization.XmlIgnore] [ShowInEditor] public Texture2D texture { get; set; }
 
 		public string texturePath { get; set; } = "";
 
@@ -27,13 +27,13 @@ namespace Scripts
 		{
 			if (File.Exists(_texturePath) == false) { return; }
 			texturePath = _texturePath;
-			texture = TextureCache.LoadTexture(_texturePath);
-			OnTextureLoaded(texture, _texturePath);
+			/*texture = TextureCache.LoadTexture(_texturePath);
+			OnTextureLoaded(texture, _texturePath);*/
 		}
 
-		public override void Draw(SpriteBatch batch)
+		public override void Draw()
 		{
-			if (GameObject == null || texture == null) { return; }
+			/*if (GameObject == null || texture == null) { return; }
 			CheckForSpriteBatch();
 
 			SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(
@@ -46,26 +46,11 @@ namespace Scripts
 				scale: transform.scale,
 				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
 				layerDepth: Layer);
-
+*/
 		}
-		public virtual void OnTextureLoaded(Texture2D _texture, string _path)
+/*		public virtual void OnTextureLoaded(Texture2D _texture, string _path)
 		{
-		}
-		public void CheckForSpriteBatch()
-		{
-			if (SpriteBatchCache.HasSpriteBatchForTexture(texture.Name) == false)
-			{
-				SpriteBatchCache.CreateBatchForTexture(texture, new DrawParameters()
-				{
-					sortMode = SpriteSortMode.Deferred,
-					transformMatrix = Camera.I.TransformMatrix,
-					blendState = BlendState.AlphaBlend,
-					samplerState = SamplerState.PointClamp,
-					depthStencilState = DepthStencilState.DepthRead
-				});
-				SpriteBatchCache.BeginOne(texture.Name);
-			}
-		}
+		}*/
 
 	}
 }

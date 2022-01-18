@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿
 using Scripts;
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace Engine
 		}
 		public static void CreateBody(Rigidbody rb)
 		{
-			lock (World)
+			/*lock (World)
 			{
 				Body body = World.CreateBody(rb.transform.position, 0, rb.isStatic ? BodyType.Static : BodyType.Dynamic);
 				body.SleepingAllowed = false;
@@ -62,7 +62,7 @@ namespace Engine
 				body.Mass = rb.Mass;
 
 				rb.body = body;
-			}
+			}*/
 		}
 		private static Stopwatch sw = new Stopwatch();
 		private static void Wait(double milliseconds)

@@ -1,6 +1,6 @@
 ﻿using Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 
 namespace Scripts
 {
@@ -15,10 +15,10 @@ namespace Scripts
 			set
 			{
 				spritesCount = value;
-				if (texture != null)
+				/*if (texture != null)
 				{
 					SpriteSize = new Vector2(texture.Width / SpritesCount.X, texture.Height / SpritesCount.Y);
-				}
+				}*/
 			}
 		}
 
@@ -28,9 +28,9 @@ namespace Scripts
 
 
 
-		public override void Draw(SpriteBatch batch)
+		public override void Draw()
 		{
-			if (GameObject == null || texture == null) { return; }
+			/*if (GameObject == null || texture == null) { return; }
 			CheckForSpriteBatch();
 
 			SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(
@@ -41,13 +41,13 @@ namespace Scripts
 				rotation: 0,
 				origin: Vector2.Zero,
 				effects: RenderingHelpers.GetSpriteFlipEffects(transform),
-				layerDepth: Layer);
+				layerDepth: Layer);*/
 		}
-		public override void OnTextureLoaded(Texture2D _texture, string _path)
+		/*public override void OnTextureLoaded(Texture2D _texture, string _path)
 		{
 			SpriteSize = new Vector2(_texture.Width / SpritesCount.X, _texture.Height / SpritesCount.Y);
 
 			base.OnTextureLoaded(_texture, _path);
-		}
+		}*/
 	}
 }

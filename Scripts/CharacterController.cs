@@ -1,6 +1,6 @@
 ﻿using Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,21 +26,21 @@ namespace Scripts
 		{
 			if (rb == null) return;
 			Vector2 input = Vector2.Zero;
-			if (KeyboardInput.IsKeyDown(Keys.A))
+			if (KeyboardInput.IsKeyDown(GLFW.Keys.A))
 			{
 				input.X = -MoveSpeed;
 			}
-			if (KeyboardInput.IsKeyDown(Keys.D))
+			if (KeyboardInput.IsKeyDown(GLFW.Keys.D))
 			{
 				input.X = MoveSpeed;
 			}
 
-			if (jumpKeyDown == false && KeyboardInput.state.IsKeyDown(Keys.W))
+			if (jumpKeyDown == false && KeyboardInput.IsKeyDown(GLFW.Keys.W))
 			{
-				rb.body.ApplyForce(new Vector2(0, -JumpForce));
+				//rb.body.ApplyForce(new Vector2(0, -JumpForce));
 			}
-			jumpKeyDown = KeyboardInput.state.IsKeyDown(Keys.W);
-			rb.body.ApplyForce(new Vector2(input.X, 0));
+			jumpKeyDown = KeyboardInput.IsKeyDown(GLFW.Keys.W);
+			//rb.body.ApplyForce(new Vector2(input.X, 0));
 
 
 			base.Update();

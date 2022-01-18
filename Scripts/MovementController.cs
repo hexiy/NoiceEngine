@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Input;
+
 using Engine;
 using KeyboardInput = Engine.KeyboardInput;
 
@@ -34,8 +34,8 @@ namespace Scripts
 		{
 			if (rb == null) return;
 
-			bool pressedLeft = KeyboardInput.IsKeyDown(Keys.A);
-			bool pressedRight = KeyboardInput.IsKeyDown(Keys.D);
+			bool pressedLeft = KeyboardInput.IsKeyDown(GLFW.Keys.A);
+			bool pressedRight = KeyboardInput.IsKeyDown(GLFW.Keys.D);
 
 			if (pressedLeft || pressedRight)
 			{
@@ -58,10 +58,10 @@ namespace Scripts
 				animationController.Turn(Vector2.Right);
 			}
 
-			if (jumpKeyDown == false && KeyboardInput.state.IsKeyDown(Keys.W))
+			if (jumpKeyDown == false && KeyboardInput.IsKeyDown(GLFW.Keys.W))
 			{
 				jumpXSpeedMultiplier = 5f;
-				rb.body.ApplyForce(new Vector2(0, -jumpForce));
+				//rb.body.ApplyForce(new Vector2(0, -jumpForce));
 				animationController.Jump();
 			}
 			if (animationController.jumping)
@@ -72,7 +72,7 @@ namespace Scripts
 			{
 				jumpXSpeedMultiplier = 1;
 			}
-			jumpKeyDown = KeyboardInput.state.IsKeyDown(Keys.W);
+			jumpKeyDown = KeyboardInput.IsKeyDown(GLFW.Keys.W);
 
 			if (pressedLeft || pressedRight)
 			{
@@ -82,9 +82,9 @@ namespace Scripts
 			{
 				targetSpeedX = MathHelper.Lerp(targetSpeedX, input.X * MoveSpeed, Time.deltaTime * 15);
 			}
-			rb.body.ApplyForce(new Vector2(targetSpeedX, 0));
+			//rb.body.ApplyForce(new Vector2(targetSpeedX, 0));
 
-			Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize)+35, (Player.I.transform.position.Y + CameraOffsetY)*0.4f);
+			Vector2 targetPos = new Vector2(transform.position.X - Camera.I.Size.X / (2f / Camera.I.CameraSize) + 35, (Player.I.transform.position.Y + CameraOffsetY) * 0.4f);
 			Camera.I.transform.position = Vector2.Lerp(Camera.I.transform.position, targetPos, Time.deltaTime * 9);
 			base.Update();
 		}
