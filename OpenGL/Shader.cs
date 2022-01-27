@@ -5,16 +5,16 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using static OpenGLMystery.OpenGL.GL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Engine
 {
-	class Shader
+	public class Shader
 	{
 		string vertexCode;
 		string fragmentCode;
 
-		public uint ProgramID { get; set; }
+		public int ProgramID { get; set; }
 
 		public Shader(string vertexCode, string fragmentCode)
 		{
@@ -23,68 +23,70 @@ namespace Engine
 		}
 		public void Load()
 		{
-			uint vs, fs;
+			int vs, fs;
 
-			vs = glCreateShader(GL_VERTEX_SHADER);
-			glShaderSource(vs, vertexCode);
-			glCompileShader(vs);
+			vs = GL.CreateShader(ShaderType.VertexShaderArb);
+			GL.ShaderSource(vs, vertexCode);
+			GL.CompileShader(vs);
 
-			int[] status = glGetShaderiv(vs, GL_COMPILE_STATUS, 1);
-			if (status[0] == 0)
+			string error = "";
+			GL.GetShaderInfoLog(vs, out error);
+			if (error.Length > 0)
 			{
-				string error = glGetShaderInfoLog(vs);
 				Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
 			}
 
-			fs = glCreateShader(GL_FRAGMENT_SHADER);
-			glShaderSource(fs, fragmentCode);
-			glCompileShader(fs);
+			fs = GL.CreateShader(ShaderType.FragmentShader);
+			GL.ShaderSource(fs, fragmentCode);
+			GL.CompileShader(fs);
 
-
-			status = glGetShaderiv(fs, GL_COMPILE_STATUS, 1);
-			if (status[0] == 0)
+			error = "";
+			GL.GetShaderInfoLog(fs, out error);
+			if (error.Length > 0)
 			{
-				string error = glGetShaderInfoLog(fs);
 				Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
 			}
 
-			ProgramID = glCreateProgram();
-			glAttachShader(ProgramID, vs);
-			glAttachShader(ProgramID, fs);
+			ProgramID = GL.CreateProgram();
+			GL.AttachShader(ProgramID, vs);
+			GL.AttachShader(ProgramID, fs);
 
-			glLinkProgram(ProgramID);
+			GL.LinkProgram(ProgramID);
 
 			// Delete shaders
-			glDetachShader(ProgramID, vs);
-			glDetachShader(ProgramID, fs);
-			glDeleteShader(vs);
-			glDeleteShader(fs);
-
-
+			GL.DetachShader(ProgramID, vs);
+			GL.DetachShader(ProgramID, fs);
+			GL.DeleteShader(vs);
+			GL.DeleteShader(fs);
 		}
 		public void Use()
 		{
-			glUseProgram(ProgramID);
+			GL.UseProgram(ProgramID);
 		}
 		public void SetMatrix4x4(string uniformName, Matrix4x4 mat)
 		{
-			int location = glGetUniformLocation(ProgramID, uniformName);
-			glUniformMatrix4fv(location, 1, false, GetMatrix4x4Values(mat));
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			GL.UniformMatrix4(location, 1, false, GetMatrix4x4Values(mat));
 		}
 		public void SetFloat(string uniformName, float fl)
 		{
-			int location = glGetUniformLocation(ProgramID, uniformName);
-			glUniform1f(location, fl);
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			GL.Uniform1(location, fl);
 		}
 		public void SetVector2(string uniformName, Vector2 vec)
 		{
-			int location = glGetUniformLocation(ProgramID, uniformName);
-			glUniform2f(location, vec.X, vec.Y);
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			GL.Uniform2(location, vec.X, vec.Y);
 		}
 		public void SetVector3(string uniformName, Vector3 vec)
 		{
-			int location = glGetUniformLocation(ProgramID, uniformName);
-			glUniform3f(location, vec.X, vec.Y,vec.Z);
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			GL.Uniform3(location, vec.X, vec.Y, vec.Z);
+		}
+		public void SetVector4(string uniformName, Vector4 vec)
+		{
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			GL.Uniform4(location, vec.X, vec.Y, vec.Z, vec.W);
 		}
 		private float[] GetMatrix4x4Values(Matrix4x4 m)
 		{

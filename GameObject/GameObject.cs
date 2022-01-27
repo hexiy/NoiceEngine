@@ -516,7 +516,7 @@ namespace Engine
 			for (int i = 0; i < Components.Count; i++)
 			{
 				if (Components[i] is Renderer && Components[i].enabled && Components[i].awoken && Active)
-					(Components[i] as Renderer).Draw();
+					(Components[i] as Renderer).Render();
 			}
 		}
 

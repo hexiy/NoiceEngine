@@ -26,20 +26,20 @@ namespace Scripts
 		{
 			if (rb == null) return;
 			Vector2 input = Vector2.Zero;
-			if (KeyboardInput.IsKeyDown(GLFW.Keys.A))
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.A))
 			{
 				input.X = -MoveSpeed;
 			}
-			if (KeyboardInput.IsKeyDown(GLFW.Keys.D))
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.D))
 			{
 				input.X = MoveSpeed;
 			}
 
-			if (jumpKeyDown == false && KeyboardInput.IsKeyDown(GLFW.Keys.W))
+			if (jumpKeyDown == false && KeyboardInput.IsKeyDown(KeyboardInput.Keys.W))
 			{
 				//rb.body.ApplyForce(new Vector2(0, -JumpForce));
 			}
-			jumpKeyDown = KeyboardInput.IsKeyDown(GLFW.Keys.W);
+			jumpKeyDown = KeyboardInput.IsKeyDown(KeyboardInput.Keys.W);
 			//rb.body.ApplyForce(new Vector2(input.X, 0));
 
 

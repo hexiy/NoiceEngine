@@ -8,9 +8,6 @@ namespace Scripts
 		[ShowInEditor]
 		public Vector2 size;
 
-		[ShowInEditor]
-		public bool automaticSize;
-
 
 		public override void Update()
 		{

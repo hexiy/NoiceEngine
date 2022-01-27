@@ -28,7 +28,7 @@ namespace Scripts
 
 
 
-		public override void Draw()
+		public override void Render()
 		{
 			/*if (GameObject == null || texture == null) { return; }
 			CheckForSpriteBatch();

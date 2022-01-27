@@ -45,6 +45,10 @@
               "target": "Package",
               "version": "[1.6.1, )"
             },
+            "ImGui.NET": {
+              "target": "Package",
+              "version": "[1.86.0, )"
+            },
             "Microsoft.CodeAnalysis.Workspaces.Common": {
               "target": "Package",
               "version": "[4.0.1, )"
@@ -53,7 +57,15 @@
               "target": "Package",
               "version": "[3.6.0, )"
             },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[4.6.7, )"
+            },
             "System.CodeDom": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "System.Drawing.Common": {
               "target": "Package",
               "version": "[6.0.0, )"
             }

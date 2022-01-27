@@ -1,6 +1,4 @@
-﻿using GLFW;
-
-namespace Engine
+﻿namespace Engine
 {
 	public static class Time
 	{

@@ -16,7 +16,7 @@ namespace Scripts
 			lineCollider = GetComponent<LineShape>();
 			base.Awake();
 		}
-		public override void Draw()
+		public override void Render()
 		{
 			if (GameObject == null || lineCollider == null) { return; }
 

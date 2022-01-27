@@ -89,15 +89,15 @@ namespace Engine
 		{
 			//Debug.Console.Log("TransformHandle.GameObject.Active: " + GameObject.Active);
 
-			if (MouseInput.MouseButton1State == GLFW.InputState.Press && GameObject.Active && clicked)
-			{
-				SetSelectedObjectRigidbodyAwake(false);
-				Move(MouseInput.Delta);
-			}
-			else
-			{
-				SetSelectedObjectRigidbodyAwake(true);
-			}
+			//if (MouseInput.MouseButton1State == KeyboardInput.InputState.Press && GameObject.Active && clicked)
+			//{
+			//	SetSelectedObjectRigidbodyAwake(false);
+			//	Move(MouseInput.Delta);
+			//}
+			//else
+			//{
+			//	SetSelectedObjectRigidbodyAwake(true);
+			//}
 
 
 
@@ -112,11 +112,6 @@ namespace Engine
 			}
 
 			transform.position = selectedTransform.position;
-			if (KeyboardInput.IsKeyDown(GLFW.Keys.Space))
-			{
-
-				var a = 1212;
-			}
 			if (MouseInput.Position.In(boxColliderX))
 			{
 				boxRendererX.fill = true;
@@ -180,7 +175,7 @@ namespace Engine
 				}
 			}
 
-			if (KeyboardInput.IsKeyDown(GLFW.Keys.LeftShift))
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftShift))
 			{
 				switch (CurrentAxisSelected)
 				{

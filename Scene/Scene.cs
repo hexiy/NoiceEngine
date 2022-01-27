@@ -1,25 +1,111 @@
-﻿
-
-
-using GLFW;
+﻿using OpenTK.Windowing.Common;
 using Scripts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static OpenGLMystery.OpenGL.GL;
-
-//using ImGuiNET;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ImGuiNET;
+using System.Drawing;
+using OpenTK.Graphics.OpenGL4;
+using GL = OpenTK.Graphics.OpenGL4.GL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Desktop;
+using Dear_ImGui_Sample;
 
 namespace Engine
 {
-	class Scene : Game
+	class Scene : GameWindow
 	{
+		ImGuiController _controller;
+
+		public Scene() : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = new Vector2i(1600, 900), APIVersion = new Version(4, 6) })
+		{
+			I = this;
+			serializer = new Serializer();
+
+			//MouseInput.Mouse3Down += OnMouse3Clicked;
+			//MouseInput.Mouse3Up += OnMouse3Released;
+		}
+
+		protected override void OnLoad()
+		{
+			base.OnLoad();
+
+			Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
+
+			_controller = new ImGuiController(ClientSize.X, ClientSize.Y);
+
+
+			Physics.Init();
+
+			CreateDefaultObjects();
+
+			//Editor.I.Init();
+
+			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
+			{
+				LoadScene(Serializer.lastScene);
+			}*/
+		}
+
+		protected override void OnResize(ResizeEventArgs e)
+		{
+			base.OnResize(e);
+
+			// Update the opengl viewport
+			GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+
+			// Tell ImGui of the new size
+			_controller.WindowResized(ClientSize.X, ClientSize.Y);
+		}
+
+		protected override void OnRenderFrame(FrameEventArgs e)
+		{
+			base.OnRenderFrame(e);
+
+			MouseInput.Update();
+
+			GL.ClearColor(new Color4(0, 32, 48, 255));
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+			//GL.UseProgram(4);
+
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				gameObjects[i].Draw();
+			}
+
+
+			_controller.Update(this, (float)e.Time);
+
+			ImGui.LabelText("asdasdasd", "");
+			//GL.UseProgram(0);
+			_controller.Render();
+
+			SwapBuffers();
+		}
+
+		protected override void OnTextInput(TextInputEventArgs e)
+		{
+			base.OnTextInput(e);
+
+
+			_controller.PressChar((char)e.Unicode);
+		}
+
+		protected override void OnMouseWheel(MouseWheelEventArgs e)
+		{
+			base.OnMouseWheel(e);
+
+			_controller.MouseScroll(e.Offset);
+		}
+
 		public static Scene I { get; private set; }
 
 		public string scenePath = "";
 		public TransformHandle transformHandle;
-		public Camera2D cam;
 		private Camera camera
 		{
 			get { return Camera.I; }
@@ -37,32 +123,25 @@ namespace Engine
 
 		public float updateTime = 0;
 		public float renderTime = 0;
-		public Scene(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
-		{
-			I = this;
-			serializer = new Serializer();
 
-			MouseInput.Mouse3Down += OnMouse3Clicked;
-			MouseInput.Mouse3Up += OnMouse3Released;
-		}
 		private void CreateDefaultObjects()
 		{
-			cam = new Camera2D(Vector2.Zero, 1f);
+			/*CreateTransformHandle();*/
+			var camGO = GameObject.Create(name: "Camera");
+			camGO.AddComponent<Camera>();
+			camGO.Awake();
 
 			GameObject go = GameObject.Create();
-			go.AddComponent<BoxShape>();
-			go.AddComponent<BoxRenderer>();
+			go.AddComponent<QuadRenderer>();
+			go.AddComponent<BoxShape>().size = new Vector2(100, 100);
+			Rigidbody rb = go.AddComponent<Rigidbody>();
+			go.AddComponent<Button>();
+			rb.isButton = true;
 
 			go.Awake();
-			go.transform.scale = new Vector2(300, 100);
+			go.transform.position = new Vector2(20, 20);
 
-			/*CreateTransformHandle();
-			var CameraGO = GameObject.Create(name: "Camera");
-			CameraGO.AddComponent<Camera>();
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				gameObjects[i].Awake();
-			}*/
+
 		}
 		void CreateTransformHandle()
 		{
@@ -117,19 +196,6 @@ namespace Engine
 			{
 				SelectGameObject(gameObjects[gameObjectIndex]);
 			}
-		}
-		protected override void Initialize()
-		{
-			Physics.Init();
-
-			CreateDefaultObjects();
-
-			//Editor.I.Init();
-
-			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
-			{
-				LoadScene(Serializer.lastScene);
-			}*/
 		}
 		public SceneFile GetSceneFile()
 		{
@@ -266,39 +332,23 @@ namespace Engine
 		{
 		}
 
-
-		protected override void Update()
+		protected override void OnUpdateFrame(FrameEventArgs args)
 		{
 			Time.Update();
-			MouseInput.Update();
+			//MouseInput.Update();
 
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
 				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
 				{
-					gameObjects[i].transform.rotation.Z += Time.deltaTime*10;
+					gameObjects[i].transform.rotation.Z += Time.deltaTime * 10;
 					gameObjects[i].Update();
 					gameObjects[i].FixedUpdate();
 				}
 			}
 
 			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
-		}
-		protected override void Render()
-		{
-			glClearColor(0.11f, 0.11f, 0.11f, 0);
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				gameObjects[i].Draw();
-			}
-
-			Glfw.SwapBuffers(DisplayManager.Window);
-		}
-
-		protected override void LoadContent()
-		{
+			base.OnUpdateFrame(args);
 		}
 		//  mgremoval       protected override void Update()
 		//  mgremoval       {

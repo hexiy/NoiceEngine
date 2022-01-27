@@ -3,6 +3,7 @@
 
 using Scripts;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Xml.Serialization;
 
 namespace Engine
@@ -35,8 +36,20 @@ namespace Engine
 
 		[ShowInEditor] public float Zoom { get; set; }
 
-		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(700, 500);
+		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(1600, 900);
 		[ShowInEditor] public float CameraSize { get; set; } = 0.1f;
+
+		public Matrix4x4 GetProjectionMatrix()
+		{
+			float left = 0;
+			float right = Size.X;
+			float bottom = 0;
+			float top = Size.Y;
+
+			Matrix4x4 orthoMatrix = Matrix4x4.CreateOrthographicOffCenter(left, right, bottom, top, 0.00001f, 10000000f);
+
+			return orthoMatrix;
+		}
 
 		public Matrix TransformMatrix
 		{
@@ -74,12 +87,12 @@ namespace Engine
 		}
 		public override void Update()
 		{
-/*			if (Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount != AntialiasingStrength * 2)
-			{
-				Scene.I.graphics.PreferMultiSampling = AntialiasingStrength == 0 ? false : true;
-				Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount = AntialiasingStrength * 2;
-				Scene.I.graphics.ApplyChanges();
-			}*/
+			/*			if (Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount != AntialiasingStrength * 2)
+						{
+							Scene.I.graphics.PreferMultiSampling = AntialiasingStrength == 0 ? false : true;
+							Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount = AntialiasingStrength * 2;
+							Scene.I.graphics.ApplyChanges();
+						}*/
 		}
 	}
 }

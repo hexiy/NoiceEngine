@@ -1,6 +1,5 @@
-﻿
-
-using Scripts;
+﻿using Scripts;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Engine
 {
@@ -21,19 +20,18 @@ namespace Engine
 		public static MouseEvent Mouse3Up;
 		public static MouseEvent Mouse3;
 
-		public static GLFW.InputState MouseButton1State;
-		public static GLFW.InputState MouseButton2State;
-		public static GLFW.InputState MouseButton3State;
-
+		//public static GLFW.InputState MouseButton1State;
+		//public static GLFW.InputState MouseButton2State;
+		//public static GLFW.InputState MouseButton3State;
 
 		public static Vector2 Delta;
 		public static Vector2 Position = Vector2.Zero;
 
 		public static void Update()
 		{
+			MouseState state = Scene.I.MouseState;
 			// Middle Button
-			GLFW.InputState state = GLFW.Glfw.GetMouseButton(DisplayManager.Window, GLFW.MouseButton.Middle);
-			if (MouseButton3State == GLFW.InputState.Release && state == GLFW.InputState.Press)
+			/*if (MouseButton3State == GLFW.InputState.Release && state == GLFW.InputState.Press)
 			{
 				Mouse3Down?.Invoke();
 			}
@@ -42,7 +40,6 @@ namespace Engine
 				Mouse3Up?.Invoke();
 			}
 			MouseButton3State = state;
-
 
 			// Left Button
 			state = GLFW.Glfw.GetMouseButton(DisplayManager.Window, GLFW.MouseButton.Left);
@@ -86,11 +83,12 @@ namespace Engine
 			{
 				Mouse2?.Invoke();
 			}
-
+*/
 
 
 			//Delta = Editor.ScreenToWorld(state.Position.ToVector2()) - Position;
 			//Position = Editor.ScreenToWorld(state.Position.ToVector2());
+			Position = new Vector2(Scene.I.MouseState.X, Camera.I.Size.Y - Scene.I.MouseState.Y);
 		}
 	}
 }

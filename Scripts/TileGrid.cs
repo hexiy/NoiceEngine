@@ -77,7 +77,7 @@ namespace Scripts
 		//}
 		public override void Update()
 		{
-			if (KeyboardInput.IsKeyDown(GLFW.Keys.Space))
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.Space))
 			{
 				for (int i = Scene.I.gameObjects.Count - 1; i > 0; i--)
 				{
