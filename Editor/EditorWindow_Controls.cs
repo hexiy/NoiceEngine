@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,8 +21,8 @@ namespace Engine
 		}
 		public void Draw()
 		{
-			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.Window.ClientBounds.Height), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Scene.I.Window.ClientBounds.Width - 600, 0), ImGuiCond.Always, new Vector2(1, 0));
+			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.ClientSize.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Scene.I.ClientSize.X - 600, 0), ImGuiCond.Always, new Vector2(1, 0));
 			ImGui.Begin("Physics", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
 
@@ -48,4 +48,4 @@ namespace Engine
 			ImGui.End();
 		}
 	}
-}*/
+}

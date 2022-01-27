@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using ImGuiNET;
@@ -31,10 +31,10 @@ namespace Engine
 		}
 		public void Draw()
 		{
-			ImGui.SetNextWindowSize(new Vector2(Scene.I.Window.ClientBounds.Width, Scene.I.Window.ClientBounds.Height - Camera.I.Size.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(0, Scene.I.Window.ClientBounds.Height), ImGuiCond.Always, new Vector2(0, 1));
+			ImGui.SetNextWindowSize(new Vector2(Scene.I.ClientSize.X, Scene.I.ClientSize.Y - Camera.I.Size.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(0, Scene.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
 			//ImGui.SetNextWindowBgAlpha (0);
-			ImGui.Begin("Browser",*//* ImGuiWindowFlags.NoTitleBar | *//*ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
+			ImGui.Begin("Browser", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
 			if (Scene.I.GetSelectedGameObject() != null)
 			{
@@ -74,4 +74,4 @@ namespace Engine
 			ImGui.End();
 		}
 	}
-}*/
+}

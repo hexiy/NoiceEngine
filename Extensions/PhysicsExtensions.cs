@@ -22,10 +22,10 @@ namespace Engine
 				case BoxShape boxCollider:
 					Vector2 boxPosition = boxCollider.transform.position;
 
-					isIn = (point.X < boxPosition.X + boxCollider.size.X / 2 &&
-							point.X > boxPosition.X - boxCollider.size.X / 2 &&
-							point.Y < boxPosition.Y + boxCollider.size.Y / 2 &&
-							point.Y > boxPosition.Y - boxCollider.size.Y / 2);
+					isIn = (point.X < boxCollider.offset.X + boxPosition.X + boxCollider.size.X / 2 &&
+							point.X > boxCollider.offset.X + boxPosition.X - boxCollider.size.X / 2 &&
+							point.Y < boxCollider.offset.Y + boxPosition.Y + boxCollider.size.Y / 2 &&
+							point.Y > boxCollider.offset.Y + boxPosition.Y - boxCollider.size.Y / 2);
 					break;
 			}
 			return isIn;

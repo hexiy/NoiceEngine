@@ -41,9 +41,12 @@ namespace Engine
 
 			Physics.Init();
 
+			_ = new Editor();
+			Editor.I.Init();
+
 			CreateDefaultObjects();
 
-			//Editor.I.Init();
+
 
 			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
 			{
@@ -80,7 +83,7 @@ namespace Engine
 
 			_controller.Update(this, (float)e.Time);
 
-			ImGui.LabelText("asdasdasd", "");
+			Editor.I.Draw();
 			//GL.UseProgram(0);
 			_controller.Render();
 
@@ -131,7 +134,7 @@ namespace Engine
 			camGO.AddComponent<Camera>();
 			camGO.Awake();
 
-			GameObject go = GameObject.Create();
+			GameObject go = GameObject.Create(name: "quad");
 			go.AddComponent<QuadRenderer>();
 			go.AddComponent<BoxShape>().size = new Vector2(100, 100);
 			Rigidbody rb = go.AddComponent<Rigidbody>();
@@ -141,6 +144,20 @@ namespace Engine
 			go.Awake();
 			go.transform.position = new Vector2(20, 20);
 
+
+
+			GameObject go2 = GameObject.Create(name: "quad 2");
+			go2.AddComponent<QuadRenderer>();
+			go2.GetComponent<QuadRenderer>().Color=Color.Magenta;
+			go2.AddComponent<BoxShape>().size = new Vector2(150, 200);
+			Rigidbody rb2 = go.AddComponent<Rigidbody>();
+			go2.AddComponent<Button>();
+			rb2.isButton = true;
+
+			go2.Awake();
+			go2.transform.position = new Vector2(150, 100);
+
+			CreateTransformHandle();
 
 		}
 		void CreateTransformHandle()
@@ -341,7 +358,6 @@ namespace Engine
 			{
 				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
 				{
-					gameObjects[i].transform.rotation.Z += Time.deltaTime * 10;
 					gameObjects[i].Update();
 					gameObjects[i].FixedUpdate();
 				}

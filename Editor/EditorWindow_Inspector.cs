@@ -1,7 +1,8 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using ImGuiNET;
 using Scripts;
@@ -41,8 +42,8 @@ namespace Engine
 		}
 		public void Draw()
 		{
-			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.Window.ClientBounds.Height), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Scene.I.Window.ClientBounds.Width - 300, 0), ImGuiCond.Always, new Vector2(1, 0));
+			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.ClientSize.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Scene.I.ClientSize.X - 300, 0), ImGuiCond.Always, new Vector2(1, 0));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Inspector", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 			if (ImGui.Button("+"))
@@ -120,11 +121,10 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								Vector3 fieldValue = (Vector3)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
-
-								if (ImGui.DragFloat3("", ref fieldValue, 0.01f))
+								System.Numerics.Vector3 systemv3 = (Vector3)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								if (ImGui.DragFloat3("", ref systemv3, 0.01f))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+									infos[infoIndex].SetValue(selectedGameObject.Components[i], (Vector3)systemv3);
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(Vector2))
@@ -133,35 +133,34 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								Vector2 fieldValue = (Vector2)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
-
-								if (ImGui.DragFloat2("", ref fieldValue, 0.01f))
+								System.Numerics.Vector2 systemv2 = (Vector2)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								if (ImGui.DragFloat2("", ref systemv2, 0.01f))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+									infos[infoIndex].SetValue(selectedGameObject.Components[i], (Vector2)systemv2);
 								}
 							}
-							else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture2D))
-							{
-								float itemWidth = 200;
-								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
-								ImGui.SetNextItemWidth(itemWidth);
-
-								//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));
-
-								string fieldValue = (selectedGameObject.Components[i] as ITexture).texturePath;
-
-								if (ImGui.InputText("oh", ref fieldValue, 100))
-								{
-									(selectedGameObject.Components[i] as ITexture).LoadTexture(fieldValue);
-								}
-							}
+							//else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture2D))
+							//{
+							//	float itemWidth = 200;
+							//	ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
+							//	ImGui.SetNextItemWidth(itemWidth);
+							//
+							//	//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));
+							//
+							//	string fieldValue = (selectedGameObject.Components[i] as ITexture).texturePath;
+							//
+							//	if (ImGui.InputText("oh", ref fieldValue, 100))
+							//	{
+							//		(selectedGameObject.Components[i] as ITexture).LoadTexture(fieldValue);
+							//	}
+							//}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(Color))
 							{
 								float itemWidth = 200;
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								Vector4 fieldValue = ((Color)infos[infoIndex].GetValue(selectedGameObject.Components[i])).ToVector4();
+								System.Numerics.Vector4 fieldValue = ((Color)infos[infoIndex].GetValue(selectedGameObject.Components[i])).ToVector4();
 
 								if (ImGui.ColorEdit4("", ref fieldValue))
 								{
@@ -263,4 +262,4 @@ namespace Engine
 			ResetID();
 		}
 	}
-}*/
+}

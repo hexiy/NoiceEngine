@@ -140,18 +140,13 @@ color = frag_color;
 			GL.BindVertexArray(0);
 
 		}
-		public override void Update()
-		{
 
-			transform.position = MouseInput.Position;
-			base.Update();
-		}
 		public override void Render()
 		{
 			shader.Use();
 
 			//System.Numerics.Matrix4x4 _translation = System.Numerics.Matrix4x4.CreateTranslation(new Vector3(-1600 / 2, -900 / 2, 0)) * System.Numerics.Matrix4x4.CreateTranslation(transform.position);
-			System.Numerics.Matrix4x4 _translation = System.Numerics.Matrix4x4.CreateTranslation(new Vector3(0, 0, 0)) * System.Numerics.Matrix4x4.CreateTranslation(transform.position);
+			System.Numerics.Matrix4x4 _translation = System.Numerics.Matrix4x4.CreateTranslation(transform.position + boxShape.offset);
 
 			System.Numerics.Matrix4x4 _rotation = System.Numerics.Matrix4x4.CreateRotationZ(transform.rotation.Z / 180 * MathHelper.Pi * 4);
 			System.Numerics.Matrix4x4 _scale = System.Numerics.Matrix4x4.CreateScale(boxShape.size.X * boxShape.transform.scale.X, boxShape.size.Y * boxShape.transform.scale.Y, 1);
@@ -169,7 +164,8 @@ color = frag_color;
 
 
 			shader.SetMatrix4x4("u_mvp", _model_view_projection);
-			shader.SetVector4("u_color", new Vector4(MathF.Abs(MathF.Sin(Time.elapsedTime * 0.3f)), MathF.Abs(MathF.Cos(Time.elapsedTime * 0.3f)), 1, 1));
+			//shader.SetVector4("u_color", new Vector4(MathF.Abs(MathF.Sin(Time.elapsedTime * 0.3f)), MathF.Abs(MathF.Cos(Time.elapsedTime * 0.3f)), 1, 1));
+			shader.SetVector4("u_color", Color.ToVector4());
 
 
 			GL.BindVertexArray(vao);

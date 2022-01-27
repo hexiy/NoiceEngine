@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -76,7 +75,10 @@ public static class Extensions
 	{
 		return new Vector3(0, vector.Y, 0);
 	}
-
+	public static Color ToColor(this System.Numerics.Vector4 vector)
+	{
+		return new Color(vector.X, vector.Y, vector.Z, vector.W);
+	}
 	public static Color ToColor(this Vector3 vector)
 	{
 		return new Color(vector.X, vector.Y, vector.Z);

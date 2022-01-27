@@ -5,9 +5,8 @@ namespace Scripts
 {
 	public class BoxShape : Shape
 	{
-		[ShowInEditor]
 		public Vector2 size;
-
+		public Vector2 offset = Vector2.Zero;
 
 		public override void Update()
 		{

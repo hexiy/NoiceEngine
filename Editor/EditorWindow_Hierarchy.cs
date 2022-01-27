@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using ImGuiNET;
 
@@ -21,12 +21,12 @@ namespace Engine
 		public void Update()
 		{
 			opened = new bool[Scene.I.gameObjects.Count];
-			if (KeyboardInput.IsKeyDown(Keys.Delete) && canDelete == true)
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.Delete) && canDelete == true)
 			{
 				canDelete = false;
 				DestroySelectedGameObjects();
 			}
-			if (KeyboardInput.IsKeyUp(Keys.Delete))
+			if (KeyboardInput.IsKeyUp(KeyboardInput.Keys.Delete))
 			{
 				canDelete = true;
 			}
@@ -78,8 +78,8 @@ namespace Engine
 		{
 			gameObjectsChildrened = new List<GameObject>();
 			ResetID();
-			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.Window.ClientBounds.Height), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Scene.I.Window.ClientBounds.Width, 0), ImGuiCond.Always, new Vector2(1, 0));
+			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.ClientSize.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Scene.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 			if (ImGui.Button("+"))
@@ -208,4 +208,4 @@ namespace Engine
 		//	ImGui.End();
 		//}
 	}
-}*/
+}

@@ -1,11 +1,11 @@
-/*using ImGuiNET;
+using ImGuiNET;
 using System.Numerics;
 
 namespace Engine
 {
 	public class Editor
 	{
-		private ImGuiRenderer _imGuiRenderer;
+		//private ImGuiRenderer _imGuiRenderer;
 		private IEditorWindow[] editorWindows;
 		public static Editor I { get; private set; }
 
@@ -20,14 +20,14 @@ namespace Engine
 		}
 		public void Init()
 		{
-			_imGuiRenderer = new ImGuiRenderer(Scene.I);
-			_imGuiRenderer.RebuildFontAtlas();
+			//_imGuiRenderer = new ImGuiRenderer(Scene.I);
+			//_imGuiRenderer.RebuildFontAtlas();
 			ImGui.SetNextWindowPos(new Vector2(500, 0));
 			ImGui.GetStyle().WindowRounding = 0;
 			ImGui.GetStyle().WindowBorderSize = 0;
 
 			ImGuiStylePtr style = ImGui.GetStyle();
-			RangeAccessor<Vector4> colors = style.Colors;
+			RangeAccessor<System.Numerics.Vector4> colors = style.Colors;
 			int theme = 1;
 			if (theme == 0)
 			{
@@ -158,16 +158,12 @@ namespace Engine
 				editorWindows[i].Update();
 			}
 		}
-		public void Draw(GameTime gameTime)
+		public void Draw()
 		{
-			_imGuiRenderer.BeforeLayout(gameTime);
-
 			for (int i = 0; i < editorWindows.Length; i++)
 			{
 				editorWindows[i].Draw();
 			}
-
-			_imGuiRenderer.AfterLayout();
 		}
 	}
-}*/
+}
