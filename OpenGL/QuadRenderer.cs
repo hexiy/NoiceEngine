@@ -140,7 +140,6 @@ color = frag_color;
 			GL.BindVertexArray(0);
 
 		}
-
 		public override void Render()
 		{
 			shader.Use();
@@ -160,7 +159,6 @@ color = frag_color;
 
 			System.Numerics.Matrix4x4 _model_view_projection = _scale * _model * _translation * _view * _projection;
 			//_model_view_projection = (_model * _scale) * _projection;
-
 
 
 			shader.SetMatrix4x4("u_mvp", _model_view_projection);

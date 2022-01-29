@@ -61,8 +61,6 @@ namespace Engine
 		[System.Xml.Serialization.XmlIgnore]
 		public List<Component> Components = new List<Component>();
 
-		public bool mouseOver = false;
-
 		[System.Xml.Serialization.XmlIgnore] public Transform transform { get; set; }
 
 		//private List<Component> ComponentsWaitingToBePaired = new List<Component>();
@@ -77,7 +75,7 @@ namespace Engine
 
 
 
-			Scene.I.OnGameObjectCreated(this);
+			Scene.I.AddGameObjectToScene(this);
 		}
 		public static GameObject Create(Vector2? position = null, Vector2? scale = null, string name = "", bool linkComponents = true, bool _silent = false)
 		{

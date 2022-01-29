@@ -98,5 +98,9 @@ namespace Engine
 				m.M41, m.M42, m.M43, m.M44
 			};
 		}
+		public int GetAttribLocation(string attribName)
+		{
+			return GL.GetAttribLocation(ProgramID, attribName);
+		}
 	}
 }

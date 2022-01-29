@@ -17,94 +17,8 @@ using Dear_ImGui_Sample;
 
 namespace Engine
 {
-	class Scene : GameWindow
+	class Scene
 	{
-		ImGuiController _controller;
-
-		public Scene() : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = new Vector2i(1600, 900), APIVersion = new Version(4, 6) })
-		{
-			I = this;
-			serializer = new Serializer();
-
-			//MouseInput.Mouse3Down += OnMouse3Clicked;
-			//MouseInput.Mouse3Up += OnMouse3Released;
-		}
-
-		protected override void OnLoad()
-		{
-			base.OnLoad();
-
-			Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
-
-			_controller = new ImGuiController(ClientSize.X, ClientSize.Y);
-
-
-			Physics.Init();
-
-			_ = new Editor();
-			Editor.I.Init();
-
-			CreateDefaultObjects();
-
-
-
-			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
-			{
-				LoadScene(Serializer.lastScene);
-			}*/
-		}
-
-		protected override void OnResize(ResizeEventArgs e)
-		{
-			base.OnResize(e);
-
-			// Update the opengl viewport
-			GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
-
-			// Tell ImGui of the new size
-			_controller.WindowResized(ClientSize.X, ClientSize.Y);
-		}
-
-		protected override void OnRenderFrame(FrameEventArgs e)
-		{
-			base.OnRenderFrame(e);
-
-			MouseInput.Update();
-
-			GL.ClearColor(new Color4(0, 32, 48, 255));
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-			//GL.UseProgram(4);
-
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				gameObjects[i].Draw();
-			}
-
-
-			_controller.Update(this, (float)e.Time);
-
-			Editor.I.Draw();
-			//GL.UseProgram(0);
-			_controller.Render();
-
-			SwapBuffers();
-		}
-
-		protected override void OnTextInput(TextInputEventArgs e)
-		{
-			base.OnTextInput(e);
-
-
-			_controller.PressChar((char)e.Unicode);
-		}
-
-		protected override void OnMouseWheel(MouseWheelEventArgs e)
-		{
-			base.OnMouseWheel(e);
-
-			_controller.MouseScroll(e.Offset);
-		}
-
 		public static Scene I { get; private set; }
 
 		public string scenePath = "";
@@ -115,8 +29,6 @@ namespace Engine
 		}
 		public List<GameObject> gameObjects = new List<GameObject>();
 
-		public event EventHandler<GameObject> GameObjectCreated;
-		public event EventHandler<GameObject> GameObjectDestroyed;
 		public event EventHandler SceneLoad;
 		Serializer serializer;
 		public event EventHandler<SceneData> SceneUpdated;
@@ -127,32 +39,70 @@ namespace Engine
 		public float updateTime = 0;
 		public float renderTime = 0;
 
+		public Scene()
+		{
+			I = this;
+		}
+
+		public void Start()
+		{
+			Physics.Init();
+
+			CreateDefaultObjects();
+
+			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
+			{
+				LoadScene(Serializer.lastScene);
+			}*/
+		}
+		public void Update()
+		{
+			Time.Update();
+			MouseInput.Update();
+
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
+				{
+					gameObjects[i].Update();
+					gameObjects[i].FixedUpdate();
+				}
+			}
+
+			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
+		}
+		public void Render()
+		{
+			GL.ClearColor(Camera.I.color.ToOtherColor());
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				gameObjects[i].Draw();
+			}
+		}
+
 		private void CreateDefaultObjects()
 		{
-			/*CreateTransformHandle();*/
 			var camGO = GameObject.Create(name: "Camera");
 			camGO.AddComponent<Camera>();
 			camGO.Awake();
 
-			GameObject go = GameObject.Create(name: "quad");
-			go.AddComponent<QuadRenderer>();
-			go.AddComponent<BoxShape>().size = new Vector2(100, 100);
-			Rigidbody rb = go.AddComponent<Rigidbody>();
-			go.AddComponent<Button>();
-			rb.isButton = true;
-
-			go.Awake();
-			go.transform.position = new Vector2(20, 20);
+			//GameObject go = GameObject.Create(name: "quad");
+			//go.AddComponent<QuadRenderer>();
+			//go.AddComponent<BoxShape>().size = new Vector2(100, 100);
+			//Rigidbody rb = go.AddComponent<Rigidbody>();
+			//go.AddComponent<Button>();
+			//rb.isButton = true;
+			//
+			//go.Awake();
+			//go.transform.position = new Vector2(20, 20);
 
 
 
 			GameObject go2 = GameObject.Create(name: "quad 2");
-			go2.AddComponent<QuadRenderer>();
-			go2.GetComponent<QuadRenderer>().Color=Color.Magenta;
-			go2.AddComponent<BoxShape>().size = new Vector2(150, 200);
-			Rigidbody rb2 = go.AddComponent<Rigidbody>();
-			go2.AddComponent<Button>();
-			rb2.isButton = true;
+			go2.AddComponent<SpriteRenderer>();
+			go2.AddComponent<BoxShape>().size = new Vector2(288, 180);
 
 			go2.Awake();
 			go2.transform.position = new Vector2(150, 100);
@@ -288,11 +238,9 @@ namespace Engine
 			}
 			return children;
 		}
-		public void OnGameObjectCreated(GameObject gameObject)
+		public void AddGameObjectToScene(GameObject gameObject)
 		{
 			gameObjects.Add(gameObject);
-
-			GameObjectCreated?.Invoke(this, gameObject);
 		}
 		public bool LoadScene(string path = null)
 		{
@@ -313,7 +261,7 @@ namespace Engine
 
 			for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 			{
-				Scene.I.OnGameObjectCreated(sceneFile.GameObjects[i]);
+				Scene.I.AddGameObjectToScene(sceneFile.GameObjects[i]);
 
 				sceneFile.GameObjects[i].Awake();
 			}
@@ -339,7 +287,6 @@ namespace Engine
 			{
 				gameObjects.Remove(gameObject);
 			}
-			GameObjectDestroyed?.Invoke(this, gameObject);
 		}
 
 		private void OnMouse3Clicked()
@@ -347,24 +294,6 @@ namespace Engine
 		}
 		private void OnMouse3Released()
 		{
-		}
-
-		protected override void OnUpdateFrame(FrameEventArgs args)
-		{
-			Time.Update();
-			//MouseInput.Update();
-
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
-				{
-					gameObjects[i].Update();
-					gameObjects[i].FixedUpdate();
-				}
-			}
-
-			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
-			base.OnUpdateFrame(args);
 		}
 		//  mgremoval       protected override void Update()
 		//  mgremoval       {
@@ -390,70 +319,6 @@ namespace Engine
 		//  mgremoval       	{
 		//  mgremoval       		GameObject go = serializer.LoadGameObject("Prefabs/yo.prefab");
 		//  mgremoval       	}
-		//  mgremoval       
-		//  mgremoval       
-		//  mgremoval       	for (int i = 0; i < gameObjects.Count; i++)
-		//  mgremoval       	{
-		//  mgremoval       		if (Global.GameRunning || gameObjects[i].alwaysUpdate)
-		//  mgremoval       		{
-		//  mgremoval       			gameObjects[i].Update();
-		//  mgremoval       			gameObjects[i].FixedUpdate();
-		//  mgremoval       		}
-		//  mgremoval       	}
-		//  mgremoval       
-		//  mgremoval       	SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
-		//  mgremoval       
-		//  mgremoval       	Editor.I.Update();
-		//  mgremoval       }
-		//  mgremoval       protected override void Draw(GameTime gameTime)
-		//  mgremoval       {
-		//  mgremoval       	if (camera?.renderTarget == null)
-		//  mgremoval       	{
-		//  mgremoval       		return;
-		//  mgremoval       	}
-		//  mgremoval       	renderStopwatch.Start();
-		//  mgremoval       	DrawSceneToTarget();
-		//  mgremoval       
-		//  mgremoval       	GraphicsDevice.Clear(new Color(33, 36, 38));
-		//  mgremoval       
-		//  mgremoval       	spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, effect: Camera.I.effect);
-		//  mgremoval       
-		//  mgremoval       	spriteBatch.Draw(texture: camera.renderTarget, destinationRectangleFloat: new RectangleFloat(Editor.gameViewPosition.X, Editor.gameViewPosition.Y, camera.renderTarget.Width, camera.renderTarget.Height), color: Color.White);
-		//  mgremoval       
-		//  mgremoval       	spriteBatch.End();
-		//  mgremoval       
-		//  mgremoval       	Editor.I.Draw(gameTime);
-		//  mgremoval       
-		//  mgremoval       	base.Draw(gameTime);
-		//  mgremoval       
-		//  mgremoval       	renderStopwatch.Stop();
-		//  mgremoval       	renderTime = renderStopwatch.ElapsedMilliseconds;
-		//  mgremoval       	renderStopwatch.Reset();
-		//  mgremoval       }
-		//  mgremoval       void DrawSceneToTarget()
-		//  mgremoval       {
-		//  mgremoval       	GraphicsDevice.SetRenderTarget(camera.renderTarget);
-		//  mgremoval       	GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
-		//  mgremoval       
-		//  mgremoval       	GraphicsDevice.Clear(camera.color);
-		//  mgremoval       
-		//  mgremoval       	SpriteBatchCache.UpdateAllTransformMatrices();
-		//  mgremoval       	SpriteBatchCache.BeginAll();
-		//  mgremoval       	spriteBatch.Begin(transformMatrix: camera.TransformMatrix, sortMode: SpriteSortMode.FrontToBack, blendState: null, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
-		//  mgremoval       
-		//  mgremoval       	for (int i = 0; i < gameObjects.Count; i++)
-		//  mgremoval       	{
-		//  mgremoval       		gameObjects[i].Draw(spriteBatch);
-		//  mgremoval       	}
-		//  mgremoval       	if (transformHandle.GameObject != null)
-		//  mgremoval       	{
-		//  mgremoval       		transformHandle.GameObject.Draw(spriteBatch);
-		//  mgremoval       	}
-		//  mgremoval       	SpriteBatchCache.EndAll();
-		//  mgremoval       	spriteBatch.End();
-		//  mgremoval       
-		//  mgremoval       	GraphicsDevice.SetRenderTarget(null);
-		//  mgremoval       }
 
 
 	}

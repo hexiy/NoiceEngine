@@ -20,9 +20,6 @@ namespace Engine
 		}
 		public void Init()
 		{
-			//_imGuiRenderer = new ImGuiRenderer(Scene.I);
-			//_imGuiRenderer.RebuildFontAtlas();
-			ImGui.SetNextWindowPos(new Vector2(500, 0));
 			ImGui.GetStyle().WindowRounding = 0;
 			ImGui.GetStyle().WindowBorderSize = 0;
 

@@ -137,37 +137,26 @@ namespace Engine
 			if (MouseInput.Position.In(boxColliderX))
 			{
 				//boxRendererX.fill = true;
-				boxRendererX.Color = Color.Black;
 			}
 			else
 			{
 				//boxRendererX.fill = false;
-				boxRendererX.Color = Color.White;
-
 			}
 			if (MouseInput.Position.In(boxColliderY))
 			{
 				//boxRendererY.fill = true;
-				boxRendererY.Color = Color.Black;
-
 			}
 			else
 			{
 				//boxRendererY.fill = false;
-				boxRendererY.Color = Color.White;
-
 			}
 			if (MouseInput.Position.In(boxColliderXY))
 			{
 				//boxRendererXY.fill = true;
-				boxRendererXY.Color = Color.Black;
-
 			}
 			else
 			{
 				//boxRendererXY.fill = false;
-				boxRendererXY.Color = Color.White;
-
 			}
 			base.Update();
 		}

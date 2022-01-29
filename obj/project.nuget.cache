@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2n+WT8cqlYuTNAXPVA2FLku1Xc79RtdQOPtrODQNGJTwHlJOL4N2DrPxUD7tg2HLOcIIAlzsSMfqpGnhT8yWog==",
+  "dgSpecHash": "UGa2zxFqYKUC80pCx7S0xcWMuc8KygbL/TUfRLdgbTAkMoih+IF+QxliYeMtVikJTu6Pl9UmXZascXcYjx2Wng==",
   "success": true,
   "projectFilePath": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
   "expectedPackageFiles": [
@@ -44,6 +44,7 @@
     "C:\\Users\\slavk\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
+    "C:\\Users\\slavk\\.nuget\\packages\\sixlabors.imagesharp\\1.0.4\\sixlabors.imagesharp.1.0.4.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\system.buffers\\4.4.0\\system.buffers.4.4.0.nupkg.sha512",
     "C:\\Users\\slavk\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",

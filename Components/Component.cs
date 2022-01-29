@@ -54,29 +54,9 @@ namespace Scripts
 			return localPoint + transform.position;
 		}
 
-		// Callbacks
-		private void RegisterInputCallbacks()
-		{
-			MouseInput.Mouse1Down += () =>
-			{
-				if (GameObject.mouseOver)
-				{
-					OnMouse1Down();
-				}
-			};
-			MouseInput.Mouse1Up += () =>
-			{
-				if (GameObject.mouseOver)
-				{
-					OnMouse1Up();
-				}
-			};
-			MouseInput.Mouse1 += OnMouse1;
-		}
 		public virtual void Awake()
 		{
 			awoken = true;
-			RegisterInputCallbacks();
 		}
 		public virtual void Start()
 		{
@@ -109,17 +89,6 @@ namespace Scripts
 		{
 		}
 
-		public virtual void OnMouse1Down()
-		{
-		}
-
-		public virtual void OnMouse1Up()
-		{
-		}
-
-		public virtual void OnMouse1()
-		{
-		}
 		public virtual void OnNewComponentAdded()
 		{
 		}

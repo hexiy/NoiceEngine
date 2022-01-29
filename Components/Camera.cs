@@ -36,7 +36,7 @@ namespace Engine
 
 		[ShowInEditor] public float Zoom { get; set; }
 
-		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(1600, 900);
+		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(600, 500);
 		[ShowInEditor] public float CameraSize { get; set; } = 0.1f;
 
 		public Matrix4x4 GetProjectionMatrix()

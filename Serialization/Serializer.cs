@@ -57,7 +57,7 @@ namespace Engine
 
 				for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 				{
-					Scene.I.OnGameObjectCreated(sceneFile.GameObjects[i]);
+					Scene.I.AddGameObjectToScene(sceneFile.GameObjects[i]);
 
 					sceneFile.GameObjects[i].Awake();
 				}

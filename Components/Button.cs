@@ -20,7 +20,7 @@ namespace Engine
 		bool clicked = false;
 		public override void Awake()
 		{
-			onClickedAction += () => renderer.Color = new Color(215,125,125);
+			onClickedAction += () => renderer.Color = new Color(215, 125, 125);
 			onReleasedAction += () => renderer.Color = Color.White;
 			base.Awake();
 
@@ -31,6 +31,17 @@ namespace Engine
 		public override void Update()
 		{
 			if (renderer == false || collider == false) { return; }
+			if (MouseInput.ButtonPressed())
+			{
+				onClickedAction?.Invoke();
+				clicked = true;
+
+			}
+			else if (MouseInput.ButtonReleased())
+			{
+				onReleasedAction?.Invoke();
+				clicked = false;
+			}
 			mouseIsOver = Camera.I.ScreenToWorld(MouseInput.Position).In(collider);
 
 			if (clicked == false)
@@ -40,19 +51,9 @@ namespace Engine
 
 			if (clicked && mouseIsOver == false) // up event when me move out of button bounds, even when clicked
 			{
-				OnMouse1Up();
+				onReleasedAction?.Invoke();
+				clicked = false;
 			}
-		}
-
-		public override void OnMouse1Down()
-		{
-			onClickedAction?.Invoke();
-			clicked = true;
-		}
-		public override void OnMouse1Up()
-		{
-			clicked = false;
-			onReleasedAction?.Invoke();
 		}
 	}
 }

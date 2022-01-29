@@ -46,7 +46,7 @@ namespace Engine
 		}
 		public static void CreateBody(Rigidbody rb)
 		{
-			/*lock (World)
+			lock (World)
 			{
 				Body body = World.CreateBody(rb.transform.position, 0, rb.isStatic ? BodyType.Static : BodyType.Dynamic);
 				body.SleepingAllowed = false;
@@ -54,7 +54,7 @@ namespace Engine
 				if (rb.GetComponent<BoxShape>() != null)
 				{
 					BoxShape boxShape = rb.GetComponent<BoxShape>();
-					var pfixture = body.CreateRectangle(boxShape.rect.Width * rb.transform.scale.X, boxShape.rect.Height * rb.transform.scale.Y, 1, Vector2.Zero);
+					var pfixture = body.CreateRectangle(boxShape.size.X * rb.transform.scale.X, boxShape.size.Y * rb.transform.scale.Y, 1, Vector2.Zero);
 					// Give it some bounce and friction
 					pfixture.Friction = 0.1f;
 					body.LinearDamping = 3;
@@ -62,7 +62,7 @@ namespace Engine
 				body.Mass = rb.Mass;
 
 				rb.body = body;
-			}*/
+			}
 		}
 		private static Stopwatch sw = new Stopwatch();
 		private static void Wait(double milliseconds)

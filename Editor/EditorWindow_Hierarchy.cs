@@ -78,8 +78,8 @@ namespace Engine
 		{
 			gameObjectsChildrened = new List<GameObject>();
 			ResetID();
-			ImGui.SetNextWindowSize(new Vector2(300, Scene.I.ClientSize.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Scene.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
+			ImGui.SetNextWindowSize(new Vector2(300, Window.I.ClientSize.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 			if (ImGui.Button("+"))

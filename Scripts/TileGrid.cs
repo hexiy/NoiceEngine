@@ -39,7 +39,7 @@ namespace Scripts
 						tile.transform.localPosition = new Vector3(x * 3.2f, y * 3.2f, 0);
 						tile.transform.scale = new Vector3(0.1f, 0.1f, 0.1f);
 
-						spriteSheetRenderer.LoadTexture("2D/tiles.png");
+						//spriteSheetRenderer.LoadTexture("2D/tiles.png");
 						spriteSheetRenderer.SpritesCount = new Vector2(16, 16);
 						if (y == 0)
 						{

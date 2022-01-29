@@ -54,7 +54,7 @@ namespace Scripts
 
 		public void UpdateTransform()
 		{
-			//transform.position = body.Position;
+			transform.position = new Vector2(body.Position.X, body.Position.Y);
 		}
 		public void TranslateAngularRotationToTransform()
 		{

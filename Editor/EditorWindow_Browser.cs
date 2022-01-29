@@ -18,6 +18,7 @@ namespace Engine
 		}
 		public void Update()
 		{
+			if (Directory.Exists("Prefabs") == false) { return; }
 			prefabs = Directory.GetFiles("Prefabs");
 		}
 
@@ -31,8 +32,8 @@ namespace Engine
 		}
 		public void Draw()
 		{
-			ImGui.SetNextWindowSize(new Vector2(Scene.I.ClientSize.X, Scene.I.ClientSize.Y - Camera.I.Size.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(0, Scene.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
+			ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y - Camera.I.Size.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(0, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Browser", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 

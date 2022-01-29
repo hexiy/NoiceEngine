@@ -23,6 +23,20 @@ namespace Engine.UI
 		public override void Update()
 		{
 			if (needToScale == false) { return; }
+
+			if (MouseInput.ButtonPressed())
+			{
+				clicked = true;
+				needToScale = true;
+			}
+			else if (MouseInput.ButtonReleased())
+			{
+				transform.scale = Vector3.One * scaleTarget;
+
+				clicked = false;
+				needToScale = true;
+			}
+
 			if (clicked)
 			{
 				transform.scale = Vector3.Lerp(transform.scale, Vector3.One * scaleTarget, Time.deltaTime * scaleSpeed);
@@ -40,22 +54,5 @@ namespace Engine.UI
 				}
 			}
 		}
-		public override void OnMouse1Down()
-		{
-			clicked = true;
-			needToScale = true;
-
-			base.OnMouse1Down();
-		}
-		public override void OnMouse1Up()
-		{
-			transform.scale = Vector3.One * scaleTarget;
-
-			clicked = false;
-			needToScale = true;
-
-			base.OnMouse1Down();
-		}
-
 	}
 }

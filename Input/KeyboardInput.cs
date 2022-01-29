@@ -491,11 +491,11 @@ namespace Engine
 
 		public static bool IsKeyDown(Keys key)
 		{
-			return Scene.I.KeyboardState.IsKeyDown((OpenTK.Windowing.GraphicsLibraryFramework.Keys)key);
+			return Window.I.KeyboardState.IsKeyDown((OpenTK.Windowing.GraphicsLibraryFramework.Keys)key);
 		}
 		public static bool IsKeyUp(Keys key)
 		{
-			return Scene.I.KeyboardState.IsKeyReleased((OpenTK.Windowing.GraphicsLibraryFramework.Keys)key);
+			return Window.I.KeyboardState.IsKeyReleased((OpenTK.Windowing.GraphicsLibraryFramework.Keys)key);
 		}
 	}
 }
