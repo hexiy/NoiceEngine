@@ -12,7 +12,7 @@ namespace Engine
 
 		public static SceneFile CreateForOneGameObject(GameObject go)
         {
-            return new SceneFile() { GameObjects = new List<GameObject>() { go }, Components = go.Components };
+            return new SceneFile() { GameObjects = new List<GameObject>() { go }, Components = go.components };
         }
     }
 }

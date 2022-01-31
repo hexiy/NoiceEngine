@@ -5,6 +5,6 @@ namespace Scripts
 {
     public class CircleShape : Shape
     {
-        [ShowInEditor] public float Radius { get; set; }
+        public float radius;
     }
 }

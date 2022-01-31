@@ -9,12 +9,14 @@ namespace Engine
 {
 	public class GameObject
 	{
+		[Hide] public int indexInHierarchy = 0;
+
 		[XmlIgnore]
 		public GameObject Parent
 		{
 			get
 			{
-				int index = Scene.I.GetGameObjectIndex(parentID);
+				int index = Scene.I.GetGameObjectIndexInHierarchy(parentID);
 				if (index != -1)
 				{ return Scene.I.gameObjects[index]; }
 				else
@@ -24,12 +26,12 @@ namespace Engine
 			}
 			set
 			{
-				int index = Scene.I.GetGameObjectIndex(parentID);
+				int index = Scene.I.GetGameObjectIndexInHierarchy(parentID);
 
-				parentID = (int)value.ID;
+				parentID = (int)value.id;
 				if (index != -1)
 				{
-					Scene.I.gameObjects[Scene.I.GetGameObjectIndex(parentID)] = value;
+					Scene.I.gameObjects[Scene.I.GetGameObjectIndexInHierarchy(parentID)] = value;
 				}
 			}
 		}
@@ -48,18 +50,18 @@ namespace Engine
 		private bool destroy = false;
 
 		[System.ComponentModel.DefaultValue(false)]
-		public bool Awoken { get; set; } = false;
-		public bool Started { get; set; } = false;
-		[ShowInEditor] public int ID { get; set; } = -1;
-		[ShowInEditor] public string Name { get; set; } = "";
+		public bool awoken = false;
+		public bool started = false;
+		public int id = -1;
+		public string name = "";
 		public bool selected = false;
 		public bool silent = false;
 		public bool dynamicallyCreated = false;
-		public bool Active { get; set; } = true;
+		public bool active = true;
 
 		//[System.Xml.Serialization.XmlArrayItem(type: typeof(Component))]
 		[System.Xml.Serialization.XmlIgnore]
-		public List<Component> Components = new List<Component>();
+		public List<Component> components = new List<Component>();
 
 		[System.Xml.Serialization.XmlIgnore] public Transform transform { get; set; }
 
@@ -67,9 +69,9 @@ namespace Engine
 
 		public void Setup()
 		{
-			if (ID == -1)
+			if (id == -1)
 			{
-				ID = IDsManager.gameObjectNextID;
+				id = IDsManager.gameObjectNextID;
 				IDsManager.gameObjectNextID++;
 			}
 
@@ -81,7 +83,7 @@ namespace Engine
 		{
 			GameObject go = new GameObject();
 
-			go.Name = name;
+			go.name = name;
 			go.silent = _silent;
 			go.Setup();
 			if (position != null)
@@ -124,9 +126,9 @@ namespace Engine
 
 		void InvokeOnComponentAddedOnComponents(GameObject go, Component comp)
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				Components[i].OnNewComponentAdded();
+				components[i].OnNewComponentAdded(comp);
 			}
 		}
 
@@ -139,14 +141,14 @@ namespace Engine
 		}
 		public void LinkComponents(GameObject gameObject, Component component)
 		{
-			for (int index1 = 0; index1 < Components.Count; index1++)
+			for (int index1 = 0; index1 < components.Count; index1++)
 			{
-				for (int index2 = 0; index2 < Components.Count; index2++)
+				for (int index2 = 0; index2 < components.Count; index2++)
 				{
 					if (index1 == index2) { continue; }
 
-					Type sourceType1 = Components[index1].GetType();
-					Type sourceType2 = Components[index2].GetType();
+					Type sourceType1 = components[index1].GetType();
+					Type sourceType2 = components[index2].GetType();
 
 					FieldInfo fieldInfo = null;
 					FieldInfo[] infos = sourceType1.GetFields();
@@ -158,6 +160,7 @@ namespace Engine
 							break;
 						}
 					}
+					//while (fieldInfo != null && sourceType1.BaseType != null && sourceType1.BaseType.Name.Equals("Component") == false) not old, but shouldnt it be like that?
 					while (fieldInfo == null && sourceType1.BaseType != null && sourceType1.BaseType.Name.Equals("Component") == false)
 					{
 						infos = sourceType1.BaseType.GetFields();
@@ -177,11 +180,11 @@ namespace Engine
 					{
 						sourceType2 = sourceType2.BaseType;
 					}
-					if (fieldInfo != null && (fieldInfo.FieldType.IsSubclassOf(sourceType2) || fieldInfo.FieldType == sourceType2) && fieldInfo.GetValue(Components[index1]) == null)
+					if (fieldInfo != null && (fieldInfo.FieldType.IsSubclassOf(sourceType2) || fieldInfo.FieldType == sourceType2) && fieldInfo.GetValue(components[index1]) == null)
 					{
-						if (GetComponents(Components[index1].GetType()).IndexOf(Components[index1]) == GetComponents(Components[index2].GetType()).IndexOf(Components[index2]))
+						if (GetComponents(components[index1].GetType()).IndexOf(components[index1]) == GetComponents(components[index2].GetType()).IndexOf(components[index2]))
 						{
-							fieldInfo.SetValue(Components[index1], Components[index2]);
+							fieldInfo.SetValue(components[index1], components[index2]);
 						}
 					}
 				}
@@ -228,32 +231,32 @@ namespace Engine
 				transform = AddComponent<Transform>();
 			}
 
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i].awoken == false)
+				if (components[i].awoken == false)
 				{
-					Components[i].Awake();
-					Components[i].awoken = true;
+					components[i].Awake();
+					components[i].awoken = true;
 				}
 			}
 
-			Awoken = true;
+			awoken = true;
 			Start();
 		}
 		public virtual void PreSceneSave()
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				Components[i].PreSceneSave();
+				components[i].PreSceneSave();
 			}
 		}
 		public virtual void Start()
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				Components[i].Start();
+				components[i].Start();
 			}
-			Started = true;
+			started = true;
 		}
 		private void RemoveFromLists(GameObject gameObject)
 		{
@@ -267,11 +270,11 @@ namespace Engine
 			}
 			lock (ComponentsLock)
 			{
-				for (int i = 0; i < Components.Count; i++)
+				for (int i = 0; i < components.Count; i++)
 				{
-					Components[i].OnDestroyed();
+					components[i].OnDestroyed();
 				}
-				Components.Clear();
+				components.Clear();
 			}
 
 			Scene.I.OnGameObjectDestroyed(this);
@@ -291,7 +294,7 @@ namespace Engine
 
 		public virtual void Update()
 		{
-			if (Active == false && updateWhenDisabled == false)
+			if (active == false && updateWhenDisabled == false)
 			{ return; }
 			if (destroy == true)
 			{
@@ -308,7 +311,7 @@ namespace Engine
 		}
 		public virtual void FixedUpdate()
 		{
-			if (Active == false && updateWhenDisabled == false)
+			if (active == false && updateWhenDisabled == false)
 			{ return; }
 
 			FixedUpdateComponents();
@@ -316,12 +319,12 @@ namespace Engine
 		public Component AddExistingComponent(Component comp)
 		{
 			comp.GameObject = this;
-			comp.gameObjectID = ID;
+			comp.gameObjectID = id;
 
-			Components.Add(comp);
+			components.Add(comp);
 
 			OnComponentAdded?.Invoke(this, comp);
-			if (Awoken) { comp.Awake(); }
+			if (awoken) { comp.Awake(); }
 
 			/* for (int i = 0; i < ComponentsWaitingToBePaired.Count; i++)
 			 {
@@ -355,11 +358,11 @@ namespace Engine
 			}
 			component.GameObject = this;
 
-			Components.Add(component);
+			components.Add(component);
 
 			OnComponentAdded?.Invoke(this, component);
-			if (Awoken && component.awoken == false) { component.Awake(); }
-			if (Started && component.started == false) { component.Start(); }
+			if (awoken && component.awoken == false) { component.Awake(); }
+			if (started && component.started == false) { component.Start(); }
 
 			/* for (int i = 0; i < ComponentsWaitingToBePaired.Count; i++)
 			 {
@@ -374,39 +377,39 @@ namespace Engine
 		}
 		public void RemoveComponent(int index)
 		{
-			Active = false;
-			Components[index].OnDestroyed();
-			Components.RemoveAt(index);
-			Active = true;
+			active = false;
+			components[index].OnDestroyed();
+			components.RemoveAt(index);
+			active = true;
 
 		}
 		public void RemoveComponent(Component component)
 		{
-			Active = false;
+			active = false;
 			component.OnDestroyed();
-			Components.Remove(component);
-			Active = true;
+			components.Remove(component);
+			active = true;
 
 		}
 		public void RemoveComponent<T>() where T : Component
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i] is T)
+				if (components[i] is T)
 				{
-					Components[i].OnDestroyed();
-					Components.RemoveAt(i);
+					components[i].OnDestroyed();
+					components.RemoveAt(i);
 				}
 			}
 		}
 		public void RemoveComponent(Type type)
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i].GetType() == type)
+				if (components[i].GetType() == type)
 				{
-					Components[i].OnDestroyed();
-					Components.RemoveAt(i);
+					components[i].OnDestroyed();
+					components.RemoveAt(i);
 					return;
 				}
 			}
@@ -414,13 +417,13 @@ namespace Engine
 		public T GetComponent<T>(int? index = null) where T : Component
 		{
 			int k = index == null ? 0 : (int)index;
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i] is T)
+				if (components[i] is T)
 				{
 					if (k == 0)
 					{
-						return Components[i] as T;
+						return components[i] as T;
 					}
 					else
 					{
@@ -432,9 +435,9 @@ namespace Engine
 		}
 		public bool HasComponent<T>() where T : Component
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i] is T)
+				if (components[i] is T)
 				{
 					return true;
 				}
@@ -444,22 +447,22 @@ namespace Engine
 		public List<T> GetComponents<T>() where T : Component
 		{
 			List<T> componentsToReturn = new List<T>();
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i] is T)
+				if (components[i] is T)
 				{
-					componentsToReturn.Add(Components[i] as T);
+					componentsToReturn.Add(components[i] as T);
 				}
 			}
 			return componentsToReturn;
 		}
 		public Component GetComponent(Type type)
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i].GetType() == type)
+				if (components[i].GetType() == type)
 				{
-					return Components[i];
+					return components[i];
 				}
 			}
 			return null;
@@ -467,11 +470,11 @@ namespace Engine
 		public List<Component> GetComponents(Type type)
 		{
 			List<Component> componentsToReturn = new List<Component>();
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i].GetType() == type)
+				if (components[i].GetType() == type)
 				{
-					componentsToReturn.Add(Components[i]);
+					componentsToReturn.Add(components[i]);
 				}
 			}
 			return componentsToReturn;
@@ -480,22 +483,22 @@ namespace Engine
 		{
 			lock (ComponentsLock)
 			{
-				for (int i = 0; i < Components.Count; i++)
+				for (int i = 0; i < components.Count; i++)
 				{
-					if (Components[i].enabled && Components[i].awoken)
+					if (components[i].enabled && components[i].awoken)
 					{
-						Components[i].Update();
+						components[i].Update();
 					}
 				}
 			}
 		}
 		private void FixedUpdateComponents()
 		{
-			for (int i = 0; i < Components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i].enabled && Components[i].awoken)
+				if (components[i].enabled && components[i].awoken)
 				{
-					Components[i].FixedUpdate();
+					components[i].FixedUpdate();
 				}
 			}
 		}
@@ -508,13 +511,13 @@ namespace Engine
 			   }
 		 }*/
 
-		public void Draw()
+		public void Render()
 		{
-			if (Active == false) { return; }
-			for (int i = 0; i < Components.Count; i++)
+			if (active == false) { return; }
+			for (int i = 0; i < components.Count; i++)
 			{
-				if (Components[i] is Renderer && Components[i].enabled && Components[i].awoken && Active)
-					(Components[i] as Renderer).Render();
+				if (components[i] is Renderer && components[i].enabled && components[i].awoken && active)
+					(components[i] as Renderer).Render();
 			}
 		}
 

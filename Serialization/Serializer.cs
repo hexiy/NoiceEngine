@@ -17,7 +17,7 @@ namespace Engine
 		{
 			I = this;
 
-			lastScene = "scene1.scene";//Properties.Settings.Default.lastScene.ToString();
+			lastScene = PersistentData.GetString("lastOpenedScene", "scene1.scene");
 		}
 		void UpdateSerializableTypes()
 		{
@@ -37,7 +37,7 @@ namespace Engine
 
 			SaveGameObjects(prefabSceneFile, prefabPath);
 		}
-		public GameObject LoadGameObject(string prefabPath)
+		public GameObject LoadPrefab(string prefabPath)
 		{
 			using (StreamReader sr = new StreamReader(prefabPath))
 			{
@@ -48,21 +48,26 @@ namespace Engine
 				XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile), SerializableTypes.ToArray());
 
 				var sceneFile = ((SceneFile)xmlSerializer.Deserialize(sr));
-				GameObject go = sceneFile.GameObjects[0];
-				IDsManager.gameObjectNextID = go.ID + 1;
-
 
 
 				ConnectGameObjectsWithComponents(sceneFile);
 
-				for (int i = 0; i < sceneFile.GameObjects.Count; i++)
-				{
-					Scene.I.AddGameObjectToScene(sceneFile.GameObjects[i]);
 
-					sceneFile.GameObjects[i].Awake();
+				GameObject go = sceneFile.GameObjects[0];
+				go.id = IDsManager.gameObjectNextID;
+				IDsManager.gameObjectNextID++;
+
+				for (int i = 0; i < go.components.Count; i++)
+				{
+					go.components[i].gameObjectID = go.id;
 				}
 
-				return sceneFile.GameObjects[0];
+
+				Scene.I.AddGameObjectToScene(go);
+
+				go.Awake();
+
+				return go;
 			}
 		}
 		public void SaveGameObjects(SceneFile sceneFile, string scenePath)
@@ -73,10 +78,10 @@ namespace Engine
 			{
 				for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 				{
-					sceneFile.GameObjects[i].Awoken = false;
-					for (int j = 0; j < sceneFile.GameObjects[i].Components.Count; j++)
+					sceneFile.GameObjects[i].awoken = false;
+					for (int j = 0; j < sceneFile.GameObjects[i].components.Count; j++)
 					{
-						sceneFile.GameObjects[i].Components[j].awoken = false;
+						sceneFile.GameObjects[i].components[j].awoken = false;
 					}
 				}
 				UpdateSerializableTypes();
@@ -87,10 +92,10 @@ namespace Engine
 
 				for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 				{
-					sceneFile.GameObjects[i].Awoken = true;
-					for (int j = 0; j < sceneFile.GameObjects[i].Components.Count; j++)
+					sceneFile.GameObjects[i].awoken = true;
+					for (int j = 0; j < sceneFile.GameObjects[i].components.Count; j++)
 					{
-						sceneFile.GameObjects[i].Components[j].awoken = true;
+						sceneFile.GameObjects[i].components[j].awoken = true;
 					}
 				}
 			}
@@ -119,32 +124,37 @@ namespace Engine
 			{
 				for (int j = 0; j < comps.Length; j++)
 				{
-					if (comps[j].gameObjectID == gos[i].ID)
+					if (comps[j].gameObjectID == gos[i].id && comps[j].GetType() == typeof(Transform)) // add transforms first
 					{
 						gos[i].AddExistingComponent(comps[j]);
 						gos[i].LinkComponents(gos[i], comps[j]);
-						/*gos[i].Components.Add(comps[j]);
-						gos[i].Awake();
-						comps[j].GameObject = gos[i];*/
+					}
+				}
+				for (int j = 0; j < comps.Length; j++)
+				{
+					if (comps[j].gameObjectID == gos[i].id && comps[j].GetType() != typeof(Transform))
+					{
+						gos[i].AddExistingComponent(comps[j]);
+						gos[i].LinkComponents(gos[i], comps[j]);
 					}
 				}
 			}
 			return;
 			for (int i = 0; i < gos.Length; i++)
 			{
-				for (int j = 0; j < gos[i].Components.Count; j++)
+				for (int j = 0; j < gos[i].components.Count; j++)
 				{
-					gos[i].InitializeMemberComponents(gos[i].Components[j]);
+					gos[i].InitializeMemberComponents(gos[i].components[j]);
 
-					gos[i].LinkComponents(gos[i], gos[i].Components[j]);
+					gos[i].LinkComponents(gos[i], gos[i].components[j]);
 
-					gos[i].Components[j].GameObject = gos[i];
-					gos[i].Components[j].transform.GameObject = gos[i];
+					gos[i].components[j].GameObject = gos[i];
+					gos[i].components[j].transform.GameObject = gos[i];
 
-					gos[i].Components[j].Awake();
-					gos[i].Components[j].awoken = true;
+					gos[i].components[j].Awake();
+					gos[i].components[j].awoken = true;
 
-					gos[i].Components[j].Start();
+					gos[i].components[j].Start();
 
 
 				}

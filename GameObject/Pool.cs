@@ -11,9 +11,9 @@ namespace Scripts
         private void AddNewObject()
         {
             GameObject gameObject = GameObject.Create(name: "Pooled object");
-            for (int i = 0; i < model.Components.Count; i++)
+            for (int i = 0; i < model.components.Count; i++)
             {
-                gameObject.AddComponent(model.Components[i].GetType());
+                gameObject.AddComponent(model.components[i].GetType());
             }
             gameObject.Awake();
             freeObjects.Push(gameObject);
@@ -25,13 +25,13 @@ namespace Scripts
                 AddNewObject();
             }
             GameObject gameObject = freeObjects.Pop();
-            gameObject.Active = true;
+            gameObject.active = true;
             usedObjects.Push(gameObject);
             return gameObject;
         }
         public void Return(GameObject gameObject)
         {
-            gameObject.Active = false;
+            gameObject.active = false;
             freeObjects.Push(gameObject);
         }
     }

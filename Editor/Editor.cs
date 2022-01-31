@@ -12,7 +12,7 @@ namespace Engine
 		public static Vector2 gameViewPosition = new Vector2(0, 0);
 		public static Vector2 ScreenToWorld(Vector2 screenPosition)
 		{
-			return (screenPosition - gameViewPosition) * Camera.I.CameraSize + Camera.I.transform.position;
+			return (screenPosition - gameViewPosition) * Camera.I.cameraSize + Camera.I.transform.position;
 		}
 		public Editor()
 		{

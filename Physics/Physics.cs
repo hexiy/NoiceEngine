@@ -13,7 +13,7 @@ namespace Engine
 	{
 		public static World World;
 
-		public static readonly Vector2 gravity = new Vector2(0, 2);
+		public static readonly Vector2 gravity = new Vector2(0, -2);
 
 		public static bool Running = true;
 

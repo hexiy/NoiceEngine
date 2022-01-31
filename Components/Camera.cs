@@ -27,24 +27,23 @@ namespace Engine
 			  DepthFormat.Depth24);*/
 		}
 
-		[ShowInEditor] public Color color = new Color(34, 34, 34);
+		public Color color = new Color(34, 34, 34);
 
 
-		[ShowInEditor]
-		public int AntialiasingStrength { get; set; } = 0;
+		public int antialiasingStrength = 0;
 
 
-		[ShowInEditor] public float Zoom { get; set; }
+		public float zoom;
 
-		[ShowInEditor] public Vector2 Size { get; set; } = new Vector2(600, 500);
-		[ShowInEditor] public float CameraSize { get; set; } = 0.1f;
+		public Vector2 size = new Vector2(600, 500);
+		public float cameraSize = 0.1f;
 
 		public Matrix4x4 GetProjectionMatrix()
 		{
 			float left = 0;
-			float right = Size.X;
+			float right = size.X;
 			float bottom = 0;
-			float top = Size.Y;
+			float top = size.Y;
 
 			Matrix4x4 orthoMatrix = Matrix4x4.CreateOrthographicOffCenter(left, right, bottom, top, 0.00001f, 10000000f);
 
@@ -56,12 +55,12 @@ namespace Engine
 			get
 			{
 				return
-				Matrix.CreateScale(new Vector3(1 / CameraSize, 1 / CameraSize, 0.0000000001f)) *
+				Matrix.CreateScale(new Vector3(1 / cameraSize, 1 / cameraSize, 0.0000000001f)) *
 				Matrix.CreateRotationX(transform.rotation.X) *
 				Matrix.CreateRotationY(transform.rotation.Y) *
 				Matrix.CreateRotationZ(transform.rotation.Z) *
-				Matrix.CreateTranslation(-transform.position.X / CameraSize,
-				   -transform.position.Y / CameraSize, 0);
+				Matrix.CreateTranslation(-transform.position.X / cameraSize,
+				   -transform.position.Y / cameraSize, 0);
 				//Matrix.CreateRotationZ(Rotation);
 			}
 		}
@@ -83,7 +82,7 @@ namespace Engine
 		}
 		public Vector2 CenterOfScreenToWorld()
 		{
-			return ScreenToWorld(new Vector2(Size.X / 2, Size.Y / 2));
+			return ScreenToWorld(new Vector2(size.X / 2, size.Y / 2));
 		}
 		public override void Update()
 		{

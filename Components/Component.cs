@@ -14,7 +14,7 @@ namespace Scripts
 			set
 			{
 				gameObject = value;
-				gameObjectID = value.ID;
+				gameObjectID = value.id;
 			}
 		}
 		public int gameObjectID;
@@ -89,7 +89,7 @@ namespace Scripts
 		{
 		}
 
-		public virtual void OnNewComponentAdded()
+		public virtual void OnNewComponentAdded(Component comp)
 		{
 		}
 

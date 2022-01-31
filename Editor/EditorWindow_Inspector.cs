@@ -20,15 +20,15 @@ namespace Engine
 		public void Update()
 		{
 		}
-		public void SelectGameObject(int gameObjectIndex)
+		public void SelectGameObject(int id)
 		{
-			if (gameObjectIndex == -1)
+			if (id == -1)
 			{
 				selectedGameObject = null;
 			}
 			else
 			{
-				selectedGameObject = Scene.I.gameObjects[gameObjectIndex];
+				selectedGameObject = Scene.I.GetGameObject(id);
 			}
 		}
 		private int currentID = 0;
@@ -67,50 +67,71 @@ namespace Engine
 			if (selectedGameObject != null)
 			{
 				ImGui.SameLine();
-				string gameObjectName = selectedGameObject.Name;
+				string gameObjectName = selectedGameObject.name;
 				ImGui.SetNextItemWidth(265);
 				if (ImGui.InputText("", ref gameObjectName, 100))
 				{
-					selectedGameObject.Name = gameObjectName;
+					selectedGameObject.name = gameObjectName;
 				}
 
 
-				for (int i = 0; i < selectedGameObject.Components.Count; i++)
+				for (int i = 0; i < selectedGameObject.components.Count; i++)
 				{
 					PushNextID();
 
 					//ImGui.SetNextItemWidth (300);
-					ImGui.Checkbox("", ref selectedGameObject.Components[i].enabled);
+					ImGui.Checkbox("", ref selectedGameObject.components[i].enabled);
 					ImGui.SameLine();
 
 					if (ImGui.Button("-"))
 					{
-						selectedGameObject.RemoveComponent(selectedGameObject.Components[i]);
+						selectedGameObject.RemoveComponent(selectedGameObject.components[i]);
 						ImGui.PopID();
 						continue;
 					}
 					ImGui.SameLine();
-					if (ImGui.CollapsingHeader(selectedGameObject.Components[i].GetType().Name + "##" + currentID))
+					if (ImGui.CollapsingHeader(selectedGameObject.components[i].GetType().Name + "##" + currentID))
 					{
 						FieldOrPropertyInfo[] infos;
 						{
-							FieldInfo[] _fields = selectedGameObject.Components[i].GetType().GetFields();
-							PropertyInfo[] properties = selectedGameObject.Components[i].GetType().GetProperties();
+							FieldInfo[] _fields = selectedGameObject.components[i].GetType().GetFields();
+							PropertyInfo[] properties = selectedGameObject.components[i].GetType().GetProperties();
 							infos = new FieldOrPropertyInfo[_fields.Length + properties.Length];
-
+							List<Type> inspectorSupportedTypes = new List<Type>()
+							{
+								typeof(Vector3),
+								typeof(Vector2),
+								typeof(Texture),
+								typeof(Color),
+								typeof(bool),
+								typeof(float),
+								typeof(int),
+								typeof(string)
+							};
 							for (int fieldIndex = 0; fieldIndex < _fields.Length; fieldIndex++)
 							{
+
 								infos[fieldIndex] = new FieldOrPropertyInfo(_fields[fieldIndex]);
+								if (_fields[fieldIndex].GetValue(selectedGameObject.components[i]) == null) infos[fieldIndex].canShowInEditor = false;
 							}
 							for (int propertyIndex = 0; propertyIndex < properties.Length; propertyIndex++)
 							{
+
 								infos[_fields.Length + propertyIndex] = new FieldOrPropertyInfo(properties[propertyIndex]);
+								if (properties[propertyIndex].GetValue(selectedGameObject.components[i]) == null) infos[_fields.Length + propertyIndex].canShowInEditor = false;
+							}
+
+							for (int infoIndex = 0; infoIndex < infos.Length; infoIndex++)
+							{
+								if (inspectorSupportedTypes.Contains(infos[infoIndex].FieldOrPropertyType) == false)
+								{
+									infos[infoIndex].canShowInEditor = false;
+								}
 							}
 						}
 						for (int infoIndex = 0; infoIndex < infos.Length; infoIndex++)
 						{
 							if (infos[infoIndex].canShowInEditor == false) continue;
-
 							PushNextID();
 
 							ImGui.Text(infos[infoIndex].Name);
@@ -121,10 +142,10 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								System.Numerics.Vector3 systemv3 = (Vector3)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								System.Numerics.Vector3 systemv3 = (Vector3)infos[infoIndex].GetValue(selectedGameObject.components[i]);
 								if (ImGui.DragFloat3("", ref systemv3, 0.01f))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], (Vector3)systemv3);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], (Vector3)systemv3);
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(Vector2))
@@ -133,49 +154,53 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								System.Numerics.Vector2 systemv2 = (Vector2)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								System.Numerics.Vector2 systemv2 = (Vector2)infos[infoIndex].GetValue(selectedGameObject.components[i]);
 								if (ImGui.DragFloat2("", ref systemv2, 0.01f))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], (Vector2)systemv2);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], (Vector2)systemv2);
 								}
 							}
-							//else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture2D))
-							//{
-							//	float itemWidth = 200;
-							//	ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
-							//	ImGui.SetNextItemWidth(itemWidth);
-							//
-							//	//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));
-							//
-							//	string fieldValue = (selectedGameObject.Components[i] as ITexture).texturePath;
-							//
-							//	if (ImGui.InputText("oh", ref fieldValue, 100))
-							//	{
-							//		(selectedGameObject.Components[i] as ITexture).LoadTexture(fieldValue);
-							//	}
-							//}
+							else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture) && selectedGameObject.components[i] is SpriteRenderer)
+							{
+								float itemWidth = 200;
+								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
+								ImGui.SetNextItemWidth(itemWidth);
+
+								//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));
+								//ImGui.SameLine();
+								//if (ImGui.Button("..."))
+								//{
+								//	OpenFileDialog ofd
+								//}
+
+								string texturePath = (selectedGameObject.components[i] as SpriteRenderer).texture.path;
+								if (ImGui.InputText("oh", ref texturePath, 100))
+								{
+									(selectedGameObject.components[i] as SpriteRenderer).LoadTexture(texturePath);
+								}
+							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(Color))
 							{
 								float itemWidth = 200;
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								System.Numerics.Vector4 fieldValue = ((Color)infos[infoIndex].GetValue(selectedGameObject.Components[i])).ToVector4();
+								System.Numerics.Vector4 fieldValue = ((Color)infos[infoIndex].GetValue(selectedGameObject.components[i])).ToVector4();
 
 								if (ImGui.ColorEdit4("", ref fieldValue))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue.ToColor());
+									infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue.ToColor());
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(bool))
 							{
 								ImGui.SameLine(ImGui.GetWindowWidth() - 25);
 
-								bool fieldValue = (bool)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								bool fieldValue = (bool)infos[infoIndex].GetValue(selectedGameObject.components[i]);
 
 								if (ImGui.Checkbox("", ref fieldValue))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(float))
@@ -184,11 +209,11 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								float fieldValue = (float)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								float fieldValue = (float)infos[infoIndex].GetValue(selectedGameObject.components[i]);
 
 								if (ImGui.DragFloat("", ref fieldValue, 0.01f))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(int))
@@ -197,11 +222,11 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								int fieldValue = (int)infos[infoIndex].GetValue(selectedGameObject.Components[i]);
+								int fieldValue = (int)infos[infoIndex].GetValue(selectedGameObject.components[i]);
 
 								if (ImGui.DragInt("", ref fieldValue))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
 								}
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(string))
@@ -210,11 +235,11 @@ namespace Engine
 								ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 								ImGui.SetNextItemWidth(itemWidth);
 
-								string fieldValue = infos[infoIndex].GetValue(selectedGameObject.Components[i]).ToString();
+								string fieldValue = infos[infoIndex].GetValue(selectedGameObject.components[i]).ToString();
 
 								if (ImGui.InputText("", ref fieldValue, 100))
 								{
-									infos[infoIndex].SetValue(selectedGameObject.Components[i], fieldValue);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
 								}
 							}
 							ImGui.PopID();

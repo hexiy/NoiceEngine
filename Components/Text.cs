@@ -3,7 +3,6 @@ namespace Scripts
 {
     public class Text : Component
     {
-        [ShowInEditor]
-        public string Value = "test";
+        public string text = "test";
     }
 }

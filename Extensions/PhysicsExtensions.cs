@@ -1,5 +1,4 @@
-﻿
-using Scripts;
+﻿using Scripts;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +13,7 @@ namespace Engine
 			switch (shape)
 			{
 				case CircleShape circleCollider:
-					if ((distance = Vector2.Distance(circleCollider.transform.position.ToVector2(), point)) < circleCollider.Radius)
+					if ((distance = Vector2.Distance(circleCollider.transform.position.ToVector2(), point)) < circleCollider.radius)
 					{
 						isIn = true;
 					}
@@ -22,10 +21,16 @@ namespace Engine
 				case BoxShape boxCollider:
 					Vector2 boxPosition = boxCollider.transform.position;
 
-					isIn = (point.X < boxCollider.offset.X + boxPosition.X + boxCollider.size.X / 2 &&
-							point.X > boxCollider.offset.X + boxPosition.X - boxCollider.size.X / 2 &&
-							point.Y < boxCollider.offset.Y + boxPosition.Y + boxCollider.size.Y / 2 &&
-							point.Y > boxCollider.offset.Y + boxPosition.Y - boxCollider.size.Y / 2);
+					//float boxEndX = boxPosition.X + boxCollider.offset.X + (boxCollider.size.X / 2) * boxCollider.transform.pivot.X;
+
+					Vector2 start = boxPosition + boxCollider.offset + (boxCollider.size * boxCollider.transform.pivot);
+					Vector2 end = boxPosition + boxCollider.offset + (boxCollider.size + boxCollider.size * boxCollider.transform.pivot) * boxCollider.transform.scale;
+
+
+					isIn = (point.X < end.X &&
+							point.X > start.X &&
+							point.Y < end.Y &&
+							point.Y > start.Y);
 					break;
 			}
 			return isIn;

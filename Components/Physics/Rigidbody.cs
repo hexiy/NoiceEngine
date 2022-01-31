@@ -17,18 +17,18 @@ namespace Scripts
 		[XmlIgnore]
 		[LinkableComponent]
 		public Shape shape;
-		[ShowInEditor] public bool useGravity = false;
-		[ShowInEditor] public bool isStatic = false;
-		[ShowInEditor] public bool isTrigger = false;
-		[ShowInEditor] public bool isButton = false;
-		[XmlIgnore] [ShowInEditor] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
-		[ShowInEditor] public float Mass { get; set; } = 1;
+		public bool useGravity = false;
+		public bool isStatic = false;
+		public bool isTrigger = false;
+		public bool isButton = false;
+		[XmlIgnore] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
+		public float Mass { get; set; } = 1;
 
 
 		public float velocityDrag = 0.99f;
-		[ShowInEditor] public float Bounciness { get; set; } = 0f;
+		[Show] public float Bounciness { get; set; } = 0f;
 
-		[ShowInEditor] public float AngularVelocity { get; set; } = 0;
+		[Show] public float AngularVelocity { get; set; } = 0;
 		public float angularDrag = 1f;
 
 		public float friction = 1;
@@ -40,6 +40,8 @@ namespace Scripts
 			if (isButton) { return; }
 
 			Physics.CreateBody(this);
+
+			base.Awake();
 		}
 		public override void FixedUpdate()
 		{
@@ -82,11 +84,11 @@ namespace Scripts
 			touchingRigidbodies.Add(rigidbody);
 
 			// Call callback on components that implement interface IPhysicsCallbackListener
-			for (int i = 0; i < GameObject.Components.Count; i++)
+			for (int i = 0; i < GameObject.components.Count; i++)
 			{
-				if ((GameObject.Components[i] is Rigidbody) == false)
+				if ((GameObject.components[i] is Rigidbody) == false)
 				{
-					GameObject.Components[i].OnCollisionEnter(rigidbody);
+					GameObject.components[i].OnCollisionEnter(rigidbody);
 				}
 			}
 		}
@@ -97,11 +99,11 @@ namespace Scripts
 				touchingRigidbodies.Remove(rigidbody);
 			}
 
-			for (int i = 0; i < GameObject.Components.Count; i++)
+			for (int i = 0; i < GameObject.components.Count; i++)
 			{
-				if ((GameObject.Components[i] is Rigidbody) == false)
+				if ((GameObject.components[i] is Rigidbody) == false)
 				{
-					GameObject.Components[i].OnCollisionExit(rigidbody);
+					GameObject.components[i].OnCollisionExit(rigidbody);
 				}
 			}
 		}
@@ -110,11 +112,11 @@ namespace Scripts
 			touchingRigidbodies.Add(rigidbody);
 
 			// Call callback on components that implement interface IPhysicsCallbackListener
-			for (int i = 0; i < GameObject.Components.Count; i++)
+			for (int i = 0; i < GameObject.components.Count; i++)
 			{
-				if ((GameObject.Components[i] is Rigidbody) == false)
+				if ((GameObject.components[i] is Rigidbody) == false)
 				{
-					GameObject.Components[i].OnTriggerEnter(rigidbody);
+					GameObject.components[i].OnTriggerEnter(rigidbody);
 				}
 			}
 		}
@@ -125,11 +127,11 @@ namespace Scripts
 				touchingRigidbodies.Remove(rigidbody);
 			}
 
-			for (int i = 0; i < GameObject.Components.Count; i++)
+			for (int i = 0; i < GameObject.components.Count; i++)
 			{
-				if ((GameObject.Components[i] is Rigidbody) == false)
+				if ((GameObject.components[i] is Rigidbody) == false)
 				{
-					GameObject.Components[i].OnTriggerExit(rigidbody);
+					GameObject.components[i].OnTriggerExit(rigidbody);
 				}
 			}
 		}

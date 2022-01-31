@@ -58,7 +58,7 @@ namespace Engine
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			base.OnRenderFrame(e);
-			GL.Viewport(0, (int)Window.I.ClientSize.Y - (int)Camera.I.Size.Y, (int)Camera.I.Size.X, (int)Camera.I.Size.Y);
+			GL.Viewport(0, (int)Window.I.ClientSize.Y - (int)Camera.I.size.Y, (int)Camera.I.size.X, (int)Camera.I.size.Y);
 
 			Scene.I.Render();
 

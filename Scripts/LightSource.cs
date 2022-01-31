@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 public class LightSource : Component
 {
-	[ShowInEditor] public float intensity = 5;
-	[ShowInEditor] public float falloff = 2;
-	[ShowInEditor] public float parameteridk = 1;
-	[ShowInEditor] public float flickerStrength = 1;
+	public float intensity = 5;
+	public float falloff = 2;
+	public float parameteridk = 1;
+	public float flickerStrength = 1;
 }
 

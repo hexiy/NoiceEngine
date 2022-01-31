@@ -17,6 +17,7 @@ namespace Engine
 		public void Init()
 		{
 			I = this;
+
 		}
 		public void Update()
 		{
@@ -37,7 +38,8 @@ namespace Engine
 			{
 				selectedGameObject.Destroy();
 				selectedGameObjectIndex--;
-				GameObjectSelected.Invoke(selectedGameObjectIndex);
+				if (selectedGameObjectIndex < 0) return;
+				GameObjectSelected.Invoke(Scene.I.gameObjects[selectedGameObjectIndex].id);
 			}
 		}
 		private int currentID = 0;
@@ -56,7 +58,7 @@ namespace Engine
 			if (Scene.I.GetSelectedGameObjects().Count == 0) { return; }
 
 			GameObject go = Scene.I.GetSelectedGameObjects()[0];
-			int oldIndex = Scene.I.GetGameObjectIndex(go.ID);
+			int oldIndex = Scene.I.GetGameObjectIndexInHierarchy(go.id);
 
 			if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0)
 			{
@@ -71,7 +73,12 @@ namespace Engine
 			Scene.I.gameObjects.Insert(oldIndex + direction, go);
 
 			selectedGameObjectIndex = oldIndex + direction;
-			GameObjectSelected.Invoke(oldIndex + direction);
+			GameObjectSelected.Invoke(Scene.I.gameObjects[oldIndex + direction].id);
+		}
+		public void SelectGameObject(int id)
+		{
+			selectedGameObjectIndex = Scene.I.GetGameObjectIndexInHierarchy(id);
+			GameObjectSelected.Invoke(id);
 		}
 		private List<GameObject> gameObjectsChildrened = new List<GameObject>();
 		public void Draw()
@@ -87,7 +94,6 @@ namespace Engine
 				GameObject go = GameObject.Create(name: "GameObject");
 				go.Awake();
 				go.transform.position = Camera.I.CenterOfScreenToWorld();
-
 			}
 			ImGui.SameLine();
 
@@ -115,6 +121,7 @@ namespace Engine
 					continue;
 				}
 				if (Scene.I.gameObjects[goIndex].Parent != null) { continue; }
+				if (Scene.I.gameObjects[goIndex].silent) { continue; }
 
 
 				bool hasAnyChildren = Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
@@ -123,12 +130,11 @@ namespace Engine
 				{
 					flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
 				}
-				bool opened = ImGui.TreeNodeEx(Scene.I.gameObjects[goIndex].Name, flags);
+				bool opened = ImGui.TreeNodeEx(Scene.I.gameObjects[goIndex].name, flags);
 
 				if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
 				{
-					selectedGameObjectIndex = goIndex;
-					GameObjectSelected.Invoke(goIndex);
+					SelectGameObject(Scene.I.gameObjects[goIndex].id);
 				}
 				if (opened)
 				{
@@ -152,7 +158,7 @@ namespace Engine
 
 						//ImGui.Dummy(new Vector2(15, 10));
 						//ImGui.SameLine();
-						int _i = Scene.I.GetGameObjectIndex(children[childrenIndex].ID);
+						int _i = Scene.I.GetGameObjectIndexInHierarchy(children[childrenIndex].id);
 
 						bool hasAnyChildren2 = Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
 						ImGuiTreeNodeFlags flags2 = ((selectedGameObjectIndex == _i) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
@@ -161,7 +167,7 @@ namespace Engine
 							flags2 = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
 						}
 
-						bool opened2 = ImGui.TreeNodeEx(children[childrenIndex].Name, flags2);
+						bool opened2 = ImGui.TreeNodeEx(children[childrenIndex].name, flags2);
 						if (ImGui.IsItemClicked())
 						{
 							selectedGameObjectIndex = _i;

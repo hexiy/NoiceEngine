@@ -8,15 +8,14 @@ namespace Scripts
 {
 	public class PolygonShape : Shape
 	{
-		[ShowInEditor]
 		[System.Xml.Serialization.XmlIgnore]
-		public Action OnPointsEdit { get; set; }// = Engine.ColliderEditor.GetInstance().ToggleEditing;
+		public Action onPointsEdit;// = Engine.ColliderEditor.GetInstance().ToggleEditing;
 
 		/// <summary>
 		/// LOCAL points
 		/// </summary>
 
-		[ShowInEditor]
+		[Show]
 		public List<Vector2> Points { get; } = new List<Vector2>();
 		public List<Vector2> OriginalPoints { get; } = new List<Vector2>();
 

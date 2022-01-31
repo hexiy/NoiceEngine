@@ -11,13 +11,13 @@ namespace Scripts
 
 		//public new bool enabled { get { return true; } }
 
-		[ShowInEditor] public Vector3 scale= Vector3.One;
-		[ShowInEditor] public Vector3 rotation = Vector3.Zero;
+		public Vector3 scale = Vector3.One;
+		public Vector3 rotation = Vector3.Zero;
 
-		[ShowInEditor] public Vector3 anchor  = new Vector3(0, 0, 0);
-		[ShowInEditor] public Vector3 position = Vector3.Zero;
-		[ShowInEditor] public Vector3 localPosition { get { return position - GetParentPosition(); } set { position = GetParentPosition() + value; } }
-		public Vector3 initialAngleDifferenceFromParent = Vector3.Zero;
+		public Vector3 pivot = new Vector3(0, 0, 0);
+		public Vector3 position = Vector3.Zero;
+		[Hide] public Vector3 localPosition { get { return position - GetParentPosition(); } set { position = GetParentPosition() + value; } }
+		[Hide] public Vector3 initialAngleDifferenceFromParent = Vector3.Zero;
 
 		/*[ShowInEditor]
 		public Vector3 LocalPosition

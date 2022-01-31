@@ -20,8 +20,8 @@ namespace Engine
 		bool clicked = false;
 		public override void Awake()
 		{
-			onClickedAction += () => renderer.Color = new Color(215, 125, 125);
-			onReleasedAction += () => renderer.Color = Color.White;
+			onClickedAction += () => renderer.color = new Color(215, 125, 125);
+			onReleasedAction += () => renderer.color = Color.White;
 			base.Awake();
 
 
@@ -46,7 +46,7 @@ namespace Engine
 
 			if (clicked == false)
 			{
-				renderer.Color = mouseIsOver ? Color.Gray : Color.White;
+				renderer.color = mouseIsOver ? Color.Gray : Color.White;
 			}
 
 			if (clicked && mouseIsOver == false) // up event when me move out of button bounds, even when clicked

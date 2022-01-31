@@ -32,7 +32,7 @@ namespace Engine
 		}
 		public void Draw()
 		{
-			ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y - Camera.I.Size.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y - Camera.I.size.Y), ImGuiCond.Always);
 			ImGui.SetNextWindowPos(new Vector2(0, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Browser", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
@@ -42,7 +42,11 @@ namespace Engine
 				bool saveBtnPressed = ImGui.Button("Save Prefab");
 				if (saveBtnPressed)
 				{
-					Serializer.I.SaveGameObject(Scene.I.GetSelectedGameObject(), "Prefabs/" + Scene.I.GetSelectedGameObject().Name + ".prefab");
+					if (Directory.Exists("Prefabs") == false)
+					{
+						Directory.CreateDirectory("Prefabs");
+					}
+					Serializer.I.SaveGameObject(Scene.I.GetSelectedGameObject(), "Prefabs/" + Scene.I.GetSelectedGameObject().name + ".prefab");
 				}
 			}
 			else
@@ -57,9 +61,9 @@ namespace Engine
 				string prefabName = Path.GetFileNameWithoutExtension(prefabs[i]);
 				if (ImGui.Button("", new Vector2(100, 100)))
 				{
-					GameObject go = Serializer.I.LoadGameObject(prefabs[i]);
-					Scene.I.SelectGameObject(Scene.I.GetGameObjectIndex(go.ID));
-					EditorWindow_Hierarchy.I.GameObjectSelected.Invoke(Scene.I.GetGameObjectIndex(go.ID));
+					GameObject go = Serializer.I.LoadPrefab(prefabs[i]);
+					Scene.I.SelectGameObject(go.id);
+					EditorWindow_Hierarchy.I.GameObjectSelected.Invoke(go.id);
 				}
 				ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 25);
 				ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 5);

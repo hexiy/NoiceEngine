@@ -28,13 +28,8 @@ namespace Engine
 			get { return Camera.I; }
 		}
 		public List<GameObject> gameObjects = new List<GameObject>();
-
-		public event EventHandler SceneLoad;
-		Serializer serializer;
+		//public event EventHandler SceneLoad;
 		public event EventHandler<SceneData> SceneUpdated;
-
-		Stopwatch updateStopwatch = new Stopwatch();
-		Stopwatch renderStopwatch = new Stopwatch();
 
 		public float updateTime = 0;
 		public float renderTime = 0;
@@ -43,69 +38,23 @@ namespace Engine
 		{
 			I = this;
 		}
-
-		public void Start()
-		{
-			Physics.Init();
-
-			CreateDefaultObjects();
-
-			/*if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
-			{
-				LoadScene(Serializer.lastScene);
-			}*/
-		}
-		public void Update()
-		{
-			Time.Update();
-			MouseInput.Update();
-
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
-				{
-					gameObjects[i].Update();
-					gameObjects[i].FixedUpdate();
-				}
-			}
-
-			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
-		}
-		public void Render()
-		{
-			GL.ClearColor(Camera.I.color.ToOtherColor());
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				gameObjects[i].Draw();
-			}
-		}
-
 		private void CreateDefaultObjects()
 		{
 			var camGO = GameObject.Create(name: "Camera");
 			camGO.AddComponent<Camera>();
 			camGO.Awake();
 
-			//GameObject go = GameObject.Create(name: "quad");
-			//go.AddComponent<QuadRenderer>();
-			//go.AddComponent<BoxShape>().size = new Vector2(100, 100);
-			//Rigidbody rb = go.AddComponent<Rigidbody>();
-			//go.AddComponent<Button>();
-			//rb.isButton = true;
-			//
-			//go.Awake();
-			//go.transform.position = new Vector2(20, 20);
+			for (int i = 0; i < 2; i++)
+			{
+				GameObject go2 = GameObject.Create(name: "sprite " + i);
+				go2.AddComponent<SpriteRenderer>();
+				go2.AddComponent<BoxShape>().size = new Vector2(288, 180);
 
+				go2.Awake();
+				go2.transform.position = new Vector2(300 + i * 10, 300 + i * 10);
+				go2.transform.pivot = new Vector2(0.5f, 0.5f);
+			}
 
-
-			GameObject go2 = GameObject.Create(name: "quad 2");
-			go2.AddComponent<SpriteRenderer>();
-			go2.AddComponent<BoxShape>().size = new Vector2(288, 180);
-
-			go2.Awake();
-			go2.transform.position = new Vector2(150, 100);
 
 			CreateTransformHandle();
 
@@ -116,25 +65,126 @@ namespace Engine
 			transformHandle = transformHandleGameObject.AddComponent<TransformHandle>();
 			transformHandleGameObject.dynamicallyCreated = true;
 			transformHandleGameObject.alwaysUpdate = true;
-			transformHandleGameObject.Name = "Transform Handle";
-			transformHandleGameObject.Active = false;
+			transformHandleGameObject.name = "Transform Handle";
+			transformHandleGameObject.active = false;
 			transformHandleGameObject.Awake();
 		}
+		public void Start()
+		{
+			//string str = "purpleblossom";
+			//PersistentData.Set("mysteryKey", str);
+			string hmmm = PersistentData.GetString("mysteryKey");
+			Physics.Init();
+
+			CreateDefaultObjects();
+
+
+
+			if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
+			{
+				LoadScene(Serializer.lastScene);
+			}
+
+		}
+		public void Update()
+		{
+			Time.Update();
+			MouseInput.Update();
+
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftControl) && KeyboardInput.IsKeyDown(KeyboardInput.Keys.S))
+			{
+				SaveScene();
+			}
+			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftControl) && KeyboardInput.IsKeyDown(KeyboardInput.Keys.R))
+			{
+				LoadScene(Serializer.lastScene);
+			}
+
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				gameObjects[i].indexInHierarchy = i;
+				if (Global.GameRunning || gameObjects[i].alwaysUpdate)
+				{
+					gameObjects[i].Update();
+					gameObjects[i].FixedUpdate();
+				}
+			}
+
+			SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
+		}
+		List<Renderer> renderQueue;
+
+		public void Render()
+		{
+			GL.ClearColor(Camera.I.color.ToOtherColor());
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+			renderQueue = new List<Renderer>();
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
+			}
+			for (int i = 0; i < renderQueue.Count; i++)
+			{
+				renderQueue[i].layerFromHierarchy += renderQueue[i].GameObject.indexInHierarchy * 0.0001f;
+			}
+			renderQueue.Sort();
+
+			for (int i = 0; i < renderQueue.Count; i++)
+			{
+				renderQueue[i].layerFromHierarchy -= renderQueue[i].GameObject.indexInHierarchy * 0.0001f;
+				renderQueue[i].Render();
+			}
+
+			if (transformHandle.GameObject != null)
+			{
+				transformHandle.GameObject.Render();
+			}
+		}
+
+
 		public void SelectGameObject(GameObject go)
 		{
 			if (go != null)
 			{
 				for (int i = 0; i < gameObjects.Count; i++)
 				{
-					if (gameObjects[i].ID != go.ID)
+					if (gameObjects[i].id != go.id)
 					{
 						gameObjects[i].selected = false;
 					}
 				}
 				go.selected = true;
 			}
-
-			transformHandle.SelectObject(go);
+			if (go != camera.GameObject && go != transformHandle.GameObject)
+			{
+				transformHandle.SelectObject(go);
+				PersistentData.Set("lastSelectedGameObjectId", go.id);
+			}
+			else
+			{
+				transformHandle.SelectObject(null);
+			}
+		}
+		public void SelectGameObject(int id)
+		{
+			if (id == -1)
+			{
+				SelectGameObject(null);
+			}
+			else
+			{
+				if (GetGameObjectIndexInHierarchy(id) == -1) { return; }
+				SelectGameObject(gameObjects[GetGameObjectIndexInHierarchy(id)]);
+			}
+		}
+		public int GetGameObjectIndexInHierarchy(int id)
+		{
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				if (gameObjects[i].id == id) { return i; }
+			}
+			return -1;
 		}
 		public List<GameObject> GetSelectedGameObjects()
 		{
@@ -153,17 +203,6 @@ namespace Engine
 			}
 			return null;
 		}
-		public void SelectGameObject(int gameObjectIndex)
-		{
-			if (gameObjectIndex == -1)
-			{
-				SelectGameObject(null);
-			}
-			else
-			{
-				SelectGameObject(gameObjects[gameObjectIndex]);
-			}
-		}
 		public SceneFile GetSceneFile()
 		{
 			SceneFile sf = new SceneFile();
@@ -173,7 +212,7 @@ namespace Engine
 			{
 				if (gameObjects[i].dynamicallyCreated) continue;
 
-				sf.Components.AddRange(gameObjects[i].Components);
+				sf.Components.AddRange(gameObjects[i].components);
 				sf.GameObjects.Add(gameObjects[i]);
 			}
 			sf.gameObjectNextID = IDsManager.gameObjectNextID;
@@ -204,22 +243,11 @@ namespace Engine
 			}
 			return components;
 		}
-		public int GetGameObjectIndex(int ID)
-		{
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				if (gameObjects[i].ID == ID)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
 		public GameObject GetGameObject(int ID)
 		{
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				if (gameObjects[i].ID == ID)
+				if (gameObjects[i].id == ID)
 				{
 					return gameObjects[i];
 				}
@@ -231,7 +259,7 @@ namespace Engine
 			List<GameObject> children = new List<GameObject>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				if (gameObjects[i].parentID == go.ID)
+				if (gameObjects[i].parentID == go.id)
 				{
 					children.Add(gameObjects[i]);
 				}
@@ -268,9 +296,11 @@ namespace Engine
 
 			CreateTransformHandle();
 
-			SceneLoad?.Invoke(this, null);
-
 			scenePath = path;
+
+			int lastSelectedGameObjectId = PersistentData.GetInt("lastSelectedGameObjectId", 0);
+			SelectGameObject(lastSelectedGameObjectId);
+			EditorWindow_Hierarchy.I.SelectGameObject(lastSelectedGameObjectId);
 
 			return true;
 		}

@@ -10,10 +10,12 @@ namespace Engine
 {
 	public class Texture
 	{
+		public string path;
 		public int id;
 		public Vector2 size;
-		public Texture(string path)
+		public Texture(string _path)
 		{
+			path = _path;
 			id = GL.GenTexture();
 			GL.BindTexture(TextureTarget.Texture2D, id);
 

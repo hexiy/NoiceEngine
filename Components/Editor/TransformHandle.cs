@@ -22,9 +22,9 @@ namespace Engine
 		public BoxShape boxColliderXY;
 		public BoxShape boxColliderX;
 		public BoxShape boxColliderY;
-		public QuadRenderer boxRendererXY;
-		public QuadRenderer boxRendererX;
-		public QuadRenderer boxRendererY;
+		public BoxRenderer boxRendererXY;
+		public BoxRenderer boxRendererX;
+		public BoxRenderer boxRendererY;
 
 		public TransformHandle() : base()
 		{
@@ -46,31 +46,31 @@ namespace Engine
 				boxColliderX = GetComponent<BoxShape>(1);
 				boxColliderY = GetComponent<BoxShape>(2);
 
-				boxRendererXY = GetComponent<QuadRenderer>(0);
-				boxRendererX = GetComponent<QuadRenderer>(1);
-				boxRendererY = GetComponent<QuadRenderer>(2);
+				boxRendererXY = GetComponent<BoxRenderer>(0);
+				boxRendererX = GetComponent<BoxRenderer>(1);
+				boxRendererY = GetComponent<BoxRenderer>(2);
 			}
 			else
 			{
 				boxColliderXY = GameObject.AddComponent<BoxShape>();
-				boxColliderXY.size = new Vector2(20, 20);
-				boxColliderXY.offset = new Vector2(10, 10);
+				boxColliderXY.size = new Vector2(15, 15);
+				boxColliderXY.offset = new Vector2(5, 5);
 
 				boxColliderX = GameObject.AddComponent<BoxShape>();
 				boxColliderX.size = new Vector2(50, 5);
-				boxColliderX.offset = new Vector2(25, 2.5f);
+				//boxColliderX.offset = new Vector2(25, 2.5f);
 
 				boxColliderY = GameObject.AddComponent<BoxShape>();
 				boxColliderY.size = new Vector2(5, 50);
-				boxColliderY.offset = new Vector2(2.5f, 25);
+				//boxColliderY.offset = new Vector2(2.5f, 25);
 
-				boxRendererXY = GameObject.AddComponent<QuadRenderer>();
-				boxRendererX = GameObject.AddComponent<QuadRenderer>();
-				boxRendererY = GameObject.AddComponent<QuadRenderer>();
+				boxRendererXY = GameObject.AddComponent<BoxRenderer>();
+				boxRendererX = GameObject.AddComponent<BoxRenderer>();
+				boxRendererY = GameObject.AddComponent<BoxRenderer>();
 
-				boxRendererXY.Color = Color.Orange;
-				boxRendererX.Color = Color.Red;
-				boxRendererY.Color = Color.Cyan;
+				boxRendererXY.color = Color.Orange;
+				boxRendererX.color = Color.Red;
+				boxRendererY.color = Color.Cyan;
 
 				boxRendererX.boxShape = boxColliderX;
 				boxRendererXY.boxShape = boxColliderXY;
@@ -111,7 +111,7 @@ namespace Engine
 				}
 			}
 
-			if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && GameObject.Active && clicked)
+			if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && GameObject.active && clicked)
 			{
 				SetSelectedObjectRigidbodyAwake(false);
 				Move(MouseInput.Delta);
@@ -134,29 +134,29 @@ namespace Engine
 			}
 
 			transform.position = selectedTransform.position;
-			if (MouseInput.Position.In(boxColliderX))
+			if (MouseInput.Position.In(boxColliderX) || CurrentAxisSelected==Axis.X)
 			{
-				//boxRendererX.fill = true;
+				boxRendererX.color = Color.WhiteSmoke;
 			}
 			else
 			{
-				//boxRendererX.fill = false;
+				boxRendererX.color = Color.Red;
 			}
-			if (MouseInput.Position.In(boxColliderY))
+			if (MouseInput.Position.In(boxColliderY) || CurrentAxisSelected == Axis.Y)
 			{
-				//boxRendererY.fill = true;
-			}
-			else
-			{
-				//boxRendererY.fill = false;
-			}
-			if (MouseInput.Position.In(boxColliderXY))
-			{
-				//boxRendererXY.fill = true;
+				boxRendererY.color = Color.WhiteSmoke;
 			}
 			else
 			{
-				//boxRendererXY.fill = false;
+				boxRendererY.color = Color.Cyan;
+			}
+			if (MouseInput.Position.In(boxColliderXY) || CurrentAxisSelected == Axis.XY)
+			{
+				boxRendererXY.color = Color.WhiteSmoke;
+			}
+			else
+			{
+				boxRendererXY.color = Color.Orange;
 			}
 			base.Update();
 		}
@@ -202,13 +202,13 @@ namespace Engine
 				switch (CurrentAxisSelected)
 				{
 					case Axis.X:
-						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(1).X, selectedTransform.position.Y, 0);
+						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(10).X, selectedTransform.position.Y, 0);
 						break;
 					case Axis.Y:
-						selectedTransform.position = new Vector3(selectedTransform.position.Y, MouseInput.Position.TranslateToGrid(1).Y, 0);
+						selectedTransform.position = new Vector3(selectedTransform.position.X, MouseInput.Position.TranslateToGrid(10).Y, 0);
 						break;
 					case Axis.XY:
-						selectedTransform.position = MouseInput.Position.TranslateToGrid(1);
+						selectedTransform.position = MouseInput.Position.TranslateToGrid(10);
 						break;
 				}
 
@@ -216,7 +216,7 @@ namespace Engine
 		}
 		public void SelectObject(GameObject selectedGO)
 		{
-			GameObject.Active = selectedGO != null;
+			GameObject.active = selectedGO != null;
 
 			if (selectedGO == null)
 			{

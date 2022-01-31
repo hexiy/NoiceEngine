@@ -11,8 +11,9 @@ namespace Scripts
 {
 	public class CharacterController : Component
 	{
-		[ShowInEditor] public float MoveSpeed { get; set; } = 10;
-		[ShowInEditor] public float JumpForce { get; set; } = 10000;
+		public float moveSpeed = 10;
+		public float jumpForce = 10000;
+
 		[LinkableComponent]
 		private Rigidbody rb;
 		bool jumpKeyDown = false;
@@ -28,11 +29,11 @@ namespace Scripts
 			Vector2 input = Vector2.Zero;
 			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.A))
 			{
-				input.X = -MoveSpeed;
+				input.X = -moveSpeed;
 			}
 			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.D))
 			{
-				input.X = MoveSpeed;
+				input.X = moveSpeed;
 			}
 
 			if (jumpKeyDown == false && KeyboardInput.IsKeyDown(KeyboardInput.Keys.W))

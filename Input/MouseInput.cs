@@ -88,7 +88,7 @@ namespace Engine
 			MouseState state = Window.I.MouseState;
 
 			Delta = new Vector2(state.Delta.X, -state.Delta.Y);
-			Position = new Vector2(Window.I.MouseState.X, -Window.I.MouseState.Y + Camera.I.Size.Y);
+			Position = new Vector2(Window.I.MouseState.X, -Window.I.MouseState.Y + Camera.I.size.Y);
 			//System.Diagnostics.Debug.WriteLine("mousePos:" + Position.X + ":" + Position.Y);
 		}
 	}

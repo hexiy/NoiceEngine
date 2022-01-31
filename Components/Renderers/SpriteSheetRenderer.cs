@@ -8,7 +8,6 @@ namespace Scripts
 	{
 		private Vector2 spritesCount = new Vector2(1, 1);
 
-		[ShowInEditor]
 		public Vector2 SpritesCount
 		{
 			get => spritesCount;
@@ -22,9 +21,9 @@ namespace Scripts
 			}
 		}
 
-		[ShowInEditor] public int CurrentSpriteIndex { get; set; }
+		public int currentSpriteIndex;
 
-		[ShowInEditor] public Vector2 SpriteSize { get; set; }
+		public Vector2 spriteSize;
 
 
 

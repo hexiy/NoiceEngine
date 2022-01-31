@@ -30,7 +30,7 @@ namespace Scripts
 					text.Value = "uwu";
 				}
 			}*/
-			boxRenderer.Color = Extensions.ColorFromHSVToXna (hue, 0.6f, 0.4f);
+			boxRenderer.color = Extensions.ColorFromHSVToXna (hue, 0.6f, 0.4f);
 			transform.rotation.Z += Time.deltaTime*3;
 			base.Update ();
 		}

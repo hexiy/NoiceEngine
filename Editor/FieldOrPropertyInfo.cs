@@ -1,3 +1,4 @@
+using Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,48 +10,63 @@ namespace Engine
 	{
 		private FieldInfo fieldInfo;
 		private PropertyInfo propertyInfo;
-		public bool canShowInEditor = false;
-		public FieldOrPropertyInfo (FieldInfo fi)
+		public bool canShowInEditor = true;
+		public FieldOrPropertyInfo(FieldInfo fi)
 		{
 			fieldInfo = fi;
-			UpdateCanShowInEditor ();
+			UpdateCanShowInEditor();
 		}
-		public FieldOrPropertyInfo (PropertyInfo pi)
+		public FieldOrPropertyInfo(PropertyInfo pi)
 		{
 			propertyInfo = pi;
-			UpdateCanShowInEditor ();
+			UpdateCanShowInEditor();
 		}
-		private void UpdateCanShowInEditor ()
+		private void UpdateCanShowInEditor()
 		{
-			for (int i = 0; i < CustomAttributes.Count (); i++)
+			if (fieldInfo != null && fieldInfo.DeclaringType == typeof(Component))
 			{
-				if (CustomAttributes.ElementAtOrDefault (i).AttributeType == typeof (ShowInEditor))
+				canShowInEditor = false;
+			}
+			if (propertyInfo != null && propertyInfo?.DeclaringType == typeof(Component))
+			{
+				canShowInEditor = false;
+			}
+			for (int i = 0; i < CustomAttributes.Count(); i++)
+			{
+				if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Show))
 				{
 					canShowInEditor = true;
 				}
 			}
+			for (int i = 0; i < CustomAttributes.Count(); i++)
+			{
+				if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Hide))
+				{
+					canShowInEditor = false;
+				}
+			}
 		}
-		public object? GetValue (object? obj)
+		public object? GetValue(object? obj)
 		{
 			if (fieldInfo != null)
 			{
-				return fieldInfo.GetValue (obj);
+				return fieldInfo.GetValue(obj);
 			}
 			if (propertyInfo != null)
 			{
-				return propertyInfo.GetValue (obj);
+				return propertyInfo.GetValue(obj);
 			}
 			return null;
 		}
-		public void SetValue (object? obj, object? value)
+		public void SetValue(object? obj, object? value)
 		{
 			if (fieldInfo != null)
 			{
-				fieldInfo.SetValue (obj, value);
+				fieldInfo.SetValue(obj, value);
 			}
 			if (propertyInfo != null)
 			{
-				if (propertyInfo.GetSetMethod () != null) propertyInfo.SetValue (obj, value);
+				if (propertyInfo.GetSetMethod() != null) propertyInfo.SetValue(obj, value);
 			}
 		}
 		public IEnumerable<CustomAttributeData> CustomAttributes

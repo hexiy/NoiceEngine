@@ -12,17 +12,16 @@ namespace Scripts
 	{
 		private SpriteSheetRenderer spriteSheetRenderer;
 
-		[ShowInEditor] public Vector2 AnimRange_Idle { get; set; } = new Vector2(0, 0);
-		[ShowInEditor] public Vector2 AnimRange_Run { get; set; } = new Vector2(0, 0);
-		[ShowInEditor] public Vector2 AnimRange_Jump { get; set; } = new Vector2(0, 0);
-		private Action OnAnimationFinished = new Action(() => { });
-		[ShowInEditor] public Vector2 CurrentAnimRange { get; set; } = new Vector2(0, 0);
-		[ShowInEditor]
-		public float AnimationSpeed { get; set; } = 1;
+		public Vector2 animRange_Idle = new Vector2(0, 0);
+		public Vector2 animRange_Run = new Vector2(0, 0);
+		public Vector2 animRange_Jump = new Vector2(0, 0);
+		public Vector2 currentAnimRange = new Vector2(0, 0);
+
+		public float animationSpeed = 1;
 		private float timeOnCurrentFrame = 0;
-
-
 		public bool jumping = false;
+
+		private Action OnAnimationFinished = new Action(() => { });
 
 		public override void Awake()
 		{
@@ -31,25 +30,25 @@ namespace Scripts
 		}
 		public override void Start()
 		{
-			SetAnimation(AnimRange_Idle);
+			SetAnimation(animRange_Idle);
 
 			base.Start();
 		}
 		public override void Update()
 		{
-			if (AnimationSpeed == 0) return;
-			timeOnCurrentFrame += Time.deltaTime * AnimationSpeed;
-			while (timeOnCurrentFrame > 1 / AnimationSpeed)
+			if (animationSpeed == 0) return;
+			timeOnCurrentFrame += Time.deltaTime * animationSpeed;
+			while (timeOnCurrentFrame > 1 / animationSpeed)
 			{
-				timeOnCurrentFrame -= 1 / AnimationSpeed;
-				if (spriteSheetRenderer.CurrentSpriteIndex + 1 >= CurrentAnimRange.Y)
+				timeOnCurrentFrame -= 1 / animationSpeed;
+				if (spriteSheetRenderer.currentSpriteIndex + 1 >= currentAnimRange.Y)
 				{
-					spriteSheetRenderer.CurrentSpriteIndex = (int)CurrentAnimRange.X;
+					spriteSheetRenderer.currentSpriteIndex = (int)currentAnimRange.X;
 					OnAnimationFinished?.Invoke();
 				}
 				else
 				{
-					spriteSheetRenderer.CurrentSpriteIndex++;
+					spriteSheetRenderer.currentSpriteIndex++;
 				}
 			}
 			base.Update();
@@ -57,7 +56,7 @@ namespace Scripts
 		public void ResetCurrentAnimation()
 		{
 			timeOnCurrentFrame = 0;
-			spriteSheetRenderer.CurrentSpriteIndex = (int)CurrentAnimRange.X;
+			spriteSheetRenderer.currentSpriteIndex = (int)currentAnimRange.X;
 		}
 		public void Turn(Vector2 direction)
 		{
@@ -73,12 +72,12 @@ namespace Scripts
 		public void Jump()
 		{
 			jumping = true;
-			SetAnimation(AnimRange_Jump);
-			AnimationSpeed = 4.5f;
+			SetAnimation(animRange_Jump);
+			animationSpeed = 4.5f;
 			OnAnimationFinished += () =>
 			{
-				SetAnimation(AnimRange_Run);
-				AnimationSpeed = 3;
+				SetAnimation(animRange_Run);
+				animationSpeed = 3;
 
 				jumping = false;
 				OnAnimationFinished = new Action(() => { });
@@ -86,13 +85,13 @@ namespace Scripts
 		}
 		public void SetAnimation(Vector2 animRange)
 		{
-			if (jumping && animRange != AnimRange_Jump) { return; }
+			if (jumping && animRange != animRange_Jump) { return; }
 
-			Vector2 oldAnim = CurrentAnimRange;
+			Vector2 oldAnim = currentAnimRange;
 
-			CurrentAnimRange = animRange;
+			currentAnimRange = animRange;
 
-			if (oldAnim != CurrentAnimRange)
+			if (oldAnim != currentAnimRange)
 			{
 				ResetCurrentAnimation();
 			}

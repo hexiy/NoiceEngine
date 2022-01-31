@@ -12,7 +12,7 @@ namespace Scripts
 {
 	public class TileGrid : Component
 	{
-		[ShowInEditor] public Vector2 size { get; set; }
+		public Vector2 size { get; set; }
 
 		[XmlIgnore] public List<GameObject> tiles = new List<GameObject>();
 		[XmlIgnore] public List<float> tilesOGPositionsY = new List<float>();
@@ -34,7 +34,7 @@ namespace Scripts
 						SpriteSheetRenderer spriteSheetRenderer = tile.GetComponent<SpriteSheetRenderer>();
 						tile.Awake();
 						//spriteSheetRenderer.blendState = BlendState.Opaque;
-						spriteSheetRenderer.Layer = 5;
+						spriteSheetRenderer.layer = 5;
 						tile.SetParent(GameObject);
 						tile.transform.localPosition = new Vector3(x * 3.2f, y * 3.2f, 0);
 						tile.transform.scale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -45,20 +45,20 @@ namespace Scripts
 						{
 							if (x == 0)
 							{
-								spriteSheetRenderer.CurrentSpriteIndex = 0;
+								spriteSheetRenderer.currentSpriteIndex = 0;
 							}
 							else if (x == size.X - 1)
 							{
-								spriteSheetRenderer.CurrentSpriteIndex = 2;
+								spriteSheetRenderer.currentSpriteIndex = 2;
 							}
 							else
 							{
-								spriteSheetRenderer.CurrentSpriteIndex = 1;
+								spriteSheetRenderer.currentSpriteIndex = 1;
 							}
 						}
 						else
 						{
-							spriteSheetRenderer.CurrentSpriteIndex = 17;
+							spriteSheetRenderer.currentSpriteIndex = 17;
 						}
 						tiles.Add(tile);
 						tilesOGPositionsY.Add(tile.transform.position.Y);
@@ -81,7 +81,7 @@ namespace Scripts
 			{
 				for (int i = Scene.I.gameObjects.Count - 1; i > 0; i--)
 				{
-					if (Scene.I.gameObjects[i].Name.ToLower().Contains("tile") && Scene.I.gameObjects[i].GetComponent<TileGrid>() == null)
+					if (Scene.I.gameObjects[i].name.ToLower().Contains("tile") && Scene.I.gameObjects[i].GetComponent<TileGrid>() == null)
 					{
 						Scene.I.gameObjects[i].Destroy();
 					}
@@ -111,7 +111,7 @@ namespace Scripts
 					distance = (float)Math.Pow(distance, lights[j].falloff);
 					intensity += lights[j].parameteridk / (distance * lights[j].intensity);
 				}
-				tiles[i].GetComponent<Renderer>().Color = new Color(Color.White * MathHelper.Clamp(intensity, 0, 0.9f), 255);
+				tiles[i].GetComponent<Renderer>().color = new Color(Color.White * MathHelper.Clamp(intensity, 0, 0.9f), 255);
 
 			}
 		}
