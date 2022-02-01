@@ -11,11 +11,21 @@ namespace Engine
 {
 	public class SpriteRenderer : Renderer
 	{
-		[System.Xml.Serialization.XmlIgnore] public Texture texture;
+		public Texture texture;
+		public bool additive;
+
 		public override void Awake()
 		{
 			SetupRenderer();
 
+			if (texture == null)
+			{
+				texture = new Texture();
+			}
+			else
+			{
+				LoadTexture(texture.path);
+			}
 			base.Awake();
 		}
 		private void SetupRenderer()
@@ -47,7 +57,7 @@ out vec4 color;
 void main(void)
 {
 vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y)) * u_color;
-if(texColor.a < 0.1)
+if(texColor.a < 0.007)
         discard;
  color = texColor;
 }";
@@ -101,13 +111,11 @@ if(texColor.a < 0.1)
 				8);                     // relative offset, first item
 
 			GL.VertexArrayVertexBuffer(vao, 0, vbo, IntPtr.Zero, sizeof(float) * 4);
-
-			LoadTexture("2D/bg.png");
 		}
 		public void LoadTexture(string _texturePath)
 		{
 			if (File.Exists(_texturePath) == false) { return; }
-			texture = new Texture(_texturePath);
+			texture.Load(_texturePath);
 			UpdateBoxShapeSize();
 		}
 		private void UpdateBoxShapeSize()
@@ -128,6 +136,7 @@ if(texColor.a < 0.1)
 		public override void Render()
 		{
 			if (boxShape == null) return;
+			if (texture.loaded == false) return;
 			shader.Use();
 
 			shader.SetMatrix4x4("u_mvp", GetModelViewProjection());
@@ -135,10 +144,15 @@ if(texColor.a < 0.1)
 			shader.SetVector4("u_color", color.ToVector4());
 
 			GL.BindVertexArray(vao);
-			//GL.BlendEquation(BlendEquationMode.);
 			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-			//GL.BlendFunc(BlendingFactor.One, BlendingFactor.One);
+			if (additive)
+			{
+				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+			}
+			else
+			{
+				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+			}
 			texture.Use();
 			GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 			GL.BindVertexArray(0);

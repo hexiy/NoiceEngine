@@ -21,11 +21,11 @@ namespace Engine
 		public static Color ColorRange(Color color1, Color color2)
 		{
 			float howMuch = Range(1);
-			var R = MathHelper.Lerp(color1.R, color2.R, howMuch);
-			return new Color(MathHelper.Lerp(color1.R, color2.R, howMuch)/255,
-				MathHelper.Lerp(color1.G, color2.G, howMuch)/255,
-				MathHelper.Lerp(color1.B, color2.B, howMuch)/255,
-				MathHelper.Lerp(color1.A, color2.A, howMuch)/255);
+			var R = Mathf.Lerp(color1.R, color2.R, howMuch);
+			return new Color(Mathf.Lerp(color1.R, color2.R, howMuch)/255,
+				Mathf.Lerp(color1.G, color2.G, howMuch)/255,
+				Mathf.Lerp(color1.B, color2.B, howMuch)/255,
+				Mathf.Lerp(color1.A, color2.A, howMuch)/255);
 		}
 	}
 }

@@ -24,7 +24,7 @@ namespace Dear_ImGui_Sample
 		private int _indexBuffer;
 		private int _indexBufferSize;
 
-		private Texture _fontTexture;
+		private ImGuiTexture _fontTexture;
 		private Shader _shader;
 
 		private int _windowWidth;
@@ -35,7 +35,7 @@ namespace Dear_ImGui_Sample
 		/// <summary>
 		/// Constructs a new ImGuiController.
 		/// </summary>
-		public ImGuiController(int width, int height)
+		public unsafe ImGuiController(int width, int height)
 		{
 			_windowWidth = width;
 			_windowHeight = height;
@@ -43,6 +43,7 @@ namespace Dear_ImGui_Sample
 			IntPtr context = ImGui.CreateContext();
 			ImGui.SetCurrentContext(context);
 			var io = ImGui.GetIO();
+
 			io.Fonts.AddFontDefault();
 
 			io.BackendFlags |= ImGuiBackendFlags.RendererHasVtxOffset;
@@ -139,7 +140,7 @@ void main()
 			ImGuiIOPtr io = ImGui.GetIO();
 			io.Fonts.GetTexDataAsRGBA32(out IntPtr pixels, out int width, out int height, out int bytesPerPixel);
 
-			_fontTexture = new Texture("ImGui Text Atlas", width, height, pixels);
+			_fontTexture = new ImGuiTexture("ImGui Text Atlas", width, height, pixels);
 			_fontTexture.SetMagFilter(TextureMagFilter.Linear);
 			_fontTexture.SetMinFilter(TextureMinFilter.Linear);
 

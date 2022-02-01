@@ -8,14 +8,20 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Engine
 {
+	[Serializable]
 	public class Texture
 	{
-		public string path;
+		public string path="";
 		public int id;
 		public Vector2 size;
-		public Texture(string _path)
+		public bool loaded = false;
+
+		public void Load(string _path)
 		{
-			path = _path;
+			if (_path.Length > 0)
+			{
+				path = _path;
+			}
 			id = GL.GenTexture();
 			GL.BindTexture(TextureTarget.Texture2D, id);
 
@@ -43,6 +49,8 @@ namespace Engine
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+			loaded = true;
 		}
 
 		public void Use()

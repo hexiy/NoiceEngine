@@ -6,7 +6,7 @@ namespace Scripts
 	{
 		public override void Update ()
 		{
-			transform.position = MouseInput.Position;
+			transform.position = MouseInput.ScreenPosition;
 		}
 	}
 }

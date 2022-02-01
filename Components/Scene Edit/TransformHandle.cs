@@ -94,17 +94,17 @@ namespace Engine
 			if (MouseInput.ButtonPressed(MouseInput.Buttons.Left))
 			{
 				clicked = false;
-				if (MouseInput.Position.In(boxColliderX))
+				if (MouseInput.WorldPosition.In(boxColliderX))
 				{
 					CurrentAxisSelected = Axis.X;
 					clicked = true;
 				}
-				if (MouseInput.Position.In(boxColliderY))
+				if (MouseInput.WorldPosition.In(boxColliderY))
 				{
 					CurrentAxisSelected = Axis.Y;
 					clicked = true;
 				}
-				if (MouseInput.Position.In(boxColliderXY))
+				if (MouseInput.WorldPosition.In(boxColliderXY))
 				{
 					CurrentAxisSelected = Axis.XY;
 					clicked = true;
@@ -114,7 +114,7 @@ namespace Engine
 			if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && GameObject.active && clicked)
 			{
 				SetSelectedObjectRigidbodyAwake(false);
-				Move(MouseInput.Delta);
+				Move(MouseInput.WorldDelta);
 			}
 			else
 			{
@@ -134,7 +134,7 @@ namespace Engine
 			}
 
 			transform.position = selectedTransform.position;
-			if (MouseInput.Position.In(boxColliderX) || CurrentAxisSelected==Axis.X)
+			if (MouseInput.WorldPosition.In(boxColliderX) || CurrentAxisSelected==Axis.X)
 			{
 				boxRendererX.color = Color.WhiteSmoke;
 			}
@@ -142,7 +142,7 @@ namespace Engine
 			{
 				boxRendererX.color = Color.Red;
 			}
-			if (MouseInput.Position.In(boxColliderY) || CurrentAxisSelected == Axis.Y)
+			if (MouseInput.WorldPosition.In(boxColliderY) || CurrentAxisSelected == Axis.Y)
 			{
 				boxRendererY.color = Color.WhiteSmoke;
 			}
@@ -150,7 +150,7 @@ namespace Engine
 			{
 				boxRendererY.color = Color.Cyan;
 			}
-			if (MouseInput.Position.In(boxColliderXY) || CurrentAxisSelected == Axis.XY)
+			if (MouseInput.WorldPosition.In(boxColliderXY) || CurrentAxisSelected == Axis.XY)
 			{
 				boxRendererXY.color = Color.WhiteSmoke;
 			}
@@ -202,13 +202,13 @@ namespace Engine
 				switch (CurrentAxisSelected)
 				{
 					case Axis.X:
-						selectedTransform.position = new Vector3(MouseInput.Position.TranslateToGrid(10).X, selectedTransform.position.Y, 0);
+						selectedTransform.position = new Vector3(MouseInput.ScreenPosition.TranslateToGrid(10).X, selectedTransform.position.Y, 0);
 						break;
 					case Axis.Y:
-						selectedTransform.position = new Vector3(selectedTransform.position.X, MouseInput.Position.TranslateToGrid(10).Y, 0);
+						selectedTransform.position = new Vector3(selectedTransform.position.X, MouseInput.ScreenPosition.TranslateToGrid(10).Y, 0);
 						break;
 					case Axis.XY:
-						selectedTransform.position = MouseInput.Position.TranslateToGrid(10);
+						selectedTransform.position = MouseInput.ScreenPosition.TranslateToGrid(10);
 						break;
 				}
 

@@ -42,7 +42,7 @@ namespace Engine
 				onReleasedAction?.Invoke();
 				clicked = false;
 			}
-			mouseIsOver = Camera.I.ScreenToWorld(MouseInput.Position).In(collider);
+			mouseIsOver = Camera.I.ScreenToWorld(MouseInput.ScreenPosition).In(collider);
 
 			if (clicked == false)
 			{

@@ -427,8 +427,8 @@ namespace Engine
 		public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
 		{
 			return new Vector2(
-				MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
-				MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2));
+				Mathf.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
+				Mathf.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2));
 		}
 
 		/// <summary>
@@ -442,8 +442,8 @@ namespace Engine
 		/// <param name="result">The cartesian translation of barycentric coordinates as an output parameter.</param>
 		public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, float amount1, float amount2, out Vector2 result)
 		{
-			result.X = MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2);
-			result.Y = MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2);
+			result.X = Mathf.Barycentric(value1.X, value2.X, value3.X, amount1, amount2);
+			result.Y = Mathf.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2);
 		}
 
 		/// <summary>
@@ -458,8 +458,8 @@ namespace Engine
 		public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
 		{
 			return new Vector2(
-				MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
-				MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount));
+				Mathf.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
+				Mathf.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount));
 		}
 
 		/// <summary>
@@ -473,8 +473,8 @@ namespace Engine
 		/// <param name="result">The result of CatmullRom interpolation as an output parameter.</param>
 		public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4, float amount, out Vector2 result)
 		{
-			result.X = MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount);
-			result.Y = MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount);
+			result.X = Mathf.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount);
+			result.Y = Mathf.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount);
 		}
 
 		/// <summary>
@@ -519,8 +519,8 @@ namespace Engine
 		public static Vector2 Clamp(Vector2 value1, Vector2 min, Vector2 max)
 		{
 			return new Vector2(
-				MathHelper.Clamp(value1.X, min.X, max.X),
-				MathHelper.Clamp(value1.Y, min.Y, max.Y));
+				Mathf.Clamp(value1.X, min.X, max.X),
+				Mathf.Clamp(value1.Y, min.Y, max.Y));
 		}
 
 		/// <summary>
@@ -532,8 +532,8 @@ namespace Engine
 		/// <param name="result">The clamped value as an output parameter.</param>
 		public static void Clamp(ref Vector2 value1, ref Vector2 min, ref Vector2 max, out Vector2 result)
 		{
-			result.X = MathHelper.Clamp(value1.X, min.X, max.X);
-			result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
+			result.X = Mathf.Clamp(value1.X, min.X, max.X);
+			result.Y = Mathf.Clamp(value1.Y, min.Y, max.Y);
 		}
 
 		/// <summary>
@@ -738,7 +738,7 @@ namespace Engine
 		/// <returns>The hermite spline interpolation vector.</returns>
 		public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
 		{
-			return new Vector2(MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount), MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount));
+			return new Vector2(Mathf.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount), Mathf.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount));
 		}
 
 		/// <summary>
@@ -752,8 +752,8 @@ namespace Engine
 		/// <param name="result">The hermite spline interpolation vector as an output parameter.</param>
 		public static void Hermite(ref Vector2 value1, ref Vector2 tangent1, ref Vector2 value2, ref Vector2 tangent2, float amount, out Vector2 result)
 		{
-			result.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
-			result.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
+			result.X = Mathf.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
+			result.Y = Mathf.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
 		}
 
 		/// <summary>
@@ -784,8 +784,8 @@ namespace Engine
 		public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
 		{
 			return new Vector2(
-				MathHelper.Lerp(value1.X, value2.X, amount),
-				MathHelper.Lerp(value1.Y, value2.Y, amount));
+				Mathf.Lerp(value1.X, value2.X, amount),
+				Mathf.Lerp(value1.Y, value2.Y, amount));
 		}
 
 		/// <summary>
@@ -797,15 +797,15 @@ namespace Engine
 		/// <param name="result">The result of linear interpolation of the specified vectors as an output parameter.</param>
 		public static void Lerp(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
 		{
-			result.X = MathHelper.Lerp(value1.X, value2.X, amount);
-			result.Y = MathHelper.Lerp(value1.Y, value2.Y, amount);
+			result.X = Mathf.Lerp(value1.X, value2.X, amount);
+			result.Y = Mathf.Lerp(value1.Y, value2.Y, amount);
 		}
 
 		/// <summary>
 		/// Creates a new <see cref="Vector2"/> that contains linear interpolation of the specified vectors.
-		/// Uses <see cref="MathHelper.LerpPrecise"/> on MathHelper for the interpolation.
+		/// Uses <see cref="Mathf.LerpPrecise"/> on MathHelper for the interpolation.
 		/// Less efficient but more precise compared to <see cref="Vector2.Lerp(Vector2, Vector2, float)"/>.
-		/// See remarks section of <see cref="MathHelper.LerpPrecise"/> on MathHelper for more info.
+		/// See remarks section of <see cref="Mathf.LerpPrecise"/> on MathHelper for more info.
 		/// </summary>
 		/// <param name="value1">The first vector.</param>
 		/// <param name="value2">The second vector.</param>
@@ -814,15 +814,15 @@ namespace Engine
 		public static Vector2 LerpPrecise(Vector2 value1, Vector2 value2, float amount)
 		{
 			return new Vector2(
-				MathHelper.LerpPrecise(value1.X, value2.X, amount),
-				MathHelper.LerpPrecise(value1.Y, value2.Y, amount));
+				Mathf.LerpPrecise(value1.X, value2.X, amount),
+				Mathf.LerpPrecise(value1.Y, value2.Y, amount));
 		}
 
 		/// <summary>
 		/// Creates a new <see cref="Vector2"/> that contains linear interpolation of the specified vectors.
-		/// Uses <see cref="MathHelper.LerpPrecise"/> on MathHelper for the interpolation.
+		/// Uses <see cref="Mathf.LerpPrecise"/> on MathHelper for the interpolation.
 		/// Less efficient but more precise compared to <see cref="Vector2.Lerp(ref Vector2, ref Vector2, float, out Vector2)"/>.
-		/// See remarks section of <see cref="MathHelper.LerpPrecise"/> on MathHelper for more info.
+		/// See remarks section of <see cref="Mathf.LerpPrecise"/> on MathHelper for more info.
 		/// </summary>
 		/// <param name="value1">The first vector.</param>
 		/// <param name="value2">The second vector.</param>
@@ -830,8 +830,8 @@ namespace Engine
 		/// <param name="result">The result of linear interpolation of the specified vectors as an output parameter.</param>
 		public static void LerpPrecise(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
 		{
-			result.X = MathHelper.LerpPrecise(value1.X, value2.X, amount);
-			result.Y = MathHelper.LerpPrecise(value1.Y, value2.Y, amount);
+			result.X = Mathf.LerpPrecise(value1.X, value2.X, amount);
+			result.Y = Mathf.LerpPrecise(value1.Y, value2.Y, amount);
 		}
 
 		/// <summary>
@@ -1060,8 +1060,8 @@ namespace Engine
 		public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
 		{
 			return new Vector2(
-				MathHelper.SmoothStep(value1.X, value2.X, amount),
-				MathHelper.SmoothStep(value1.Y, value2.Y, amount));
+				Mathf.SmoothStep(value1.X, value2.X, amount),
+				Mathf.SmoothStep(value1.Y, value2.Y, amount));
 		}
 
 		/// <summary>
@@ -1073,8 +1073,8 @@ namespace Engine
 		/// <param name="result">Cubic interpolation of the specified vectors as an output parameter.</param>
 		public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
 		{
-			result.X = MathHelper.SmoothStep(value1.X, value2.X, amount);
-			result.Y = MathHelper.SmoothStep(value1.Y, value2.Y, amount);
+			result.X = Mathf.SmoothStep(value1.X, value2.X, amount);
+			result.Y = Mathf.SmoothStep(value1.Y, value2.Y, amount);
 		}
 
 		/// <summary>

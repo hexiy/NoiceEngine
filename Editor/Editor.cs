@@ -10,10 +10,10 @@ namespace Engine
 		public static Editor I { get; private set; }
 
 		public static Vector2 gameViewPosition = new Vector2(0, 0);
-		public static Vector2 ScreenToWorld(Vector2 screenPosition)
-		{
-			return (screenPosition - gameViewPosition) * Camera.I.cameraSize + Camera.I.transform.position;
-		}
+		//public static Vector2 ScreenToWorld(Vector2 screenPosition)
+		//{
+		//	return (screenPosition - gameViewPosition) * Camera.I.cameraSize + Camera.I.transform.position;
+		//}
 		public Editor()
 		{
 			I = this;
@@ -21,7 +21,8 @@ namespace Engine
 		public void Init()
 		{
 			ImGui.GetStyle().WindowRounding = 0;
-			ImGui.GetStyle().WindowBorderSize = 0;
+			ImGui.GetStyle().WindowBorderSize = 0.2f;
+			//ImGui.GetStyle().WindowPadding = new Vector2(0,0;
 
 			ImGuiStylePtr style = ImGui.GetStyle();
 			RangeAccessor<System.Numerics.Vector4> colors = style.Colors;
@@ -83,11 +84,11 @@ namespace Engine
 			{
 				colors[(int)ImGuiCol.Text] = new Vector4(1.00f, 1.00f, 1.00f, 1.00f);
 				colors[(int)ImGuiCol.TextDisabled] = new Vector4(0.50f, 0.50f, 0.50f, 1.00f);
-				colors[(int)ImGuiCol.WindowBg] = new Vector4(0.13f, 0.14f, 0.15f, 1.00f);
+				colors[(int)ImGuiCol.WindowBg] = new Vector4(0.13f, 0.13f, 0.13f, 1.000f);
 				colors[(int)ImGuiCol.ChildBg] = new Vector4(0.13f, 0.14f, 0.15f, 1.00f);
 				colors[(int)ImGuiCol.PopupBg] = new Vector4(0.13f, 0.14f, 0.15f, 1.00f);
-				colors[(int)ImGuiCol.Border] = new Vector4(0.43f, 0.43f, 0.50f, 0.50f);
-				colors[(int)ImGuiCol.BorderShadow] = new Vector4(0.00f, 0.00f, 0.00f, 0.00f);
+				colors[(int)ImGuiCol.Border] = new Vector4(0.25f, 0.25f, 0.25f, 1f);
+				colors[(int)ImGuiCol.BorderShadow] = new Vector4(0.3f, 0.3f, 0.3f, 0f);
 				colors[(int)ImGuiCol.FrameBg] = new Vector4(0.25f, 0.25f, 0.25f, 1.00f);
 				colors[(int)ImGuiCol.FrameBgHovered] = new Vector4(0.38f, 0.38f, 0.38f, 1.00f);
 				colors[(int)ImGuiCol.FrameBgActive] = new Vector4(0.67f, 0.67f, 0.67f, 0.39f);
@@ -137,8 +138,9 @@ namespace Engine
 			{
 				new EditorWindow_Hierarchy (),
 				new EditorWindow_Inspector (),
-				new EditorWindow_Controls (),
+				new EditorWindow_SceneTopbar (),
 				new EditorWindow_Browser (),
+				new EditorWindow_Console (),
 			};
 			for (int i = 0; i < editorWindows.Length; i++)
 			{

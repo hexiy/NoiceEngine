@@ -33,10 +33,10 @@ namespace Engine
 		public int antialiasingStrength = 0;
 
 
-		public float zoom;
+		public float ortographicSize = 1;
 
 		public Vector2 size = new Vector2(600, 500);
-		public float cameraSize = 0.1f;
+		//public float cameraSize = 0.1f;
 
 		public Matrix4x4 GetProjectionMatrix()
 		{
@@ -47,24 +47,18 @@ namespace Engine
 
 			Matrix4x4 orthoMatrix = Matrix4x4.CreateOrthographicOffCenter(left, right, bottom, top, 0.00001f, 10000000f);
 
-			return orthoMatrix;
+			return GetTranslationMatrix() * orthoMatrix * GetScaleMatrix();
 		}
-
-		public Matrix TransformMatrix
+		public Matrix4x4 GetTranslationMatrix()
 		{
-			get
-			{
-				return
-				Matrix.CreateScale(new Vector3(1 / cameraSize, 1 / cameraSize, 0.0000000001f)) *
-				Matrix.CreateRotationX(transform.rotation.X) *
-				Matrix.CreateRotationY(transform.rotation.Y) *
-				Matrix.CreateRotationZ(transform.rotation.Z) *
-				Matrix.CreateTranslation(-transform.position.X / cameraSize,
-				   -transform.position.Y / cameraSize, 0);
-				//Matrix.CreateRotationZ(Rotation);
-			}
+			Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(-transform.position);
+			return translationMatrix;
 		}
-
+		private Matrix4x4 GetScaleMatrix()
+		{
+			Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(1 / ortographicSize);
+			return scaleMatrix;
+		}
 		public void Move(Vector2 moveVector)
 		{
 			transform.position += moveVector;
@@ -72,26 +66,17 @@ namespace Engine
 
 		public Vector2 WorldToScreen(Vector2 worldPosition)
 		{
-			return Vector2.Transform(worldPosition, TransformMatrix);
+			return Vector2.Transform(worldPosition, GetTranslationMatrix());
 		}
 
 		public Vector2 ScreenToWorld(Vector2 screenPosition)
 		{
 			return Vector2.Transform(screenPosition,
-				Matrix.Invert(TransformMatrix));
+				 Matrix.Invert(GetTranslationMatrix()));
 		}
 		public Vector2 CenterOfScreenToWorld()
 		{
 			return ScreenToWorld(new Vector2(size.X / 2, size.Y / 2));
-		}
-		public override void Update()
-		{
-			/*			if (Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount != AntialiasingStrength * 2)
-						{
-							Scene.I.graphics.PreferMultiSampling = AntialiasingStrength == 0 ? false : true;
-							Scene.I.GraphicsDevice.PresentationParameters.MultiSampleCount = AntialiasingStrength * 2;
-							Scene.I.graphics.ApplyChanges();
-						}*/
 		}
 	}
 }

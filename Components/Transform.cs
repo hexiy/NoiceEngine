@@ -18,6 +18,7 @@ namespace Scripts
 		public Vector3 position = Vector3.Zero;
 		[Hide] public Vector3 localPosition { get { return position - GetParentPosition(); } set { position = GetParentPosition() + value; } }
 		[Hide] public Vector3 initialAngleDifferenceFromParent = Vector3.Zero;
+		[Hide] public Vector3 up { get { return position + TransformVector(new Vector3(0, 1, 0)); } }
 
 		/*[ShowInEditor]
 		public Vector3 LocalPosition
@@ -66,6 +67,5 @@ namespace Scripts
 			return transform.position + Matrix.CreateFromQuaternion(q).Backward;
 
 		}
-		public Vector3 up { get { return position + TransformVector(new Vector3(0, 1, 0)); } }
 	}
 }

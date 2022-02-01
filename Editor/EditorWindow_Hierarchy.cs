@@ -85,10 +85,10 @@ namespace Engine
 		{
 			gameObjectsChildrened = new List<GameObject>();
 			ResetID();
-			ImGui.SetNextWindowSize(new Vector2(300, Window.I.ClientSize.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
-			//ImGui.SetNextWindowBgAlpha (0);
-			ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
+			ImGui.SetNextWindowSize(new Vector2(300, Camera.I.size.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X - 350 + 1, 0), ImGuiCond.Always, new Vector2(1, 0)); // +1 for double border uglyness
+																														  //ImGui.SetNextWindowBgAlpha (0);
+			ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 			if (ImGui.Button("+"))
 			{
 				GameObject go = GameObject.Create(name: "GameObject");
@@ -102,6 +102,8 @@ namespace Engine
 				DestroySelectedGameObjects();
 			}
 
+			ImGui.SameLine();
+			ImGui.Dummy(new Vector2(15, 0));
 			ImGui.SameLine();
 			if (ImGui.Button("^"))
 			{
@@ -130,6 +132,7 @@ namespace Engine
 				{
 					flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
 				}
+
 				bool opened = ImGui.TreeNodeEx(Scene.I.gameObjects[goIndex].name, flags);
 
 				if (ImGui.IsItemClicked(ImGuiMouseButton.Left))

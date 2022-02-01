@@ -22,9 +22,11 @@ namespace Engine
 		public static Window I { get; private set; }
 		ImGuiController imGuiController;
 
-		public Window() : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = new Vector2i(1500, 800), APIVersion = new Version(4, 6) })
+		public Window() : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = new Vector2i(1920, 1027), APIVersion = new Version(4, 6) })
 		{
 			I = this;
+
+			this.WindowState = WindowState.Maximized;
 		}
 
 		protected override void OnLoad()
@@ -47,7 +49,7 @@ namespace Engine
 			//GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
 
 			// Tell ImGui of the new size
-			imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
+			imGuiController?.WindowResized(ClientSize.X, ClientSize.Y);
 		}
 		protected override void OnUpdateFrame(FrameEventArgs args)
 		{
@@ -58,12 +60,21 @@ namespace Engine
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			base.OnRenderFrame(e);
+			GL.Enable(EnableCap.ScissorTest);
+
+			GL.Scissor(0, 0, ClientSize.X, ClientSize.Y);
+			GL.ClearColor(0.150f, 0.150f, 0.160f, 1.000f);
+			GL.Clear(ClearBufferMask.ColorBufferBit);
+
 			GL.Viewport(0, (int)Window.I.ClientSize.Y - (int)Camera.I.size.Y, (int)Camera.I.size.X, (int)Camera.I.size.Y);
+			GL.Scissor(0, (int)Window.I.ClientSize.Y - (int)Camera.I.size.Y, (int)Camera.I.size.X, (int)Camera.I.size.Y);
 
 			Scene.I.Render();
 
 			imGuiController.Update(this, (float)e.Time);
 			GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+			GL.Scissor(0, 0, ClientSize.X, ClientSize.Y);
+
 			imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
 
 			Editor.I.Draw();

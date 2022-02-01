@@ -111,7 +111,7 @@ namespace Scripts
 					distance = (float)Math.Pow(distance, lights[j].falloff);
 					intensity += lights[j].parameteridk / (distance * lights[j].intensity);
 				}
-				tiles[i].GetComponent<Renderer>().color = new Color(Color.White * MathHelper.Clamp(intensity, 0, 0.9f), 255);
+				tiles[i].GetComponent<Renderer>().color = new Color(Color.White * Mathf.Clamp(intensity, 0, 0.9f), 255);
 
 			}
 		}
@@ -130,7 +130,7 @@ namespace Scripts
 					goDown = distanceFromPlayerOnXAxis - 22;
 				}
 
-				tiles[i].transform.position.Y = MathHelper.Lerp(tiles[i].transform.position.Y, tilesOGPositionsY[i] + goDown, Time.deltaTime * (11 + MathF.Abs(Player.I.GetComponent<Rigidbody>().Velocity.X) * 2));
+				tiles[i].transform.position.Y = Mathf.Lerp(tiles[i].transform.position.Y, tilesOGPositionsY[i] + goDown, Time.deltaTime * (11 + MathF.Abs(Player.I.GetComponent<Rigidbody>().Velocity.X) * 2));
 
 			}
 		}

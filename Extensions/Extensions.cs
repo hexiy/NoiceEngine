@@ -6,6 +6,10 @@ using Engine;
 
 public static class Extensions
 {
+	public static float Lerp(float a, float b, float t)
+	{
+		return Mathf.Lerp(a, b, t);
+	}
 	public static Vector2 MaxY(Vector2 vector1, Vector2 vector2)
 	{
 		if (vector1.Y > vector2.Y)

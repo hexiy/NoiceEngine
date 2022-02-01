@@ -10,14 +10,16 @@ namespace Engine
 {
 	public class Serializer
 	{
-		public static string lastScene = "";
+		public static string lastScene
+		{
+			get { return PersistentData.GetString("lastOpenedScene", "scene1.scene"); }
+			set { PersistentData.Set("lastOpenedScene", value); }
+		}
 		public static Serializer I { get; set; }
 		List<Type> SerializableTypes = new List<Type>();
 		public Serializer()
 		{
 			I = this;
-
-			lastScene = PersistentData.GetString("lastOpenedScene", "scene1.scene");
 		}
 		void UpdateSerializableTypes()
 		{

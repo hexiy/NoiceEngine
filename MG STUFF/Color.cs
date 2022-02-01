@@ -205,7 +205,7 @@ namespace Engine
 		{
 			if ((alpha & 0xFFFFFF00) != 0)
 			{
-				var clampedA = (uint)MathHelper.Clamp(alpha, Byte.MinValue, Byte.MaxValue);
+				var clampedA = (uint)Mathf.Clamp(alpha, Byte.MinValue, Byte.MaxValue);
 
 				_packedValue = (color._packedValue & 0x00FFFFFF) | (clampedA << 24);
 			}
@@ -260,9 +260,9 @@ namespace Engine
 
 			if (((r | g | b) & 0xFFFFFF00) != 0)
 			{
-				var clampedR = (uint)MathHelper.Clamp(r, Byte.MinValue, Byte.MaxValue);
-				var clampedG = (uint)MathHelper.Clamp(g, Byte.MinValue, Byte.MaxValue);
-				var clampedB = (uint)MathHelper.Clamp(b, Byte.MinValue, Byte.MaxValue);
+				var clampedR = (uint)Mathf.Clamp(r, Byte.MinValue, Byte.MaxValue);
+				var clampedG = (uint)Mathf.Clamp(g, Byte.MinValue, Byte.MaxValue);
+				var clampedB = (uint)Mathf.Clamp(b, Byte.MinValue, Byte.MaxValue);
 
 				_packedValue |= (clampedB << 16) | (clampedG << 8) | (clampedR);
 			}
@@ -283,10 +283,10 @@ namespace Engine
 		{
 			if (((r | g | b | alpha) & 0xFFFFFF00) != 0)
 			{
-				var clampedR = (uint)MathHelper.Clamp(r, Byte.MinValue, Byte.MaxValue);
-				var clampedG = (uint)MathHelper.Clamp(g, Byte.MinValue, Byte.MaxValue);
-				var clampedB = (uint)MathHelper.Clamp(b, Byte.MinValue, Byte.MaxValue);
-				var clampedA = (uint)MathHelper.Clamp(alpha, Byte.MinValue, Byte.MaxValue);
+				var clampedR = (uint)Mathf.Clamp(r, Byte.MinValue, Byte.MaxValue);
+				var clampedG = (uint)Mathf.Clamp(g, Byte.MinValue, Byte.MaxValue);
+				var clampedB = (uint)Mathf.Clamp(b, Byte.MinValue, Byte.MaxValue);
+				var clampedA = (uint)Mathf.Clamp(alpha, Byte.MinValue, Byte.MaxValue);
 
 				_packedValue = (clampedA << 24) | (clampedB << 16) | (clampedG << 8) | (clampedR);
 			}
@@ -1716,12 +1716,12 @@ namespace Engine
 		/// <returns>Interpolated <see cref="Color"/>.</returns>
 		public static Color Lerp(Color value1, Color value2, Single amount)
 		{
-			amount = MathHelper.Clamp(amount, 0, 1);
+			amount = Mathf.Clamp(amount, 0, 1);
 			return new Color(
-				(int)MathHelper.Lerp(value1.R, value2.R, amount),
-				(int)MathHelper.Lerp(value1.G, value2.G, amount),
-				(int)MathHelper.Lerp(value1.B, value2.B, amount),
-				(int)MathHelper.Lerp(value1.A, value2.A, amount));
+				(int)Mathf.Lerp(value1.R, value2.R, amount),
+				(int)Mathf.Lerp(value1.G, value2.G, amount),
+				(int)Mathf.Lerp(value1.B, value2.B, amount),
+				(int)Mathf.Lerp(value1.A, value2.A, amount));
 		}
 
 		/// <summary>
@@ -1731,12 +1731,12 @@ namespace Engine
 		[Obsolete("Color.Lerp should be used instead of this function.")]
 		public static Color LerpPrecise(Color value1, Color value2, Single amount)
 		{
-			amount = MathHelper.Clamp(amount, 0, 1);
+			amount = Mathf.Clamp(amount, 0, 1);
 			return new Color(
-				(int)MathHelper.LerpPrecise(value1.R, value2.R, amount),
-				(int)MathHelper.LerpPrecise(value1.G, value2.G, amount),
-				(int)MathHelper.LerpPrecise(value1.B, value2.B, amount),
-				(int)MathHelper.LerpPrecise(value1.A, value2.A, amount));
+				(int)Mathf.LerpPrecise(value1.R, value2.R, amount),
+				(int)Mathf.LerpPrecise(value1.G, value2.G, amount),
+				(int)Mathf.LerpPrecise(value1.B, value2.B, amount),
+				(int)Mathf.LerpPrecise(value1.A, value2.A, amount));
 		}
 
 		/// <summary>
@@ -1921,5 +1921,24 @@ namespace Engine
 			b = B / 255f;
 			a = A / 255f;
 		}
+
+
+		/*/// <summary>
+		/// Converts <see cref="Color"/> to a <see cref="Vector4"/>.
+		/// </summary>
+		/// <param name="value">The converted value.</param>
+		public static implicit operator Color(Vector4 value)
+		{
+			return new Color(value.X, value.Y, value.Z, value.W);
+		}
+
+		/// <summary>
+		/// Converts <see cref="Color"/> to a <see cref="System.Numerics.Vector4"/>.
+		/// </summary>
+		/// <param name="value">The converted value.</param>
+		public static implicit operator Color(System.Numerics.Vector4 value)
+		{
+			return new Color(value.X, value.Y, value.Z, value.W);
+		}*/
 	}
 }

@@ -229,10 +229,10 @@ namespace Engine
 		public static Vector4 Barycentric(Vector4 value1, Vector4 value2, Vector4 value3, float amount1, float amount2)
 		{
 			return new Vector4(
-				MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
-				MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2),
-				MathHelper.Barycentric(value1.Z, value2.Z, value3.Z, amount1, amount2),
-				MathHelper.Barycentric(value1.W, value2.W, value3.W, amount1, amount2));
+				Mathf.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
+				Mathf.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2),
+				Mathf.Barycentric(value1.Z, value2.Z, value3.Z, amount1, amount2),
+				Mathf.Barycentric(value1.W, value2.W, value3.W, amount1, amount2));
 		}
 
 		/// <summary>
@@ -246,10 +246,10 @@ namespace Engine
 		/// <param name="result">The cartesian translation of barycentric coordinates as an output parameter.</param>
 		public static void Barycentric(ref Vector4 value1, ref Vector4 value2, ref Vector4 value3, float amount1, float amount2, out Vector4 result)
 		{
-			result.X = MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2);
-			result.Y = MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2);
-			result.Z = MathHelper.Barycentric(value1.Z, value2.Z, value3.Z, amount1, amount2);
-			result.W = MathHelper.Barycentric(value1.W, value2.W, value3.W, amount1, amount2);
+			result.X = Mathf.Barycentric(value1.X, value2.X, value3.X, amount1, amount2);
+			result.Y = Mathf.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2);
+			result.Z = Mathf.Barycentric(value1.Z, value2.Z, value3.Z, amount1, amount2);
+			result.W = Mathf.Barycentric(value1.W, value2.W, value3.W, amount1, amount2);
 		}
 
 		/// <summary>
@@ -264,10 +264,10 @@ namespace Engine
 		public static Vector4 CatmullRom(Vector4 value1, Vector4 value2, Vector4 value3, Vector4 value4, float amount)
 		{
 			return new Vector4(
-				MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
-				MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount),
-				MathHelper.CatmullRom(value1.Z, value2.Z, value3.Z, value4.Z, amount),
-				MathHelper.CatmullRom(value1.W, value2.W, value3.W, value4.W, amount));
+				Mathf.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
+				Mathf.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount),
+				Mathf.CatmullRom(value1.Z, value2.Z, value3.Z, value4.Z, amount),
+				Mathf.CatmullRom(value1.W, value2.W, value3.W, value4.W, amount));
 		}
 
 		/// <summary>
@@ -281,10 +281,10 @@ namespace Engine
 		/// <param name="result">The result of CatmullRom interpolation as an output parameter.</param>
 		public static void CatmullRom(ref Vector4 value1, ref Vector4 value2, ref Vector4 value3, ref Vector4 value4, float amount, out Vector4 result)
 		{
-			result.X = MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount);
-			result.Y = MathHelper.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount);
-			result.Z = MathHelper.CatmullRom(value1.Z, value2.Z, value3.Z, value4.Z, amount);
-			result.W = MathHelper.CatmullRom(value1.W, value2.W, value3.W, value4.W, amount);
+			result.X = Mathf.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount);
+			result.Y = Mathf.CatmullRom(value1.Y, value2.Y, value3.Y, value4.Y, amount);
+			result.Z = Mathf.CatmullRom(value1.Z, value2.Z, value3.Z, value4.Z, amount);
+			result.W = Mathf.CatmullRom(value1.W, value2.W, value3.W, value4.W, amount);
 		}
 
 		/// <summary>
@@ -335,10 +335,10 @@ namespace Engine
 		public static Vector4 Clamp(Vector4 value1, Vector4 min, Vector4 max)
 		{
 			return new Vector4(
-				MathHelper.Clamp(value1.X, min.X, max.X),
-				MathHelper.Clamp(value1.Y, min.Y, max.Y),
-				MathHelper.Clamp(value1.Z, min.Z, max.Z),
-				MathHelper.Clamp(value1.W, min.W, max.W));
+				Mathf.Clamp(value1.X, min.X, max.X),
+				Mathf.Clamp(value1.Y, min.Y, max.Y),
+				Mathf.Clamp(value1.Z, min.Z, max.Z),
+				Mathf.Clamp(value1.W, min.W, max.W));
 		}
 
 		/// <summary>
@@ -350,10 +350,10 @@ namespace Engine
 		/// <param name="result">The clamped value as an output parameter.</param>
 		public static void Clamp(ref Vector4 value1, ref Vector4 min, ref Vector4 max, out Vector4 result)
 		{
-			result.X = MathHelper.Clamp(value1.X, min.X, max.X);
-			result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
-			result.Z = MathHelper.Clamp(value1.Z, min.Z, max.Z);
-			result.W = MathHelper.Clamp(value1.W, min.W, max.W);
+			result.X = Mathf.Clamp(value1.X, min.X, max.X);
+			result.Y = Mathf.Clamp(value1.Y, min.Y, max.Y);
+			result.Z = Mathf.Clamp(value1.Z, min.Z, max.Z);
+			result.W = Mathf.Clamp(value1.W, min.W, max.W);
 		}
 
 		/// <summary>
@@ -576,10 +576,10 @@ namespace Engine
 		/// <returns>The hermite spline interpolation vector.</returns>
 		public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float amount)
 		{
-			return new Vector4(MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount),
-							   MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount),
-							   MathHelper.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount),
-							   MathHelper.Hermite(value1.W, tangent1.W, value2.W, tangent2.W, amount));
+			return new Vector4(Mathf.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount),
+							   Mathf.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount),
+							   Mathf.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount),
+							   Mathf.Hermite(value1.W, tangent1.W, value2.W, tangent2.W, amount));
 		}
 
 		/// <summary>
@@ -593,10 +593,10 @@ namespace Engine
 		/// <param name="result">The hermite spline interpolation vector as an output parameter.</param>
 		public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2, float amount, out Vector4 result)
 		{
-			result.W = MathHelper.Hermite(value1.W, tangent1.W, value2.W, tangent2.W, amount);
-			result.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
-			result.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
-			result.Z = MathHelper.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount);
+			result.W = Mathf.Hermite(value1.W, tangent1.W, value2.W, tangent2.W, amount);
+			result.X = Mathf.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
+			result.Y = Mathf.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
+			result.Z = Mathf.Hermite(value1.Z, tangent1.Z, value2.Z, tangent2.Z, amount);
 		}
 
 		/// <summary>
@@ -627,10 +627,10 @@ namespace Engine
 		public static Vector4 Lerp(Vector4 value1, Vector4 value2, float amount)
 		{
 			return new Vector4(
-				MathHelper.Lerp(value1.X, value2.X, amount),
-				MathHelper.Lerp(value1.Y, value2.Y, amount),
-				MathHelper.Lerp(value1.Z, value2.Z, amount),
-				MathHelper.Lerp(value1.W, value2.W, amount));
+				Mathf.Lerp(value1.X, value2.X, amount),
+				Mathf.Lerp(value1.Y, value2.Y, amount),
+				Mathf.Lerp(value1.Z, value2.Z, amount),
+				Mathf.Lerp(value1.W, value2.W, amount));
 		}
 
 		/// <summary>
@@ -642,17 +642,17 @@ namespace Engine
 		/// <param name="result">The result of linear interpolation of the specified vectors as an output parameter.</param>
 		public static void Lerp(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
 		{
-			result.X = MathHelper.Lerp(value1.X, value2.X, amount);
-			result.Y = MathHelper.Lerp(value1.Y, value2.Y, amount);
-			result.Z = MathHelper.Lerp(value1.Z, value2.Z, amount);
-			result.W = MathHelper.Lerp(value1.W, value2.W, amount);
+			result.X = Mathf.Lerp(value1.X, value2.X, amount);
+			result.Y = Mathf.Lerp(value1.Y, value2.Y, amount);
+			result.Z = Mathf.Lerp(value1.Z, value2.Z, amount);
+			result.W = Mathf.Lerp(value1.W, value2.W, amount);
 		}
 
 		/// <summary>
 		/// Creates a new <see cref="Vector4"/> that contains linear interpolation of the specified vectors.
-		/// Uses <see cref="MathHelper.LerpPrecise"/> on MathHelper for the interpolation.
+		/// Uses <see cref="Mathf.LerpPrecise"/> on MathHelper for the interpolation.
 		/// Less efficient but more precise compared to <see cref="Vector4.Lerp(Vector4, Vector4, float)"/>.
-		/// See remarks section of <see cref="MathHelper.LerpPrecise"/> on MathHelper for more info.
+		/// See remarks section of <see cref="Mathf.LerpPrecise"/> on MathHelper for more info.
 		/// </summary>
 		/// <param name="value1">The first vector.</param>
 		/// <param name="value2">The second vector.</param>
@@ -661,17 +661,17 @@ namespace Engine
 		public static Vector4 LerpPrecise(Vector4 value1, Vector4 value2, float amount)
 		{
 			return new Vector4(
-				MathHelper.LerpPrecise(value1.X, value2.X, amount),
-				MathHelper.LerpPrecise(value1.Y, value2.Y, amount),
-				MathHelper.LerpPrecise(value1.Z, value2.Z, amount),
-				MathHelper.LerpPrecise(value1.W, value2.W, amount));
+				Mathf.LerpPrecise(value1.X, value2.X, amount),
+				Mathf.LerpPrecise(value1.Y, value2.Y, amount),
+				Mathf.LerpPrecise(value1.Z, value2.Z, amount),
+				Mathf.LerpPrecise(value1.W, value2.W, amount));
 		}
 
 		/// <summary>
 		/// Creates a new <see cref="Vector4"/> that contains linear interpolation of the specified vectors.
-		/// Uses <see cref="MathHelper.LerpPrecise"/> on MathHelper for the interpolation.
+		/// Uses <see cref="Mathf.LerpPrecise"/> on MathHelper for the interpolation.
 		/// Less efficient but more precise compared to <see cref="Vector4.Lerp(ref Vector4, ref Vector4, float, out Vector4)"/>.
-		/// See remarks section of <see cref="MathHelper.LerpPrecise"/> on MathHelper for more info.
+		/// See remarks section of <see cref="Mathf.LerpPrecise"/> on MathHelper for more info.
 		/// </summary>
 		/// <param name="value1">The first vector.</param>
 		/// <param name="value2">The second vector.</param>
@@ -679,10 +679,10 @@ namespace Engine
 		/// <param name="result">The result of linear interpolation of the specified vectors as an output parameter.</param>
 		public static void LerpPrecise(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
 		{
-			result.X = MathHelper.LerpPrecise(value1.X, value2.X, amount);
-			result.Y = MathHelper.LerpPrecise(value1.Y, value2.Y, amount);
-			result.Z = MathHelper.LerpPrecise(value1.Z, value2.Z, amount);
-			result.W = MathHelper.LerpPrecise(value1.W, value2.W, amount);
+			result.X = Mathf.LerpPrecise(value1.X, value2.X, amount);
+			result.Y = Mathf.LerpPrecise(value1.Y, value2.Y, amount);
+			result.Z = Mathf.LerpPrecise(value1.Z, value2.Z, amount);
+			result.W = Mathf.LerpPrecise(value1.W, value2.W, amount);
 		}
 
 		/// <summary>
@@ -694,10 +694,10 @@ namespace Engine
 		public static Vector4 Max(Vector4 value1, Vector4 value2)
 		{
 			return new Vector4(
-			   MathHelper.Max(value1.X, value2.X),
-			   MathHelper.Max(value1.Y, value2.Y),
-			   MathHelper.Max(value1.Z, value2.Z),
-			   MathHelper.Max(value1.W, value2.W));
+			   Mathf.Max(value1.X, value2.X),
+			   Mathf.Max(value1.Y, value2.Y),
+			   Mathf.Max(value1.Z, value2.Z),
+			   Mathf.Max(value1.W, value2.W));
 		}
 
 		/// <summary>
@@ -708,10 +708,10 @@ namespace Engine
 		/// <param name="result">The <see cref="Vector4"/> with maximal values from the two vectors as an output parameter.</param>
 		public static void Max(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
 		{
-			result.X = MathHelper.Max(value1.X, value2.X);
-			result.Y = MathHelper.Max(value1.Y, value2.Y);
-			result.Z = MathHelper.Max(value1.Z, value2.Z);
-			result.W = MathHelper.Max(value1.W, value2.W);
+			result.X = Mathf.Max(value1.X, value2.X);
+			result.Y = Mathf.Max(value1.Y, value2.Y);
+			result.Z = Mathf.Max(value1.Z, value2.Z);
+			result.W = Mathf.Max(value1.W, value2.W);
 		}
 
 		/// <summary>
@@ -723,10 +723,10 @@ namespace Engine
 		public static Vector4 Min(Vector4 value1, Vector4 value2)
 		{
 			return new Vector4(
-			   MathHelper.Min(value1.X, value2.X),
-			   MathHelper.Min(value1.Y, value2.Y),
-			   MathHelper.Min(value1.Z, value2.Z),
-			   MathHelper.Min(value1.W, value2.W));
+			   Mathf.Min(value1.X, value2.X),
+			   Mathf.Min(value1.Y, value2.Y),
+			   Mathf.Min(value1.Z, value2.Z),
+			   Mathf.Min(value1.W, value2.W));
 		}
 
 		/// <summary>
@@ -737,10 +737,10 @@ namespace Engine
 		/// <param name="result">The <see cref="Vector4"/> with minimal values from the two vectors as an output parameter.</param>
 		public static void Min(ref Vector4 value1, ref Vector4 value2, out Vector4 result)
 		{
-			result.X = MathHelper.Min(value1.X, value2.X);
-			result.Y = MathHelper.Min(value1.Y, value2.Y);
-			result.Z = MathHelper.Min(value1.Z, value2.Z);
-			result.W = MathHelper.Min(value1.W, value2.W);
+			result.X = Mathf.Min(value1.X, value2.X);
+			result.Y = Mathf.Min(value1.Y, value2.Y);
+			result.Z = Mathf.Min(value1.Z, value2.Z);
+			result.W = Mathf.Min(value1.W, value2.W);
 		}
 
 		/// <summary>
@@ -913,10 +913,10 @@ namespace Engine
 		public static Vector4 SmoothStep(Vector4 value1, Vector4 value2, float amount)
 		{
 			return new Vector4(
-				MathHelper.SmoothStep(value1.X, value2.X, amount),
-				MathHelper.SmoothStep(value1.Y, value2.Y, amount),
-				MathHelper.SmoothStep(value1.Z, value2.Z, amount),
-				MathHelper.SmoothStep(value1.W, value2.W, amount));
+				Mathf.SmoothStep(value1.X, value2.X, amount),
+				Mathf.SmoothStep(value1.Y, value2.Y, amount),
+				Mathf.SmoothStep(value1.Z, value2.Z, amount),
+				Mathf.SmoothStep(value1.W, value2.W, amount));
 		}
 
 		/// <summary>
@@ -928,10 +928,10 @@ namespace Engine
 		/// <param name="result">Cubic interpolation of the specified vectors as an output parameter.</param>
 		public static void SmoothStep(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
 		{
-			result.X = MathHelper.SmoothStep(value1.X, value2.X, amount);
-			result.Y = MathHelper.SmoothStep(value1.Y, value2.Y, amount);
-			result.Z = MathHelper.SmoothStep(value1.Z, value2.Z, amount);
-			result.W = MathHelper.SmoothStep(value1.W, value2.W, amount);
+			result.X = Mathf.SmoothStep(value1.X, value2.X, amount);
+			result.Y = Mathf.SmoothStep(value1.Y, value2.Y, amount);
+			result.Z = Mathf.SmoothStep(value1.Z, value2.Z, amount);
+			result.W = Mathf.SmoothStep(value1.W, value2.W, amount);
 		}
 
 		/// <summary>

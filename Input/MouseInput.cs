@@ -8,8 +8,20 @@ namespace Engine
 
 		public delegate void MouseEvent();
 
-		public static Vector2 Delta;
-		public static Vector2 Position = Vector2.Zero;
+		public static Vector2 ScreenDelta;
+		public static Vector2 WorldDelta
+		{
+			get { return ScreenDelta * Camera.I.ortographicSize; }
+		}
+
+		/// <summary>
+		/// Screen position of mouse
+		/// </summary>
+		public static Vector2 ScreenPosition = Vector2.Zero;
+		public static Vector2 WorldPosition
+		{
+			get { return Camera.I.ScreenToWorld(ScreenPosition); }
+		}
 
 		//
 		// Summary:
@@ -65,7 +77,10 @@ namespace Engine
 			//     The highest mouse button available.
 			Last = 7
 		}
-
+		public static float ScrollDelta
+		{
+			get { return Window.I.MouseState.ScrollDelta.Y; }
+		}
 		public static bool IsButtonDown(Buttons button = MouseInput.Buttons.Left)
 		{
 			return Window.I.MouseState.IsButtonDown((MouseButton)button);
@@ -87,8 +102,9 @@ namespace Engine
 		{
 			MouseState state = Window.I.MouseState;
 
-			Delta = new Vector2(state.Delta.X, -state.Delta.Y);
-			Position = new Vector2(Window.I.MouseState.X, -Window.I.MouseState.Y + Camera.I.size.Y);
+			ScreenDelta = new Vector2(state.Delta.X, -state.Delta.Y);
+
+			ScreenPosition = new Vector2(Window.I.MouseState.X, -Window.I.MouseState.Y + Camera.I.size.Y);
 			//System.Diagnostics.Debug.WriteLine("mousePos:" + Position.X + ":" + Position.Y);
 		}
 	}

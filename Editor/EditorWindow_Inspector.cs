@@ -42,38 +42,22 @@ namespace Engine
 		}
 		public void Draw()
 		{
-			ImGui.SetNextWindowSize(new Vector2(300, Window.I.ClientSize.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X - 300, 0), ImGuiCond.Always, new Vector2(1, 0));
+			int windowWidth = 350;
+			int contentMaxWidth = windowWidth - (int)ImGui.GetStyle().WindowPadding.X * 1;
+			ImGui.SetNextWindowSize(new Vector2(windowWidth, Camera.I.size.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
 			//ImGui.SetNextWindowBgAlpha (0);
-			ImGui.Begin("Inspector", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
-			if (ImGui.Button("+"))
-			{
-				ImGui.OpenPopup("AddComponentPopup");
-			}
-			if (ImGui.BeginPopupContextWindow("AddComponentPopup"))
-			{
-				List<Type> componentTypes = typeof(Component).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract).ToList();
+			ImGui.Begin("Inspector", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
-				for (int i = 0; i < componentTypes.Count; i++)
-				{
-					if (ImGui.Button(componentTypes[i].Name))
-					{
-						selectedGameObject.AddComponent(componentTypes[i]);
-						ImGui.CloseCurrentPopup();
-					}
-				}
-				ImGui.EndPopup();
-			}
 			if (selectedGameObject != null)
 			{
-				ImGui.SameLine();
 				string gameObjectName = selectedGameObject.name;
-				ImGui.SetNextItemWidth(265);
+				ImGui.SetNextItemWidth(contentMaxWidth);
+
 				if (ImGui.InputText("", ref gameObjectName, 100))
 				{
 					selectedGameObject.name = gameObjectName;
 				}
-
 
 				for (int i = 0; i < selectedGameObject.components.Count; i++)
 				{
@@ -280,6 +264,26 @@ namespace Engine
 						//}
 					}
 					ImGui.PopID();
+				}
+
+
+				if (ImGui.Button("+"))
+				{
+					ImGui.OpenPopup("AddComponentPopup");
+				}
+				if (ImGui.BeginPopupContextWindow("AddComponentPopup"))
+				{
+					List<Type> componentTypes = typeof(Component).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract).ToList();
+
+					for (int i = 0; i < componentTypes.Count; i++)
+					{
+						if (ImGui.Button(componentTypes[i].Name))
+						{
+							selectedGameObject.AddComponent(componentTypes[i]);
+							ImGui.CloseCurrentPopup();
+						}
+					}
+					ImGui.EndPopup();
 				}
 			}
 

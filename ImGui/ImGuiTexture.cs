@@ -18,7 +18,7 @@ namespace Dear_ImGui_Sample
         R = TextureParameterName.TextureWrapR
     }
 
-    class Texture : IDisposable
+    class ImGuiTexture : IDisposable
     {
         public const SizedInternalFormat Srgb8Alpha8 = (SizedInternalFormat)All.Srgb8Alpha8;
         public const SizedInternalFormat RGB32F = (SizedInternalFormat)All.Rgb32f;
@@ -27,7 +27,7 @@ namespace Dear_ImGui_Sample
 
         public static readonly float MaxAniso;
 
-        static Texture()
+        static ImGuiTexture()
         {
             MaxAniso = GL.GetFloat(MAX_TEXTURE_MAX_ANISOTROPY);
         }
@@ -38,7 +38,7 @@ namespace Dear_ImGui_Sample
         public readonly int MipmapLevels;
         public readonly SizedInternalFormat InternalFormat;
 
-        public Texture(string name, Bitmap image, bool generateMipmaps, bool srgb)
+        public ImGuiTexture(string name, Bitmap image, bool generateMipmaps, bool srgb)
         {
             Name = name;
             Width = image.Width;
@@ -87,7 +87,7 @@ namespace Dear_ImGui_Sample
             image.Dispose();
         }
 
-        public Texture(string name, int GLTex, int width, int height, int mipmaplevels, SizedInternalFormat internalFormat)
+        public ImGuiTexture(string name, int GLTex, int width, int height, int mipmaplevels, SizedInternalFormat internalFormat)
         {
             Name = name;
             GLTexture = GLTex;
@@ -97,7 +97,7 @@ namespace Dear_ImGui_Sample
             InternalFormat = internalFormat;
         }
 
-        public Texture(string name, int width, int height, IntPtr data, bool generateMipmaps = false, bool srgb = false)
+        public ImGuiTexture(string name, int width, int height, IntPtr data, bool generateMipmaps = false, bool srgb = false)
         {
             Name = name;
             Width = width;
