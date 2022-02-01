@@ -33,7 +33,7 @@ namespace Engine
 			GL.GetShaderInfoLog(vs, out error);
 			if (error.Length > 0)
 			{
-				Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
+				System.Diagnostics.Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
 			}
 
 			fs = GL.CreateShader(ShaderType.FragmentShader);
@@ -44,7 +44,7 @@ namespace Engine
 			GL.GetShaderInfoLog(fs, out error);
 			if (error.Length > 0)
 			{
-				Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
+				System.Diagnostics.Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
 			}
 
 			ProgramID = GL.CreateProgram();

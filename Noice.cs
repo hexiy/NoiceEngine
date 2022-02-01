@@ -13,6 +13,7 @@ namespace Noice
 		{
 			serializer = new Serializer();
 			scene = new Scene();
+
 			_ = new Editor();
 
 			Window window = new Window();

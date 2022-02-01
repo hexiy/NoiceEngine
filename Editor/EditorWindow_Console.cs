@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ImGuiNET;
 
 
@@ -11,17 +12,12 @@ namespace Engine
 	{
 		public static EditorWindow_Console I { get; private set; }
 		private int currentID = 0;
-		string[] prefabs = new string[0];
 		public void Init()
 		{
 			I = this;
-		}
-		public void Update()
-		{
-			if (Directory.Exists("Prefabs") == false) { return; }
-			prefabs = Directory.GetFiles("Prefabs");
-		}
 
+			//Debug.UpdateLogs();
+		}
 		private void ResetID()
 		{
 			currentID = 0;
@@ -37,9 +33,24 @@ namespace Engine
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Console", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 
-			ResetID();
+			if (ImGui.Button("Clear"))
+			{
+				Debug.Clear();
+			}
+
+			int logsCount = Debug.GetLogs().Count;
+			for (int i = 0; i < logsCount; i++)
+			{
+				ImGui.Text(Debug.GetLogs()[logsCount - i - 1]);
+			}
+			//ResetID();
 
 			ImGui.End();
+		}
+
+		public void Update()
+		{
+
 		}
 	}
 }

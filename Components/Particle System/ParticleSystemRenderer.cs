@@ -57,7 +57,7 @@ namespace Scripts
 					Vector2 pos = new Vector2(circle.Center.X - circle.Radius / 2, circle.Center.Y - circle.Radius / 2).TranslateToGrid(0.5f);
 					SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(texture, destinationRectangleFloat: new RectangleFloat(pos.X, pos.Y, circle.Radius, circle.Radius),
 						sourceRectangleFloat: null,
-							color: particleSystem.particles[i].color, rotation: 0, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 1/(Layer+1));
+							color: particleSystem.particles[i].color, rotation: 0, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 1 / (Layer + 1));
 				}
 			}
 		}
