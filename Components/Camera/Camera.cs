@@ -4,6 +4,7 @@
 using Scripts;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Engine
@@ -40,10 +41,10 @@ namespace Engine
 
 		public Matrix4x4 GetProjectionMatrix()
 		{
-			float left = 0;
-			float right = size.X;
-			float bottom = 0;
-			float top = size.Y;
+			float left = -size.X / 2;
+			float right = size.X / 2;
+			float bottom = -size.Y / 2;
+			float top = size.Y / 2;
 
 			Matrix4x4 orthoMatrix = Matrix4x4.CreateOrthographicOffCenter(left, right, bottom, top, 0.00001f, 10000000f);
 
@@ -71,8 +72,8 @@ namespace Engine
 
 		public Vector2 ScreenToWorld(Vector2 screenPosition)
 		{
-			return Vector2.Transform(screenPosition,
-				 Matrix.Invert(GetTranslationMatrix()));
+			return Vector2.Transform(screenPosition / size * 2,
+				 Matrix.Invert(GetProjectionMatrix())) - size * ortographicSize / 2;
 		}
 		public Vector2 CenterOfScreenToWorld()
 		{

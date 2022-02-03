@@ -51,9 +51,12 @@ namespace Engine
 
 			if (selectedGameObject != null)
 			{
+				PushNextID();
 				string gameObjectName = selectedGameObject.name;
+				ImGui.Checkbox("", ref selectedGameObject.active);
+				ImGui.SameLine();
+				PushNextID();
 				ImGui.SetNextItemWidth(contentMaxWidth);
-
 				if (ImGui.InputText("", ref gameObjectName, 100))
 				{
 					selectedGameObject.name = gameObjectName;

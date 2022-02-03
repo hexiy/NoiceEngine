@@ -14,7 +14,7 @@ namespace Scripts
 		public float moveSpeed = 10;
 		public float jumpForce = 10000;
 
-		[LinkableComponent]
+		// LINKABLECOMPONENT PURGE [LinkableComponent]
 		private Rigidbody rb;
 		bool jumpKeyDown = false;
 		public override void Awake()

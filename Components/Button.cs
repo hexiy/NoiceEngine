@@ -15,22 +15,27 @@ namespace Engine
 		[LinkableComponent]
 		public Renderer renderer;
 		[LinkableComponent]
-		public Shape collider;
+		public BoxShape boxShape;
 		bool mouseIsOver = false;
 		bool clicked = false;
 		public override void Awake()
 		{
 			onClickedAction += () => renderer.color = new Color(215, 125, 125);
 			onReleasedAction += () => renderer.color = Color.White;
+
+			if (GetComponent<ButtonTween>() == null)
+			{
+				GameObject.AddComponent<ButtonTween>().Awake();
+			}
+
+			renderer = GetComponent<Renderer>();
+			boxShape = GetComponent<BoxShape>();
+
 			base.Awake();
-
-
-			GameObject.AddComponent<ButtonTween>().Awake();
 		}
-
 		public override void Update()
 		{
-			if (renderer == false || collider == false) { return; }
+			if (renderer == false || boxShape == false) { return; }
 			if (MouseInput.ButtonPressed())
 			{
 				onClickedAction?.Invoke();
@@ -42,8 +47,7 @@ namespace Engine
 				onReleasedAction?.Invoke();
 				clicked = false;
 			}
-			mouseIsOver = Camera.I.ScreenToWorld(MouseInput.ScreenPosition).In(collider);
-
+			mouseIsOver = MouseInput.WorldPosition.In(boxShape);
 			if (clicked == false)
 			{
 				renderer.color = mouseIsOver ? Color.Gray : Color.White;
@@ -54,6 +58,7 @@ namespace Engine
 				onReleasedAction?.Invoke();
 				clicked = false;
 			}
+			//renderer.color = Color.Black;
 		}
 	}
 }

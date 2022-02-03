@@ -94,6 +94,8 @@ color = frag_color;
 		}
 		public override void Render()
 		{
+			if (boxShape == null) return;
+
 			shader.Use();
 
 			shader.SetMatrix4x4("u_mvp", GetModelViewProjection());

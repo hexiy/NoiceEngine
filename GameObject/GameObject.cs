@@ -141,53 +141,86 @@ namespace Engine
 		}
 		public void LinkComponents(GameObject gameObject, Component component)
 		{
-			for (int index1 = 0; index1 < components.Count; index1++)
+			if (component.GetType() == typeof(BoxRenderer) || component.GetType() == typeof(BoxShape))
 			{
-				for (int index2 = 0; index2 < components.Count; index2++)
+				if (gameObject.name == "Button")
 				{
-					if (index1 == index2) { continue; }
+					var a = 0;
+				}
+			}
+			for (int compIndex1 = 0; compIndex1 < components.Count; compIndex1++)
+			{
+				if (components[compIndex1] == component) { continue; }
 
-					Type sourceType1 = components[index1].GetType();
-					Type sourceType2 = components[index2].GetType();
+				// BoxRenderer -> Renderer -> Component
+				// BoxShape    -> Shape    -> Component
 
-					FieldInfo fieldInfo = null;
+				//                Renderer containts BoxShape
+
+				// so go through component AND all of the parent classes, if we find a fitting type of comp2 type and it's linkable, assign it, and continue
+
+				// shape might be added first, not linked to anything that was added before, so do the same but reversed- for component
+
+				{
+					Type sourceType1 = components[compIndex1].GetType();
+					Type sourceType2 = component.GetType();
+
 					FieldInfo[] infos = sourceType1.GetFields();
 					for (int i = 0; i < infos.Length; i++)
 					{
-						if (infos[i].GetCustomAttribute<LinkableComponent>() != null)
+						var a = infos[i].GetCustomAttribute<LinkableComponent>();
+						var b = infos[i].GetType();
+						if (infos[i].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // we found field that can be connected- its LinkableComponent attributed and has a type of component2
 						{
-							fieldInfo = infos[i];
-							break;
-						}
-					}
-					//while (fieldInfo != null && sourceType1.BaseType != null && sourceType1.BaseType.Name.Equals("Component") == false) not old, but shouldnt it be like that?
-					while (fieldInfo == null && sourceType1.BaseType != null && sourceType1.BaseType.Name.Equals("Component") == false)
-					{
-						infos = sourceType1.BaseType.GetFields();
-						for (int i = 0; i < infos.Length; i++)
-						{
-							if (infos[i].GetCustomAttribute<LinkableComponent>() != null)
-							{
-								fieldInfo = infos[i];
-								break;
-							}
-						}
-						sourceType1 = sourceType1.BaseType;
-					}
+							infos[i].SetValue(components[compIndex1], component);
 
-					// get deepest class,but not Component, so if we have CircleCollider, we get Collider
-					while (sourceType2.BaseType != null && sourceType2.BaseType.Name.Equals("Component") == false)
-					{
-						sourceType2 = sourceType2.BaseType;
-					}
-					if (fieldInfo != null && (fieldInfo.FieldType.IsSubclassOf(sourceType2) || fieldInfo.FieldType == sourceType2) && fieldInfo.GetValue(components[index1]) == null)
-					{
-						if (GetComponents(components[index1].GetType()).IndexOf(components[index1]) == GetComponents(components[index2].GetType()).IndexOf(components[index2]))
-						{
-							fieldInfo.SetValue(components[index1], components[index2]);
+							Type parentType = sourceType1;
+							while (parentType.BaseType != null && parentType.BaseType.Name.Equals("Component") == false)// while we  arent in component, go to parent class and find all fields there
+							{
+								parentType = parentType.BaseType;
+
+								FieldInfo[] parentClassInfos = parentType.GetFields();
+								for (int j = 0; j < parentClassInfos.Length; j++)
+								{
+									if (parentClassInfos[j].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // found linkable field in parent class
+									{
+										parentClassInfos[j].SetValue(components[compIndex1], component);
+									}
+								}
+							}
 						}
 					}
 				}
+
+				{
+					Type sourceType1 = component.GetType();
+					Type sourceType2 = components[compIndex1].GetType();
+
+					FieldInfo[] infos = sourceType1.GetFields();
+					for (int i = 0; i < infos.Length; i++)
+					{
+						if (infos[i].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // we found field that can be connected- its LinkableComponent attributed and has a type of component2
+						{
+							infos[i].SetValue(component, components[compIndex1]);
+
+							Type parentType = sourceType2;
+							while (parentType.BaseType != null && parentType.BaseType.Name.Equals("Component") == false)// while we  arent in component, go to parent class and find all fields there
+							{
+								parentType = parentType.BaseType;
+
+								FieldInfo[] parentClassInfos = parentType.GetFields();
+								for (int j = 0; j < parentClassInfos.Length; j++)
+								{
+									if (parentClassInfos[j].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // found linkable field in parent class
+									{
+										parentClassInfos[j].SetValue(component, components[compIndex1]);
+									}
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 		/// <summary>

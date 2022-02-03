@@ -13,7 +13,7 @@ namespace Engine
 	{
 		public static World World;
 
-		public static readonly Vector2 gravity = new Vector2(0, -2);
+		public static readonly Vector2 gravity = new Vector2(0, -9);
 
 		public static bool Running = true;
 
@@ -42,26 +42,6 @@ namespace Engine
 			lock (World)
 			{
 				World.Step(Time.fixedDeltaTime);
-			}
-		}
-		public static void CreateBody(Rigidbody rb)
-		{
-			lock (World)
-			{
-				Body body = World.CreateBody(rb.transform.position, 0, rb.isStatic ? BodyType.Static : BodyType.Dynamic);
-				body.SleepingAllowed = false;
-
-				if (rb.GetComponent<BoxShape>() != null)
-				{
-					BoxShape boxShape = rb.GetComponent<BoxShape>();
-					var pfixture = body.CreateRectangle(boxShape.size.X * rb.transform.scale.X, boxShape.size.Y * rb.transform.scale.Y, 1, Vector2.Zero);
-					// Give it some bounce and friction
-					pfixture.Friction = 0.1f;
-					body.LinearDamping = 3;
-				}
-				body.Mass = rb.Mass;
-
-				rb.body = body;
 			}
 		}
 		private static Stopwatch sw = new Stopwatch();

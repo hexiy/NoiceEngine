@@ -22,7 +22,7 @@ namespace Scripts
 		public bool isTrigger = false;
 		public bool isButton = false;
 		[XmlIgnore] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
-		public float Mass { get; set; } = 1;
+		public float Mass { get; set; } = 100;
 
 
 		public float velocityDrag = 0.99f;
@@ -32,16 +32,34 @@ namespace Scripts
 		public float angularDrag = 1f;
 
 		public float friction = 1;
-		public float mass = 1;
 
 		public override void Awake()
 		{
 			//gameObject.OnComponentAdded += CheckForColliderAdded;
 			if (isButton) { return; }
 
-			Physics.CreateBody(this);
+			CreateBody();
 
 			base.Awake();
+		}
+		public void CreateBody()
+		{
+			lock (Physics.World)
+			{
+				body = Physics.World.CreateBody(transform.position, transform.rotation.Z, isStatic ? BodyType.Static : BodyType.Dynamic);
+				body.SleepingAllowed = false;
+
+				if (GetComponent<BoxShape>() != null)
+				{
+					BoxShape boxShape = GetComponent<BoxShape>();
+					var pfixture = body.CreateRectangle(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1, Vector2.Zero);
+					// Give it some bounce and friction
+					pfixture.Friction = 0.1f;
+					//body.LinearDamping = 3;
+				}
+				body.AngularDamping = 0;
+				body.Mass = Mass;
+			}
 		}
 		public override void FixedUpdate()
 		{
@@ -52,15 +70,16 @@ namespace Scripts
 
 			UpdateTransform();
 
+			lock (Physics.World)
+			{
+				body.Mass = Mass;
+			}
 		}
 
 		public void UpdateTransform()
 		{
 			transform.position = new Vector2(body.Position.X, body.Position.Y);
-		}
-		public void TranslateAngularRotationToTransform()
-		{
-			transform.rotation.Z = body.Rotation;
+			transform.rotation.Z = body.Rotation*Mathf.TwoPi*2;
 		}
 		public override void OnDestroyed()
 		{

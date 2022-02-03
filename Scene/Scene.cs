@@ -122,7 +122,10 @@ namespace Engine
 			renderQueue = new List<Renderer>();
 			for (int i = 0; i < gameObjects.Count; i++)
 			{
-				renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
+				if (gameObjects[i].active)
+				{
+					renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
+				}
 			}
 			for (int i = 0; i < renderQueue.Count; i++)
 			{
@@ -133,7 +136,11 @@ namespace Engine
 			for (int i = 0; i < renderQueue.Count; i++)
 			{
 				renderQueue[i].layerFromHierarchy -= renderQueue[i].GameObject.indexInHierarchy * 0.0001f;
-				renderQueue[i].Render();
+
+				if (renderQueue[i].enabled && renderQueue[i].awoken)
+				{
+					renderQueue[i].Render();
+				}
 			}
 
 			if (transformHandle.GameObject != null)
@@ -273,9 +280,9 @@ namespace Engine
 		public bool LoadScene(string path = null)
 		{
 			//Add method to clean scene
-			for (int i = 0; i < gameObjects.Count; i++)
+			while (gameObjects.Count > 0)
 			{
-				gameObjects[i].Destroy();
+				gameObjects[0].Destroy();
 			}
 			gameObjects.Clear();
 

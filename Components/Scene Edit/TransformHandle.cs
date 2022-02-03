@@ -193,7 +193,7 @@ namespace Engine
 				{
 					Rigidbody rigidbody = selectedTransform.GetComponent<Rigidbody>();
 					rigidbody.Velocity = Vector2.Zero;
-					//rigidbody.body.Position = selectedTransform.position;
+					rigidbody.body.Position = selectedTransform.position;
 				}
 			}
 

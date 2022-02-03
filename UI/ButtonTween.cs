@@ -11,47 +11,34 @@ namespace Engine.UI
 	public class ButtonTween : Component
 	{
 		private bool clicked = false;
-		private float scaleSpeed = 20;
-		private float scaleTarget = 0.9f;
-		private bool needToScale = false;
+		public float scaleSpeed = 20;
+		public float scaleTarget = 0.9f;
 		public override void Awake()
 		{
-			Button btn = GetComponent<Button>();
-
 			base.Awake();
 		}
 		public override void Update()
 		{
-			if (needToScale == false) { return; }
-
-			if (MouseInput.ButtonPressed())
+			//if (needToScale == false) { return; }
+			bool mouseInside = MouseInput.WorldPosition.In(GetComponent<BoxShape>());
+			if (MouseInput.ButtonPressed() && mouseInside)
 			{
+				transform.scale = Vector3.One;
+
 				clicked = true;
-				needToScale = true;
 			}
 			else if (MouseInput.ButtonReleased())
 			{
-				transform.scale = Vector3.One * scaleTarget;
-
 				clicked = false;
-				needToScale = true;
 			}
 
 			if (clicked)
 			{
 				transform.scale = Vector3.Lerp(transform.scale, Vector3.One * scaleTarget, Time.deltaTime * scaleSpeed);
-				if (transform.scale == Vector3.One * scaleTarget)
-				{
-					needToScale = false;
-				}
 			}
 			else
 			{
 				transform.scale = Vector3.Lerp(transform.scale, Vector3.One, Time.deltaTime * scaleSpeed);
-				if (transform.scale == Vector3.One)
-				{
-					needToScale = false;
-				}
 			}
 		}
 	}

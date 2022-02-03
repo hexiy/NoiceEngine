@@ -133,7 +133,9 @@ namespace Engine
 					flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
 				}
 
+				ImGui.PushStyleColor(ImGuiCol.Text, Scene.I.gameObjects[goIndex].active ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
 				bool opened = ImGui.TreeNodeEx(Scene.I.gameObjects[goIndex].name, flags);
+				ImGui.PopStyleColor();
 
 				if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
 				{
