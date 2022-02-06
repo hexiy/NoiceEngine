@@ -104,10 +104,11 @@ namespace Engine
 
 			ScreenDelta = new Vector2(state.Delta.X, -state.Delta.Y);
 
+
 			ScreenPosition = new Vector2(Window.I.MouseState.X, -Window.I.MouseState.Y + Camera.I.size.Y);
 
-			Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
-			Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");
+/*			Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
+			Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");*/
 
 			//System.Diagnostics.Debug.WriteLine("mousePos:" + Position.X + ":" + Position.Y);
 		}

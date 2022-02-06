@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ImGuiNET;
-
-
+using Scripts;
 
 namespace Engine
 {
@@ -64,7 +63,7 @@ namespace Engine
 			{
 				return;
 			}
-			while (Scene.I.gameObjects[oldIndex + direction].Parent != null)
+			while (Scene.I.gameObjects[oldIndex + direction].transform.parent != null)
 			{
 				direction += addToIndex;
 			}
@@ -115,6 +114,14 @@ namespace Engine
 			{
 				MoveSelectedGameObject(1);
 			}
+			ImGui.SameLine();
+			if (ImGui.Button("Add children"))
+			{
+				GameObject go = GameObject.Create(name: "Children");
+				go.Awake();
+				go.transform.SetParent(Scene.I.gameObjects[selectedGameObjectIndex].transform);
+			}
+
 
 			for (int goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)
 			{
@@ -122,11 +129,11 @@ namespace Engine
 				{
 					continue;
 				}
-				if (Scene.I.gameObjects[goIndex].Parent != null) { continue; }
+				if (Scene.I.gameObjects[goIndex].transform.parent != null) { continue; }
 				if (Scene.I.gameObjects[goIndex].silent) { continue; }
 
 
-				bool hasAnyChildren = Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
+				bool hasAnyChildren = false;//Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
 				ImGuiTreeNodeFlags flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.OpenOnArrow;
 				if (hasAnyChildren == false)
 				{
@@ -134,7 +141,7 @@ namespace Engine
 				}
 
 				ImGui.PushStyleColor(ImGuiCol.Text, Scene.I.gameObjects[goIndex].active ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
-				bool opened = ImGui.TreeNodeEx(Scene.I.gameObjects[goIndex].name, flags);
+				bool opened = ImGui.TreeNodeEx($"[{Scene.I.gameObjects[goIndex].id}]" + Scene.I.gameObjects[goIndex].name, flags);
 				ImGui.PopStyleColor();
 
 				if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
@@ -143,18 +150,18 @@ namespace Engine
 				}
 				if (opened)
 				{
-					List<GameObject> children = Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]);
+					List<Transform> children = Scene.I.gameObjects[goIndex].transform.children;
 
 					for (int childrenIndex = 0; childrenIndex < children.Count; childrenIndex++)
 					{
-						if (gameObjectsChildrened.Contains(children[childrenIndex]))
+						if (gameObjectsChildrened.Contains(children[childrenIndex].GameObject))
 						{
 							children.RemoveAt(childrenIndex);
 							childrenIndex--;
 						}
 						else
 						{
-							gameObjectsChildrened.Add(children[childrenIndex]);
+							gameObjectsChildrened.Add(children[childrenIndex].GameObject);
 						}
 					}
 
@@ -163,27 +170,25 @@ namespace Engine
 
 						//ImGui.Dummy(new Vector2(15, 10));
 						//ImGui.SameLine();
-						int _i = Scene.I.GetGameObjectIndexInHierarchy(children[childrenIndex].id);
+						int _i = Scene.I.GetGameObjectIndexInHierarchy(children[childrenIndex].GameObject.id);
 
-						bool hasAnyChildren2 = Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
+						bool hasAnyChildren2 = Scene.I.gameObjects[goIndex].transform.children.Count != 0;
 						ImGuiTreeNodeFlags flags2 = ((selectedGameObjectIndex == _i) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
 						if (hasAnyChildren2 == false)
 						{
 							flags2 = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
 						}
 
-						bool opened2 = ImGui.TreeNodeEx(children[childrenIndex].name, flags2);
+						bool opened2 = ImGui.TreeNodeEx($"[{children[childrenIndex].GameObject.id}]" + children[childrenIndex].GameObject.name, flags2);
 						if (ImGui.IsItemClicked())
 						{
-							selectedGameObjectIndex = _i;
-							GameObjectSelected.Invoke(_i);
+							SelectGameObject(Scene.I.gameObjects[_i].id);
 						}
 						ImGui.TreePop();
 
 					}
 					ImGui.TreePop();
 				}
-				//ImGui.TreePop();
 			}
 
 			ImGui.End();

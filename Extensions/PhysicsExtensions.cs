@@ -23,8 +23,8 @@ namespace Engine
 
 					//float boxEndX = boxPosition.X + boxCollider.offset.X + (boxCollider.size.X / 2) * boxCollider.transform.pivot.X;
 
-					Vector2 start = boxPosition + boxCollider.offset + (boxCollider.size * boxCollider.transform.pivot);
-					Vector2 end = boxPosition + boxCollider.offset + (boxCollider.size + boxCollider.size * boxCollider.transform.pivot) * boxCollider.transform.scale;
+					Vector2 start = boxPosition + (boxCollider.offset*boxCollider.transform.scale) + (boxCollider.size * boxCollider.transform.pivot);
+					Vector2 end = boxPosition + (boxCollider.offset * boxCollider.transform.scale) + (boxCollider.size + boxCollider.size * boxCollider.transform.pivot) * boxCollider.transform.scale;
 
 
 					isIn = (point.X < end.X &&

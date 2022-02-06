@@ -34,9 +34,9 @@ namespace Engine
 		public int antialiasingStrength = 0;
 
 
-		public float ortographicSize = 1;
+		public float ortographicSize = 2;
 
-		public Vector2 size = new Vector2(600, 500);
+		public Vector2 size = new Vector2(1200, 500);
 		//public float cameraSize = 0.1f;
 
 		public Matrix4x4 GetProjectionMatrix()

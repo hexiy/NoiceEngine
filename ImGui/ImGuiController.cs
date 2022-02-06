@@ -48,6 +48,8 @@ namespace Dear_ImGui_Sample
 
 			io.BackendFlags |= ImGuiBackendFlags.RendererHasVtxOffset;
 
+			io.ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
+
 			CreateDeviceResources();
 			SetKeyMappings();
 

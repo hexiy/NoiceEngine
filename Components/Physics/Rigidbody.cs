@@ -47,7 +47,7 @@ namespace Scripts
 			lock (Physics.World)
 			{
 				body = Physics.World.CreateBody(transform.position, transform.rotation.Z, isStatic ? BodyType.Static : BodyType.Dynamic);
-				body.SleepingAllowed = false;
+				//body.SleepingAllowed = false;
 
 				if (GetComponent<BoxShape>() != null)
 				{
@@ -55,6 +55,7 @@ namespace Scripts
 					var pfixture = body.CreateRectangle(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1, Vector2.Zero);
 					// Give it some bounce and friction
 					pfixture.Friction = 0.1f;
+					body.LinearDamping= 0;
 					//body.LinearDamping = 3;
 				}
 				body.AngularDamping = 0;
@@ -70,10 +71,10 @@ namespace Scripts
 
 			UpdateTransform();
 
-			lock (Physics.World)
-			{
-				body.Mass = Mass;
-			}
+			//lock (Physics.World)
+			//{
+			//	body.Mass = Mass;
+			//}
 		}
 
 		public void UpdateTransform()

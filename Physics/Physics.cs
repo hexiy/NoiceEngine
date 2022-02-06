@@ -13,16 +13,25 @@ namespace Engine
 	{
 		public static World World;
 
-		public static readonly Vector2 gravity = new Vector2(0, -9);
+		public static readonly Vector2 gravity = new Vector2(0, -900);
 
 		public static bool Running = true;
 
-		public static Task PhysicsTask;
+		static Task PhysicsTask;
 
 		public static void Init()
 		{
 			World = new World(gravity);
 
+			//World.ContactManager.VelocityConstraintsMultithreadThreshold = 256;
+			//World.ContactManager.PositionConstraintsMultithreadThreshold = 256;
+			//World.ContactManager.CollideMultithreadThreshold = 256;
+			//Thread physicsThread = new Thread(
+			//new ThreadStart(PhysicsLoop));
+			//
+			//physicsThread.Name = "NoiceEngine Physics";
+			//physicsThread.IsBackground = true;
+			//physicsThread.Start();
 			PhysicsTask = Task.Run(PhysicsLoop);
 		}
 		public static void PhysicsLoop()
@@ -32,27 +41,29 @@ namespace Engine
 				while (Running && Global.GameRunning)
 				{
 					Step();
-					Wait(Time.fixedDeltaTime);
+					Wait(Time.deltaTime - World.UpdateTime.Seconds); // if update took 5 ms, and deltaTime is 15 ms, only wait for 10 ms
 				}
 				Wait(30); // wait if physics is disabled
 			}
 		}
-		public static void Step()
+		private static void Step()
 		{
 			lock (World)
 			{
-				World.Step(Time.fixedDeltaTime);
+				World.Step(Time.deltaTime);
 			}
 		}
 		private static Stopwatch sw = new Stopwatch();
-		private static void Wait(double milliseconds)
+		private static void Wait(double seconds)
 		{
-			sw.Restart();
-
-			while (sw.ElapsedMilliseconds < milliseconds)
-			{
-
-			}
+			if (seconds < 0) return;
+			Thread.Sleep((int)(seconds * 1000f));
+			//sw.Restart();
+			//
+			//while (sw.ElapsedMilliseconds < milliseconds)
+			//{
+			//
+			//}
 		}
 		public static void StartPhysics()
 		{

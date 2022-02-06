@@ -42,16 +42,17 @@ namespace Engine
 		{
 			var camGO = GameObject.Create(name: "Camera");
 			camGO.AddComponent<Camera>();
+			camGO.AddComponent<CameraController>();
 			camGO.Awake();
 
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 1; i++)
 			{
 				GameObject go2 = GameObject.Create(name: "sprite " + i);
-				go2.AddComponent<SpriteRenderer>();
-				go2.AddComponent<BoxShape>().size = new Vector2(288, 180);
+				go2.AddComponent<BoxRenderer>();
+				go2.AddComponent<BoxShape>().size = new Vector2(400, 180);
 
 				go2.Awake();
-				go2.transform.position = new Vector2(300 + i * 10, 300 + i * 10);
+				go2.transform.position = new Vector2(0, 0);
 				go2.transform.pivot = new Vector2(0.5f, 0.5f);
 			}
 
@@ -82,7 +83,7 @@ namespace Engine
 
 			if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
 			{
-				LoadScene(Serializer.lastScene);
+				//LoadScene(Serializer.lastScene);
 			}
 
 		}
@@ -261,24 +262,14 @@ namespace Engine
 			}
 			return null;
 		}
-		public List<GameObject> GetChildrenOfGameObject(GameObject go)
-		{
-			List<GameObject> children = new List<GameObject>();
-			for (int i = 0; i < gameObjects.Count; i++)
-			{
-				if (gameObjects[i].parentID == go.id)
-				{
-					children.Add(gameObjects[i]);
-				}
-			}
-			return children;
-		}
 		public void AddGameObjectToScene(GameObject gameObject)
 		{
 			gameObjects.Add(gameObject);
 		}
 		public bool LoadScene(string path = null)
 		{
+			Serializer.lastScene = path;
+
 			//Add method to clean scene
 			while (gameObjects.Count > 0)
 			{
@@ -292,10 +283,16 @@ namespace Engine
 			SceneFile sceneFile = Serializer.I.LoadGameObjects(path);
 
 			Serializer.I.ConnectGameObjectsWithComponents(sceneFile);
-			IDsManager.gameObjectNextID = sceneFile.gameObjectNextID;
+			//IDsManager.gameObjectNextID = sceneFile.gameObjectNextID;
+
+			Serializer.I.ConnectParentsAndChildren(sceneFile);
 
 			for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 			{
+				for (int j = 0; j < sceneFile.GameObjects[i].components.Count; j++)
+				{
+					sceneFile.GameObjects[i].components[j].gameObjectID = sceneFile.GameObjects[i].id;
+				}
 				Scene.I.AddGameObjectToScene(sceneFile.GameObjects[i]);
 
 				sceneFile.GameObjects[i].Awake();
@@ -315,7 +312,7 @@ namespace Engine
 		public void SaveScene(string path = null)
 		{
 			path = path ?? Serializer.lastScene;
-
+			Serializer.lastScene = path;
 			Serializer.I.SaveGameObjects(GetSceneFile(), path);
 		}
 		public void OnGameObjectDestroyed(GameObject gameObject)

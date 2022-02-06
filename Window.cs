@@ -26,7 +26,7 @@ namespace Engine
 		{
 			I = this;
 
-			this.WindowState = WindowState.Maximized;
+			WindowState = WindowState.Maximized;
 		}
 
 		protected override void OnLoad()

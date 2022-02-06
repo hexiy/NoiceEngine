@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Dear_ImGui_Sample;
 using Engine;
 
@@ -17,10 +18,11 @@ namespace Noice
 			_ = new Editor();
 
 			Window window = new Window();
-
-			window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
+			//window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
 
 			window.Run();
+
+
 		}
 	}
 }

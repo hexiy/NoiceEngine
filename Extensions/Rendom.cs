@@ -27,5 +27,9 @@ namespace Engine
 				Mathf.Lerp(color1.B, color2.B, howMuch)/255,
 				Mathf.Lerp(color1.A, color2.A, howMuch)/255);
 		}
+		public static Color RandomColor()
+		{
+			return new Color(Range(1), Range(1), Range(1), 1);
+		}
 	}
 }

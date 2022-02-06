@@ -29,7 +29,7 @@ namespace Scripts
 		public Matrix4x4 GetModelViewProjection()
 		{
 			Vector2 pivotOffset = -(boxShape.size * transform.scale) / 2 + new Vector2((boxShape.size.X * transform.scale.X) * transform.pivot.X, (boxShape.size.Y * transform.scale.Y) * transform.pivot.Y);
-			Matrix4x4 _translation = Matrix4x4.CreateTranslation(transform.position + boxShape.offset - pivotOffset);
+			Matrix4x4 _translation = Matrix4x4.CreateTranslation(transform.position + (boxShape.offset*transform.scale) - pivotOffset);
 
 			Matrix4x4 _rotation = Matrix4x4.CreateFromYawPitchRoll(transform.rotation.Y / 180 * Mathf.Pi * 4,
 				transform.rotation.X / 180 * Mathf.Pi * 4,

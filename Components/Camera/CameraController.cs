@@ -10,6 +10,12 @@ namespace Scripts
 	public class CameraController : Component
 	{
 		private float targetOrthoSize = 1;
+
+		public override void Start()
+		{
+			targetOrthoSize = Camera.I.ortographicSize;
+			base.Start();
+		}
 		public override void Update()
 		{
 			if (MouseInput.IsButtonDown(MouseInput.Buttons.Right))

@@ -11,7 +11,7 @@ namespace Engine
 	{
 		[Hide] public int indexInHierarchy = 0;
 
-		[XmlIgnore]
+/*		[XmlIgnore]
 		public GameObject Parent
 		{
 			get
@@ -35,7 +35,7 @@ namespace Engine
 				}
 			}
 		}
-		public int parentID { get; set; } = -1;
+		public int parentID { get; set; } = -1;*/
 
 		public bool updateWhenDisabled = false;
 		public bool alwaysUpdate = false;
@@ -108,12 +108,9 @@ namespace Engine
 		}
 		private void DestroyChildren(GameObject go)
 		{
-			for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+			for (int i = 0; i < transform.children.Count; i++)
 			{
-				if (Scene.I.gameObjects[i].Parent == go)
-				{
-					Scene.I.gameObjects[i].Destroy();
-				}
+					transform.children[i].GameObject.Destroy();
 			}
 		}
 		private void CheckForTransformComponent(GameObject gameObject, Component component)
@@ -132,13 +129,7 @@ namespace Engine
 			}
 		}
 
-		public void SetParent(GameObject par)
-		{
-			transform.rotation -= par.transform.rotation;
-			transform.position = par.transform.position + (par.transform.position - transform.position);
-			transform.initialAngleDifferenceFromParent = transform.rotation - par.transform.rotation;
-			Parent = par;
-		}
+
 		public void LinkComponents(GameObject gameObject, Component component)
 		{
 			if (component.GetType() == typeof(BoxRenderer) || component.GetType() == typeof(BoxShape))

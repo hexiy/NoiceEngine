@@ -87,6 +87,8 @@ namespace Engine
 		}
 		public override void Update()
 		{
+			transform.scale = Vector3.One * Camera.I.ortographicSize;
+
 			if (MouseInput.ButtonReleased(MouseInput.Buttons.Left))
 			{
 				CurrentAxisSelected = null;
@@ -179,12 +181,9 @@ namespace Engine
 			transform.position += moveVector;// we will grab it with offset, soe we want to move it only by change of mouse position
 			selectedTransform.position = transform.position;
 
-			for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+			for (int i = 0; i < selectedTransform.children.Count; i++)
 			{
-				if (Scene.I.gameObjects[i].Parent == selectedTransform.GameObject)
-				{
-					Scene.I.gameObjects[i].transform.position += moveVector;
-				}
+				selectedTransform.children[i].position += moveVector;
 			}
 
 			if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().isButton == false)

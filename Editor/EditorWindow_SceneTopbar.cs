@@ -59,6 +59,16 @@ namespace Engine
 			ImGui.PopStyleVar();
 			ImGui.PopStyleColor();
 			ImGui.PopStyleColor();
+
+			ImGui.SameLine();
+
+
+			bool resetDataButtonClicked = ImGui.Button("delete data");
+			if (resetDataButtonClicked)
+			{
+				PersistentData.DeleteAll();
+			}
+
 			ImGui.End();
 
 		}

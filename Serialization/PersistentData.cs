@@ -50,6 +50,11 @@ namespace Engine
 				}
 			}
 		}
+		public static void DeleteAll()
+		{
+			data = new Dictionary<string, object>();
+			Save();
+		}
 		private static object Get(string key, object? defaultValue = null)
 		{
 			if (data.Count == 0) { LoadAllData(); }

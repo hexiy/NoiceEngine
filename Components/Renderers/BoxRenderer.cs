@@ -102,7 +102,6 @@ color = frag_color;
 			//shader.SetVector4("u_color", new Vector4(MathF.Abs(MathF.Sin(Time.elapsedTime * 0.3f)), MathF.Abs(MathF.Cos(Time.elapsedTime * 0.3f)), 1, 1));
 			shader.SetVector4("u_color", color.ToVector4());
 
-
 			GL.BindVertexArray(vao);
 
 			GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

@@ -1,6 +1,7 @@
 ﻿using Engine;
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -16,9 +17,9 @@ namespace Scripts
 
 		public Vector3 pivot = new Vector3(0, 0, 0);
 		public Vector3 position = Vector3.Zero;
-		[Hide] public Vector3 localPosition { get { return position - GetParentPosition(); } set { position = GetParentPosition() + value; } }
-		[Hide] public Vector3 initialAngleDifferenceFromParent = Vector3.Zero;
-		[Hide] public Vector3 up { get { return position + TransformVector(new Vector3(0, 1, 0)); } }
+		//[Hide] public Vector3 localPosition { get { return position - GetParentPosition(); } set { position = GetParentPosition() + value; } }
+		//[Hide] public Vector3 initialAngleDifferenceFromParent = Vector3.Zero;
+		//[Hide] public Vector3 up { get { return position + TransformVector(new Vector3(0, 1, 0)); } }
 
 		/*[ShowInEditor]
 		public Vector3 LocalPosition
@@ -30,11 +31,31 @@ namespace Scripts
 				localPosition = value;
 			}
 		}*/
+		[XmlIgnore] public Transform parent;
+		public int parentID = -1;
+
+		[XmlIgnore] public List<Transform> children = new List<Transform>();
+		public List<int> childrenIDs = new List<int>();
+		public void SetParent(Transform par, bool updateTransform=true)
+		{
+			if (updateTransform)
+			{
+				rotation -= par.transform.rotation;
+				position = par.transform.position + (par.transform.position - transform.position);
+				//initialAngleDifferenceFromParent = rotation - par.transform.rotation;
+
+			}
+			parent = par;
+			parentID = parent.gameObjectID;
+
+			par.children.Add(this);
+			par.childrenIDs.Add(gameObjectID);
+		}
 		public Vector3 GetParentPosition()
 		{
-			if (GameObject?.Parent != null)
+			if (parent != null)
 			{
-				return GameObject.Parent.transform.position;
+				return parent.transform.position;
 			}
 			else
 			{
