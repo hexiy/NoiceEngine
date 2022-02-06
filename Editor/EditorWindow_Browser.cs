@@ -13,34 +13,56 @@ namespace Engine
 		public static EditorWindow_Browser I { get; private set; }
 		private int currentID = 0;
 		string[] assets = new string[0];
+		Texture[] textures = new Texture[0];
 
 		DirectoryInfo currentDirectory;
 
 		private bool showCreateScenePopup = false;
 		private string createScenePopupSceneName = "scene1";
 
-
-		static float padding = 16.0f;
-		static float thumbnailSize = 128.0f;
-
+		Texture fileIcon;
+		Texture directoryIcon;
 
 		public void Init()
 		{
 			I = this;
+			fileIcon = new Texture();
+			fileIcon.Load(_path: "Resources/FileIcon.png", flipX: false);
+
+			directoryIcon = new Texture();
+			directoryIcon.Load(_path: "Resources/DirectoryIcon.png", flipX: false);
 
 			currentDirectory = new DirectoryInfo("Assets");
+
+			RefreshAssets();
 		}
 		public void Update()
 		{
-			if ((int)Time.elapsedSeconds % 2 == 0) { return; }
-
-			RefreshAssets();
 		}
 		void RefreshAssets()
 		{
 			if (Directory.Exists(currentDirectory.FullName) == false) { return; }
 			assets = Directory.GetDirectories(currentDirectory.FullName);
 			assets = assets.Concat(Directory.GetFiles(currentDirectory.FullName, "", SearchOption.TopDirectoryOnly)).ToArray();
+
+			for (int i = 0; i < textures.Length; i++)
+			{
+				if (textures[i] != null && textures[i].loaded)
+				{
+					textures[i].Delete();
+				}
+			}
+			textures = new Texture[assets.Length];
+			for (int i = 0; i < assets.Length; i++)
+			{
+				string assetExtension = Path.GetExtension(assets[i]).ToLower();
+
+				if (assetExtension.ToLower().Contains(".jpg") || assetExtension.ToLower().Contains(".png") || assetExtension.ToLower().Contains(".jpeg"))
+				{
+					textures[i] = new Texture();
+					textures[i].Load(_path: assets[i], flipX: false);
+				}
+			}
 		}
 		private void ResetID()
 		{
@@ -50,7 +72,7 @@ namespace Engine
 		{
 			ImGui.PushID(currentID++);
 		}
-		public void Draw()
+		public unsafe void Draw()
 		{
 			ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 2 + 1, Window.I.ClientSize.Y - Camera.I.size.Y + 1), ImGuiCond.Always);
 			ImGui.SetNextWindowPos(new Vector2(0, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
@@ -111,7 +133,7 @@ namespace Engine
 			//}
 			for (int i = 0; i < assets.Length; i++)
 			{
-				if (i != 0)
+				if (i != 0 && i % 8 != 0)
 				{
 					ImGui.SameLine();
 				}
@@ -127,27 +149,44 @@ namespace Engine
 				if (isDirectory)
 				{
 					ImGui.PushStyleColor(ImGuiCol.Button, new Color(13, 27, 30).ToVector4());
-					ImGui.Button("FOLDER", new Vector2(100, 100));
+					//ImGui.Button("FOLDER", new Vector2(100, 100));
+					ImGui.ImageButton((IntPtr)directoryIcon.id, new Vector2(100, 90));
 					ImGui.PopStyleColor();
 				}
 				else
 				{
-					ImGui.Button(assetExtension.Substring(1).ToUpper(), new Vector2(100, 100));
+
+					if (textures[i] != null && textures[i].loaded)
+					{
+						ImGui.ImageButton((IntPtr)textures[i].id, new Vector2(100, 90));
+					}
+					else
+					{
+						ImGui.ImageButton((IntPtr)fileIcon.id, new Vector2(100, 90));
+					}
 				}
 
-				if (ImGui.BeginDragDropSource())
+				if (assetExtension.ToLower().Contains(".jpg") || assetExtension.ToLower().Contains(".png") || assetExtension.ToLower().Contains(".jpeg"))
 				{
-					string itemPath = assets[i];
-					IntPtr stringPointer = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(itemPath);
+					if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
+					{
+						string itemPath = assets[i];
+						IntPtr stringPointer = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(itemPath);
 
-					ImGui.SetDragDropPayload("CONTENT_BROWSER_ITEM", stringPointer, (uint)(sizeof(char) * itemPath.Length));
-					ImGui.Text(Path.GetFileNameWithoutExtension(itemPath));
+						ImGui.SetDragDropPayload("CONTENT_BROWSER_TEXTURE", stringPointer, (uint)(sizeof(char) * (itemPath.Length)));
 
-					System.Runtime.InteropServices.Marshal.FreeHGlobal(stringPointer);
+						string payload = System.Runtime.InteropServices.Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 
-					ImGui.EndDragDropSource();
+						ImGui.Image((IntPtr)textures[i].id, new Vector2(100, 90));
 
+						//ImGui.Text(Path.GetFileNameWithoutExtension(itemPath));
+
+						System.Runtime.InteropServices.Marshal.FreeHGlobal(stringPointer);
+
+						ImGui.EndDragDropSource();
+					}
 				}
+
 				if (ImGui.IsItemHovered() && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
 				{
 					if (isDirectory)
@@ -167,8 +206,8 @@ namespace Engine
 					}
 				}
 
-				ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 25);
-				ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 5);
+				//ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 25);
+				//ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 5);
 
 				string a = assetName.Substring(0, Math.Clamp(assetName.Length, 1, 12));
 				ImGui.Text(a);
@@ -223,6 +262,10 @@ namespace Engine
 			}
 
 			ImGui.End();
+		}
+		public void GoToFile(string directory)
+		{
+			currentDirectory = Directory.GetParent(directory);
 		}
 	}
 }

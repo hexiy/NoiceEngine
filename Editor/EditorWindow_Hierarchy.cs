@@ -141,7 +141,7 @@ namespace Engine
 				}
 
 				ImGui.PushStyleColor(ImGuiCol.Text, Scene.I.gameObjects[goIndex].active ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
-				bool opened = ImGui.TreeNodeEx($"[{Scene.I.gameObjects[goIndex].id}]" + Scene.I.gameObjects[goIndex].name, flags);
+				bool opened = ImGui.TreeNodeEx(/*$"[{Scene.I.gameObjects[goIndex].id}]" + */Scene.I.gameObjects[goIndex].name, flags);
 				ImGui.PopStyleColor();
 
 				if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
@@ -179,7 +179,7 @@ namespace Engine
 							flags2 = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
 						}
 
-						bool opened2 = ImGui.TreeNodeEx($"[{children[childrenIndex].GameObject.id}]" + children[childrenIndex].GameObject.name, flags2);
+						bool opened2 = ImGui.TreeNodeEx(/*$"[{children[childrenIndex].GameObject.id}]" + */children[childrenIndex].GameObject.name, flags2);
 						if (ImGui.IsItemClicked())
 						{
 							SelectGameObject(Scene.I.gameObjects[_i].id);

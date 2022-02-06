@@ -114,8 +114,14 @@ if(texColor.a < 0.007)
 		}
 		public void LoadTexture(string _texturePath)
 		{
+			if (_texturePath.Contains("Assets") == false)
+			{
+				_texturePath = Path.Combine("Assets", _texturePath);
+			}
 			if (File.Exists(_texturePath) == false) { return; }
+
 			texture.Load(_texturePath);
+
 			UpdateBoxShapeSize();
 		}
 		private void UpdateBoxShapeSize()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -48,14 +49,15 @@ namespace Engine
 			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Inspector", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
+			ResetID();
 
 			if (selectedGameObject != null)
 			{
-				PushNextID();
+				//PushNextID();
 				string gameObjectName = selectedGameObject.name;
 				ImGui.Checkbox("", ref selectedGameObject.active);
 				ImGui.SameLine();
-				PushNextID();
+				//PushNextID();
 				ImGui.SetNextItemWidth(contentMaxWidth);
 				if (ImGui.InputText("", ref gameObjectName, 100))
 				{
@@ -73,11 +75,11 @@ namespace Engine
 					if (ImGui.Button("-"))
 					{
 						selectedGameObject.RemoveComponent(selectedGameObject.components[i]);
-						ImGui.PopID();
 						continue;
 					}
 					ImGui.SameLine();
-					if (ImGui.CollapsingHeader(selectedGameObject.components[i].GetType().Name + "##" + currentID))
+					PushNextID();
+					if (ImGui.CollapsingHeader(selectedGameObject.components[i].GetType().Name,ImGuiTreeNodeFlags.DefaultOpen))
 					{
 						FieldOrPropertyInfo[] infos;
 						{
@@ -160,11 +162,30 @@ namespace Engine
 								//	OpenFileDialog ofd
 								//}
 
-								string texturePath = (selectedGameObject.components[i] as SpriteRenderer).texture.path;
-								if (ImGui.InputText("oh", ref texturePath, 100))
+								string textureName = Path.GetFileName((selectedGameObject.components[i] as SpriteRenderer).texture.path);
+
+								bool clicked = ImGui.Button(textureName, new Vector2(ImGui.GetContentRegionAvail().X, 20));
+								//ImiGui.Text(textureName);
+								if (clicked)
 								{
-									(selectedGameObject.components[i] as SpriteRenderer).LoadTexture(texturePath);
+									EditorWindow_Browser.I.GoToFile((selectedGameObject.components[i] as SpriteRenderer).texture.path);
 								}
+								if (ImGui.BeginDragDropTarget())
+								{
+									ImGui.AcceptDragDropPayload("CONTENT_BROWSER_TEXTURE", ImGuiDragDropFlags.None);
+									string payload = System.Runtime.InteropServices.Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+									if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && payload.Length > 0)
+									{
+										payload = Path.GetRelativePath("Assets", payload);
+
+										textureName = payload;
+
+										(selectedGameObject.components[i] as SpriteRenderer).LoadTexture(textureName);
+									}
+
+									ImGui.EndDragDropTarget();
+								}
+
 							}
 							else if (infos[infoIndex].FieldOrPropertyType == typeof(Color))
 							{
@@ -229,7 +250,7 @@ namespace Engine
 									infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
 								}
 							}
-							ImGui.PopID();
+							//ImGui.PopID();
 						}
 
 						//PropertyInfo[] properties = selectedGameObject.Components[i].GetType ().GetProperties ();
@@ -266,7 +287,6 @@ namespace Engine
 						//	ImGui.PopID ();
 						//}
 					}
-					ImGui.PopID();
 				}
 
 
@@ -291,7 +311,6 @@ namespace Engine
 			}
 
 			ImGui.End();
-			ResetID();
 		}
 	}
 }

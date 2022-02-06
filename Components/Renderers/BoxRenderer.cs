@@ -51,18 +51,6 @@ color = frag_color;
 			GL.BindVertexArray(vao);
 			GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 
-
-			//float[] vertices = new float[]
-			//			{
-			//			-0.5f, 0.5f,
-			//			0.5f, 0.5f,
-			//			-0.5f, -0.5f,
-			//
-			//			0.5f, 0.5f,
-			//			0.5f, -0.5f,
-			//			-0.5f, -0.5f
-			//		};
-
 			float[] vertices =
 	{
 				-0.5f, -0.5f,
@@ -104,8 +92,13 @@ color = frag_color;
 
 			GL.BindVertexArray(vao);
 
+			GL.Enable(EnableCap.Blend);
+
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
 			GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
+			GL.Disable(EnableCap.Blend);
 			GL.BindVertexArray(0);
 		}
 	}

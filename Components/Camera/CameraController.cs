@@ -26,7 +26,7 @@ namespace Scripts
 
 			targetOrthoSize += -MouseInput.ScrollDelta * (targetOrthoSize > 1 ? targetOrthoSize*0.1f : 0.05f);
 			targetOrthoSize = Mathf.Clamp(targetOrthoSize, 0.1f, Mathf.Infinity);
-			Camera.I.ortographicSize = Mathf.Lerp(Camera.I.ortographicSize, targetOrthoSize, Time.deltaTime * 1.4f);
+			Camera.I.ortographicSize = Mathf.Eerp(Camera.I.ortographicSize, targetOrthoSize, Time.deltaTime * 7f);
 
 			base.Update();
 		}

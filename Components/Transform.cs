@@ -32,11 +32,11 @@ namespace Scripts
 			}
 		}*/
 		[XmlIgnore] public Transform parent;
-		public int parentID = -1;
+		[Hide] public int parentID = -1;
 
 		[XmlIgnore] public List<Transform> children = new List<Transform>();
 		public List<int> childrenIDs = new List<int>();
-		public void SetParent(Transform par, bool updateTransform=true)
+		public void SetParent(Transform par, bool updateTransform = true)
 		{
 			if (updateTransform)
 			{

@@ -79,23 +79,36 @@ namespace Engine
 		}
 		public static float ScrollDelta
 		{
-			get { return Window.I.MouseState.ScrollDelta.Y; }
+
+			get
+			{
+				if (IsMouseInSceneView() == false) return 0;
+				return Window.I.MouseState.ScrollDelta.Y;
+			}
 		}
 		public static bool IsButtonDown(Buttons button = MouseInput.Buttons.Left)
 		{
+			if (IsMouseInSceneView() == false) return false;
+
 			return Window.I.MouseState.IsButtonDown((MouseButton)button);
 		}
 		public static bool IsButtonUp(Buttons button = MouseInput.Buttons.Left)
 		{
+			if (IsMouseInSceneView() == false) return false;
+
 			return (Window.I.MouseState.IsButtonDown((MouseButton)button) == false);
 		}
 
 		public static bool ButtonPressed(Buttons button = MouseInput.Buttons.Left)
 		{
+			if (IsMouseInSceneView() == false) return false;
+
 			return Window.I.MouseState.WasButtonDown((MouseButton)button) == false && (Window.I.MouseState.IsButtonDown((MouseButton)button));
 		}
 		public static bool ButtonReleased(Buttons button = MouseInput.Buttons.Left)
 		{
+			if (IsMouseInSceneView() == false) return false;
+
 			return Window.I.MouseState.WasButtonDown((MouseButton)button) && (Window.I.MouseState.IsButtonDown((MouseButton)button) == false);
 		}
 		public static void Update()
@@ -107,10 +120,15 @@ namespace Engine
 
 			ScreenPosition = new Vector2(Window.I.MouseState.X, -Window.I.MouseState.Y + Camera.I.size.Y);
 
-/*			Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
-			Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");*/
+			/*			Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
+						Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");*/
 
 			//System.Diagnostics.Debug.WriteLine("mousePos:" + Position.X + ":" + Position.Y);
+		}
+		private static bool IsMouseInSceneView()
+		{
+			return ScreenPosition.X < Camera.I.size.X && ScreenPosition.Y < Camera.I.size.Y &&
+				 ScreenPosition.X > 0 && ScreenPosition.Y > 0;
 		}
 	}
 }

@@ -83,7 +83,7 @@ namespace Engine
 
 			if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
 			{
-				//LoadScene(Serializer.lastScene);
+				LoadScene(Serializer.lastScene);
 			}
 
 		}
