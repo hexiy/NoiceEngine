@@ -45,7 +45,7 @@ namespace Engine
 		{
 			int windowWidth = 350;
 			int contentMaxWidth = windowWidth - (int)ImGui.GetStyle().WindowPadding.X * 1;
-			ImGui.SetNextWindowSize(new Vector2(windowWidth, Camera.I.size.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowSize(new Vector2(windowWidth, Editor.sceneViewSize.Y), ImGuiCond.Always);
 			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
 			//ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Inspector", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);

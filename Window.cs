@@ -21,7 +21,8 @@ namespace Engine
 	{
 		public static Window I { get; private set; }
 		ImGuiController imGuiController;
-
+		public RenderTexture sceneRenderTexture;
+		public RenderTexture postProcessRenderTexture;
 		public Window() : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = new Vector2i(1920, 1027), APIVersion = new Version(4, 6) })
 		{
 			I = this;
@@ -36,9 +37,13 @@ namespace Engine
 			Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
 
 			imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
+
 			Editor.I.Init();
 
 			Scene.I.Start();
+			sceneRenderTexture = new RenderTexture();
+			postProcessRenderTexture = new RenderTexture();
+
 		}
 
 		protected override void OnResize(ResizeEventArgs e)
@@ -59,29 +64,40 @@ namespace Engine
 		}
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			base.OnRenderFrame(e);
-			GL.Enable(EnableCap.ScissorTest);
-
-			GL.Scissor(0, 0, ClientSize.X, ClientSize.Y);
-			GL.ClearColor(0.150f, 0.150f, 0.160f, 1.000f);
+			GL.ClearColor(0.6f, 0.4f, 0.5f, 1.000f);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			GL.Viewport(0, (int)Window.I.ClientSize.Y - (int)Camera.I.size.Y, (int)Camera.I.size.X, (int)Camera.I.size.Y);
-			GL.Scissor(0, (int)Window.I.ClientSize.Y - (int)Camera.I.size.Y, (int)Camera.I.size.X, (int)Camera.I.size.Y);
+			sceneRenderTexture.Bind();
+			GL.Viewport(0, 0, (int)Camera.I.size.X, (int)Camera.I.size.Y);
+
+			//GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
 
 			Scene.I.Render();
 
+			sceneRenderTexture.Unbind();
+
+			postProcessRenderTexture.Bind();
+
+
+			// draw sceneRenderTexture with post process
+			postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);
+
+			postProcessRenderTexture.Unbind();
+
+
+			// ------------- IMGUI -------------
 			imGuiController.Update(this, (float)e.Time);
 			GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
-			GL.Scissor(0, 0, ClientSize.X, ClientSize.Y);
 
 			imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
 
 			Editor.I.Draw();
-
 			imGuiController.Render();
+			// ------------- IMGUI -------------
+
 
 			SwapBuffers();
+			base.OnRenderFrame(e);
 		}
 
 		protected override void OnTextInput(TextInputEventArgs e)

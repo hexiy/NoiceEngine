@@ -9,7 +9,8 @@ namespace Engine
 		private IEditorWindow[] editorWindows;
 		public static Editor I { get; private set; }
 
-		public static Vector2 gameViewPosition = new Vector2(0, 0);
+		public static Vector2 sceneViewPosition = new Vector2(0, 0);
+		public static Vector2 sceneViewSize = new Vector2(0, 0);
 		//public static Vector2 ScreenToWorld(Vector2 screenPosition)
 		//{
 		//	return (screenPosition - gameViewPosition) * Camera.I.cameraSize + Camera.I.transform.position;
@@ -138,9 +139,10 @@ namespace Engine
 			{
 				new EditorWindow_Hierarchy (),
 				new EditorWindow_Inspector (),
-				new EditorWindow_SceneTopbar (),
+				//new EditorWindow_SceneTopbar (),
 				new EditorWindow_Browser (),
 				new EditorWindow_Console (),
+				new EditorWindow_SceneView (),
 			};
 			for (int i = 0; i < editorWindows.Length; i++)
 			{

@@ -84,8 +84,8 @@ namespace Engine
 		{
 			gameObjectsChildrened = new List<GameObject>();
 			ResetID();
-			ImGui.SetNextWindowSize(new Vector2(300, Camera.I.size.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X - 350 + 1, 0), ImGuiCond.Always, new Vector2(1, 0)); // +1 for double border uglyness
+			ImGui.SetNextWindowSize(new Vector2(300, Editor.sceneViewSize.Y), ImGuiCond.Always);
+			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X - 350, 0), ImGuiCond.Always, new Vector2(1, 0)); // +1 for double border uglyness
 																														  //ImGui.SetNextWindowBgAlpha (0);
 			ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 			if (ImGui.Button("+"))
