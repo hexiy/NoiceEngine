@@ -57,9 +57,12 @@ layout(location = 0) out vec4 color;
 void main(void)
 {
 vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y)) * u_color;
-if(texColor.a < 0.007)
+if(texColor.a < 0.1){
         discard;
+}
+else{
  color = texColor;
+}
 }";
 
 			shader = new Shader(vertexShader, fragmentShader);

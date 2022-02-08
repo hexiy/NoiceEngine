@@ -64,10 +64,12 @@ namespace Engine
 		}
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			GL.ClearColor(0.6f, 0.4f, 0.5f, 1.000f);
+			GL.ClearColor(0, 0, 0, 0);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			sceneRenderTexture.Bind();
+			GL.ClearColor(0, 0, 0, 0);
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 			GL.Viewport(0, 0, (int)Camera.I.size.X, (int)Camera.I.size.Y);
 
 			//GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
@@ -77,7 +79,8 @@ namespace Engine
 			sceneRenderTexture.Unbind();
 
 			postProcessRenderTexture.Bind();
-
+			GL.ClearColor(0, 0, 0, 0);
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
 			// draw sceneRenderTexture with post process
 			postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);

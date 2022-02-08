@@ -71,7 +71,6 @@ uniform mat4 u_mvp = mat4(1.0);
 
 void main(void)
 {
-
     texCoord = aTexCoord;
 
     gl_Position = u_mvp * position;
@@ -80,13 +79,20 @@ void main(void)
 			string fragmentShader = @"#version 450 core
 in vec4 texCoord;
 uniform sampler2D textureObject;
-uniform vec4 u_color;
-uniform float u_time;
 layout(location = 0) out vec4 color;
 
 void main(void)
 {
-vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y)) * u_color;
+vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y));
+
+vec2 relativePosition = texCoord.xy/vec2(1,1) - 0.5;
+float len= length(relativePosition);
+float vignette = smoothstep(.9,.2,len);
+texColor.rgb=mix(texColor.rgb,texColor.rgb*vignette, .7);
+
+texColor.a=1;
+
+
 
  color = texColor;
 }";
@@ -145,8 +151,6 @@ vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y)) * u_color;
 		{
 			shader.Use();
 			shader.SetMatrix4x4("u_mvp", GetModelViewProjection());
-			shader.SetVector4("u_color", new Color(255, 255, 255, 255).ToVector4());
-			shader.SetFloat("u_time", Time.elapsedTime * 20);
 
 			GL.BindVertexArray(vao);
 			GL.Enable(EnableCap.Blend);
@@ -164,12 +168,7 @@ vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y)) * u_color;
 
 		public Matrix4x4 GetModelViewProjection()
 		{
-			Matrix4x4 _scale = Matrix4x4.CreateScale(Camera.I.size.X, Camera.I.size.Y, 1);
-			_scale = Matrix4x4.CreateScale(2, 2, 1);
-
-			Matrix4x4 _model = Matrix4x4.Identity;
-
-			return _scale * _model;
+			return Matrix4x4.CreateScale(2, 2, 1);
 		}
 	}
 }
