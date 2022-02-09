@@ -1,28 +1,22 @@
-﻿using System;
-using System.Threading;
-using Dear_ImGui_Sample;
-using Engine;
+﻿using Engine;
 
-namespace Noice
+namespace Noice;
+
+public static class Noice
 {
-	public static class Noice
+	static Serializer serializer;
+	static Scene scene;
+
+	static void Main()
 	{
-		static Serializer serializer;
-		static Scene scene;
+		serializer = new Serializer();
+		scene = new Scene();
 
-		static void Main()
-		{
-			serializer = new Serializer();
-			scene = new Scene();
+		_ = new Editor();
 
-			_ = new Editor();
+		Window window = new Window();
+		//window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
 
-			Window window = new Window();
-			//window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
-
-			window.Run();
-
-
-		}
+		window.Run();
 	}
 }

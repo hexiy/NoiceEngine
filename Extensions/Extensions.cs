@@ -58,8 +58,6 @@ public static class Extensions
 			return vector2;
 		}
 	}
-
-
 	//  Vector2
 	public static Vector3 VectorX(this Vector2 vector)
 	{

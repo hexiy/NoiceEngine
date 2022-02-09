@@ -1,9 +1,8 @@
-namespace Engine
+namespace Engine;
+
+public interface IEditorWindow
 {
-	public interface IEditorWindow
-	{
-		void Init ();
-		void Update ();
-		void Draw ();
-	}
+	void Init();
+	void Update();
+	void Draw();
 }

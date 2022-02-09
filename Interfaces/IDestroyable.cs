@@ -1,7 +1,6 @@
-﻿namespace Engine
+﻿namespace Engine;
+
+interface IDestroyable
 {
-    interface IDestroyable
-    {
-        void OnDestroyed();
-    }
+	void OnDestroyed();
 }

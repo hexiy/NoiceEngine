@@ -1,12 +1,11 @@
 using Engine;
 
-namespace Scripts
+namespace Scripts;
+
+public class FollowMouse : Component
 {
-	public class FollowMouse : Component
+	public override void Update()
 	{
-		public override void Update ()
-		{
-			transform.position = MouseInput.ScreenPosition;
-		}
+		transform.position = MouseInput.ScreenPosition;
 	}
 }

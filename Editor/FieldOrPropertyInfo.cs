@@ -4,115 +4,114 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Engine
+namespace Engine;
+
+public class FieldOrPropertyInfo
 {
-	public class FieldOrPropertyInfo
+	private FieldInfo fieldInfo;
+	private PropertyInfo propertyInfo;
+	public bool canShowInEditor = true;
+	public FieldOrPropertyInfo(FieldInfo fi)
 	{
-		private FieldInfo fieldInfo;
-		private PropertyInfo propertyInfo;
-		public bool canShowInEditor = true;
-		public FieldOrPropertyInfo(FieldInfo fi)
+		fieldInfo = fi;
+		UpdateCanShowInEditor();
+	}
+	public FieldOrPropertyInfo(PropertyInfo pi)
+	{
+		propertyInfo = pi;
+		UpdateCanShowInEditor();
+	}
+	private void UpdateCanShowInEditor()
+	{
+		if (fieldInfo != null && fieldInfo.DeclaringType == typeof(Component))
 		{
-			fieldInfo = fi;
-			UpdateCanShowInEditor();
+			canShowInEditor = false;
 		}
-		public FieldOrPropertyInfo(PropertyInfo pi)
+		if (propertyInfo != null && propertyInfo?.DeclaringType == typeof(Component))
 		{
-			propertyInfo = pi;
-			UpdateCanShowInEditor();
+			canShowInEditor = false;
 		}
-		private void UpdateCanShowInEditor()
+		for (int i = 0; i < CustomAttributes.Count(); i++)
 		{
-			if (fieldInfo != null && fieldInfo.DeclaringType == typeof(Component))
+			if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Show))
+			{
+				canShowInEditor = true;
+			}
+		}
+		for (int i = 0; i < CustomAttributes.Count(); i++)
+		{
+			if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Hide))
 			{
 				canShowInEditor = false;
 			}
-			if (propertyInfo != null && propertyInfo?.DeclaringType == typeof(Component))
-			{
-				canShowInEditor = false;
-			}
-			for (int i = 0; i < CustomAttributes.Count(); i++)
-			{
-				if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Show))
-				{
-					canShowInEditor = true;
-				}
-			}
-			for (int i = 0; i < CustomAttributes.Count(); i++)
-			{
-				if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Hide))
-				{
-					canShowInEditor = false;
-				}
-			}
 		}
-		public object? GetValue(object? obj)
+	}
+	public object? GetValue(object? obj)
+	{
+		if (fieldInfo != null)
+		{
+			return fieldInfo.GetValue(obj);
+		}
+		if (propertyInfo != null)
+		{
+			return propertyInfo.GetValue(obj);
+		}
+		return null;
+	}
+	public void SetValue(object? obj, object? value)
+	{
+		if (fieldInfo != null)
+		{
+			fieldInfo.SetValue(obj, value);
+		}
+		if (propertyInfo != null)
+		{
+			if (propertyInfo.GetSetMethod() != null) propertyInfo.SetValue(obj, value);
+		}
+	}
+	public IEnumerable<CustomAttributeData> CustomAttributes
+	{
+		get
 		{
 			if (fieldInfo != null)
 			{
-				return fieldInfo.GetValue(obj);
+				return fieldInfo.CustomAttributes;
 			}
 			if (propertyInfo != null)
 			{
-				return propertyInfo.GetValue(obj);
+				return propertyInfo.CustomAttributes;
 			}
 			return null;
 		}
-		public void SetValue(object? obj, object? value)
+	}
+	public string Name
+	{
+		get
 		{
 			if (fieldInfo != null)
 			{
-				fieldInfo.SetValue(obj, value);
+				return fieldInfo.Name;
 			}
 			if (propertyInfo != null)
 			{
-				if (propertyInfo.GetSetMethod() != null) propertyInfo.SetValue(obj, value);
+				return propertyInfo.Name;
 			}
+			return null;
 		}
-		public IEnumerable<CustomAttributeData> CustomAttributes
+	}
+	public Type FieldOrPropertyType
+	{
+		get
 		{
-			get
+			if (fieldInfo != null)
 			{
-				if (fieldInfo != null)
-				{
-					return fieldInfo.CustomAttributes;
-				}
-				if (propertyInfo != null)
-				{
-					return propertyInfo.CustomAttributes;
-				}
-				return null;
+				return fieldInfo.FieldType;
 			}
-		}
-		public string Name
-		{
-			get
+			if (propertyInfo != null)
 			{
-				if (fieldInfo != null)
-				{
-					return fieldInfo.Name;
-				}
-				if (propertyInfo != null)
-				{
-					return propertyInfo.Name;
-				}
-				return null;
+				return propertyInfo.PropertyType;
 			}
-		}
-		public Type FieldOrPropertyType
-		{
-			get
-			{
-				if (fieldInfo != null)
-				{
-					return fieldInfo.FieldType;
-				}
-				if (propertyInfo != null)
-				{
-					return propertyInfo.PropertyType;
-				}
-				return null;
-			}
+			return null;
 		}
 	}
 }

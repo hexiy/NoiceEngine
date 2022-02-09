@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-namespace Engine
+namespace Engine;
+
+public struct SceneData
 {
-    public struct SceneData
-    {
-        public List<GameObject> gameObjects;
-    }
+	public List<GameObject> gameObjects;
 }

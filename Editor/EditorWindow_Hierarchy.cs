@@ -3,225 +3,220 @@ using System.Collections.Generic;
 using ImGuiNET;
 using Scripts;
 
-namespace Engine
+namespace Engine;
+
+public class EditorWindow_Hierarchy : IEditorWindow
 {
-	public class EditorWindow_Hierarchy : IEditorWindow
+	public static EditorWindow_Hierarchy I { get; private set; }
+	private int selectedGameObjectIndex = 0;
+	private bool[] opened;
+	public Action<int> GameObjectSelected;
+	bool canDelete = true;
+
+	public void Init()
 	{
-		public static EditorWindow_Hierarchy I { get; private set; }
-		private int selectedGameObjectIndex = 0;
-		private bool[] opened;
-		public Action<int> GameObjectSelected;
-		bool canDelete = true;
+		I = this;
 
-		public void Init()
+	}
+	public void Update()
+	{
+		opened = new bool[Scene.I.gameObjects.Count];
+		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.Delete) && canDelete == true)
 		{
-			I = this;
-
+			canDelete = false;
+			DestroySelectedGameObjects();
 		}
-		public void Update()
+		if (KeyboardInput.IsKeyUp(KeyboardInput.Keys.Delete))
 		{
-			opened = new bool[Scene.I.gameObjects.Count];
-			if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.Delete) && canDelete == true)
-			{
-				canDelete = false;
-				DestroySelectedGameObjects();
-			}
-			if (KeyboardInput.IsKeyUp(KeyboardInput.Keys.Delete))
-			{
-				canDelete = true;
-			}
+			canDelete = true;
 		}
-		private void DestroySelectedGameObjects()
+	}
+	private void DestroySelectedGameObjects()
+	{
+		foreach (var selectedGameObject in Scene.I.GetSelectedGameObjects())
 		{
-			foreach (var selectedGameObject in Scene.I.GetSelectedGameObjects())
-			{
-				selectedGameObject.Destroy();
-				selectedGameObjectIndex--;
-				if (selectedGameObjectIndex < 0) return;
-				GameObjectSelected.Invoke(Scene.I.gameObjects[selectedGameObjectIndex].id);
-			}
+			selectedGameObject.Destroy();
+			selectedGameObjectIndex--;
+			if (selectedGameObjectIndex < 0) return;
+			GameObjectSelected.Invoke(Scene.I.gameObjects[selectedGameObjectIndex].id);
 		}
-		private int currentID = 0;
-		private void ResetID()
+	}
+	private int currentID = 0;
+	private void ResetID()
+	{
+		currentID = 0;
+	}
+	private void PushNextID()
+	{
+		ImGui.PushID(currentID++);
+	}
+	enum MoveDirection { up, down };
+	private void MoveSelectedGameObject(int addToIndex = 1)
+	{
+		int direction = addToIndex;
+		if (Scene.I.GetSelectedGameObjects().Count == 0) { return; }
+
+		GameObject go = Scene.I.GetSelectedGameObjects()[0];
+		int oldIndex = Scene.I.GetGameObjectIndexInHierarchy(go.id);
+
+		if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0)
 		{
-			currentID = 0;
+			return;
 		}
-		private void PushNextID()
+		while (Scene.I.gameObjects[oldIndex + direction].transform.parent != null)
 		{
-			ImGui.PushID(currentID++);
+			direction += addToIndex;
 		}
-		enum MoveDirection { up, down };
-		private void MoveSelectedGameObject(int addToIndex = 1)
+
+		Scene.I.gameObjects.RemoveAt(oldIndex);
+		Scene.I.gameObjects.Insert(oldIndex + direction, go);
+
+		selectedGameObjectIndex = oldIndex + direction;
+		GameObjectSelected.Invoke(Scene.I.gameObjects[oldIndex + direction].id);
+	}
+	public void SelectGameObject(int id)
+	{
+		selectedGameObjectIndex = Scene.I.GetGameObjectIndexInHierarchy(id);
+		GameObjectSelected.Invoke(id);
+	}
+	private List<GameObject> gameObjectsChildrened = new List<GameObject>();
+	public void Draw()
+	{
+		gameObjectsChildrened = new List<GameObject>();
+		ResetID();
+		ImGui.SetNextWindowSize(new Vector2(300, Editor.sceneViewSize.Y), ImGuiCond.Always);
+		ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X - 350, 0), ImGuiCond.Always, new Vector2(1, 0)); // +1 for double border uglyness
+																												  //ImGui.SetNextWindowBgAlpha (0);
+		ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
+		if (ImGui.Button("+"))
 		{
-			int direction = addToIndex;
-			if (Scene.I.GetSelectedGameObjects().Count == 0) { return; }
-
-			GameObject go = Scene.I.GetSelectedGameObjects()[0];
-			int oldIndex = Scene.I.GetGameObjectIndexInHierarchy(go.id);
-
-			if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0)
-			{
-				return;
-			}
-			while (Scene.I.gameObjects[oldIndex + direction].transform.parent != null)
-			{
-				direction += addToIndex;
-			}
-
-			Scene.I.gameObjects.RemoveAt(oldIndex);
-			Scene.I.gameObjects.Insert(oldIndex + direction, go);
-
-			selectedGameObjectIndex = oldIndex + direction;
-			GameObjectSelected.Invoke(Scene.I.gameObjects[oldIndex + direction].id);
+			GameObject go = GameObject.Create(name: "GameObject");
+			go.Awake();
+			go.transform.position = Camera.I.CenterOfScreenToWorld();
 		}
-		public void SelectGameObject(int id)
+		ImGui.SameLine();
+
+		if (ImGui.Button("-"))
 		{
-			selectedGameObjectIndex = Scene.I.GetGameObjectIndexInHierarchy(id);
-			GameObjectSelected.Invoke(id);
+			DestroySelectedGameObjects();
 		}
-		private List<GameObject> gameObjectsChildrened = new List<GameObject>();
-		public void Draw()
+
+		ImGui.SameLine();
+		ImGui.Dummy(new Vector2(15, 0));
+		ImGui.SameLine();
+		if (ImGui.Button("^"))
 		{
-			gameObjectsChildrened = new List<GameObject>();
-			ResetID();
-			ImGui.SetNextWindowSize(new Vector2(300, Editor.sceneViewSize.Y), ImGuiCond.Always);
-			ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X - 350, 0), ImGuiCond.Always, new Vector2(1, 0)); // +1 for double border uglyness
-																														  //ImGui.SetNextWindowBgAlpha (0);
-			ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
-			if (ImGui.Button("+"))
-			{
-				GameObject go = GameObject.Create(name: "GameObject");
-				go.Awake();
-				go.transform.position = Camera.I.CenterOfScreenToWorld();
-			}
-			ImGui.SameLine();
+			MoveSelectedGameObject(-1);
+		}
 
-			if (ImGui.Button("-"))
+		ImGui.SameLine();
+		if (ImGui.Button("V"))
+		{
+			MoveSelectedGameObject(1);
+		}
+		ImGui.SameLine();
+		if (ImGui.Button("Add children"))
+		{
+			GameObject go = GameObject.Create(name: "Children");
+			go.Awake();
+			go.transform.SetParent(Scene.I.gameObjects[selectedGameObjectIndex].transform);
+		}
+		for (int goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)
+		{
+			if (gameObjectsChildrened.Contains(Scene.I.gameObjects[goIndex]))
 			{
-				DestroySelectedGameObjects();
+				continue;
 			}
-
-			ImGui.SameLine();
-			ImGui.Dummy(new Vector2(15, 0));
-			ImGui.SameLine();
-			if (ImGui.Button("^"))
+			if (Scene.I.gameObjects[goIndex].transform.parent != null) { continue; }
+			if (Scene.I.gameObjects[goIndex].silent) { continue; }
+			bool hasAnyChildren = false;//Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
+			ImGuiTreeNodeFlags flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.OpenOnArrow;
+			if (hasAnyChildren == false)
 			{
-				MoveSelectedGameObject(-1);
-			}
-
-			ImGui.SameLine();
-			if (ImGui.Button("V"))
-			{
-				MoveSelectedGameObject(1);
-			}
-			ImGui.SameLine();
-			if (ImGui.Button("Add children"))
-			{
-				GameObject go = GameObject.Create(name: "Children");
-				go.Awake();
-				go.transform.SetParent(Scene.I.gameObjects[selectedGameObjectIndex].transform);
+				flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
 			}
 
+			ImGui.PushStyleColor(ImGuiCol.Text, Scene.I.gameObjects[goIndex].active ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
+			bool opened = ImGui.TreeNodeEx(/*$"[{Scene.I.gameObjects[goIndex].id}]" + */Scene.I.gameObjects[goIndex].name, flags);
+			ImGui.PopStyleColor();
 
-			for (int goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)
+			if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
 			{
-				if (gameObjectsChildrened.Contains(Scene.I.gameObjects[goIndex]))
+				SelectGameObject(Scene.I.gameObjects[goIndex].id);
+			}
+			if (opened)
+			{
+				List<Transform> children = Scene.I.gameObjects[goIndex].transform.children;
+
+				for (int childrenIndex = 0; childrenIndex < children.Count; childrenIndex++)
 				{
-					continue;
-				}
-				if (Scene.I.gameObjects[goIndex].transform.parent != null) { continue; }
-				if (Scene.I.gameObjects[goIndex].silent) { continue; }
-
-
-				bool hasAnyChildren = false;//Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
-				ImGuiTreeNodeFlags flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.OpenOnArrow;
-				if (hasAnyChildren == false)
-				{
-					flags = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
-				}
-
-				ImGui.PushStyleColor(ImGuiCol.Text, Scene.I.gameObjects[goIndex].active ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
-				bool opened = ImGui.TreeNodeEx(/*$"[{Scene.I.gameObjects[goIndex].id}]" + */Scene.I.gameObjects[goIndex].name, flags);
-				ImGui.PopStyleColor();
-
-				if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
-				{
-					SelectGameObject(Scene.I.gameObjects[goIndex].id);
-				}
-				if (opened)
-				{
-					List<Transform> children = Scene.I.gameObjects[goIndex].transform.children;
-
-					for (int childrenIndex = 0; childrenIndex < children.Count; childrenIndex++)
+					if (gameObjectsChildrened.Contains(children[childrenIndex].GameObject))
 					{
-						if (gameObjectsChildrened.Contains(children[childrenIndex].GameObject))
-						{
-							children.RemoveAt(childrenIndex);
-							childrenIndex--;
-						}
-						else
-						{
-							gameObjectsChildrened.Add(children[childrenIndex].GameObject);
-						}
+						children.RemoveAt(childrenIndex);
+						childrenIndex--;
+					}
+					else
+					{
+						gameObjectsChildrened.Add(children[childrenIndex].GameObject);
+					}
+				}
+
+				for (int childrenIndex = 0; childrenIndex < children.Count; childrenIndex++)
+				{
+
+					//ImGui.Dummy(new Vector2(15, 10));
+					//ImGui.SameLine();
+					int _i = Scene.I.GetGameObjectIndexInHierarchy(children[childrenIndex].GameObject.id);
+
+					bool hasAnyChildren2 = Scene.I.gameObjects[goIndex].transform.children.Count != 0;
+					ImGuiTreeNodeFlags flags2 = ((selectedGameObjectIndex == _i) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
+					if (hasAnyChildren2 == false)
+					{
+						flags2 = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
 					}
 
-					for (int childrenIndex = 0; childrenIndex < children.Count; childrenIndex++)
+					bool opened2 = ImGui.TreeNodeEx(/*$"[{children[childrenIndex].GameObject.id}]" + */children[childrenIndex].GameObject.name, flags2);
+					if (ImGui.IsItemClicked())
 					{
-
-						//ImGui.Dummy(new Vector2(15, 10));
-						//ImGui.SameLine();
-						int _i = Scene.I.GetGameObjectIndexInHierarchy(children[childrenIndex].GameObject.id);
-
-						bool hasAnyChildren2 = Scene.I.gameObjects[goIndex].transform.children.Count != 0;
-						ImGuiTreeNodeFlags flags2 = ((selectedGameObjectIndex == _i) ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
-						if (hasAnyChildren2 == false)
-						{
-							flags2 = ((selectedGameObjectIndex == goIndex) ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
-						}
-
-						bool opened2 = ImGui.TreeNodeEx(/*$"[{children[childrenIndex].GameObject.id}]" + */children[childrenIndex].GameObject.name, flags2);
-						if (ImGui.IsItemClicked())
-						{
-							SelectGameObject(Scene.I.gameObjects[_i].id);
-						}
-						ImGui.TreePop();
-
+						SelectGameObject(Scene.I.gameObjects[_i].id);
 					}
 					ImGui.TreePop();
-				}
-			}
 
-			ImGui.End();
+				}
+				ImGui.TreePop();
+			}
 		}
 
-		//public void DrawOld()
-		//{
-		//	ImGui.SetNextWindowSize(new Vector2(300, Scene.I.Window.ClientBounds.Height), ImGuiCond.Always);
-		//	ImGui.SetNextWindowPos(new Vector2(Scene.I.Window.ClientBounds.Width, 0), ImGuiCond.Always, new Vector2(1, 0));
-		//	//ImGui.SetNextWindowBgAlpha (0);
-		//	ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
-		//	if (ImGui.Button("+"))
-		//	{
-		//		GameObject go = GameObject.Create(name: "GameObject");
-		//		go.Awake();
-		//		go.transform.position = Camera.I.CenterOfScreenToWorld();
-		//
-		//	}
-		//	ImGui.SameLine();
-		//
-		//	if (ImGui.Button("-"))
-		//	{
-		//		DestroySelectedGameObjects();
-		//	}
-		//	int oldSelectedGameObjectIndex = selectedGameObjectIndex;
-		//	ImGui.SetNextItemWidth(300);
-		//	ImGui.ListBox("", ref selectedGameObjectIndex, gameObjectNames, gameObjectNames.Length);
-		//	if (oldSelectedGameObjectIndex != selectedGameObjectIndex)
-		//	{
-		//		GameObjectSelected.Invoke(selectedGameObjectIndex);
-		//	}
-		//
-		//	ImGui.End();
-		//}
+		ImGui.End();
 	}
+
+	//public void DrawOld()
+	//{
+	//	ImGui.SetNextWindowSize(new Vector2(300, Scene.I.Window.ClientBounds.Height), ImGuiCond.Always);
+	//	ImGui.SetNextWindowPos(new Vector2(Scene.I.Window.ClientBounds.Width, 0), ImGuiCond.Always, new Vector2(1, 0));
+	//	//ImGui.SetNextWindowBgAlpha (0);
+	//	ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
+	//	if (ImGui.Button("+"))
+	//	{
+	//		GameObject go = GameObject.Create(name: "GameObject");
+	//		go.Awake();
+	//		go.transform.position = Camera.I.CenterOfScreenToWorld();
+	//
+	//	}
+	//	ImGui.SameLine();
+	//
+	//	if (ImGui.Button("-"))
+	//	{
+	//		DestroySelectedGameObjects();
+	//	}
+	//	int oldSelectedGameObjectIndex = selectedGameObjectIndex;
+	//	ImGui.SetNextItemWidth(300);
+	//	ImGui.ListBox("", ref selectedGameObjectIndex, gameObjectNames, gameObjectNames.Length);
+	//	if (oldSelectedGameObjectIndex != selectedGameObjectIndex)
+	//	{
+	//		GameObjectSelected.Invoke(selectedGameObjectIndex);
+	//	}
+	//
+	//	ImGui.End();
+	//}
 }

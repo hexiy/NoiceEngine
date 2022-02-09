@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 public static class SpriteBatchCache
 {
 	private static Dictionary<int, (SpriteBatch spriteBatch, DrawParameters drawParameters)> cachedSpriteBatches = new Dictionary<int, (SpriteBatch spriteBatch, DrawParameters drawParameters)>();
-
-
 	public static SpriteBatch CreateBatchForTexture(Texture2D texture, DrawParameters drawParameters)
 	{
 		SpriteBatch spriteBatch = new SpriteBatch(Scene.I.GraphicsDevice);

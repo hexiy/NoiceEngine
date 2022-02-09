@@ -1,45 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Engine;
-
+﻿
 using Scripts;
-namespace Engine.UI
+namespace Engine.UI;
+
+public class ButtonTween : Component
 {
-	public class ButtonTween : Component
+	private bool clicked = false;
+	public float scaleSpeed = 20;
+	public float scaleTarget = 0.9f;
+	public override void Awake()
 	{
-		private bool clicked = false;
-		public float scaleSpeed = 20;
-		public float scaleTarget = 0.9f;
-		public override void Awake()
+		base.Awake();
+	}
+	public override void Update()
+	{
+		//if (needToScale == false) { return; }
+		bool mouseInside = MouseInput.WorldPosition.In(GetComponent<BoxShape>());
+		if (MouseInput.ButtonPressed() && mouseInside)
 		{
-			base.Awake();
+			transform.scale = Vector3.One;
+
+			clicked = true;
 		}
-		public override void Update()
+		else if (MouseInput.ButtonReleased())
 		{
-			//if (needToScale == false) { return; }
-			bool mouseInside = MouseInput.WorldPosition.In(GetComponent<BoxShape>());
-			if (MouseInput.ButtonPressed() && mouseInside)
-			{
-				transform.scale = Vector3.One;
+			clicked = false;
+		}
 
-				clicked = true;
-			}
-			else if (MouseInput.ButtonReleased())
-			{
-				clicked = false;
-			}
-
-			if (clicked)
-			{
-				transform.scale = Vector3.Lerp(transform.scale, Vector3.One * scaleTarget, Time.deltaTime * scaleSpeed);
-			}
-			else
-			{
-				transform.scale = Vector3.Lerp(transform.scale, Vector3.One, Time.deltaTime * scaleSpeed);
-			}
+		if (clicked)
+		{
+			transform.scale = Vector3.Lerp(transform.scale, Vector3.One * scaleTarget, Time.deltaTime * scaleSpeed);
+		}
+		else
+		{
+			transform.scale = Vector3.Lerp(transform.scale, Vector3.One, Time.deltaTime * scaleSpeed);
 		}
 	}
 }

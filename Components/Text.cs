@@ -1,8 +1,6 @@
-﻿using Engine;
-namespace Scripts
+﻿namespace Scripts;
+
+public class Text : Component
 {
-    public class Text : Component
-    {
-        public string text = "test";
-    }
+	public string text = "test";
 }

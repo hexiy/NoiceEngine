@@ -81,8 +81,6 @@ namespace Scripts
 					 //	particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
 					 //			((int)((1 - (particles[i].lifetime / MaxLifetime)) * 255)));
 					 //}
-
-
 					 particles[i].radius = MathHelper.Lerp(StartSize, EndSize, particles[i].lifetime / MaxLifetime);
 
 			if (particles[i].lifetime > MaxLifetime)
@@ -131,8 +129,6 @@ base.Update();
 }
 	}
 }*/
-
-
 #region BACKUP
 //using System;
 //using System.Collections.Generic;
@@ -289,5 +285,3 @@ base.Update();
 //    }
 //}
 #endregion
-
-

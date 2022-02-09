@@ -1,10 +1,6 @@
-﻿using Engine;
+﻿namespace Scripts;
 
-
-namespace Scripts
+public class CircleShape : Shape
 {
-    public class CircleShape : Shape
-    {
-        public float radius;
-    }
+	public float radius;
 }

@@ -1,7 +1,5 @@
-﻿using Engine;
-namespace Scripts
+﻿namespace Scripts;
+
+public class Shape : Component
 {
-    public class Shape : Component
-    {
-    }
 }

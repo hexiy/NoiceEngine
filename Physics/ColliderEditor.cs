@@ -93,8 +93,6 @@
 //				selectedPoint = verticeGameObjects[(int)vertexIndex];
 //				offset = -selectedPoint.TransformToLocal(MouseInput.Position);
 //			}
-
-
 //			if (vertexIndex == null && dynamicVertex.Active) // find line on which the point is, and at that position,insert new point
 //			{
 

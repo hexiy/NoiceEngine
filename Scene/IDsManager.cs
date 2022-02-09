@@ -1,7 +1,6 @@
-﻿namespace Engine
+﻿namespace Engine;
+
+public static class IDsManager
 {
-    public static class IDsManager
-    {
-        public static int gameObjectNextID = 0;
-    }
+	public static int gameObjectNextID = 0;
 }
