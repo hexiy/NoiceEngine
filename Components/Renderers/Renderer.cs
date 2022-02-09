@@ -1,6 +1,4 @@
-﻿using Engine;
-using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Xml.Serialization;
 using Vector2 = Engine.Vector2;
 using Vector3 = Engine.Vector3;

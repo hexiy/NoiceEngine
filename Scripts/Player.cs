@@ -1,6 +1,4 @@
-﻿using Scripts;
-
-namespace Engine;
+﻿namespace Engine;
 
 public class Player : Component
 {

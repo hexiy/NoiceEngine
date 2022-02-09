@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Engine;
+﻿namespace Engine;
 
 [Hide]
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]

@@ -1,6 +1,4 @@
-﻿
-using Scripts;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Engine;
 

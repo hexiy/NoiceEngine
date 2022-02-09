@@ -1,6 +1,4 @@
-﻿using Engine;
-using System;
-namespace Scripts;
+﻿namespace Scripts;
 
 public class LineShape : Shape
 {

@@ -1,6 +1,4 @@
-﻿
-using Scripts;
-namespace Engine.UI;
+﻿namespace Engine.UI;
 
 public class ButtonTween : Component
 {

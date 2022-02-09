@@ -1,6 +1,4 @@
-﻿using Engine;
-
-namespace Scripts;
+﻿namespace Scripts;
 
 public class CameraController : Component
 {

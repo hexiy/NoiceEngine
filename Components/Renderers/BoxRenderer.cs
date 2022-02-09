@@ -1,7 +1,4 @@
-﻿using Scripts;
-using System;
-using OpenTK.Graphics.OpenGL4;
-namespace Engine;
+﻿namespace Engine;
 
 public class BoxRenderer : Renderer
 {

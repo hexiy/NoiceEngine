@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Engine;
+﻿namespace Engine;
 
 /// <summary>
 /// TARGET MUST BE PUBLIC

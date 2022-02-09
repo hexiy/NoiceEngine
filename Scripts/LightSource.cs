@@ -1,6 +1,4 @@
-﻿using Scripts;
-
-public class LightSource : Component
+﻿public class LightSource : Component
 {
 	public float intensity = 5;
 	public float falloff = 2;

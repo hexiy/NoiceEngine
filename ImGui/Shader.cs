@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using OpenTK.Graphics.OpenGL4;
 
 namespace Dear_ImGui_Sample;
 

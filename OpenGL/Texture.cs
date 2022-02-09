@@ -1,7 +1,4 @@
-﻿using System;
-using OpenTK.Graphics.OpenGL4;
-
-namespace Engine;
+﻿namespace Engine;
 
 [Serializable]
 public class Texture

@@ -1,9 +1,4 @@
-﻿using Engine;
-
-using Scripts;
-using System;
-
-public class PoleLightSwinger : Component
+﻿public class PoleLightSwinger : Component
 {
 
 	public override void Update()

@@ -1,5 +1,3 @@
-using Engine;
-
 namespace Scripts;
 
 public class FollowMouse : Component

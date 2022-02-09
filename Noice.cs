@@ -1,6 +1,4 @@
-﻿using Engine;
-
-namespace Noice;
+﻿namespace Noice;
 
 public static class Noice
 {
