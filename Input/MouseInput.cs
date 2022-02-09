@@ -1,130 +1,134 @@
-﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using Scripts;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Engine;
-
-public static class MouseInput
+namespace Engine
 {
-
-	public delegate void MouseEvent();
-
-	public static Vector2 ScreenDelta;
-	public static Vector2 WorldDelta
-	{
-		get { return ScreenDelta * Camera.I.ortographicSize; }
-	}
-
-	/// <summary>
-	/// Screen position of mouse
-	/// </summary>
-	public static Vector2 ScreenPosition = Vector2.Zero;
-	public static Vector2 WorldPosition
-	{
-		get { return Camera.I.ScreenToWorld(ScreenPosition); }
-	}
-
-	//
-	// Summary:
-	//     Specifies the buttons of a mouse.
-	public enum Buttons
-	{
-		//
-		// Summary:
-		//     The first button.
-		Button1 = 0,
-		//
-		// Summary:
-		//     The second button.
-		Button2 = 1,
-		//
-		// Summary:
-		//     The third button.
-		Button3 = 2,
-		//
-		// Summary:
-		//     The fourth button.
-		Button4 = 3,
-		//
-		// Summary:
-		//     The fifth button.
-		Button5 = 4,
-		//
-		// Summary:
-		//     The sixth button.
-		Button6 = 5,
-		//
-		// Summary:
-		//     The seventh button.
-		Button7 = 6,
-		//
-		// Summary:
-		//     The eighth button.
-		Button8 = 7,
-		//
-		// Summary:
-		//     The left mouse button. This corresponds to OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Button1.
-		Left = 0,
-		//
-		// Summary:
-		//     The right mouse button. This corresponds to OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Button2.
-		Right = 1,
-		//
-		// Summary:
-		//     The middle mouse button. This corresponds to OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Button3.
-		Middle = 2,
-		//
-		// Summary:
-		//     The highest mouse button available.
-		Last = 7
-	}
-	public static float ScrollDelta
+	public static class MouseInput
 	{
 
-		get
+		public delegate void MouseEvent();
+
+		public static Vector2 ScreenDelta;
+		public static Vector2 WorldDelta
 		{
-			if (IsMouseInSceneView() == false) return 0;
-			return Window.I.MouseState.ScrollDelta.Y;
+			get { return ScreenDelta * Camera.I.ortographicSize; }
 		}
-	}
-	public static bool IsButtonDown(Buttons button = MouseInput.Buttons.Left)
-	{
-		if (IsMouseInSceneView() == false) return false;
 
-		return Window.I.MouseState.IsButtonDown((MouseButton)button);
-	}
-	public static bool IsButtonUp(Buttons button = MouseInput.Buttons.Left)
-	{
-		if (IsMouseInSceneView() == false) return false;
+		/// <summary>
+		/// Screen position of mouse
+		/// </summary>
+		public static Vector2 ScreenPosition = Vector2.Zero;
+		public static Vector2 WorldPosition
+		{
+			get { return Camera.I.ScreenToWorld(ScreenPosition); }
+		}
 
-		return (Window.I.MouseState.IsButtonDown((MouseButton)button) == false);
-	}
+		//
+		// Summary:
+		//     Specifies the buttons of a mouse.
+		public enum Buttons
+		{
+			//
+			// Summary:
+			//     The first button.
+			Button1 = 0,
+			//
+			// Summary:
+			//     The second button.
+			Button2 = 1,
+			//
+			// Summary:
+			//     The third button.
+			Button3 = 2,
+			//
+			// Summary:
+			//     The fourth button.
+			Button4 = 3,
+			//
+			// Summary:
+			//     The fifth button.
+			Button5 = 4,
+			//
+			// Summary:
+			//     The sixth button.
+			Button6 = 5,
+			//
+			// Summary:
+			//     The seventh button.
+			Button7 = 6,
+			//
+			// Summary:
+			//     The eighth button.
+			Button8 = 7,
+			//
+			// Summary:
+			//     The left mouse button. This corresponds to OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Button1.
+			Left = 0,
+			//
+			// Summary:
+			//     The right mouse button. This corresponds to OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Button2.
+			Right = 1,
+			//
+			// Summary:
+			//     The middle mouse button. This corresponds to OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Button3.
+			Middle = 2,
+			//
+			// Summary:
+			//     The highest mouse button available.
+			Last = 7
+		}
+		public static float ScrollDelta
+		{
 
-	public static bool ButtonPressed(Buttons button = MouseInput.Buttons.Left)
-	{
-		if (IsMouseInSceneView() == false) return false;
+			get
+			{
+				if (IsMouseInSceneView() == false) return 0;
+				return Window.I.MouseState.ScrollDelta.Y;
+			}
+		}
+		public static bool IsButtonDown(Buttons button = MouseInput.Buttons.Left)
+		{
+			if (IsMouseInSceneView() == false) return false;
 
-		return Window.I.MouseState.WasButtonDown((MouseButton)button) == false && (Window.I.MouseState.IsButtonDown((MouseButton)button));
-	}
-	public static bool ButtonReleased(Buttons button = MouseInput.Buttons.Left)
-	{
-		if (IsMouseInSceneView() == false) return false;
+			return Window.I.MouseState.IsButtonDown((MouseButton)button);
+		}
+		public static bool IsButtonUp(Buttons button = MouseInput.Buttons.Left)
+		{
+			if (IsMouseInSceneView() == false) return false;
 
-		return Window.I.MouseState.WasButtonDown((MouseButton)button) && (Window.I.MouseState.IsButtonDown((MouseButton)button) == false);
-	}
-	public static void Update()
-	{
-		MouseState state = Window.I.MouseState;
+			return (Window.I.MouseState.IsButtonDown((MouseButton)button) == false);
+		}
 
-		ScreenDelta = new Vector2(state.Delta.X, -state.Delta.Y);
-		ScreenPosition = new Vector2(Window.I.MouseState.X - Editor.sceneViewPosition.X, -Window.I.MouseState.Y + Camera.I.size.Y + Editor.sceneViewPosition.Y);
+		public static bool ButtonPressed(Buttons button = MouseInput.Buttons.Left)
+		{
+			if (IsMouseInSceneView() == false) return false;
 
-		//Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
-		//Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");
+			return Window.I.MouseState.WasButtonDown((MouseButton)button) == false && (Window.I.MouseState.IsButtonDown((MouseButton)button));
+		}
+		public static bool ButtonReleased(Buttons button = MouseInput.Buttons.Left)
+		{
+			if (IsMouseInSceneView() == false) return false;
 
-		//System.Diagnostics.Debug.WriteLine("mousePos:" + Position.X + ":" + Position.Y);
-	}
-	private static bool IsMouseInSceneView()
-	{
-		return ScreenPosition.X < Camera.I.size.X && ScreenPosition.Y < Camera.I.size.Y &&
-			 ScreenPosition.X > 0 && ScreenPosition.Y > 0;
+			return Window.I.MouseState.WasButtonDown((MouseButton)button) && (Window.I.MouseState.IsButtonDown((MouseButton)button) == false);
+		}
+		public static void Update()
+		{
+			MouseState state = Window.I.MouseState;
+
+			ScreenDelta = new Vector2(state.Delta.X, -state.Delta.Y);
+
+
+			ScreenPosition = new Vector2(Window.I.MouseState.X - Editor.sceneViewPosition.X, -Window.I.MouseState.Y + Camera.I.size.Y + Editor.sceneViewPosition.Y);
+
+						//Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
+						//Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");
+
+			//System.Diagnostics.Debug.WriteLine("mousePos:" + Position.X + ":" + Position.Y);
+		}
+		private static bool IsMouseInSceneView()
+		{
+			return ScreenPosition.X < Camera.I.size.X && ScreenPosition.Y < Camera.I.size.Y &&
+				 ScreenPosition.X > 0 && ScreenPosition.Y > 0;
+		}
 	}
 }
