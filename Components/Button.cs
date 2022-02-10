@@ -23,7 +23,7 @@ public class Button : Component
 
 		if (GetComponent<ButtonTween>() == null)
 		{
-			GameObject.AddComponent<ButtonTween>().Awake();
+			gameObject.AddComponent<ButtonTween>().Awake();
 		}
 
 		renderer = GetComponent<Renderer>();

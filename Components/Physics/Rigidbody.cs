@@ -100,11 +100,11 @@ public class Rigidbody : Component
 		touchingRigidbodies.Add(rigidbody);
 
 		// Call callback on components that implement interface IPhysicsCallbackListener
-		for (int i = 0; i < GameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 		{
-			if ((GameObject.components[i] is Rigidbody) == false)
+			if ((gameObject.components[i] is Rigidbody) == false)
 			{
-				GameObject.components[i].OnCollisionEnter(rigidbody);
+				gameObject.components[i].OnCollisionEnter(rigidbody);
 			}
 		}
 	}
@@ -115,11 +115,11 @@ public class Rigidbody : Component
 			touchingRigidbodies.Remove(rigidbody);
 		}
 
-		for (int i = 0; i < GameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 		{
-			if ((GameObject.components[i] is Rigidbody) == false)
+			if ((gameObject.components[i] is Rigidbody) == false)
 			{
-				GameObject.components[i].OnCollisionExit(rigidbody);
+				gameObject.components[i].OnCollisionExit(rigidbody);
 			}
 		}
 	}
@@ -128,11 +128,11 @@ public class Rigidbody : Component
 		touchingRigidbodies.Add(rigidbody);
 
 		// Call callback on components that implement interface IPhysicsCallbackListener
-		for (int i = 0; i < GameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 		{
-			if ((GameObject.components[i] is Rigidbody) == false)
+			if ((gameObject.components[i] is Rigidbody) == false)
 			{
-				GameObject.components[i].OnTriggerEnter(rigidbody);
+				gameObject.components[i].OnTriggerEnter(rigidbody);
 			}
 		}
 	}
@@ -143,11 +143,11 @@ public class Rigidbody : Component
 			touchingRigidbodies.Remove(rigidbody);
 		}
 
-		for (int i = 0; i < GameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 		{
-			if ((GameObject.components[i] is Rigidbody) == false)
+			if ((gameObject.components[i] is Rigidbody) == false)
 			{
-				GameObject.components[i].OnTriggerExit(rigidbody);
+				gameObject.components[i].OnTriggerExit(rigidbody);
 			}
 		}
 	}

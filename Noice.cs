@@ -2,17 +2,17 @@
 
 public static class Noice
 {
-	static Serializer serializer;
-	static Scene scene;
-
 	static void Main()
 	{
-		serializer = new Serializer();
-		scene = new Scene();
+
+		_ = new Serializer();
+		_ = new Scene();
 
 		_ = new Editor();
 
 		Window window = new Window();
+		RenderBuffers.CreateBuffers();
+
 		//window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
 
 		window.Run();

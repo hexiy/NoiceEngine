@@ -20,6 +20,8 @@ class Scene
 	public float updateTime = 0;
 	public float renderTime = 0;
 
+	List<Renderer> renderQueue;
+
 	public Scene()
 	{
 		I = this;
@@ -44,6 +46,21 @@ class Scene
 		CreateTransformHandle();
 
 	}
+	private void SpawnTestSpriteRenderers()
+	{
+		for (int i = 0; i < 10000; i++)
+		{
+			GameObject go2 = GameObject.Create(name: "sprite " + i);
+			go2.dynamicallyCreated = true;
+			go2.AddComponent<SpriteRenderer>();
+			go2.AddComponent<BoxShape>().size = new Vector2(400, 180);
+
+			go2.Awake();
+			go2.GetComponent<SpriteRenderer>().LoadTexture("2D/house.png");
+			go2.transform.position = new Vector2(Rendom.Range(-1000, 1000), Rendom.Range(-1000, 1000));
+			go2.transform.pivot = new Vector2(0.5f, 0.5f);
+		}
+	}
 	void CreateTransformHandle()
 	{
 		GameObject transformHandleGameObject = GameObject.Create(_silent: true);
@@ -56,18 +73,17 @@ class Scene
 	}
 	public void Start()
 	{
-		//string str = "purpleblossom";
-		//PersistentData.Set("mysteryKey", str);
-		string hmmm = PersistentData.GetString("mysteryKey");
 		Physics.Init();
-
-		CreateDefaultObjects();
 
 		if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
 		{
 			LoadScene(Serializer.lastScene);
+			SpawnTestSpriteRenderers();
 		}
-
+		else
+		{
+			CreateDefaultObjects();
+		}
 	}
 	public void Update()
 	{
@@ -95,7 +111,6 @@ class Scene
 
 		SceneUpdated?.Invoke(this, new SceneData() { gameObjects = this.gameObjects });
 	}
-	List<Renderer> renderQueue;
 
 	public void Render()
 	{
@@ -105,30 +120,20 @@ class Scene
 		renderQueue = new List<Renderer>();
 		for (int i = 0; i < gameObjects.Count; i++)
 		{
-			if (gameObjects[i].active)
-			{
-				renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
-			}
+			renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
 		}
 		for (int i = 0; i < renderQueue.Count; i++)
 		{
-			renderQueue[i].layerFromHierarchy += renderQueue[i].GameObject.indexInHierarchy * 0.0001f;
+			renderQueue[i].layerFromHierarchy = renderQueue[i].gameObject.indexInHierarchy * 0.00000000000000000000000000000001f;
 		}
 		renderQueue.Sort();
 
 		for (int i = 0; i < renderQueue.Count; i++)
 		{
-			renderQueue[i].layerFromHierarchy -= renderQueue[i].GameObject.indexInHierarchy * 0.0001f;
-
-			if (renderQueue[i].enabled && renderQueue[i].awoken)
+			if (renderQueue[i].enabled && renderQueue[i].awoken && renderQueue[i].gameObject.active)
 			{
 				renderQueue[i].Render();
 			}
-		}
-
-		if (transformHandle.GameObject != null)
-		{
-			transformHandle.GameObject.Render();
 		}
 	}
 	public void SelectGameObject(GameObject go)
@@ -144,7 +149,7 @@ class Scene
 			}
 			go.selected = true;
 		}
-		if (go != camera.GameObject && go != transformHandle.GameObject)
+		if (go != camera.gameObject && go != transformHandle.gameObject)
 		{
 			transformHandle.SelectObject(go);
 			PersistentData.Set("lastSelectedGameObjectId", go.id);
@@ -288,7 +293,6 @@ class Scene
 
 		return true;
 	}
-
 	public void SaveScene(string path = null)
 	{
 		path = path ?? Serializer.lastScene;

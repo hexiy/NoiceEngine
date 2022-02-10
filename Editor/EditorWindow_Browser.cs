@@ -4,10 +4,10 @@ using ImGuiNET;
 
 namespace Engine;
 
-public class EditorWindow_Browser : IEditorWindow
+public class EditorWindow_Browser : EditorWindow
 {
 	public static EditorWindow_Browser I { get; private set; }
-	private int currentID = 0;
+
 	string[] assets = new string[0];
 	Texture[] textures = new Texture[0];
 
@@ -19,7 +19,7 @@ public class EditorWindow_Browser : IEditorWindow
 	Texture fileIcon;
 	Texture directoryIcon;
 
-	public void Init()
+	public override void Init()
 	{
 		I = this;
 		fileIcon = new Texture();
@@ -32,7 +32,7 @@ public class EditorWindow_Browser : IEditorWindow
 
 		RefreshAssets();
 	}
-	public void Update()
+	public override void Update()
 	{
 	}
 	void RefreshAssets()
@@ -60,16 +60,9 @@ public class EditorWindow_Browser : IEditorWindow
 			}
 		}
 	}
-	private void ResetID()
+	public override unsafe void Draw()
 	{
-		currentID = 0;
-	}
-	private void PushNextID()
-	{
-		ImGui.PushID(currentID++);
-	}
-	public unsafe void Draw()
-	{
+		if (active == false) return;
 		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 2 + 1, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
 		ImGui.SetNextWindowPos(new Vector2(0, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
 		//ImGui.SetNextWindowBgAlpha (0);
@@ -231,6 +224,7 @@ public class EditorWindow_Browser : IEditorWindow
 				if (ImGui.Button("Save"))
 				{
 					Scene.I.SaveScene(Path.Combine(currentDirectory.FullName, createScenePopupSceneName + ".scene"));
+					RefreshAssets();
 
 					showCreateScenePopup = false;
 					ImGui.CloseCurrentPopup();

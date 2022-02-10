@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using SixLabors.ImageSharp;
+using System.Numerics;
 
 namespace Engine;
 
@@ -67,5 +68,11 @@ public class Camera : Component
 	public Vector2 CenterOfScreenToWorld()
 	{
 		return ScreenToWorld(new Vector2(size.X / 2, size.Y / 2));
+	}
+	public bool RectangleVisible(BoxShape shape)
+	{
+		bool isIn = Vector2.Distance(shape.transform.position, transform.position) < size.X*1.1f*(ortographicSize/2)+shape.size.X/2*shape.transform.scale.MaxVectorMember();
+
+		return isIn;
 	}
 }

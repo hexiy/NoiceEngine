@@ -6,15 +6,17 @@ using ImGuiNET;
 
 namespace Engine;
 
-public class EditorWindow_Inspector : IEditorWindow
+public class EditorWindow_Inspector : EditorWindow
 {
 	public static EditorWindow_Inspector I { get; private set; }
+
 	private GameObject selectedGameObject;
-	public void Init()
+	private string addComponentPopupText = "";
+	public override void Init()
 	{
 		I = this;
 	}
-	public void Update()
+	public override void Update()
 	{
 	}
 	public void SelectGameObject(int id)
@@ -28,17 +30,9 @@ public class EditorWindow_Inspector : IEditorWindow
 			selectedGameObject = Scene.I.GetGameObject(id);
 		}
 	}
-	private int currentID = 0;
-	private void ResetID()
+	public override void Draw()
 	{
-		currentID = 0;
-	}
-	private void PushNextID()
-	{
-		ImGui.PushID(currentID++);
-	}
-	public void Draw()
-	{
+		if (active == false) return;
 		int windowWidth = 350;
 		int contentMaxWidth = windowWidth - (int)ImGui.GetStyle().WindowPadding.X * 1;
 		ImGui.SetNextWindowSize(new Vector2(windowWidth, Editor.sceneViewSize.Y), ImGuiCond.Always);
@@ -49,11 +43,11 @@ public class EditorWindow_Inspector : IEditorWindow
 
 		if (selectedGameObject != null)
 		{
-			//PushNextID();
+			PushNextID();
 			string gameObjectName = selectedGameObject.name;
 			ImGui.Checkbox("", ref selectedGameObject.active);
 			ImGui.SameLine();
-			//PushNextID();
+			PushNextID();
 			ImGui.SetNextItemWidth(contentMaxWidth);
 			if (ImGui.InputText("", ref gameObjectName, 100))
 			{
@@ -284,20 +278,49 @@ public class EditorWindow_Inspector : IEditorWindow
 					//}
 				}
 			}
+			bool justOpened = false;
 			if (ImGui.Button("+"))
 			{
 				ImGui.OpenPopup("AddComponentPopup");
+				justOpened = true;
 			}
 			if (ImGui.BeginPopupContextWindow("AddComponentPopup"))
 			{
-				List<Type> componentTypes = typeof(Component).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract).ToList();
-
-				for (int i = 0; i < componentTypes.Count; i++)
+				if (justOpened)
 				{
-					if (ImGui.Button(componentTypes[i].Name))
+					ImGui.SetKeyboardFocusHere(0);
+				}
+				bool enterPressed = ImGui.InputText("", ref addComponentPopupText, 100, ImGuiInputTextFlags.EnterReturnsTrue);
+
+
+				if (addComponentPopupText.Length > 0)
+				{
+					List<Type> componentTypes = typeof(Component).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract).ToList();
+
+					for (int i = 0; i < componentTypes.Count; i++)
 					{
-						selectedGameObject.AddComponent(componentTypes[i]);
-						ImGui.CloseCurrentPopup();
+						if (componentTypes[i].Name.ToLower().Contains(addComponentPopupText.ToLower()))
+						{
+							if (ImGui.Button(componentTypes[i].Name) || enterPressed)
+							{
+								selectedGameObject.AddComponent(componentTypes[i]);
+								ImGui.CloseCurrentPopup();
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					List<Type> componentTypes = typeof(Component).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract).ToList();
+
+					for (int i = 0; i < componentTypes.Count; i++)
+					{
+						if (ImGui.Button(componentTypes[i].Name))
+						{
+							selectedGameObject.AddComponent(componentTypes[i]);
+							ImGui.CloseCurrentPopup();
+						}
 					}
 				}
 				ImGui.EndPopup();

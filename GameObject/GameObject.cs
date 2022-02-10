@@ -105,7 +105,7 @@ public class GameObject
 	{
 		for (int i = 0; i < transform.children.Count; i++)
 		{
-			transform.children[i].GameObject.Destroy();
+			transform.children[i].gameObject.Destroy();
 		}
 	}
 	private void CheckForTransformComponent(GameObject gameObject, Component component)
@@ -216,7 +216,7 @@ public class GameObject
 	{
 
 		component.transform = transform;
-		component.GameObject = this;
+		component.gameObject = this;
 		return;
 		Type sourceType = component.GetType();
 
@@ -333,7 +333,7 @@ public class GameObject
 	}
 	public Component AddExistingComponent(Component comp)
 	{
-		comp.GameObject = this;
+		comp.gameObject = this;
 		comp.gameObjectID = id;
 
 		components.Add(comp);
@@ -371,7 +371,7 @@ public class GameObject
 			component = null;
 			return GetComponent(type);
 		}
-		component.GameObject = this;
+		component.gameObject = this;
 
 		components.Add(component);
 

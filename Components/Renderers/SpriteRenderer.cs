@@ -1,15 +1,24 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace Engine;
 
 public class SpriteRenderer : Renderer
 {
+	[XmlIgnore] public static Shader shader;
+
 	public Texture texture;
 	public bool additive;
 
+	private bool onScreen = true;
+	public static bool setup = false;
 	public override void Awake()
 	{
-		SetupRenderer();
+		if (setup == false)
+		{
+			SetupRenderer();
+		}
 
 		if (texture == null)
 		{
@@ -21,8 +30,9 @@ public class SpriteRenderer : Renderer
 		}
 		base.Awake();
 	}
-	private void SetupRenderer()
+	private static void SetupRenderer()
 	{
+		setup = true;
 		string vertexShader = @"#version 460 core
 
 layout(location = 0) in vec4 position;
@@ -61,50 +71,7 @@ else{
 		shader = new Shader(vertexShader, fragmentShader);
 
 		shader.Load();
-		vao = GL.GenVertexArray();
-		vbo = GL.GenBuffer();
 
-		GL.BindVertexArray(vao);
-		GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-
-		float[] vertices =
-{
-				-0.5f, -0.5f,  0,0,
-				0.5f,-0.5f,    1,0,
-				-0.5f,0.5f,    0,1,
-
-				-0.5f,0.5f,    0,1,
-				0.5f,-0.5f,    1,0,
-				0.5f, 0.5f,    1,1
-
-			};
-
-		GL.NamedBufferStorage(
-			vbo,
-			sizeof(float) * vertices.Length,
-			vertices,
-			 BufferStorageFlags.MapWriteBit);
-
-		GL.VertexArrayAttribBinding(vao, 0, 0);
-		GL.EnableVertexArrayAttrib(vao, 0);
-		GL.VertexArrayAttribFormat(
-			vao,
-			0,                      // attribute index, from the shader location = 0
-			2,                      // size of attribute, vec2
-			VertexAttribType.Float, // contains floats
-			false,                  // does not need to be normalized as it is already, floats ignore this flag anyway
-			0);                     // relative offset, first item
-		GL.VertexArrayAttribBinding(vao, 1, 0);
-		GL.EnableVertexArrayAttrib(vao, 1);
-		GL.VertexArrayAttribFormat(
-			vao,
-			1,                      // attribute index, from the shader location = 0
-			2,                      // size of attribute, vec2
-			VertexAttribType.Float, // contains floats
-			true,                  // does not need to be normalized as it is already, floats ignore this flag anyway
-			8);                     // relative offset, first item
-
-		GL.VertexArrayVertexBuffer(vao, 0, vbo, IntPtr.Zero, sizeof(float) * 4);
 	}
 	public void LoadTexture(string _texturePath)
 	{
@@ -133,14 +100,18 @@ else{
 		}
 		base.OnNewComponentAdded(comp);
 	}
-	private float thickness = 30;
 	public override void Update()
 	{
-		thickness = (float)Math.Sin(Time.deltaTime * 3) * 30 + 50;
+		if (Time.elapsedTicks % 10 == 0) onScreen = Camera.I.RectangleVisible(boxShape);
+
+		//if (RectA.Left < RectB.Right && RectA.Right > RectB.Left &&
+		//RectA.Top > RectB.Bottom && RectA.Bottom < RectB.Top ) 
+		//
 		base.Update();
 	}
 	public override void Render()
 	{
+		if (onScreen == false) return;
 		if (boxShape == null) return;
 		if (texture.loaded == false) return;
 
@@ -148,7 +119,7 @@ else{
 		shader.SetMatrix4x4("u_mvp", GetModelViewProjection());
 		shader.SetVector4("u_color", color.ToVector4());
 
-		GL.BindVertexArray(vao);
+		GL.BindVertexArray(RenderBuffers.spriteRendererVAO);
 		GL.Enable(EnableCap.Blend);
 
 		if (additive)
@@ -160,10 +131,13 @@ else{
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 		}
 		texture.Use();
+
 		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
 		GL.BindVertexArray(0);
 		GL.Disable(EnableCap.Blend);
+
+		Debug.CountStat("Draw Calls", 1);
 	}
 }
 // STENCIL working

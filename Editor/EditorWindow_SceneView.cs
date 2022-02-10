@@ -2,24 +2,14 @@
 
 namespace Engine;
 
-public class EditorWindow_SceneView : IEditorWindow
+public class EditorWindow_SceneView : EditorWindow
 {
 	public static EditorWindow_SceneView I { get; private set; }
-	private int currentID = 0;
-	public void Init()
+
+	public override void Draw()
 	{
-		I = this;
-	}
-	private void ResetID()
-	{
-		currentID = 0;
-	}
-	private void PushNextID()
-	{
-		ImGui.PushID(currentID++);
-	}
-	public void Draw()
-	{
+		if (active == false) return;
+
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
 
@@ -46,6 +36,8 @@ public class EditorWindow_SceneView : IEditorWindow
 				Physics.StopPhysics();
 			}
 		}
+		ImGui.PopStyleColor();
+
 		ImGui.SameLine();
 
 		ImGui.PushStyleColor(ImGuiCol.Text, Global.GameRunning ? activeColor : inactiveColor);
@@ -55,6 +47,8 @@ public class EditorWindow_SceneView : IEditorWindow
 		{
 			Global.GameRunning = !Global.GameRunning;
 		}
+
+		ImGui.PopStyleColor();
 
 		ImGui.SameLine();
 		bool resetDataButtonClicked = ImGui.Button("delete data");
@@ -71,12 +65,14 @@ public class EditorWindow_SceneView : IEditorWindow
 
 		ImGui.PopStyleVar();
 		ImGui.PopStyleVar();
-		ImGui.PopStyleColor();
-		ImGui.PopStyleColor();
 	}
 
-	public void Update()
+	public override void Update()
 	{
 
+	}
+
+	public override void Init()
+	{
 	}
 }

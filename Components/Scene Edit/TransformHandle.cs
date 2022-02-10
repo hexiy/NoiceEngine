@@ -30,9 +30,9 @@ public class TransformHandle : Component
 	public override void Awake()
 	{
 		objectSelected = false;
-		GameObject.updateWhenDisabled = true;
+		gameObject.updateWhenDisabled = true;
 
-		GameObject.AddComponent<Rigidbody>().useGravity = true;
+		gameObject.AddComponent<Rigidbody>().useGravity = true;
 		GetComponent<Rigidbody>().isStatic = false;
 		GetComponent<Rigidbody>().isButton = true;
 
@@ -48,21 +48,25 @@ public class TransformHandle : Component
 		}
 		else
 		{
-			boxColliderXY = GameObject.AddComponent<BoxShape>();
+			boxColliderXY = gameObject.AddComponent<BoxShape>();
 			boxColliderXY.size = new Vector2(15, 15);
 			boxColliderXY.offset = new Vector2(5, 5);
 
-			boxColliderX = GameObject.AddComponent<BoxShape>();
+			boxColliderX = gameObject.AddComponent<BoxShape>();
 			boxColliderX.size = new Vector2(50, 5);
 			//boxColliderX.offset = new Vector2(25, 2.5f);
 
-			boxColliderY = GameObject.AddComponent<BoxShape>();
+			boxColliderY = gameObject.AddComponent<BoxShape>();
 			boxColliderY.size = new Vector2(5, 50);
 			//boxColliderY.offset = new Vector2(2.5f, 25);
 
-			boxRendererXY = GameObject.AddComponent<BoxRenderer>();
-			boxRendererX = GameObject.AddComponent<BoxRenderer>();
-			boxRendererY = GameObject.AddComponent<BoxRenderer>();
+			boxRendererXY = gameObject.AddComponent<BoxRenderer>();
+			boxRendererX = gameObject.AddComponent<BoxRenderer>();
+			boxRendererY = gameObject.AddComponent<BoxRenderer>();
+
+			boxRendererXY.layer =1000;
+			boxRendererX.layer = 1000;
+			boxRendererY.layer = 1000;
 
 			boxRendererXY.color = Color.Orange;
 			boxRendererX.color = Color.Red;
@@ -109,7 +113,7 @@ public class TransformHandle : Component
 			}
 		}
 
-		if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && GameObject.active && clicked)
+		if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && gameObject.active && clicked)
 		{
 			SetSelectedObjectRigidbodyAwake(false);
 			Move(MouseInput.WorldDelta);
@@ -209,7 +213,7 @@ public class TransformHandle : Component
 	}
 	public void SelectObject(GameObject selectedGO)
 	{
-		GameObject.active = selectedGO != null;
+		gameObject.active = selectedGO != null;
 
 		if (selectedGO == null)
 		{

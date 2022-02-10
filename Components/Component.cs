@@ -4,17 +4,9 @@ namespace Scripts;
 
 public class Component : IDestroyable
 {
-	private GameObject gameObject;
 	[System.Xml.Serialization.XmlIgnore]
-	public GameObject GameObject
-	{
-		get { return gameObject; }
-		set
-		{
-			gameObject = value;
-			gameObjectID = value.id;
-		}
-	}
+	public GameObject gameObject;
+
 	public int gameObjectID;
 
 	[System.Xml.Serialization.XmlIgnore]
@@ -29,22 +21,22 @@ public class Component : IDestroyable
 	[System.Xml.Serialization.XmlIgnore]
 	public Transform transform
 	{
-		get { return GameObject.transform; }
-		set { GameObject.transform = value; }
+		get { return gameObject.transform; }
+		set { gameObject.transform = value; }
 	}
 	public bool enabled = true;
 	public T GetComponent<T>(int? index = null) where T : Component
 	{
-		return GameObject.GetComponent<T>(index);
+		return gameObject.GetComponent<T>(index);
 	}
 
 	public bool HasComponent<T>() where T : Component
 	{
-		return GameObject.HasComponent<T>();
+		return gameObject.HasComponent<T>();
 	}
 	public List<T> GetComponents<T>() where T : Component
 	{
-		return GameObject.GetComponents<T>();
+		return gameObject.GetComponents<T>();
 	}
 
 	public Vector2 TransformToWorld(Vector2 localPoint)

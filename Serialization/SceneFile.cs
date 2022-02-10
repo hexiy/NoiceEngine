@@ -18,8 +18,8 @@ public struct SceneFile
 
 		for (int i = 0; i < go.transform.children.Count; i++)
 		{
-			sceneFile.GameObjects.Add(go.transform.children[i].GameObject);
-			sceneFile.Components.AddRange(go.transform.children[i].GameObject.components);
+			sceneFile.GameObjects.Add(go.transform.children[i].gameObject);
+			sceneFile.Components.AddRange(go.transform.children[i].gameObject.components);
 		}
 		//return new SceneFile() { GameObjects = new List<GameObject>() { go }, Components = go.components };
 		return sceneFile;

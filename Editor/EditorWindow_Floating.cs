@@ -2,26 +2,19 @@
 
 namespace Engine;
 
-public class EditorWindow_Floating : IEditorWindow
+public class EditorWindow_Floating : EditorWindow
 {
 	public static EditorWindow_Floating I { get; private set; }
-	private int currentID = 0;
-	public void Init()
+
+	public override void Init()
 	{
 		I = this;
+	}
 
-		//Debug.UpdateLogs();
-	}
-	private void ResetID()
+	public override void Draw()
 	{
-		currentID = 0;
-	}
-	private void PushNextID()
-	{
-		ImGui.PushID(currentID++);
-	}
-	public void Draw()
-	{
+		if (active == false) return;
+
 		//ImGui.SetNextWindowBgAlpha (0);
 		ImGui.Begin("Floating", ImGuiWindowFlags.NoCollapse);
 
@@ -30,7 +23,7 @@ public class EditorWindow_Floating : IEditorWindow
 		ImGui.End();
 	}
 
-	public void Update()
+	public override void Update()
 	{
 
 	}

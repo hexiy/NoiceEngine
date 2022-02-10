@@ -46,36 +46,41 @@ class Window : GameWindow
 	}
 	protected override void OnUpdateFrame(FrameEventArgs args)
 	{
+		Debug.StartTimer("Scene Update");
 		Scene.I.Update();
+		Debug.EndTimer("Scene Update");
+
 		Editor.I.Update();
 		base.OnUpdateFrame(args);
 	}
 	protected override void OnRenderFrame(FrameEventArgs e)
 	{
+		Debug.CountStat("Draw Calls", 0);
+		Debug.StartTimer("Scene Render");
+
 		GL.ClearColor(0, 0, 0, 0);
 		GL.Clear(ClearBufferMask.ColorBufferBit);
 
 		sceneRenderTexture.Bind();
-		GL.ClearColor(0, 0, 0, 0);
-		GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+		//GL.ClearColor(0, 0, 0, 0);
+		//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 		GL.Viewport(0, 0, (int)Camera.I.size.X, (int)Camera.I.size.Y);
 
 		//GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
-
 		Scene.I.Render();
 
 		sceneRenderTexture.Unbind();
 
 		postProcessRenderTexture.Bind();
-		GL.ClearColor(0, 0, 0, 0);
-		GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+		//GL.ClearColor(0, 0, 0, 0);
+		//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
 		// draw sceneRenderTexture with post process
 		postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);
 
 		postProcessRenderTexture.Unbind();
 
-
+		Debug.EndTimer("Scene Render");
 		// ------------- IMGUI -------------
 		imGuiController.Update(this, (float)e.Time);
 		GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
@@ -89,6 +94,10 @@ class Window : GameWindow
 
 		SwapBuffers();
 		base.OnRenderFrame(e);
+
+
+		Debug.ClearTimers();
+		Debug.ClearStats();
 	}
 
 	protected override void OnTextInput(TextInputEventArgs e)

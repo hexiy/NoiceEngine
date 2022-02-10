@@ -5,7 +5,7 @@ namespace Engine;
 public class Editor
 {
 	//private ImGuiRenderer _imGuiRenderer;
-	private IEditorWindow[] editorWindows;
+	private EditorWindow[] editorWindows;
 	public static Editor I { get; private set; }
 
 	public static Vector2 sceneViewPosition = new Vector2(0, 0);
@@ -134,19 +134,23 @@ public class Editor
 			colors[(int)ImGuiCol.Separator] = colors[(int)ImGuiCol.Border];
 		}
 
-		editorWindows = new IEditorWindow[]
+		editorWindows = new EditorWindow[]
 		{
 				new EditorWindow_Hierarchy (),
 				new EditorWindow_Inspector (),
 				//new EditorWindow_SceneTopbar (),
 				new EditorWindow_Browser (),
 				new EditorWindow_Console (),
+				new EditorWindow_Profiler (),
 				new EditorWindow_SceneView (),
 		};
 		for (int i = 0; i < editorWindows.Length; i++)
 		{
 			editorWindows[i].Init();
 		}
+
+
+		EditorWindow_Profiler.I.active = false;
 
 		EditorWindow_Hierarchy.I.GameObjectSelected += Scene.I.SelectGameObject;
 		EditorWindow_Hierarchy.I.GameObjectSelected += EditorWindow_Inspector.I.SelectGameObject;

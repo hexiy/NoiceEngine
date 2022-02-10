@@ -1916,6 +1916,7 @@ public struct Color : IEquatable<Color>
 		b = B / 255f;
 		a = A / 255f;
 	}
+
 	/*/// <summary>
 	/// Converts <see cref="Color"/> to a <see cref="Vector4"/>.
 	/// </summary>

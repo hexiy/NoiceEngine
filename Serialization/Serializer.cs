@@ -155,7 +155,7 @@ public class Serializer
 								gos[goIndex].id = goIndexes[goIndex];
 							}
 
-							comps[compIndex].GameObject.id = IDsManager.gameObjectNextID;
+							comps[compIndex].gameObject.id = IDsManager.gameObjectNextID;
 							IDsManager.gameObjectNextID++;
 						}
 						(comps[compIndex] as Transform).SetParent(gos[goIndex].transform, false);

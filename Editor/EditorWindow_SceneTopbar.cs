@@ -2,18 +2,21 @@ using ImGuiNET;
 
 namespace Engine;
 
-public class EditorWindow_SceneTopbar : IEditorWindow
+public class EditorWindow_SceneTopbar : EditorWindow
 {
 	public static EditorWindow_SceneTopbar I { get; private set; }
-	public void Init()
+
+	public override void Init()
 	{
 		I = this;
 	}
-	public void Update()
+	public override void Update()
 	{
 	}
-	public void Draw()
+	public override void Draw()
 	{
+		if (active == false) return;
+
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
 
 		ImGui.SetNextWindowSize(new Vector2(Camera.I.size.X, 50), ImGuiCond.Always);
@@ -59,6 +62,5 @@ public class EditorWindow_SceneTopbar : IEditorWindow
 		}
 
 		ImGui.End();
-
 	}
 }

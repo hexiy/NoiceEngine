@@ -7,9 +7,7 @@ namespace Scripts;
 
 public class Renderer : Component, IComparable<Renderer>
 {
-	internal int vao;
-	internal int vbo;
-	[XmlIgnore] public Shader shader;
+
 
 	[LinkableComponent]
 	public BoxShape boxShape;

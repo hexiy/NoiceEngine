@@ -1,7 +1,11 @@
-﻿namespace Engine;
+﻿using System.Xml.Serialization;
+
+namespace Engine;
 
 public class BoxRenderer : Renderer
 {
+	[XmlIgnore] public static Shader shader;
+
 	public override void Awake()
 	{
 		SetupRenderer();
@@ -33,41 +37,6 @@ color = frag_color;
 
 		shader = new Shader(vertexShader, fragmentShader);
 		shader.Load();
-
-		vao = GL.GenVertexArray();
-		vbo = GL.GenBuffer();
-
-		GL.BindVertexArray(vao);
-		GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-
-		float[] vertices =
-{
-				-0.5f, -0.5f,
-				0.5f,-0.5f,
-				-0.5f,0.5f,
-
-				-0.5f,0.5f,
-				0.5f,-0.5f,
-				0.5f, 0.5f
-			};
-
-		GL.NamedBufferStorage(
-			vbo,
-			sizeof(float) * vertices.Length,
-			vertices,
-			 BufferStorageFlags.MapWriteBit);
-
-		GL.VertexArrayAttribBinding(vao, 0, 0);
-		GL.EnableVertexArrayAttrib(vao, 0);
-		GL.VertexArrayAttribFormat(
-			vao,
-			0,                      // attribute index, from the shader location = 0
-			2,                      // size of attribute, vec4
-			VertexAttribType.Float, // contains floats
-			false,                  // does not need to be normalized as it is already, floats ignore this flag anyway
-			0);                     // relative offset, first item
-
-		GL.VertexArrayVertexBuffer(vao, 0, vbo, IntPtr.Zero, sizeof(float) * 2);
 	}
 	public override void Render()
 	{
@@ -79,7 +48,7 @@ color = frag_color;
 		//shader.SetVector4("u_color", new Vector4(MathF.Abs(MathF.Sin(Time.elapsedTime * 0.3f)), MathF.Abs(MathF.Cos(Time.elapsedTime * 0.3f)), 1, 1));
 		shader.SetVector4("u_color", color.ToVector4());
 
-		GL.BindVertexArray(vao);
+		GL.BindVertexArray(RenderBuffers.boxRendererVAO);
 
 		GL.Enable(EnableCap.Blend);
 
