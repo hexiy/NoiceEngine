@@ -11,7 +11,7 @@ struct UniformFieldInfo
 	public ActiveUniformType Type;
 }
 
-class Shader
+class ImGuiShader
 {
 	public readonly string Name;
 	public int Program { get; private set; }
@@ -20,7 +20,7 @@ class Shader
 
 	private readonly (ShaderType Type, string Path)[] Files;
 
-	public Shader(string name, string vertexShader, string fragmentShader)
+	public ImGuiShader(string name, string vertexShader, string fragmentShader)
 	{
 		Name = name;
 		Files = new[]{
@@ -31,6 +31,7 @@ class Shader
 	}
 	public void UseShader()
 	{
+		ShaderCache.shaderInUse = Program;
 		GL.UseProgram(Program);
 	}
 

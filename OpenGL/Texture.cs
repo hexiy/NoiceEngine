@@ -24,6 +24,6 @@ public class Texture
 	}
 	public void Use()
 	{
-		GL.BindTexture(TextureTarget.Texture2D, id);
+		TextureCache.BindTexture(id);
 	}
 }

@@ -167,6 +167,7 @@ public class Serializer
 		}
 		for (int goIndex = 0; goIndex < gos.Length; goIndex++)
 		{
+			if (gos[goIndex].components.Count == 0) continue;
 			if (goIndex == gos.Length - 1 && gos[goIndex].transform.children.Count == 0)
 			{
 				if (newIDs)

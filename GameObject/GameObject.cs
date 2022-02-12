@@ -54,7 +54,18 @@ public class GameObject
 	public bool selected = false;
 	public bool silent = false;
 	public bool dynamicallyCreated = false;
-	public bool active = true;
+	public bool activeSelf = true;
+	public bool activeInHierarchy
+	{
+		get
+		{
+			if (transform.parent == null)
+			{
+				return activeSelf;
+			}
+			return transform.parent.gameObject.activeInHierarchy && activeSelf;
+		}
+	}
 
 	//[System.Xml.Serialization.XmlArrayItem(type: typeof(Component))]
 	[System.Xml.Serialization.XmlIgnore]
@@ -72,6 +83,10 @@ public class GameObject
 			IDsManager.gameObjectNextID++;
 		}
 
+		if (transform == null && GetComponent<Transform>() == null)
+		{
+			transform = AddComponent<Transform>();
+		}
 		Scene.I.AddGameObjectToScene(this);
 	}
 	public static GameObject Create(Vector2? position = null, Vector2? scale = null, string name = "", bool linkComponents = true, bool _silent = false)
@@ -100,6 +115,7 @@ public class GameObject
 		OnComponentAdded += LinkComponents;
 		OnComponentAdded += InvokeOnComponentAddedOnComponents;
 		OnComponentAdded += CheckForTransformComponent;
+		OnComponentAdded += Scene.I.OnComponentAdded;
 	}
 	private void DestroyChildren(GameObject go)
 	{
@@ -125,13 +141,6 @@ public class GameObject
 	}
 	public void LinkComponents(GameObject gameObject, Component component)
 	{
-		if (component.GetType() == typeof(BoxRenderer) || component.GetType() == typeof(BoxShape))
-		{
-			if (gameObject.name == "Button")
-			{
-				var a = 0;
-			}
-		}
 		for (int compIndex1 = 0; compIndex1 < components.Count; compIndex1++)
 		{
 			if (components[compIndex1] == component) { continue; }
@@ -241,11 +250,6 @@ public class GameObject
 	public virtual void Awake()
 	{
 
-		if (transform == null && GetComponent<Transform>() == null)
-		{
-			transform = AddComponent<Transform>();
-		}
-
 		for (int i = 0; i < components.Count; i++)
 		{
 			if (components[i].awoken == false)
@@ -309,7 +313,7 @@ public class GameObject
 
 	public virtual void Update()
 	{
-		if (active == false && updateWhenDisabled == false)
+		if (activeInHierarchy == false && updateWhenDisabled == false)
 		{ return; }
 		if (destroy == true)
 		{
@@ -326,7 +330,7 @@ public class GameObject
 	}
 	public virtual void FixedUpdate()
 	{
-		if (active == false && updateWhenDisabled == false)
+		if (activeInHierarchy == false && updateWhenDisabled == false)
 		{ return; }
 
 		FixedUpdateComponents();
@@ -372,6 +376,7 @@ public class GameObject
 			return GetComponent(type);
 		}
 		component.gameObject = this;
+		component.gameObjectID = this.id;
 
 		components.Add(component);
 
@@ -392,18 +397,18 @@ public class GameObject
 	}
 	public void RemoveComponent(int index)
 	{
-		active = false;
+		activeSelf = false;
 		components[index].OnDestroyed();
 		components.RemoveAt(index);
-		active = true;
+		activeSelf = true;
 
 	}
 	public void RemoveComponent(Component component)
 	{
-		active = false;
+		activeSelf = false;
 		component.OnDestroyed();
 		components.Remove(component);
-		active = true;
+		activeSelf = true;
 
 	}
 	public void RemoveComponent<T>() where T : Component
@@ -438,7 +443,7 @@ public class GameObject
 			{
 				if (k == 0)
 				{
-					return components[i] as T;
+					return (T)components[i];
 				}
 				else
 				{
@@ -528,10 +533,10 @@ public class GameObject
 
 	public void Render()
 	{
-		if (active == false) { return; }
+		if (activeInHierarchy == false) { return; }
 		for (int i = 0; i < components.Count; i++)
 		{
-			if (components[i] is Renderer && components[i].enabled && components[i].awoken && active)
+			if (components[i] is Renderer && components[i].enabled && components[i].awoken && activeInHierarchy)
 				(components[i] as Renderer).Render();
 		}
 	}

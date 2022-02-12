@@ -1,4 +1,5 @@
 using ImGuiNET;
+using System.Collections.Generic;
 
 namespace Engine;
 
@@ -10,6 +11,9 @@ public class Editor
 
 	public static Vector2 sceneViewPosition = new Vector2(0, 0);
 	public static Vector2 sceneViewSize = new Vector2(0, 0);
+
+	public TransformHandle transformHandle;
+
 	//public static Vector2 ScreenToWorld(Vector2 screenPosition)
 	//{
 	//	return (screenPosition - gameViewPosition) * Camera.I.cameraSize + Camera.I.transform.position;
@@ -138,7 +142,6 @@ public class Editor
 		{
 				new EditorWindow_Hierarchy (),
 				new EditorWindow_Inspector (),
-				//new EditorWindow_SceneTopbar (),
 				new EditorWindow_Browser (),
 				new EditorWindow_Console (),
 				new EditorWindow_Profiler (),
@@ -149,10 +152,7 @@ public class Editor
 			editorWindows[i].Init();
 		}
 
-
-		EditorWindow_Profiler.I.active = false;
-
-		EditorWindow_Hierarchy.I.GameObjectSelected += Scene.I.SelectGameObject;
+		EditorWindow_Hierarchy.I.GameObjectSelected += SelectGameObject;
 		EditorWindow_Hierarchy.I.GameObjectSelected += EditorWindow_Inspector.I.SelectGameObject;
 	}
 	public void Update()
@@ -161,12 +161,89 @@ public class Editor
 		{
 			editorWindows[i].Update();
 		}
+		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftControl) && KeyboardInput.IsKeyDown(KeyboardInput.Keys.S))
+		{
+			Scene.I.SaveScene();
+		}
+		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftControl) && KeyboardInput.IsKeyDown(KeyboardInput.Keys.R))
+		{
+			Scene.I.LoadScene(Serializer.lastScene);
+		}
 	}
 	public void Draw()
 	{
-		for (int i = 0; i < editorWindows.Length; i++)
+		if (Global.EditorAttached)
 		{
-			editorWindows[i].Draw();
+			for (int i = 0; i < editorWindows.Length; i++)
+			{
+				editorWindows[i].Draw();
+			}
 		}
+		else
+		{
+			EditorWindow_SceneView.I.Draw();
+		}
+	}
+
+
+	public void SelectGameObject(GameObject go)
+	{
+		if (go != null)
+		{
+			for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+			{
+				if (Scene.I.gameObjects[i].id != go.id)
+				{
+					Scene.I.gameObjects[i].selected = false;
+				}
+			}
+			go.selected = true;
+		}
+		if (go != Camera.I.gameObject && go != transformHandle.gameObject)
+		{
+			transformHandle.SelectObject(go);
+			PersistentData.Set("lastSelectedGameObjectId", go.id);
+		}
+		else
+		{
+			transformHandle.SelectObject(null);
+		}
+	}
+	public void SelectGameObject(int id)
+	{
+		if (id == -1)
+		{
+			SelectGameObject(null);
+		}
+		else
+		{
+			if (GetGameObjectIndexInHierarchy(id) == -1) { return; }
+			SelectGameObject(Scene.I.gameObjects[GetGameObjectIndexInHierarchy(id)]);
+		}
+	}
+	public int GetGameObjectIndexInHierarchy(int id)
+	{
+		for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+		{
+			if (Scene.I.gameObjects[i].id == id) { return i; }
+		}
+		return -1;
+	}
+	public List<GameObject> GetSelectedGameObjects()
+	{
+		List<GameObject> selectedGameObjects = new List<GameObject>();
+		for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+		{
+			if (Scene.I.gameObjects[i].selected) selectedGameObjects.Add(Scene.I.gameObjects[i]);
+		}
+		return selectedGameObjects;
+	}
+	public GameObject GetSelectedGameObject()
+	{
+		for (int i = 0; i < Scene.I.gameObjects.Count; i++)
+		{
+			if (Scene.I.gameObjects[i].selected) return Scene.I.gameObjects[i];
+		}
+		return null;
 	}
 }

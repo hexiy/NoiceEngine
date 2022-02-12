@@ -21,7 +21,7 @@ public class Rigidbody : Component
 	public bool isButton = false;
 	[XmlIgnore] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
 	public float Mass { get; set; } = 100;
-	public float velocityDrag = 0.99f;
+	//public float velocityDrag = 0.99f;
 	[Show] public float Bounciness { get; set; } = 0f;
 
 	[Show] public float AngularVelocity { get; set; } = 0;
@@ -45,14 +45,23 @@ public class Rigidbody : Component
 			body = Physics.World.CreateBody(transform.position, transform.rotation.Z, isStatic ? BodyType.Static : BodyType.Dynamic);
 			//body.SleepingAllowed = false;
 
-			if (GetComponent<BoxShape>() != null)
+			if (GetComponent<CircleShape>() != null)
 			{
-				BoxShape boxShape = GetComponent<BoxShape>();
-				var pfixture = body.CreateRectangle(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1, Vector2.Zero);
+				CircleShape circleShape = GetComponent<CircleShape>();
+				var pfixture = body.CreateCircle(circleShape.radius, 100);
 				// Give it some bounce and friction
 				pfixture.Friction = 0.1f;
 				body.LinearDamping = 0;
 				//body.LinearDamping = 3;
+			}
+			else if (GetComponent<BoxShape>() != null)
+			{
+				//BoxShape boxShape = GetComponent<BoxShape>();
+				//var pfixture = body.CreateRectangle(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1, Vector2.Zero);
+				//// Give it some bounce and friction
+				//pfixture.Friction = 0.1f;
+				//body.LinearDamping = 0;
+				////body.LinearDamping = 3;
 			}
 			body.AngularDamping = 0;
 			body.Mass = Mass;

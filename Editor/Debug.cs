@@ -14,6 +14,8 @@ public static class Debug
 
 	public static void Log(string message)
 	{
+		if (Global.EditorAttached == false) return;
+
 		logs.Add($"[{DateTime.Now.ToString("HH:mm:ss")}]   " + message);
 		if (logs.Count > LOG_LIMIT)
 		{
@@ -22,9 +24,11 @@ public static class Debug
 	}
 	public static void StartTimer(string timerName)
 	{
+		if (Global.EditorAttached == false) return;
+
 		if (timers.ContainsKey(timerName))
 		{
-			timers[timerName].Start();
+			timers[timerName].Restart();
 		}
 		else
 		{
@@ -35,7 +39,9 @@ public static class Debug
 	}
 	public static void CountStat(string statName, float value)
 	{
-		if (stats.ContainsKey(statName)==false)
+		if (Global.EditorAttached == false) return;
+
+		if (stats.ContainsKey(statName) == false)
 		{
 			stats[statName] = 0;
 		}
@@ -44,6 +50,8 @@ public static class Debug
 	}
 	public static void EndTimer(string timerName)
 	{
+		if (Global.EditorAttached == false) return;
+
 		timers[timerName].Stop();
 	}
 	public static void ClearTimers()

@@ -223,7 +223,7 @@ public class EditorWindow_Browser : EditorWindow
 				ImGui.InputText("", ref createScenePopupSceneName, 100);
 				if (ImGui.Button("Save"))
 				{
-					Scene.I.SaveScene(Path.Combine(currentDirectory.FullName, createScenePopupSceneName + ".scene"));
+					Scene.I.CreateEmptySceneAndOpenIt(Path.Combine(currentDirectory.FullName, createScenePopupSceneName + ".scene"));
 					RefreshAssets();
 
 					showCreateScenePopup = false;

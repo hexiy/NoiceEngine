@@ -45,7 +45,7 @@ public class EditorWindow_Inspector : EditorWindow
 		{
 			PushNextID();
 			string gameObjectName = selectedGameObject.name;
-			ImGui.Checkbox("", ref selectedGameObject.active);
+			ImGui.Checkbox("", ref selectedGameObject.activeSelf);
 			ImGui.SameLine();
 			PushNextID();
 			ImGui.SetNextItemWidth(contentMaxWidth);

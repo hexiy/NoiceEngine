@@ -15,16 +15,11 @@ public class EditorWindow_Profiler : EditorWindow
 	{
 		if (active == false) return;
 
-		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 2, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
+		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 4, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
 		ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(1, 1));
 		//ImGui.SetNextWindowBgAlpha (0);
 		ImGui.Begin("Profiler", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
-		if (ImGui.IsItemClicked())
-		{
-			active = false;
-			EditorWindow_Console.I.active = true;
-			return;
-		}
+
 		ImGui.Text($"GameObjects in scene: {Scene.I.gameObjects.Count}");
 
 		for (int i = 0; i < Debug.stats.Count; i++)

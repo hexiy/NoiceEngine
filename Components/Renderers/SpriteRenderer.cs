@@ -6,20 +6,12 @@ namespace Engine;
 
 public class SpriteRenderer : Renderer
 {
-	[XmlIgnore] public static Shader shader;
-
 	public Texture texture;
+
 	public bool additive;
 
-	private bool onScreen = true;
-	public static bool setup = false;
 	public override void Awake()
 	{
-		if (setup == false)
-		{
-			SetupRenderer();
-		}
-
 		if (texture == null)
 		{
 			texture = new Texture();
@@ -29,49 +21,6 @@ public class SpriteRenderer : Renderer
 			LoadTexture(texture.path);
 		}
 		base.Awake();
-	}
-	private static void SetupRenderer()
-	{
-		setup = true;
-		string vertexShader = @"#version 460 core
-
-layout(location = 0) in vec4 position;
-
-layout(location = 1) in vec4 aTexCoord;
-
-out vec4 texCoord;
-out vec4 frag_color;
-uniform mat4 u_mvp = mat4(1.0);
-
-void main(void)
-{
-
-    texCoord = aTexCoord;
-
-    gl_Position = u_mvp * position;
-}";
-
-		string fragmentShader = @"#version 450 core
-in vec4 texCoord;
-uniform sampler2D textureObject;
-uniform vec4 u_color;
-layout(location = 0) out vec4 color;
-
-void main(void)
-{
-vec4 texColor =texture(textureObject, vec2(texCoord.x, texCoord.y)) * u_color;
-if(texColor.a < 0.1){
-        discard;
-}
-else{
- color = texColor;
-}
-}";
-
-		shader = new Shader(vertexShader, fragmentShader);
-
-		shader.Load();
-
 	}
 	public void LoadTexture(string _texturePath)
 	{
@@ -100,27 +49,17 @@ else{
 		}
 		base.OnNewComponentAdded(comp);
 	}
-	public override void Update()
-	{
-		if (Time.elapsedTicks % 10 == 0) onScreen = Camera.I.RectangleVisible(boxShape);
-
-		//if (RectA.Left < RectB.Right && RectA.Right > RectB.Left &&
-		//RectA.Top > RectB.Bottom && RectA.Bottom < RectB.Top ) 
-		//
-		base.Update();
-	}
 	public override void Render()
 	{
 		if (onScreen == false) return;
 		if (boxShape == null) return;
 		if (texture.loaded == false) return;
 
-		shader.Use();
-		shader.SetMatrix4x4("u_mvp", GetModelViewProjection());
-		shader.SetVector4("u_color", color.ToVector4());
+		ShaderCache.UseShader(ShaderCache.spriteRendererShader);
+		ShaderCache.spriteRendererShader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
+		ShaderCache.spriteRendererShader.SetColor("u_color", color.ToVector4());
 
-		GL.BindVertexArray(RenderBuffers.spriteRendererVAO);
-		GL.Enable(EnableCap.Blend);
+		BufferCache.BindVAO(BufferCache.spriteRendererVAO);
 
 		if (additive)
 		{
@@ -130,12 +69,12 @@ else{
 		{
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 		}
-		texture.Use();
+		TextureCache.BindTexture(texture.id);
 
 		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
-		GL.BindVertexArray(0);
-		GL.Disable(EnableCap.Blend);
+		//BufferCache.BindVAO(0);
+		//GL.Disable(EnableCap.Blend);
 
 		Debug.CountStat("Draw Calls", 1);
 	}

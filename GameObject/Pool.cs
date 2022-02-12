@@ -24,13 +24,13 @@ public class Pool
 			AddNewObject();
 		}
 		GameObject gameObject = freeObjects.Pop();
-		gameObject.active = true;
+		gameObject.activeSelf = true;
 		usedObjects.Push(gameObject);
 		return gameObject;
 	}
 	public void Return(GameObject gameObject)
 	{
-		gameObject.active = false;
+		gameObject.activeSelf = false;
 		freeObjects.Push(gameObject);
 	}
 }

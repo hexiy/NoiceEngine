@@ -9,6 +9,9 @@ public class Shader
 
 	public int ProgramID { get; set; }
 
+	int uLocation_u_mvp = -1;
+	int uLocation_u_color = -1;
+
 	public Shader(string vertexCode, string fragmentCode)
 	{
 		this.vertexCode = vertexCode;
@@ -52,14 +55,15 @@ public class Shader
 		GL.DeleteShader(vs);
 		GL.DeleteShader(fs);
 	}
-	public void Use()
-	{
-		GL.UseProgram(ProgramID);
-	}
 	public void SetMatrix4x4(string uniformName, Matrix4x4 mat)
 	{
-		int location = GL.GetUniformLocation(ProgramID, uniformName);
-		GL.UniformMatrix4(location, 1, false, GetMatrix4x4Values(mat));
+		if (uLocation_u_mvp == -1)
+		{
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			uLocation_u_mvp = location;
+		}
+
+		GL.UniformMatrix4(uLocation_u_mvp, 1, false, GetMatrix4x4Values(mat));
 	}
 	public void SetFloat(string uniformName, float fl)
 	{
@@ -76,10 +80,14 @@ public class Shader
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform3(location, vec.X, vec.Y, vec.Z);
 	}
-	public void SetVector4(string uniformName, Vector4 vec)
+	public void SetColor(string uniformName, Vector4 vec)
 	{
-		int location = GL.GetUniformLocation(ProgramID, uniformName);
-		GL.Uniform4(location, vec.X, vec.Y, vec.Z, vec.W);
+		if (uLocation_u_color == -1)
+		{
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			uLocation_u_color = location;
+		}
+		GL.Uniform4(uLocation_u_color, vec.X, vec.Y, vec.Z, vec.W);
 	}
 	private float[] GetMatrix4x4Values(Matrix4x4 m)
 	{

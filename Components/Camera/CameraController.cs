@@ -11,16 +11,19 @@ public class CameraController : Component
 	}
 	public override void Update()
 	{
-		if (MouseInput.IsButtonDown(MouseInput.Buttons.Right))
+		if (Global.EditorAttached)
 		{
-			transform.position -= MouseInput.WorldDelta;
-			MouseInput.ScreenDelta -= MouseInput.ScreenDelta;
+			//if (MouseInput.IsButtonDown(MouseInput.Buttons.Right))
+			//{
+			//	transform.position -= MouseInput.WorldDelta;
+			//	MouseInput.ScreenDelta -= MouseInput.ScreenDelta;
+			//}
+
+			targetOrthoSize += -MouseInput.ScrollDelta * (targetOrthoSize > 1 ? targetOrthoSize * 0.1f : 0.05f);
+			targetOrthoSize = Mathf.Clamp(targetOrthoSize, 0.1f, Mathf.Infinity);
+			Camera.I.ortographicSize = Mathf.Eerp(Camera.I.ortographicSize, targetOrthoSize, Time.deltaTime * 7f);
+
 		}
-
-		targetOrthoSize += -MouseInput.ScrollDelta * (targetOrthoSize > 1 ? targetOrthoSize * 0.1f : 0.05f);
-		targetOrthoSize = Mathf.Clamp(targetOrthoSize, 0.1f, Mathf.Infinity);
-		Camera.I.ortographicSize = Mathf.Eerp(Camera.I.ortographicSize, targetOrthoSize, Time.deltaTime * 7f);
-
 		base.Update();
 	}
 }

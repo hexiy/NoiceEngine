@@ -1,5 +1,6 @@
 ﻿using SixLabors.ImageSharp;
 using System.Numerics;
+using System.Xml.Serialization;
 
 namespace Engine;
 
@@ -12,7 +13,9 @@ public class Camera : Component
 	public override void Awake()
 	{
 		I = this;
-
+		if (Global.EditorAttached == false) size = new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y);
+		projectionMatrix = GetProjectionMatrix();
+		viewMatrix = GetViewMatrix();
 		/*	renderTarget = new RenderTarget2D(
 		  Scene.I.GraphicsDevice,
 		  (int)Size.X,
@@ -21,7 +24,12 @@ public class Camera : Component
 		  Scene.I.GraphicsDevice.PresentationParameters.BackBufferFormat,
 		  DepthFormat.Depth24);*/
 	}
+	public override void Update()
+	{
+		projectionMatrix = GetProjectionMatrix();
 
+		base.Update();
+	}
 	public Color color = new Color(34, 34, 34);
 	public int antialiasingStrength = 0;
 	public float ortographicSize = 2;
@@ -29,7 +37,14 @@ public class Camera : Component
 	public Vector2 size = new Vector2(1200, 500);
 	//public float cameraSize = 0.1f;
 
-	public Matrix4x4 GetProjectionMatrix()
+	[XmlIgnore] public Matrix4x4 projectionMatrix;
+	[XmlIgnore] public Matrix4x4 viewMatrix;
+	private Matrix4x4 GetViewMatrix()
+	{
+		Matrix4x4 _view = Matrix4x4.CreateLookAt(new Vector3(0, 0, 5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+		return _view;
+	}
+	private Matrix4x4 GetProjectionMatrix()
 	{
 		float left = -size.X / 2;
 		float right = size.X / 2;
@@ -71,7 +86,7 @@ public class Camera : Component
 	}
 	public bool RectangleVisible(BoxShape shape)
 	{
-		bool isIn = Vector2.Distance(shape.transform.position, transform.position) < size.X*1.1f*(ortographicSize/2)+shape.size.X/2*shape.transform.scale.MaxVectorMember();
+		bool isIn = Vector2.Distance(shape.transform.position, transform.position) < size.X * 1.1f * (ortographicSize / 2) + shape.size.X / 2 * shape.transform.scale.MaxVectorMember();
 
 		return isIn;
 	}

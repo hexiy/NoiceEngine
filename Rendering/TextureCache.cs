@@ -8,11 +8,11 @@ namespace Engine;
 public static class TextureCache
 {
 	private static Dictionary<int, Texture> cachedTextures = new Dictionary<int, Texture>();
-
+	private static int textureInUse = -1;
 	private static Texture LoadAndCreateTexture(string texturePath, bool flipX = true)
 	{
 		int id = GL.GenTexture();
-		GL.BindTexture(TextureTarget.Texture2D, id);
+		TextureCache.BindTexture(id);
 
 		Image<Rgba32> image = Image.Load<Rgba32>(texturePath);
 		if (flipX)
@@ -72,5 +72,11 @@ public static class TextureCache
 	public static int GetHash(string texturePath)
 	{
 		return texturePath.GetHashCode();
+	}
+	public static void BindTexture(int id)
+	{
+		if (id == textureInUse) { return; }
+		textureInUse = id;
+		GL.BindTexture(TextureTarget.Texture2D, id);
 	}
 }

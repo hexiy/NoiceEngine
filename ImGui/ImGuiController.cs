@@ -22,7 +22,7 @@ public class ImGuiController : IDisposable
 	private int _indexBufferSize;
 
 	private ImGuiTexture _fontTexture;
-	private Shader _shader;
+	private ImGuiShader _shader;
 
 	private int _windowWidth;
 	private int _windowHeight;
@@ -111,7 +111,7 @@ void main()
 {
     outputColor = color * texture(in_fontTexture, texCoord);
 }";
-		_shader = new Shader("ImGui", VertexSource, FragmentSource);
+		_shader = new ImGuiShader("ImGui", VertexSource, FragmentSource);
 
 		GL.VertexArrayVertexBuffer(_vertexArray, 0, _vertexBuffer, IntPtr.Zero, Unsafe.SizeOf<ImDrawVert>());
 		GL.VertexArrayElementBuffer(_vertexArray, _indexBuffer);
@@ -317,7 +317,7 @@ void main()
 		GL.Uniform1(_shader.GetUniformLocation("in_fontTexture"), 0);
 		Util.CheckGLError("Projection");
 
-		GL.BindVertexArray(_vertexArray);
+		BufferCache.BindVAO(_vertexArray);
 		Util.CheckGLError("VAO");
 
 		draw_data.ScaleClipRects(io.DisplayFramebufferScale);
@@ -350,7 +350,7 @@ void main()
 				else
 				{
 					GL.ActiveTexture(TextureUnit.Texture0);
-					GL.BindTexture(TextureTarget.Texture2D, (int)pcmd.TextureId);
+					TextureCache.BindTexture((int)pcmd.TextureId);
 					Util.CheckGLError("Texture");
 
 					// We do _windowHeight - (int)clip.W instead of (int)clip.Y because gl has flipped Y when it comes to these coordinates

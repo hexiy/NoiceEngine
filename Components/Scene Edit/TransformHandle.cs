@@ -113,7 +113,7 @@ public class TransformHandle : Component
 			}
 		}
 
-		if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && gameObject.active && clicked)
+		if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && gameObject.activeInHierarchy && clicked)
 		{
 			SetSelectedObjectRigidbodyAwake(false);
 			Move(MouseInput.WorldDelta);
@@ -213,7 +213,7 @@ public class TransformHandle : Component
 	}
 	public void SelectObject(GameObject selectedGO)
 	{
-		gameObject.active = selectedGO != null;
+		gameObject.activeSelf = selectedGO != null;
 
 		if (selectedGO == null)
 		{

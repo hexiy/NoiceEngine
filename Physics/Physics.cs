@@ -37,7 +37,8 @@ public static class Physics
 			while (Running && Global.GameRunning)
 			{
 				Step();
-				Wait(Time.deltaTime - World.UpdateTime.Seconds); // if update took 5 ms, and deltaTime is 15 ms, only wait for 10 ms
+				Wait(Time.deltaTime - ((float)World.UpdateTime.TotalMilliseconds/1000f)); // if update took 5 ms, and deltaTime is 15 ms, only wait for 10 ms
+				Debug.Log("Time.deltaTime:" + Time.deltaTime);
 			}
 			Wait(30); // wait if physics is disabled
 		}
@@ -46,7 +47,7 @@ public static class Physics
 	{
 		lock (World)
 		{
-			World.Step(Time.deltaTime);
+			World.Step(Time.elapsedSeconds);
 		}
 	}
 	private static Stopwatch sw = new Stopwatch();

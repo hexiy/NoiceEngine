@@ -14,16 +14,11 @@ public class EditorWindow_Console : EditorWindow
 	{
 		if (active == false) return;
 
-		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 2, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
-		ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(1, 1));
+		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 4, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
+		ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X- Window.I.ClientSize.X / 4, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(1, 1));
 		//ImGui.SetNextWindowBgAlpha (0);
 		ImGui.Begin("Console", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
-		if (ImGui.IsItemClicked())
-		{
-			active = false;
-			EditorWindow_Profiler.I.active = true;
-			return;
-		}
+
 		if (ImGui.Button("Clear"))
 		{
 			Debug.ClearLogs();

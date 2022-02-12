@@ -11,9 +11,9 @@ public static class Noice
 		_ = new Editor();
 
 		Window window = new Window();
-		RenderBuffers.CreateBuffers();
+		BufferCache.CreateBuffers();
 
-		//window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
+		window.VSync = OpenTK.Windowing.Common.VSyncMode.On;
 
 		window.Run();
 	}

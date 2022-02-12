@@ -19,7 +19,7 @@ public static class Time
 		//if (Global.GameRunning)
 		//{
 		elapsedTime += deltaTime;
-		elapsedSeconds = elapsedTime * 1000;
+		elapsedSeconds = elapsedTime;
 		elapsedTicks++;
 		//}
 

@@ -11,11 +11,13 @@ class Window : GameWindow
 	ImGuiController imGuiController;
 	public RenderTexture sceneRenderTexture;
 	public RenderTexture postProcessRenderTexture;
+	public RenderTexture bloomDownscaledRenderTexture;
 	public Window() : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = new Vector2i(1920, 1027), APIVersion = new Version(4, 6) })
 	{
 		I = this;
 
 		WindowState = WindowState.Maximized;
+		//WindowState = WindowState.Fullscreen;
 	}
 
 	protected override void OnLoad()
@@ -27,10 +29,13 @@ class Window : GameWindow
 		imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
 
 		Editor.I.Init();
-
 		Scene.I.Start();
-		sceneRenderTexture = new RenderTexture();
-		postProcessRenderTexture = new RenderTexture();
+
+		sceneRenderTexture = new RenderTexture(Camera.I.size);
+		postProcessRenderTexture = new RenderTexture(Camera.I.size);
+		bloomDownscaledRenderTexture = new RenderTexture(Camera.I.size);
+
+		ShaderCache.CreateShaders();
 
 	}
 
@@ -50,7 +55,7 @@ class Window : GameWindow
 		Scene.I.Update();
 		Debug.EndTimer("Scene Update");
 
-		Editor.I.Update();
+		if (Global.EditorAttached) Editor.I.Update();
 		base.OnUpdateFrame(args);
 	}
 	protected override void OnRenderFrame(FrameEventArgs e)
@@ -61,24 +66,41 @@ class Window : GameWindow
 		GL.ClearColor(0, 0, 0, 0);
 		GL.Clear(ClearBufferMask.ColorBufferBit);
 
-		sceneRenderTexture.Bind();
-		//GL.ClearColor(0, 0, 0, 0);
-		//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+		sceneRenderTexture.Bind(); // start rendering to sceneRenderTexture
 		GL.Viewport(0, 0, (int)Camera.I.size.X, (int)Camera.I.size.Y);
 
-		//GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+		GL.Enable(EnableCap.Blend);
 		Scene.I.Render();
+		GL.Disable(EnableCap.Blend);
 
-		sceneRenderTexture.Unbind();
+		sceneRenderTexture.Unbind();// end rendering to sceneRenderTexture
 
 		postProcessRenderTexture.Bind();
-		//GL.ClearColor(0, 0, 0, 0);
-		//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+		GL.ClearColor(0, 0, 0, 0);
 
-		// draw sceneRenderTexture with post process
+		GL.Clear(ClearBufferMask.ColorBufferBit);
+
+		// draw sceneRenderTexture.colorAttachment with post process- into postProcessRenderTexture target
 		postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);
-
 		postProcessRenderTexture.Unbind();
+
+		/*bloomDownscaledRenderTexture.Bind();
+		GL.ClearColor(0, 0, 0, 1);
+		GL.Clear(ClearBufferMask.ColorBufferBit);
+		// draw postProcessRenderTexture.colorAttachment downscaled with bloom- into bloomDownscaledRenderTexture target
+		bloomDownscaledRenderTexture.RenderBloom(postProcessRenderTexture.colorAttachment, 0.5f);
+		bloomDownscaledRenderTexture.Unbind();
+
+		// now we need to draw bloomDownscaledRenderTexture.colorAttachment upscaled
+
+		postProcessRenderTexture.Bind();
+		// draw sceneRenderTexture with post process
+		postProcessRenderTexture.Render(bloomDownscaledRenderTexture.colorAttachment, 2f);
+
+		postProcessRenderTexture.Unbind();*/
+
+
+		// we use postProcessRenderTexture to draw the final image in imgui
 
 		Debug.EndTimer("Scene Render");
 		// ------------- IMGUI -------------
@@ -96,7 +118,7 @@ class Window : GameWindow
 		base.OnRenderFrame(e);
 
 
-		Debug.ClearTimers();
+		//Debug.ClearTimers();
 		Debug.ClearStats();
 	}
 

@@ -7,19 +7,19 @@ namespace Scripts;
 
 public class Renderer : Component, IComparable<Renderer>
 {
-
-
 	[LinkableComponent]
 	public BoxShape boxShape;
 	public Color color = Color.White;
 	public float layer = 1;
 	[Hide] public float layerFromHierarchy = 0;
+	internal bool onScreen = true;
 
 	public override void Awake()
 	{
 		base.Awake();
 	}
-	public Matrix4x4 GetModelViewProjection()
+	[XmlIgnore] public Matrix4x4 LatestModelViewProjection { get; private set; }
+	private Matrix4x4 GetModelViewProjection()
 	{
 		Vector2 pivotOffset = -(boxShape.size * transform.scale) / 2 + new Vector2((boxShape.size.X * transform.scale.X) * transform.pivot.X, (boxShape.size.Y * transform.scale.Y) * transform.pivot.Y);
 		Matrix4x4 _translation = Matrix4x4.CreateTranslation(transform.position + (boxShape.offset * transform.scale) - pivotOffset);
@@ -29,13 +29,7 @@ public class Renderer : Component, IComparable<Renderer>
 			transform.rotation.Z / 180 * Mathf.Pi * 4);
 		Matrix4x4 _scale = Matrix4x4.CreateScale(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1);
 
-		Matrix4x4 _model = Matrix4x4.Identity;
-
-		Matrix4x4 _view = Matrix4x4.CreateLookAt(new Vector3(0, 0, 5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-
-		Matrix4x4 _projection = Camera.I.GetProjectionMatrix();
-
-		return _scale * _model * _rotation * _translation * _view * _projection;
+		return _scale * Matrix4x4.Identity * _rotation * _translation * Camera.I.viewMatrix * Camera.I.projectionMatrix;
 	}
 	public int CompareTo(Renderer comparePart)
 	{
@@ -46,7 +40,14 @@ public class Renderer : Component, IComparable<Renderer>
 		else
 			return this.layer.CompareTo((comparePart.layer + comparePart.layerFromHierarchy));
 	}
+	public override void Update()
+	{
+		if (boxShape == null) return;
+		if (Time.elapsedTicks % 10 == 0) onScreen = Camera.I.RectangleVisible(boxShape);
 
+		if (onScreen) LatestModelViewProjection = GetModelViewProjection();
+		base.Update();
+	}
 	public virtual void Render() { }
 
 }
