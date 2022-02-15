@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj": {}
+    "/home/hexiy/dev/Noice/NoiceEngine/NoiceEngine.csproj": {}
   },
   "projects": {
-    "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj": {
+    "/home/hexiy/dev/Noice/NoiceEngine/NoiceEngine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
+        "projectUniqueName": "/home/hexiy/dev/Noice/NoiceEngine/NoiceEngine.csproj",
         "projectName": "NoiceEngine",
-        "projectPath": "C:\\Dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
-        "packagesPath": "C:\\Users\\slavk\\.nuget\\packages\\",
-        "outputPath": "C:\\Dev\\Noice\\NoiceEngine\\obj\\",
+        "projectPath": "/home/hexiy/dev/Noice/NoiceEngine/NoiceEngine.csproj",
+        "packagesPath": "/home/hexiy/.nuget/packages/",
+        "outputPath": "/home/hexiy/dev/Noice/NoiceEngine/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\slavk\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/hexiy/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,9 +38,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Aether.Physics2D": {
+            "Genbox.VelcroPhysics": {
               "target": "Package",
-              "version": "[1.6.1, )"
+              "version": "[0.1.0-alpha.2, )"
             },
             "ImGui.NET": {
               "target": "Package",
@@ -88,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
         }
       }
     }

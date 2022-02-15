@@ -158,7 +158,7 @@ public struct Vector2 : IEquatable<Vector2>
 	/// Converts a <see cref="System.Numerics.Vector2"/> to a <see cref="tainicom.Aether.Physics2D.Common.Vector2"/>.
 	/// </summary>
 	/// <param name="value">The converted value.</param>
-	public static implicit operator Vector2(tainicom.Aether.Physics2D.Common.Vector2 value)
+	public static implicit operator Vector2(Microsoft.Xna.Framework.Vector2 value)
 	{
 		return new Vector2(value.X, value.Y);
 	}
@@ -166,9 +166,9 @@ public struct Vector2 : IEquatable<Vector2>
 	/// Converts a <see cref="System.Numerics.Vector2"/> to a <see cref="tainicom.Aether.Physics2D.Common.Vector2"/>.
 	/// </summary>
 	/// <param name="value">The converted value.</param>
-	public static implicit operator tainicom.Aether.Physics2D.Common.Vector2(Vector2 value)
+	public static implicit operator Microsoft.Xna.Framework.Vector2(Vector2 value)
 	{
-		return new tainicom.Aether.Physics2D.Common.Vector2(value.X, value.Y);
+		return new Microsoft.Xna.Framework.Vector2(value.X, value.Y);
 	}
 
 	/// <summary>

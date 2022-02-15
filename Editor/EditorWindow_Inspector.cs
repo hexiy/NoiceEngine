@@ -33,12 +33,12 @@ public class EditorWindow_Inspector : EditorWindow
 	public override void Draw()
 	{
 		if (active == false) return;
-		int windowWidth = 350;
+		int windowWidth = 400;
 		int contentMaxWidth = windowWidth - (int)ImGui.GetStyle().WindowPadding.X * 1;
 		ImGui.SetNextWindowSize(new Vector2(windowWidth, Editor.sceneViewSize.Y), ImGuiCond.Always);
 		ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, 0), ImGuiCond.Always, new Vector2(1, 0));
 		//ImGui.SetNextWindowBgAlpha (0);
-		ImGui.Begin("Inspector", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
+		ImGui.Begin("Inspector", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar);
 		ResetID();
 
 		if (selectedGameObject != null)
@@ -142,7 +142,7 @@ public class EditorWindow_Inspector : EditorWindow
 						else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture) && selectedGameObject.components[i] is SpriteRenderer)
 						{
 							float itemWidth = 200;
-							ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
+							ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 							ImGui.SetNextItemWidth(itemWidth);
 
 							//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));

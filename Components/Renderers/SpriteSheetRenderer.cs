@@ -1,4 +1,6 @@
-﻿namespace Scripts;
+﻿using System.Xml.Serialization;
+
+namespace Scripts;
 
 public class SpriteSheetRenderer : SpriteRenderer
 {
@@ -21,25 +23,64 @@ public class SpriteSheetRenderer : SpriteRenderer
 
 	public Vector2 spriteSize;
 
+	public override void Awake()
+	{
+		drawOffset = new Vector2(0, spriteSize.Y * spritesCount.Y - spriteSize.Y);
+
+		base.Awake();
+	}
+	internal override void UpdateBoxShapeSize()
+	{
+	}
+	public override void OnNewComponentAdded(Component comp)
+	{
+	}
+	[Show] public Vector2 drawOffset = Vector2.Zero;
+	[Show] public Vector2 u_scale = Vector2.Zero;
 	public override void Render()
 	{
-		/*if (GameObject == null || texture == null) { return; }
-		CheckForSpriteBatch();
+		if (onScreen == false) return;
+		if (boxShape == null) return;
+		if (texture.loaded == false) return;
 
-		SpriteBatchCache.GetSpriteBatch(texture.Name).Draw(
-			texture: texture,
-			destinationRectangleFloat: new RectangleFloat(transform.position.X - (transform.anchor.X * SpriteSize.X * transform.scale.Abs().X), transform.position.Y - (transform.anchor.Y * SpriteSize.Y * transform.scale.Abs().X), (SpriteSize.X * transform.scale.Abs().X), (SpriteSize.Y * transform.scale.Abs().Y)),
-			sourceRectangleFloat: new RectangleFloat(SpriteSize.X * (int)(CurrentSpriteIndex % SpritesCount.X), SpriteSize.Y * (int)(CurrentSpriteIndex / (SpritesCount.X)), SpriteSize.X, SpriteSize.Y),
-			color: Color,
-			rotation: 0,
-			origin: Vector2.Zero,
-			effects: RenderingHelpers.GetSpriteFlipEffects(transform),
-			layerDepth: Layer);*/
+		ShaderCache.UseShader(ShaderCache.spriteSheetRendererShader);
+		ShaderCache.spriteSheetRendererShader.SetVector2("u_resolution", texture.size);
+		ShaderCache.spriteSheetRendererShader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
+		ShaderCache.spriteSheetRendererShader.SetColor("u_color", color.ToVector4());
+		ShaderCache.spriteSheetRendererShader.SetVector2("u_scale", u_scale);
+
+
+		float x = (currentSpriteIndex) % spritesCount.X;
+		float y = (float)Math.Floor((float)currentSpriteIndex / spritesCount.X);
+
+		drawOffset = new Vector2(x, y) * spriteSize*spritesCount;
+		//drawOffset = new Vector2(100,0);
+
+		ShaderCache.spriteSheetRendererShader.SetVector2("u_offset", drawOffset);
+
+		BufferCache.BindVAO(BufferCache.spriteSheetRendererVAO);
+
+		if (additive)
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+		}
+		else
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		}
+		TextureCache.BindTexture(texture.id);
+
+		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+		//BufferCache.BindVAO(0);
+		//GL.Disable(EnableCap.Blend);
+
+		Debug.CountStat("Draw Calls", 1);
 	}
-	/*public override void OnTextureLoaded(Texture2D _texture, string _path)
-	{
-		SpriteSize = new Vector2(_texture.Width / SpritesCount.X, _texture.Height / SpritesCount.Y);
-
-		base.OnTextureLoaded(_texture, _path);
-	}*/
 }
+/*public override void OnTextureLoaded(Texture2D _texture, string _path)
+{
+	SpriteSize = new Vector2(_texture.Width / SpritesCount.X, _texture.Height / SpritesCount.Y);
+
+	base.OnTextureLoaded(_texture, _path);
+}*/

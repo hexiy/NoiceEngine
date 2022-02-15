@@ -25,7 +25,7 @@ public class EditorWindow_Console : EditorWindow
 		}
 
 		int logsCount = Debug.GetLogs().Count;
-		for (int i = 0; i < logsCount; i++)
+		for (int i = 0; i < Mathf.Min(logsCount,Debug.LOG_LIMIT-1); i++)
 		{
 			ImGui.Text(Debug.GetLogs()[logsCount - i - 1]);
 		}

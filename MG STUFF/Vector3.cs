@@ -1379,9 +1379,9 @@ public struct Vector3 : IEquatable<Vector3>
 	/// Converts a <see cref="System.Numerics.Vector2"/> to a <see cref="tainicom.Aether.Physics2D.Common.Vector2"/>.
 	/// </summary>
 	/// <param name="value">The converted value.</param>
-	public static implicit operator tainicom.Aether.Physics2D.Common.Vector2(Vector3 value)
+	public static implicit operator Microsoft.Xna.Framework.Vector2(Vector3 value)
 	{
-		return new tainicom.Aether.Physics2D.Common.Vector2(value.X, value.Y);
+		return new Microsoft.Xna.Framework.Vector2(value.X, value.Y);
 	}
 
 	/// <summary>

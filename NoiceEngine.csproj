@@ -1,47 +1,74 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<PublishReadyToRun>false</PublishReadyToRun>
-		<InvariantGlobalization>true</InvariantGlobalization>
-		<TieredCompilation>false</TieredCompilation>
-		<LangVersion>10</LangVersion>
-		<AssemblyName>NoiceEngine</AssemblyName>
-		<RootNamespace>Engine</RootNamespace>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
-		<ApplicationIcon>Icon.ico</ApplicationIcon>
-		<StartupObject></StartupObject>
-		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Optimize>True</Optimize>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Remove="Scripting\**" />
-		<EmbeddedResource Remove="Scripting\**" />
-		<None Remove="Scripting\**" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Remove="Icon.ico" />
-		<None Remove="Icon.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Icon.ico" />
-		<EmbeddedResource Include="Icon.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Aether.Physics2D" Version="1.6.1" />
-		<PackageReference Include="ImGui.NET" Version="1.86.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.0.1" />
-		<PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="3.6.0" />
-		<PackageReference Include="OpenTK" Version="4.6.7" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
-		<PackageReference Include="System.CodeDom" Version="6.0.0" />
-		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-	</ItemGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <PublishReadyToRun>false</PublishReadyToRun>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <TieredCompilation>false</TieredCompilation>
+        <LangVersion>10</LangVersion>
+        <AssemblyName>NoiceEngine</AssemblyName>
+        <RootNamespace>Engine</RootNamespace>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <StartupObject></StartupObject>
+        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <AnalysisLevel>latest</AnalysisLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <Optimize>True</Optimize>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="Scripting\**"/>
+        <EmbeddedResource Remove="Scripting\**"/>
+        <None Remove="Scripting\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="Icon.ico"/>
+        <None Remove="Icon.bmp"/>
+        <None Remove="Shaders\BoxRenderer.glsl"/>
+        <None Remove="Shaders\RenderTexture.glsl"/>
+        <None Remove="Shaders\RenderTextureBloom.glsl"/>
+        <None Remove="Shaders\RenderTexturePostProcess.glsl"/>
+        <None Remove="Shaders\SpriteRenderer.glsl"/>
+        <None Remove="Shaders\SpriteSheetRenderer.glsl"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Shaders\RenderTexture.glsl">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Shaders\BoxRenderer.glsl">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Shaders\SpriteSheetRenderer.glsl">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Shaders\SpriteRenderer.glsl">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Shaders\RenderTexturePostProcess.glsl">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Shaders\RenderTextureBloom.glsl">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Icon.ico"/>
+        <EmbeddedResource Include="Icon.bmp"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Genbox.VelcroPhysics" Version="0.1.0-alpha.2"/>
+        <PackageReference Include="ImGui.NET" Version="1.86.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.0.1"/>
+        <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="3.6.0"/>
+        <PackageReference Include="OpenTK" Version="4.6.7"/>
+        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4"/>
+        <PackageReference Include="System.CodeDom" Version="6.0.0"/>
+        <PackageReference Include="System.Drawing.Common" Version="6.0.0"/>
+    </ItemGroup>
 </Project>

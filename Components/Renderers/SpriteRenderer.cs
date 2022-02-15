@@ -20,35 +20,45 @@ public class SpriteRenderer : Renderer
 		{
 			LoadTexture(texture.path);
 		}
+
 		base.Awake();
 	}
+
 	public void LoadTexture(string _texturePath)
 	{
 		if (_texturePath.Contains("Assets") == false)
 		{
 			_texturePath = Path.Combine("Assets", _texturePath);
 		}
-		if (File.Exists(_texturePath) == false) { return; }
+
+		if (File.Exists(_texturePath) == false)
+		{
+			return;
+		}
 
 		texture.Load(_texturePath);
 
 		UpdateBoxShapeSize();
 	}
-	private void UpdateBoxShapeSize()
+
+	internal virtual void UpdateBoxShapeSize()
 	{
 		if (boxShape != null)
 		{
 			boxShape.size = texture.size;
 		}
 	}
+
 	public override void OnNewComponentAdded(Component comp)
 	{
 		if (comp is BoxShape && texture != null)
 		{
 			UpdateBoxShapeSize();
 		}
+
 		base.OnNewComponentAdded(comp);
 	}
+
 	public override void Render()
 	{
 		if (onScreen == false) return;
@@ -56,6 +66,7 @@ public class SpriteRenderer : Renderer
 		if (texture.loaded == false) return;
 
 		ShaderCache.UseShader(ShaderCache.spriteRendererShader);
+		ShaderCache.spriteRendererShader.SetVector2("u_resolution", texture.size);
 		ShaderCache.spriteRendererShader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
 		ShaderCache.spriteRendererShader.SetColor("u_color", color.ToVector4());
 
@@ -69,6 +80,7 @@ public class SpriteRenderer : Renderer
 		{
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 		}
+
 		TextureCache.BindTexture(texture.id);
 
 		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

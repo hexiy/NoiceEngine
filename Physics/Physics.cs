@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Genbox.VelcroPhysics.Dynamics;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using tainicom.Aether.Physics2D.Dynamics;
-
 namespace Engine;
 
 public static class Physics
@@ -37,17 +36,16 @@ public static class Physics
 			while (Running && Global.GameRunning)
 			{
 				Step();
-				Wait(Time.deltaTime - ((float)World.UpdateTime.TotalMilliseconds/1000f)); // if update took 5 ms, and deltaTime is 15 ms, only wait for 10 ms
-				Debug.Log("Time.deltaTime:" + Time.deltaTime);
+				Wait(Time.deltaTime*0.05f); // if update took 5 ms, and deltaTime is 15 ms, only wait for 10 ms
 			}
-			Wait(30); // wait if physics is disabled
+			Wait(0.3f); // wait if physics is disabled
 		}
 	}
 	private static void Step()
 	{
 		lock (World)
 		{
-			World.Step(Time.elapsedSeconds);
+			World.Step(Time.deltaTime);
 		}
 	}
 	private static Stopwatch sw = new Stopwatch();

@@ -17,6 +17,7 @@ public class Shader
 		this.vertexCode = vertexCode;
 		this.fragmentCode = fragmentCode;
 	}
+
 	public void Load()
 	{
 		int vs, fs;
@@ -55,6 +56,7 @@ public class Shader
 		GL.DeleteShader(vs);
 		GL.DeleteShader(fs);
 	}
+
 	public void SetMatrix4x4(string uniformName, Matrix4x4 mat)
 	{
 		if (uLocation_u_mvp == -1)
@@ -65,21 +67,25 @@ public class Shader
 
 		GL.UniformMatrix4(uLocation_u_mvp, 1, false, GetMatrix4x4Values(mat));
 	}
+
 	public void SetFloat(string uniformName, float fl)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform1(location, fl);
 	}
+
 	public void SetVector2(string uniformName, Vector2 vec)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform2(location, vec.X, vec.Y);
 	}
+
 	public void SetVector3(string uniformName, Vector3 vec)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform3(location, vec.X, vec.Y, vec.Z);
 	}
+
 	public void SetColor(string uniformName, Vector4 vec)
 	{
 		if (uLocation_u_color == -1)
@@ -87,18 +93,21 @@ public class Shader
 			int location = GL.GetUniformLocation(ProgramID, uniformName);
 			uLocation_u_color = location;
 		}
+
 		GL.Uniform4(uLocation_u_color, vec.X, vec.Y, vec.Z, vec.W);
 	}
+
 	private float[] GetMatrix4x4Values(Matrix4x4 m)
 	{
 		return new float[]
 		{
-				m.M11, m.M12, m.M13, m.M14,
-				m.M21, m.M22, m.M23, m.M24,
-				m.M31, m.M32, m.M33, m.M34,
-				m.M41, m.M42, m.M43, m.M44
+			m.M11, m.M12, m.M13, m.M14,
+			m.M21, m.M22, m.M23, m.M24,
+			m.M31, m.M32, m.M33, m.M34,
+			m.M41, m.M42, m.M43, m.M44
 		};
 	}
+
 	public int GetAttribLocation(string attribName)
 	{
 		return GL.GetAttribLocation(ProgramID, attribName);

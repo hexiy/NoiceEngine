@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Genbox.VelcroPhysics.Collision.Shapes;
+using Genbox.VelcroPhysics.Definitions;
+using Genbox.VelcroPhysics.Dynamics;
+using System.Collections.Generic;
 using System.Xml.Serialization;
-using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Scripts;
 
@@ -40,31 +42,39 @@ public class Rigidbody : Component
 	}
 	public void CreateBody()
 	{
-		lock (Physics.World)
-		{
-			body = Physics.World.CreateBody(transform.position, transform.rotation.Z, isStatic ? BodyType.Static : BodyType.Dynamic);
-			//body.SleepingAllowed = false;
 
-			if (GetComponent<CircleShape>() != null)
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.Position = transform.position;
+		bodyDef.Type = isStatic ? BodyType.Static : BodyType.Dynamic;
+		bodyDef.AllowSleep = true;
+
+		//body.SleepingAllowed = false;
+
+		if (GetComponent<CircleShape>() != null)
+		{
+			CircleShape circleShape = GetComponent<CircleShape>();
+
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.Shape = new Genbox.VelcroPhysics.Collision.Shapes.CircleShape(circleShape.radius, 100);
+			fixtureDef.Friction = 0.1f;
+			lock (Physics.World)
 			{
-				CircleShape circleShape = GetComponent<CircleShape>();
-				var pfixture = body.CreateCircle(circleShape.radius, 100);
-				// Give it some bounce and friction
-				pfixture.Friction = 0.1f;
+				body = Physics.World.CreateBody(bodyDef);
+				body.SleepingAllowed = true;
+				body.CreateFixture(fixtureDef);
 				body.LinearDamping = 0;
-				//body.LinearDamping = 3;
+				body.AngularDamping = 0;
+				body.Mass = Mass;
 			}
-			else if (GetComponent<BoxShape>() != null)
-			{
-				//BoxShape boxShape = GetComponent<BoxShape>();
-				//var pfixture = body.CreateRectangle(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1, Vector2.Zero);
-				//// Give it some bounce and friction
-				//pfixture.Friction = 0.1f;
-				//body.LinearDamping = 0;
-				////body.LinearDamping = 3;
-			}
-			body.AngularDamping = 0;
-			body.Mass = Mass;
+		}
+		else if (GetComponent<BoxShape>() != null)
+		{
+			//BoxShape boxShape = GetComponent<BoxShape>();
+			//var pfixture = body.CreateRectangle(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y, 1, Vector2.Zero);
+			//// Give it some bounce and friction
+			//pfixture.Friction = 0.1f;
+			//body.LinearDamping = 0;
+			////body.LinearDamping = 3;
 		}
 	}
 	public override void FixedUpdate()
@@ -94,7 +104,7 @@ public class Rigidbody : Component
 			lock (Physics.World)
 			{
 				body.Enabled = false;
-				Physics.World.Remove(body);
+				Physics.World.DestroyBody(body);
 			}
 		}
 		for (int i = 0; i < touchingRigidbodies.Count; i++)

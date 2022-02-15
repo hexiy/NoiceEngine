@@ -42,6 +42,18 @@ class Scene
 		CreateTransformHandle();
 
 	}
+	private void SpawnTestSpriteSheetRenderer()
+	{
+		GameObject go2 = GameObject.Create(name: "sprite ");
+		go2.dynamicallyCreated = true;
+		go2.AddComponent<SpriteSheetRenderer>();
+		go2.AddComponent<BoxShape>().size = new Vector2(400, 180);
+
+		go2.Awake();
+		go2.GetComponent<SpriteSheetRenderer>().LoadTexture("2D/adventurer.png");
+
+		go2.transform.position = Camera.I.CenterOfScreenToWorld();
+	}
 	private void SpawnTestSpriteRenderers()
 	{
 		GameObject parent = GameObject.Create(name: "parent");
@@ -83,6 +95,7 @@ class Scene
 		{
 			CreateDefaultObjects();
 		}
+		//SpawnTestSpriteSheetRenderer();
 	}
 	public void Update()
 	{

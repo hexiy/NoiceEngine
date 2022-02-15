@@ -7,7 +7,7 @@ public static class Debug
 {
 	private static List<string> logs = new List<string>();
 
-	private static readonly int LOG_LIMIT = 1000;
+	public static readonly int LOG_LIMIT = 1000;
 
 	public static Dictionary<string, Stopwatch> timers = new Dictionary<string, Stopwatch>();
 	public static Dictionary<string, float> stats = new Dictionary<string, float>();
@@ -17,7 +17,7 @@ public static class Debug
 		if (Global.EditorAttached == false) return;
 
 		logs.Add($"[{DateTime.Now.ToString("HH:mm:ss")}]   " + message);
-		if (logs.Count > LOG_LIMIT)
+		if (logs.Count > LOG_LIMIT+1)
 		{
 			logs.RemoveAt(0);
 		}
