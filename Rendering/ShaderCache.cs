@@ -9,86 +9,34 @@ public static class ShaderCache
 	public static Shader boxRendererShader;
 	public static Shader renderTextureShader;
 	public static Shader renderTexturePostProcessShader;
+	public static Shader snowShader;
 	public static Shader renderTextureBloomShader;
 
 	public static int shaderInUse = -1;
 
-
 	public static void CreateShaders()
 	{
-		CreateSpriteRendererShader();
-		CreateSpriteSheetRendererShader();
-		CreateBoxRendererShader();
-		CreateRenderTextureShader();
-		CreateRenderTexturePostProcessShader();
-		CreateRenderTextureBloomShader();
+		spriteRendererShader = CreateShader(Path.Combine("Shaders", "SpriteRenderer.glsl"));
+		spriteSheetRendererShader = CreateShader(Path.Combine("Shaders", "SpriteSheetRenderer.glsl"));
+		boxRendererShader = CreateShader(Path.Combine("Shaders", "BoxRenderer.glsl"));
+		renderTextureShader = CreateShader(Path.Combine("Shaders", "RenderTexture.glsl"));
+		renderTexturePostProcessShader = CreateShader(Path.Combine("Shaders", "RenderTexturePostProcess.glsl"));
+		snowShader = CreateShader(Path.Combine("Shaders", "Snow.glsl"));
+		renderTextureBloomShader = CreateShader(Path.Combine("Shaders", "RenderTextureBloom.glsl"));
 	}
 
-	private static void CreateRenderTextureShader()
+	private static Shader CreateShader(string path)
 	{
-		string shaderFile = File.ReadAllText(Path.Combine("Shaders", "RenderTexture.glsl"));
+		string shaderFile = File.ReadAllText(path);
 		string vertexShader = GetVertexShaderFromFileString(shaderFile);
 		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
 
+		using (Shader shader = new Shader(vertexShader, fragmentShader))
+		{
+			shader.Load();
 
-		renderTextureShader = new Shader(vertexShader, fragmentShader);
-
-		renderTextureShader.Load();
-	}
-
-	private static void CreateRenderTextureBloomShader()
-	{
-		string shaderFile = File.ReadAllText(Path.Combine("Shaders", "RenderTextureBloom.glsl"));
-		string vertexShader = GetVertexShaderFromFileString(shaderFile);
-		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
-
-		renderTextureBloomShader = new Shader(vertexShader, fragmentShader);
-
-		renderTextureBloomShader.Load();
-	}
-
-	private static void CreateRenderTexturePostProcessShader()
-	{
-		string shaderFile = File.ReadAllText(Path.Combine("Shaders", "RenderTexturePostProcess.glsl"));
-		string vertexShader = GetVertexShaderFromFileString(shaderFile);
-		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
-
-
-		renderTexturePostProcessShader = new Shader(vertexShader, fragmentShader);
-
-		renderTexturePostProcessShader.Load();
-	}
-
-	private static void CreateSpriteRendererShader()
-	{
-		string shaderFile = File.ReadAllText(Path.Combine("Shaders", "SpriteRenderer.glsl"));
-		string vertexShader = GetVertexShaderFromFileString(shaderFile);
-		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
-
-		spriteRendererShader = new Shader(vertexShader, fragmentShader);
-
-		spriteRendererShader.Load();
-	}
-
-	private static void CreateSpriteSheetRendererShader()
-	{
-		string shaderFile = File.ReadAllText(Path.Combine("Shaders", "SpriteSheetRenderer.glsl"));
-		string vertexShader = GetVertexShaderFromFileString(shaderFile);
-		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
-
-		spriteSheetRendererShader = new Shader(vertexShader, fragmentShader);
-
-		spriteSheetRendererShader.Load();
-	}
-
-	private static void CreateBoxRendererShader()
-	{
-		string shaderFile = File.ReadAllText(Path.Combine("Shaders", "BoxRenderer.glsl"));
-		string vertexShader = GetVertexShaderFromFileString(shaderFile);
-		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
-
-		boxRendererShader = new Shader(vertexShader, fragmentShader);
-		boxRendererShader.Load();
+			return shader;
+		}
 	}
 
 	public static void UseShader(Shader shader)
@@ -105,7 +53,7 @@ public static class ShaderCache
 	private static string GetVertexShaderFromFileString(string shaderFile)
 	{
 		return shaderFile.Substring(shaderFile.IndexOf("[VERTEX]") + 8,
-			shaderFile.IndexOf("[FRAGMENT]") - shaderFile.IndexOf("[VERTEX]") - 8); //File.ReadA;
+		                            shaderFile.IndexOf("[FRAGMENT]") - shaderFile.IndexOf("[VERTEX]") - 8); //File.ReadA;
 	}
 
 	private static string GetFragmentShaderFromFileString(string shaderFile)

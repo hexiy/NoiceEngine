@@ -14,6 +14,7 @@ public class Renderer : Component, IComparable<Renderer>
 	[Hide] public float layerFromHierarchy = 0;
 	internal bool onScreen = true;
 
+	public Material material;
 	public override void Awake()
 	{
 		base.Awake();

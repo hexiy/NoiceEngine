@@ -30,14 +30,15 @@ class Window : GameWindow
 
 		imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
 
+
+		ShaderCache.CreateShaders();
+
 		Editor.I.Init();
 		Scene.I.Start();
-
+		
 		sceneRenderTexture = new RenderTexture(Camera.I.size);
 		postProcessRenderTexture = new RenderTexture(Camera.I.size);
 		bloomDownscaledRenderTexture = new RenderTexture(Camera.I.size);
-
-		ShaderCache.CreateShaders();
 	}
 
 	protected override void OnResize(ResizeEventArgs e)
@@ -85,8 +86,9 @@ class Window : GameWindow
 
 		// draw sceneRenderTexture.colorAttachment with post process- into postProcessRenderTexture target
 		postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);
+		
 		postProcessRenderTexture.Unbind();
-
+		
 		bool bloom_enabled = false;
 		float sampleSize = 0.1f;
 		if (bloom_enabled)

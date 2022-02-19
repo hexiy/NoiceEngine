@@ -9,12 +9,12 @@ public class RenderTexture
 
 	public Shader shader;
 
-
 	public RenderTexture(Vector2 size)
 	{
 		GL.DeleteFramebuffers(1, ref id);
 		Invalidate(size);
 	}
+
 	public void Invalidate(Vector2 size)
 	{
 		id = GL.GenFramebuffer();
@@ -25,9 +25,9 @@ public class RenderTexture
 
 		TextureCache.BindTexture(colorAttachment);
 
-		GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, (int)size.X, (int)size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)null);
-		GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-		GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
+		GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, (int) size.X, (int) size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr) null);
+		GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
+		GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMinFilter.Linear);
 
 		GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, colorAttachment, 0);
 
@@ -43,10 +43,12 @@ public class RenderTexture
 	{
 		GL.BindFramebuffer(FramebufferTarget.Framebuffer, id);
 	}
+
 	public void Unbind()
 	{
 		GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 	}
+
 	public void Render(int targetTexture, float sampleSize = 1)
 	{
 		ShaderCache.UseShader(ShaderCache.renderTextureShader);
@@ -66,6 +68,33 @@ public class RenderTexture
 		BufferCache.BindVAO(0);
 		GL.Disable(EnableCap.Blend);
 	}
+
+	public void RenderSnow(int targetTexture)
+	{
+		ShaderCache.UseShader(ShaderCache.snowShader);
+		ShaderCache.snowShader.SetFloat("time", Time.elapsedTime * 0.08f);
+		ShaderCache.snowShader.SetMatrix4x4("u_mvp", GetModelViewProjection(1));
+		ShaderCache.snowShader.SetVector2("u_resolution", Camera.I.size);
+
+		BufferCache.BindVAO(BufferCache.snowVAO);
+		GL.Enable(EnableCap.Blend);
+
+		GL.Enable(EnableCap.DepthTest);
+		GL.DepthFunc(DepthFunction.Lequal);
+		GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+
+		//GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		GL.BlendFunc(BlendingFactor.SrcColor, BlendingFactor.One);
+		
+		TextureCache.BindTexture(targetTexture);
+
+		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+		BufferCache.BindVAO(0);
+		GL.Disable(EnableCap.Blend);
+		GL.Disable(EnableCap.DepthTest);
+	}
+
 	public void RenderWithPostProcess(int targetTexture)
 	{
 		ShaderCache.UseShader(ShaderCache.renderTexturePostProcessShader);
@@ -85,6 +114,7 @@ public class RenderTexture
 		BufferCache.BindVAO(0);
 		GL.Disable(EnableCap.Blend);
 	}
+
 	public void RenderBloom(int targetTexture, float sampleSize = 1)
 	{
 		ShaderCache.UseShader(ShaderCache.renderTextureBloomShader);
@@ -105,6 +135,7 @@ public class RenderTexture
 		BufferCache.BindVAO(0);
 		GL.Disable(EnableCap.Blend);
 	}
+
 	public Matrix4x4 GetModelViewProjection(float sampleSize)
 	{
 		return Matrix4x4.CreateScale(2 * sampleSize, 2 * sampleSize, 1);

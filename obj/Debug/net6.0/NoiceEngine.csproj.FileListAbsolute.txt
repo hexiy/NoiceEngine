@@ -266,3 +266,4 @@ C:/Dev/Noice/NoiceEngine/bin/Debug/net6.0/Shaders/RenderTexturePostProcess.glsl
 /home/hexiy/dev/Noice/NoiceEngine/obj/Debug/net6.0/ref/NoiceEngine.dll
 /home/hexiy/dev/Noice/NoiceEngine/obj/Debug/net6.0/NoiceEngine.pdb
 /home/hexiy/dev/Noice/NoiceEngine/obj/Debug/net6.0/NoiceEngine.genruntimeconfig.cache
+/home/hexiy/dev/Noice/NoiceEngine/bin/Debug/net6.0/Shaders/Snow.glsl

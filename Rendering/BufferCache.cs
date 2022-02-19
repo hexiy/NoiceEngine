@@ -16,6 +16,9 @@ public static class BufferCache
 
     public static int renderTexturePostProcessVAO;
     public static int renderTexturePostProcessVBO;
+    
+    public static int snowVAO;
+    public static int snowVBO;
 
     public static int renderTextureBloomVAO;
     public static int renderTextureBloomVBO;
@@ -31,6 +34,7 @@ public static class BufferCache
         CreateRenderTextureBuffers(ref renderTextureVAO, ref renderTextureVBO);
         CreateRenderTextureBuffers(ref renderTexturePostProcessVAO, ref renderTexturePostProcessVBO);
         CreateRenderTextureBuffers(ref renderTextureBloomVAO, ref renderTextureBloomVBO);
+        CreateRenderTextureBuffers(ref snowVAO, ref snowVBO);
     }
 
     private static void CreateRenderTextureBuffers(ref int vao, ref int vbo)

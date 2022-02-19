@@ -21,6 +21,7 @@ public class SpriteRenderer : Renderer
 			LoadTexture(texture.path);
 		}
 
+		material = new Material(ShaderCache.spriteRendererShader, BufferCache.spriteRendererVAO);
 		base.Awake();
 	}
 
@@ -59,18 +60,22 @@ public class SpriteRenderer : Renderer
 		base.OnNewComponentAdded(comp);
 	}
 
+	public void SetMaterial(Shader shader, int vao)
+	{
+		
+	}
 	public override void Render()
 	{
 		if (onScreen == false) return;
 		if (boxShape == null) return;
 		if (texture.loaded == false) return;
 
-		ShaderCache.UseShader(ShaderCache.spriteRendererShader);
-		ShaderCache.spriteRendererShader.SetVector2("u_resolution", texture.size);
-		ShaderCache.spriteRendererShader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
-		ShaderCache.spriteRendererShader.SetColor("u_color", color.ToVector4());
+		ShaderCache.UseShader(material .shader);
+		material .shader.SetVector2("u_resolution", texture.size);
+		material .shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
+		material .shader.SetColor("u_color", color.ToVector4());
 
-		BufferCache.BindVAO(BufferCache.spriteRendererVAO);
+		BufferCache.BindVAO(material.vao);
 
 		if (additive)
 		{

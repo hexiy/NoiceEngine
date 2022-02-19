@@ -2,7 +2,7 @@
 
 namespace Engine;
 
-public class Shader
+public class Shader:IDisposable
 {
 	string vertexCode;
 	string fragmentCode;
@@ -12,6 +12,10 @@ public class Shader
 	int uLocation_u_mvp = -1;
 	int uLocation_u_color = -1;
 
+	public Shader()
+	{
+		
+	}
 	public Shader(string vertexCode, string fragmentCode)
 	{
 		this.vertexCode = vertexCode;
@@ -111,5 +115,9 @@ public class Shader
 	public int GetAttribLocation(string attribName)
 	{
 		return GL.GetAttribLocation(ProgramID, attribName);
+	}
+
+	public void Dispose()
+	{
 	}
 }
