@@ -13,7 +13,7 @@ public static class Noice
 		Window window = new Window();
 		BufferCache.CreateBuffers();
 
-		window.VSync = OpenTK.Windowing.Common.VSyncMode.On;
+		window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
 
 		window.Run();
 	}

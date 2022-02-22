@@ -89,6 +89,12 @@ public class Shader:IDisposable
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform3(location, vec.X, vec.Y, vec.Z);
 	}
+	
+	public void SetVector4(string uniformName, Vector4 vec)
+	{
+		int location = GL.GetUniformLocation(ProgramID, uniformName);
+		GL.Uniform4(location, vec.X, vec.Y, vec.Z, vec.W);
+	}
 
 	public void SetColor(string uniformName, Vector4 vec)
 	{

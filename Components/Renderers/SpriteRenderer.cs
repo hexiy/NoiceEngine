@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Numerics;
 using System.Xml.Serialization;
 
 namespace Engine;
@@ -9,9 +10,11 @@ public class SpriteRenderer : Renderer
 	public Texture texture;
 
 	public bool additive;
+	public virtual bool Batched { get; set; } = true;
 
 	public override void Awake()
 	{
+		material = new Material(ShaderCache.spriteRendererShader, BufferCache.spriteRendererVAO);
 		if (texture == null)
 		{
 			texture = new Texture();
@@ -21,7 +24,6 @@ public class SpriteRenderer : Renderer
 			LoadTexture(texture.path);
 		}
 
-		material = new Material(ShaderCache.spriteRendererShader, BufferCache.spriteRendererVAO);
 		base.Awake();
 	}
 
@@ -40,6 +42,10 @@ public class SpriteRenderer : Renderer
 		texture.Load(_texturePath);
 
 		UpdateBoxShapeSize();
+		if (Batched)
+		{
+			BatchingManager.AddGameObjectToBatcher(texture.id, this);
+		}
 	}
 
 	internal virtual void UpdateBoxShapeSize()
@@ -62,38 +68,15 @@ public class SpriteRenderer : Renderer
 
 	public void SetMaterial(Shader shader, int vao)
 	{
-		
 	}
+
 	public override void Render()
 	{
 		if (onScreen == false) return;
 		if (boxShape == null) return;
 		if (texture.loaded == false) return;
 
-		ShaderCache.UseShader(material .shader);
-		material .shader.SetVector2("u_resolution", texture.size);
-		material .shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
-		material .shader.SetColor("u_color", color.ToVector4());
-
-		BufferCache.BindVAO(material.vao);
-
-		if (additive)
-		{
-			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
-		}
-		else
-		{
-			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-		}
-
-		TextureCache.BindTexture(texture.id);
-
-		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-
-		//BufferCache.BindVAO(0);
-		//GL.Disable(EnableCap.Blend);
-
-		Debug.CountStat("Draw Calls", 1);
+		BatchingManager.UpdateAttribs(texture.id, gameObject);
 	}
 }
 // STENCIL working

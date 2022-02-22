@@ -4,7 +4,7 @@ public class Material
 {
 	public Shader shader;
 	public int vao;
-
+	public bool additive = false;
 	public Material()
 	{
 		

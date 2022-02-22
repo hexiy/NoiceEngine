@@ -4,6 +4,8 @@ namespace Scripts;
 
 public class SpriteSheetRenderer : SpriteRenderer
 {
+	public override bool Batched { get; set; } = false;
+
 	private Vector2 spritesCount = new Vector2(1, 1);
 	public Vector2 SpritesCount
 	{

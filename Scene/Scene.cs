@@ -136,6 +136,8 @@ class Scene
 		GL.ClearColor(Camera.I.color.ToOtherColor());
 		GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
+		BatchingManager.RenderAllBatchers();
+
 		for (int i = 0; i < renderQueue.Count; i++)
 		{
 			if (renderQueue[i].enabled && renderQueue[i].awoken && renderQueue[i].gameObject.activeInHierarchy)

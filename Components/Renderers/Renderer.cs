@@ -2,6 +2,7 @@
 using System.Xml.Serialization;
 using Vector2 = Engine.Vector2;
 using Vector3 = Engine.Vector3;
+using Vector4 = Engine.Vector4;
 
 namespace Scripts;
 
@@ -32,6 +33,12 @@ public class Renderer : Component, IComparable<Renderer>
 
 		return _scale * Matrix4x4.Identity * _rotation * _translation * Camera.I.viewMatrix * Camera.I.projectionMatrix;
 	}
+
+	public Vector4 GetSize()
+	{
+		return new Vector4(boxShape.size.X * transform.scale.X, boxShape.size.Y * transform.scale.Y,1,1);
+
+	}
 	public int CompareTo(Renderer comparePart)
 	{
 		// A null value means that this object is greater.
@@ -44,7 +51,7 @@ public class Renderer : Component, IComparable<Renderer>
 	public override void Update()
 	{
 		if (boxShape == null) return;
-		if (Time.elapsedTicks % 10 == 0) onScreen = Camera.I.RectangleVisible(boxShape);
+		//if (Time.elapsedTicks % 10 == 0) onScreen = Camera.I.RectangleVisible(boxShape);
 
 		if (onScreen) LatestModelViewProjection = GetModelViewProjection();
 		base.Update();

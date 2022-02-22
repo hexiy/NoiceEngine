@@ -5,16 +5,20 @@ layout(location = 0) in vec4 position;
 
 layout(location = 1) in vec4 aTexCoord;
 
+layout(location = 2) in vec4 batching_position;
+layout(location = 3) in vec4 batching_size;
+
 out vec4 texCoord;
 out vec4 frag_color;
 uniform mat4 u_mvp = mat4(1.0);
+uniform mat4 u_unitScaleMatrix = mat4(1.0);
 
 void main(void)
 {
 
     texCoord = aTexCoord;
-
-    gl_Position = u_mvp * position;
+    vec4 temp =vec4( position.x* batching_size.x  +batching_position.x ,position.y*batching_size.y+batching_position.y,position.z,position.w);
+    gl_Position =  (u_mvp * (temp));
 }
 
 [FRAGMENT]
