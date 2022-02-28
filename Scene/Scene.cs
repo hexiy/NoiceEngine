@@ -116,6 +116,11 @@ class Scene
 	}
 	public void OnComponentAdded(GameObject gameObject, Component component)
 	{
+		RenderQueueChanged();
+	}
+
+	public void RenderQueueChanged()
+	{
 		renderQueue = new List<Renderer>();
 		for (int i = 0; i < gameObjects.Count; i++)
 		{

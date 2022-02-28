@@ -80,7 +80,7 @@ public class Batcher
 		                           true,
 		                           8); // relative offset, first item
 
-		GL.VertexArrayVertexBuffer(vao, 0, vbo, new IntPtr(0), sizeof(float) * 4); 
+		GL.VertexArrayVertexBuffer(vao, 0, vbo, new IntPtr(0), sizeof(float) * 4);
 	}
 
 	private int currentBufferUploadedSize = 0;
@@ -108,25 +108,13 @@ public class Batcher
 		float[] attribsArray = attribs.ToArray();
 
 
-		// calling this  second time doesnt work
-		if (createdBufferThisFrame)
-		{
-			GL.NamedBufferData(
-			                   vbo_positions,
-			                   sizeof(float) * attribsArray.Length,
-			                   attribsArray,
-			                   BufferUsageHint.StreamCopy);
-			currentBufferUploadedSize = attribsArray.Length;
-		}
-		else
-		{
-			GL.NamedBufferData(
-			                   vbo_positions,
-			                   sizeof(float) * attribsArray.Length,
-			                   attribsArray,
-			                   BufferUsageHint.StreamCopy);
-			currentBufferUploadedSize = attribsArray.Length;
-		}
+		GL.NamedBufferData(
+		                   vbo_positions,
+		                   sizeof(float) * attribsArray.Length,
+		                   attribsArray,
+		                   BufferUsageHint.StreamCopy);
+		currentBufferUploadedSize = attribsArray.Length;
+
 
 		// ATTRIB: vertex position -   2 floats
 		GL.VertexArrayAttribBinding(vao, 2, 1);
@@ -151,14 +139,26 @@ public class Batcher
 		                           8); // relative offset, first item
 
 
-		GL.VertexArrayVertexBuffer(vao, 1, vbo_positions, IntPtr.Zero, sizeof(float) * 4);
+		// ATTRIB: color -   4 floats
+		GL.VertexArrayAttribBinding(vao, 4, 1);
+		GL.EnableVertexArrayAttrib(vao, 4);
+		GL.VertexArrayAttribFormat(
+		                           vao,
+		                           4, // attribute index, from the shader location = 4
+		                           4, // size of attribute
+		                           VertexAttribType.Float, // uint representation of a color
+		                           true,
+		                           16); // relative offset, first item
+
+
+		GL.VertexArrayVertexBuffer(vao, 1, vbo_positions, IntPtr.Zero, sizeof(float) * 8);
 
 
 		ShaderCache.UseShader(material.shader);
 		material.shader.SetVector2("u_resolution", texture.size);
-		material.shader.SetMatrix4x4("u_mvp", Matrix4x4.Identity *Camera.I.viewMatrix * Camera.I.projectionMatrix);
+		material.shader.SetMatrix4x4("u_mvp", Matrix4x4.Identity * Camera.I.viewMatrix * Camera.I.projectionMatrix);
 		material.shader.SetColor("u_color", Color.White.ToVector4());
-		
+
 		BufferCache.BindVAO(vao);
 
 		if (material.additive)
@@ -174,21 +174,25 @@ public class Batcher
 
 		GL.DrawArrays(PrimitiveType.Triangles, 0, 6 * size);
 
-		//BufferCache.BindVAO(0);
-		//GL.Disable(EnableCap.Blend);
 
 		Debug.CountStat("Draw Calls", 1);
 	}
 
-	public void AddGameObject(int gameObjectID)
+	public void AddGameObject(int gameObjectID, int instanceIndex = 0)
 	{
-		if (rendererLocationsInAttribs.ContainsKey(gameObjectID))
+		int index = gameObjectID;
+		if (instanceIndex != 0)
+		{
+			index = -gameObjectID - instanceIndex * 8;
+		}
+
+		if (rendererLocationsInAttribs.ContainsKey(index))
 		{
 			return;
 		}
 
-		rendererLocationsInAttribs.Add(gameObjectID, attribs.Count);
-		float[] _att = new float[] {0, 0, 100, 100};
+		rendererLocationsInAttribs.Add(index, attribs.Count);
+		float[] _att = new float[] {0, 0, 100, 100, 1,1,1,1};
 
 		for (int i = 0; i < 6; i++)
 		{
@@ -196,19 +200,20 @@ public class Batcher
 		}
 	}
 
-	public void SetAttribs(int gameObjectID, float[] _attribs)
+	public void SetAttribs(int gameObjectID, float[] _attribs, int instanceIndex = 0)
 	{
-		Parallel.For(0, 6, (i) => { Parallel.For(0, 4, (j) => { this.attribs[rendererLocationsInAttribs[gameObjectID] + i * 4 + j] = _attribs[j]; }); });
-		//return;
-		/*verticesList.AddRange(new float[]
-		                      {
-			                      -0.5f, -0.5f, 0, 0,
-			                      0.5f, -0.5f, 1, 0,
-			                      -0.5f, 0.5f, 0, 1,
+		int index = gameObjectID;
+		if (instanceIndex != 0)
+		{
+			index = -gameObjectID - instanceIndex * 8;
+		}
 
-			                      -0.5f, 0.5f, 0, 1,
-			                      0.5f, -0.5f, 1, 0,
-			                      0.5f, 0.5f, 1, 1,
-		                      });*/
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				this.attribs[rendererLocationsInAttribs[index] + i * 8 + j] = _attribs[j];
+			}
+		}
 	}
 }

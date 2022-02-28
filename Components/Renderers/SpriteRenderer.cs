@@ -9,8 +9,7 @@ public class SpriteRenderer : Renderer
 {
 	public Texture texture;
 
-	public bool additive;
-	public virtual bool Batched { get; set; } = true;
+	[Hide] public virtual bool Batched { get; set; } = false;
 
 	public override void Awake()
 	{
@@ -76,7 +75,34 @@ public class SpriteRenderer : Renderer
 		if (boxShape == null) return;
 		if (texture.loaded == false) return;
 
-		BatchingManager.UpdateAttribs(texture.id, gameObject);
+		if (Batched)
+		{
+			BatchingManager.UpdateAttribs(texture.id, gameObjectID,transform.position, new Vector2(GetComponent<BoxShape>().size.X * transform.scale.X, GetComponent<BoxShape>().size.Y * transform.scale.Y),
+			                              color);
+			return;
+		}
+		
+		ShaderCache.UseShader(material.shader);
+		material.shader.SetVector2("u_resolution", texture.size);
+		material.shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
+		material.shader.SetColor("u_color", color.ToVector4());
+		
+		BufferCache.BindVAO(BufferCache.spriteRendererVAO);
+
+		if (material.additive)
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+		}
+		else
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		}
+
+		TextureCache.BindTexture(texture.id);
+
+		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+		
+		Debug.CountStat("Draw Calls", 1);
 	}
 }
 // STENCIL working

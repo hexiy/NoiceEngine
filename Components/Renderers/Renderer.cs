@@ -11,7 +11,19 @@ public class Renderer : Component, IComparable<Renderer>
 	[LinkableComponent]
 	public BoxShape boxShape;
 	public Color color = Color.White;
-	public float layer = 1;
+
+	private float layer;
+		
+	public float Layer
+	{
+		get { return layer;}
+		set
+		{
+			layer = value;
+			Scene.I?.RenderQueueChanged();
+		}
+	}
+
 	[Hide] public float layerFromHierarchy = 0;
 	internal bool onScreen = true;
 
@@ -46,7 +58,7 @@ public class Renderer : Component, IComparable<Renderer>
 			return 1;
 
 		else
-			return this.layer.CompareTo((comparePart.layer + comparePart.layerFromHierarchy));
+			return this.Layer.CompareTo((comparePart.Layer + comparePart.layerFromHierarchy));
 	}
 	public override void Update()
 	{

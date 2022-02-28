@@ -27,7 +27,7 @@ public class TileGrid : Component
 					SpriteSheetRenderer spriteSheetRenderer = tile.GetComponent<SpriteSheetRenderer>();
 					tile.Awake();
 					//spriteSheetRenderer.blendState = BlendState.Opaque;
-					spriteSheetRenderer.layer = 5;
+					spriteSheetRenderer.Layer = 5;
 					tile.transform.SetParent(transform);
 					//tile.transform.localPosition = new Vector3(x * 3.2f, y * 3.2f, 0);
 					tile.transform.scale = new Vector3(0.1f, 0.1f, 0.1f);

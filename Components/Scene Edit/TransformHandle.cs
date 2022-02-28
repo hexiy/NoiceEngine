@@ -64,9 +64,9 @@ public class TransformHandle : Component
 			boxRendererX = gameObject.AddComponent<BoxRenderer>();
 			boxRendererY = gameObject.AddComponent<BoxRenderer>();
 
-			boxRendererXY.layer =1000;
-			boxRendererX.layer = 1000;
-			boxRendererY.layer = 1000;
+			boxRendererXY.Layer =1000;
+			boxRendererX.Layer = 1000;
+			boxRendererY.Layer = 1000;
 
 			boxRendererXY.color = Color.Orange;
 			boxRendererX.color = Color.Red;

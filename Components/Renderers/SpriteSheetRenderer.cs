@@ -60,7 +60,7 @@ public class SpriteSheetRenderer : SpriteRenderer
 
 		BufferCache.BindVAO(BufferCache.spriteSheetRendererVAO);
 
-		if (additive)
+		if (material.additive)
 		{
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
 		}

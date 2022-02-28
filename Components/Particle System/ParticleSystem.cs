@@ -1,4 +1,4 @@
-﻿/*using Engine;
+﻿using Engine;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Design;
@@ -16,16 +16,17 @@ namespace Scripts
 
 		Pool<Particle> pool = new Pool<Particle>(() => new Particle());
 
-		[XmlIgnore] public List<Particle> particles = new List<Particle>(3000);
+		[XmlIgnore] public List<Particle> particles = new List<Particle>(1000000);
 		private ParticleSystemRenderer renderer;
 		[Show] public Vector2 StartVelocity { get; set; } = new Vector2(0, 0);
 		[Show] public float radius { get; set; } = 100;
 		[Show] public float speed { get; set; } = 2;
 		[Show] public float StartSize { get; set; } = 20;
 		[Show] public float EndSize { get; set; } = 0;
-		[Show] public Color StartColor1 { get; set; } = Color.White;
-		[Show] public Color StartColor2 { get; set; } = Color.Gray;
-		[Show] public int MaxParticles { get; set; } = 3000;
+		[Show] public Color StartColor { get; set; } = Color.White;
+		//[Show] public Color StartColor2 { get; set; } = Color.Gray;
+		[Show] public Color EndColor { get; set; } = Color.Black;
+		[Show] public int MaxParticles { get; set; } = 1000000;
 		[Show] public float MaxLifetime { get; set; } = 1;
 		[Show] public float StartVelocityVariation { get; set; } = 70;
 		[Show] public float SpawnRate { get; set; } = 0.5f; // spawn every half second
@@ -34,18 +35,21 @@ namespace Scripts
 		private Random rnd = new Random();
 		float time = 0;
 		public Particle latestParticle;
+
 		public override void Awake()
 		{
-			renderer = GameObject.GetComponent<ParticleSystemRenderer>();
+			renderer = gameObject.GetComponent<ParticleSystemRenderer>();
 			if (renderer == null)
 			{
-				renderer = GameObject.AddComponent<ParticleSystemRenderer>();
+				renderer = gameObject.AddComponent<ParticleSystemRenderer>();
 			}
+
 			renderer.particleSystem = this;
 			// BuildShape();
 
 			base.Awake();
 		}
+
 		public override void Update()
 		{
 			time += Time.deltaTime;
@@ -55,81 +59,74 @@ namespace Scripts
 				SpawnParticle();
 				time -= SpawnRate;
 			}
-			Parallel.For(0, particles.Count, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount * 20 }, (i) =>
+			for (int i = 0; i < particles.Count; i++)
 			{
+			//Parallel.For(0, particles.Count, new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount * 20}, (i) =>
+			//{
+
+					if (particles.Count > i && particles[i] != null)
+					{
+						//particles[i].velocity += Physics.gravity * Time.deltaTime;
+
+						//particles[i].worldPosition += particles[i].velocity * Time.deltaTime;
+
+						particles[i].lifetime += Time.deltaTime;
+
+						particles[i].color = Color.Lerp(StartColor, EndColor, particles[i].lifetime / MaxLifetime);
+						
+						//particles[i].color = new Color(255,255,255,(int)(((int)particles[i].lifetime / MaxLifetime + 0.2f) * 255));
+
+						particles[i].radius = Mathf.Lerp(StartSize, EndSize, particles[i].lifetime / MaxLifetime);
+
+						if (particles[i].lifetime > MaxLifetime)
+						{
+							particles[i].visible = false;
+							pool.PutObject(particles[i]);
+
+							particles.RemoveAt(i);
+						}
+					}
+				
+			}
+
+			base.Update();
+		}
+
+		void SpawnParticle()
+		{
+			Particle p = pool.GetObject();
+			latestParticle = p;
+			p.visible = true;
+			p.lifetime = 0;
+			p.radius = StartSize;
+			p.worldPosition = transform.position;
+			p.worldPosition += new Vector2(Rendom.Range(-SpawnBoundsSize.X, SpawnBoundsSize.X), Rendom.Range(-SpawnBoundsSize.Y, SpawnBoundsSize.Y));
+
+			p.velocity = StartVelocity + new Vector2(rnd.Next((int) -StartVelocityVariation, (int) StartVelocityVariation), rnd.Next((int) -StartVelocityVariation, (int) StartVelocityVariation));
+			p.color = new Color(255,255,255,255);
+			//p.color = Rendom.ColorRange(StartColor1, StartColor2);
 			lock (listLock)
 			{
-				if (particles.Count > i && particles[i] != null)
+				particles.Add(p);
+
+				if (particles.Count > MaxParticles)
 				{
-					//particles[i].velocity -= Physics.gravity * Time.deltaTime;
+					int num = particles.Count - MaxParticles;
+					for (int i = 0; i < num; i++)
+					{
+						pool.PutObject(particles[i]);
+						particles.RemoveAt(i);
+					}
 
-					particles[i].worldPosition += particles[i].velocity * Time.deltaTime;
-
-					particles[i].lifetime += Time.deltaTime;
-
-					//particles[i].color = new Color((int)particles[i].color.R, particles[i].color.G, particles[i].color.B, (int)((0.1f / particles[i].lifetime) * 255));
-					*//*particles[i].color = new Color((int)((0.1f / particles[i].lifetime) * 255),
-						20, 20, (int)((0.1f / particles[i].lifetime) * 255)); *//*
-
-					 //if (particles[i].lifetime < 0.2f)
-					 //{
-					 //	particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
-					 //		((int)(particles[i].lifetime / 0.2f * 255)));
-					 //}
-					 //else
-					 //{
-					 //	particles[i].color = new Color(particles[i].color.R, particles[i].color.G, particles[i].color.B,
-					 //			((int)((1 - (particles[i].lifetime / MaxLifetime)) * 255)));
-					 //}
-					 particles[i].radius = MathHelper.Lerp(StartSize, EndSize, particles[i].lifetime / MaxLifetime);
-
-			if (particles[i].lifetime > MaxLifetime)
-			{
-				particles[i].visible = false;
-				pool.PutObject(particles[i]);
-				particles.RemoveAt(i);
+					particles.RemoveRange(0, particles.Count - MaxParticles);
+				}
 			}
 		}
 	}
-});
-
-base.Update();
-		}
-		void SpawnParticle()
-{
-	Particle p = pool.GetObject();
-	latestParticle = p;
-	p.visible = true;
-	p.lifetime = 0;
-	p.radius = StartSize;
-	p.worldPosition = transform.position;
-	p.worldPosition += new Vector2(Rendom.Range(-SpawnBoundsSize.X, SpawnBoundsSize.X), Rendom.Range(-SpawnBoundsSize.Y, SpawnBoundsSize.Y));
-
-	p.velocity = StartVelocity + new Vector2(rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation), rnd.Next((int)-StartVelocityVariation, (int)StartVelocityVariation));
-
-	p.color = Rendom.ColorRange(StartColor1, StartColor2);
-	lock (listLock)
-	{
-		particles.Add(p);
-
-		if (particles.Count > MaxParticles)
-		{
-			int num = particles.Count - MaxParticles;
-			for (int i = 0; i < num; i++)
-			{
-
-				pool.PutObject(particles[i]);
-				particles.RemoveAt(i);
-			}
-			particles.RemoveRange(0, particles.Count - MaxParticles);
-		}
-
-	}
-
 }
-	}
-}*/
+
 #region BACKUP
+
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
@@ -284,4 +281,5 @@ base.Update();
 //        }
 //    }
 //}
+
 #endregion

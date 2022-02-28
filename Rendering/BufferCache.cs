@@ -156,23 +156,22 @@ public static class BufferCache
 			int y = 0;
 			for (int i = 0; i < 1000; i++)
 			{
-
 				attribsList.AddRange(new float[]
 				                     {
-					                     x, y, 100, 100,
-					                    x, y, 100, 100,
-					                    x, y, 100, 100,
+					                     x, y, 100, 100, 0xFFFFFF,
+					                     x, y, 100, 100, 0xFFFFFF,
+					                     x, y, 100, 100, 0xFFFFFF,
 
-					                     x, y ,100, 100,
-					                   x, y, 100, 100,
-					                    x, y, 100, 100,
+					                     x, y, 100, 100, 0xFFFFFF,
+					                     x, y, 100, 100, 0xFFFFFF,
+					                     x, y, 100, 100, 0xFFFFFF,
 				                     });
-				
-				x+=100;
+
+				x += 100;
 				if (i % 40 == 0)
 				{
 					x = 0;
-					y+=100;
+					y += 100;
 				}
 			}
 
@@ -194,7 +193,7 @@ public static class BufferCache
 			                           false,
 			                           0); // relative offset, first item
 
-			
+
 			// ATTRIB: size -   2 floats
 			GL.VertexArrayAttribBinding(vao, 3, 1);
 			GL.EnableVertexArrayAttrib(vao, 3);
@@ -206,9 +205,19 @@ public static class BufferCache
 			                           false,
 			                           8); // relative offset, first item
 
-			
+			// ATTRIB: color -   1 int
+			GL.VertexArrayAttribBinding(vao, 4, 1);
+			GL.EnableVertexArrayAttrib(vao, 4);
+			GL.VertexArrayAttribFormat(
+			                           vao,
+			                           4, // attribute index, from the shader location = 0
+			                           1, // size of attribute, vec2
+			                           VertexAttribType.UnsignedInt, // contains floats
+			                           true,
+			                           16); // relative offset, first item
 
-			GL.VertexArrayVertexBuffer(vao, 1, vbo_positions, IntPtr.Zero, sizeof(float) * 4);
+
+			GL.VertexArrayVertexBuffer(vao, 1, vbo_positions, IntPtr.Zero, sizeof(float) * 4 + sizeof(byte));
 		}
 	}
 

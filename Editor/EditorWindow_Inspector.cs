@@ -209,7 +209,7 @@ public class EditorWindow_Inspector : EditorWindow
 
 							float fieldValue = (float)infos[infoIndex].GetValue(selectedGameObject.components[i]);
 
-							if (ImGui.DragFloat("", ref fieldValue, 0.01f))
+							if (ImGui.DragFloat("", ref fieldValue, 0.01f,float.NegativeInfinity,float.PositiveInfinity,"%.05f"))
 							{
 								infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
 							}

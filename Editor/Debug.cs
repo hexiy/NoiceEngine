@@ -48,6 +48,17 @@ public static class Debug
 		stats[statName] += value;
 
 	}
+	public static void Stat(string statName, float value)
+	{
+		if (Global.EditorAttached == false) return;
+
+		if (stats.ContainsKey(statName) == false)
+		{
+			stats[statName] = 0;
+		}
+		stats[statName] = value;
+
+	}
 	public static void EndTimer(string timerName)
 	{
 		if (Global.EditorAttached == false) return;
