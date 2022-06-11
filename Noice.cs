@@ -1,19 +1,21 @@
-﻿namespace Noice;
+﻿using OpenTK.Windowing.Common;
+
+namespace Noice;
 
 public static class Noice
 {
-	static void Main()
+	private static void Main()
 	{
-
 		_ = new Serializer();
 		_ = new Scene();
 
 		_ = new Editor();
+		//_ = new GameWindow();
 
-		Window window = new Window();
+		var window = new Window();
 		BufferCache.CreateBuffers();
 
-		window.VSync = OpenTK.Windowing.Common.VSyncMode.Off;
+		window.VSync = VSyncMode.Off;
 
 		window.Run();
 	}

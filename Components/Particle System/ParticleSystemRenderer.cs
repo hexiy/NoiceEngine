@@ -1,23 +1,16 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Engine;
-using System.Diagnostics;
-
-namespace Scripts;
+﻿namespace Scripts;
 
 public class ParticleSystemRenderer : SpriteRenderer
 {
 	public new bool allowMultiple = false;
-	public ParticleSystem particleSystem;
 
-	private int particlesInBatcher = 0;
+	private int particlesInBatcher;
+	public ParticleSystem particleSystem;
 
 	public override void Awake()
 	{
 		material.additive = true;
-		BatchingManager.AddGameObjectToBatcher(texture.id, this);
+		BatchingManager.AddObjectToBatcher(texture.id, this);
 
 		base.Awake();
 	}
@@ -30,15 +23,13 @@ public class ParticleSystemRenderer : SpriteRenderer
 
 		while (particlesInBatcher < particleSystem.particles.Count)
 		{
-			BatchingManager.AddGameObjectToBatcher(texture.id, this, particlesInBatcher);
+			BatchingManager.AddObjectToBatcher(texture.id, this, particlesInBatcher);
 			particlesInBatcher++;
 		}
 
-		for (int i = 0; i < particleSystem.particles.Count; i++)
-		{
+		for (var i = 0; i < particleSystem.particles.Count; i++)
 			BatchingManager.UpdateAttribs(texture.id, gameObjectID, particleSystem.particles[i].worldPosition, new Vector2(particleSystem.particles[i].radius),
 			                              particleSystem.particles[i].color, i);
-		}
 
 		Debug.Stat("Particles", particleSystem.particles.Count);
 	}

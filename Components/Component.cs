@@ -1,30 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Scripts;
 
 public class Component : IDestroyable
 {
-	[System.Xml.Serialization.XmlIgnore]
-	public GameObject gameObject;
+	public bool allowMultiple = true;
+
+	[XmlIgnore] [DefaultValue(false)] public bool awoken;
+	public bool enabled = true;
+	[XmlIgnore] public GameObject gameObject;
 
 	public int gameObjectID;
+	public bool started;
 
-	[System.Xml.Serialization.XmlIgnore]
-	[System.ComponentModel.DefaultValue(false)]
-	public bool awoken = false;
-	public bool started = false;
-
-	public bool allowMultiple = true;
-	public Component()
-	{
-	}
-	[System.Xml.Serialization.XmlIgnore]
+	[XmlIgnore]
 	public Transform transform
 	{
 		get { return gameObject.transform; }
 		set { gameObject.transform = value; }
 	}
-	public bool enabled = true;
+
+	public virtual void OnDestroyed()
+	{
+	}
+
 	public T GetComponent<T>(int? index = null) where T : Component
 	{
 		return gameObject.GetComponent<T>(index);
@@ -34,6 +35,7 @@ public class Component : IDestroyable
 	{
 		return gameObject.HasComponent<T>();
 	}
+
 	public List<T> GetComponents<T>() where T : Component
 	{
 		return gameObject.GetComponents<T>();
@@ -48,19 +50,20 @@ public class Component : IDestroyable
 	{
 		awoken = true;
 	}
+
 	public virtual void Start()
 	{
 		started = true;
 	}
+
 	public virtual void Update()
 	{
 	}
+
 	public virtual void FixedUpdate()
 	{
 	}
-	public virtual void OnDestroyed()
-	{
-	}
+
 	public virtual void PreSceneSave()
 	{
 	}
@@ -68,6 +71,7 @@ public class Component : IDestroyable
 	public virtual void OnCollisionEnter(Rigidbody rigidbody)
 	{
 	}
+
 	public virtual void OnCollisionExit(Rigidbody rigidbody)
 	{
 	}
@@ -75,6 +79,7 @@ public class Component : IDestroyable
 	public virtual void OnTriggerEnter(Rigidbody rigidbody)
 	{
 	}
+
 	public virtual void OnTriggerExit(Rigidbody rigidbody)
 	{
 	}
@@ -85,22 +90,13 @@ public class Component : IDestroyable
 
 	public int CompareTo(bool other)
 	{
-		if (this == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return 1;
-		}
+		if (this == null) return 0;
+		return 1;
 	}
 
 	public static implicit operator bool(Component instance)
 	{
-		if (instance == null)
-		{
-			return false;
-		}
+		if (instance == null) return false;
 		return true;
 	}
 }

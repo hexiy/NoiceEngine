@@ -2,24 +2,28 @@
 
 namespace Engine;
 
-public class Shader:IDisposable
+public class Shader : IDisposable
 {
-	string vertexCode;
-	string fragmentCode;
+	private string fragmentCode;
+	private int uLocation_u_color = -1;
 
-	public int ProgramID { get; set; }
-
-	int uLocation_u_mvp = -1;
-	int uLocation_u_color = -1;
+	private int uLocation_u_mvp = -1;
+	private string vertexCode;
 
 	public Shader()
 	{
-		
 	}
+
 	public Shader(string vertexCode, string fragmentCode)
 	{
 		this.vertexCode = vertexCode;
 		this.fragmentCode = fragmentCode;
+	}
+
+	public int ProgramID { get; set; }
+
+	public void Dispose()
+	{
 	}
 
 	public void Load()
@@ -30,12 +34,9 @@ public class Shader:IDisposable
 		GL.ShaderSource(vs, vertexCode);
 		GL.CompileShader(vs);
 
-		string error = "";
+		var error = "";
 		GL.GetShaderInfoLog(vs, out error);
-		if (error.Length > 0)
-		{
-			System.Diagnostics.Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
-		}
+		if (error.Length > 0) System.Diagnostics.Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
 
 		fs = GL.CreateShader(ShaderType.FragmentShader);
 		GL.ShaderSource(fs, fragmentCode);
@@ -43,10 +44,7 @@ public class Shader:IDisposable
 
 		error = "";
 		GL.GetShaderInfoLog(fs, out error);
-		if (error.Length > 0)
-		{
-			System.Diagnostics.Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
-		}
+		if (error.Length > 0) System.Diagnostics.Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
 
 		ProgramID = GL.CreateProgram();
 		GL.AttachShader(ProgramID, vs);
@@ -65,7 +63,7 @@ public class Shader:IDisposable
 	{
 		if (uLocation_u_mvp == -1)
 		{
-			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			var location = GL.GetUniformLocation(ProgramID, uniformName);
 			uLocation_u_mvp = location;
 		}
 
@@ -74,25 +72,25 @@ public class Shader:IDisposable
 
 	public void SetFloat(string uniformName, float fl)
 	{
-		int location = GL.GetUniformLocation(ProgramID, uniformName);
+		var location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform1(location, fl);
 	}
 
 	public void SetVector2(string uniformName, Vector2 vec)
 	{
-		int location = GL.GetUniformLocation(ProgramID, uniformName);
+		var location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform2(location, vec.X, vec.Y);
 	}
 
 	public void SetVector3(string uniformName, Vector3 vec)
 	{
-		int location = GL.GetUniformLocation(ProgramID, uniformName);
+		var location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform3(location, vec.X, vec.Y, vec.Z);
 	}
-	
+
 	public void SetVector4(string uniformName, Vector4 vec)
 	{
-		int location = GL.GetUniformLocation(ProgramID, uniformName);
+		var location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform4(location, vec.X, vec.Y, vec.Z, vec.W);
 	}
 
@@ -100,7 +98,7 @@ public class Shader:IDisposable
 	{
 		if (uLocation_u_color == -1)
 		{
-			int location = GL.GetUniformLocation(ProgramID, uniformName);
+			var location = GL.GetUniformLocation(ProgramID, uniformName);
 			uLocation_u_color = location;
 		}
 
@@ -109,21 +107,17 @@ public class Shader:IDisposable
 
 	private float[] GetMatrix4x4Values(Matrix4x4 m)
 	{
-		return new float[]
-		{
-			m.M11, m.M12, m.M13, m.M14,
-			m.M21, m.M22, m.M23, m.M24,
-			m.M31, m.M32, m.M33, m.M34,
-			m.M41, m.M42, m.M43, m.M44
-		};
+		return new[]
+		       {
+			       m.M11, m.M12, m.M13, m.M14,
+			       m.M21, m.M22, m.M23, m.M24,
+			       m.M31, m.M32, m.M33, m.M34,
+			       m.M41, m.M42, m.M43, m.M44
+		       };
 	}
 
 	public int GetAttribLocation(string attribName)
 	{
 		return GL.GetAttribLocation(ProgramID, attribName);
-	}
-
-	public void Dispose()
-	{
 	}
 }

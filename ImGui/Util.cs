@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Dear_ImGui_Sample;
 
-static class Util
+internal static class Util
 {
 	[Pure]
 	public static float Clamp(float value, float min, float max)
@@ -16,10 +16,7 @@ static class Util
 	public static void CheckGLError(string title)
 	{
 		var error = GL.GetError();
-		if (error != ErrorCode.NoError)
-		{
-			Debug.Log($"{title}: {error}");
-		}
+		if (error != ErrorCode.NoError) Debug.Log($"{title}: {error}");
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,10 +54,16 @@ static class Util
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static void CreateVertexBuffer(string Name, out int Buffer) => CreateBuffer($"VBO: {Name}", out Buffer);
+	public static void CreateVertexBuffer(string Name, out int Buffer)
+	{
+		CreateBuffer($"VBO: {Name}", out Buffer);
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static void CreateElementBuffer(string Name, out int Buffer) => CreateBuffer($"EBO: {Name}", out Buffer);
+	public static void CreateElementBuffer(string Name, out int Buffer)
+	{
+		CreateBuffer($"EBO: {Name}", out Buffer);
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static void CreateVertexArray(string Name, out int VAO)

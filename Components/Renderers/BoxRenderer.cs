@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace Engine;
+﻿namespace Engine;
 
 public class BoxRenderer : Renderer
 {
@@ -8,6 +6,7 @@ public class BoxRenderer : Renderer
 	{
 		base.Awake();
 	}
+
 	public override void Render()
 	{
 		if (boxShape == null) return;

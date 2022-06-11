@@ -10,9 +10,11 @@ public class EditorWindow_SceneTopbar : EditorWindow
 	{
 		I = this;
 	}
+
 	public override void Update()
 	{
 	}
+
 	public override void Draw()
 	{
 		if (active == false) return;
@@ -25,41 +27,30 @@ public class EditorWindow_SceneTopbar : EditorWindow
 
 		ImGui.SetCursorPosX(Camera.I.size.X / 2 - 150);
 
-		Vector4 activeColor = new Color(0.21f, 0.9f, 0.98f, 1f).ToVector4();
-		Vector4 inactiveColor = new Color(1f, 1f, 1f, 1f).ToVector4();
+		var activeColor = new Color(0.21f, 0.9f, 0.98f, 1f).ToVector4();
+		var inactiveColor = new Color(1f, 1f, 1f, 1f).ToVector4();
 		ImGui.PushStyleColor(ImGuiCol.Text, Physics.Running ? activeColor : inactiveColor);
-		bool physicsButtonClicked = ImGui.Button("physics");
+		var physicsButtonClicked = ImGui.Button("physics");
 		if (physicsButtonClicked)
 		{
-			if (Physics.Running == false)
-			{
-				Physics.StartPhysics();
-			}
-			else if (Physics.Running == true)
-			{
-				Physics.StopPhysics();
-			}
+			if (Physics.Running == false) Physics.StartPhysics();
+			else if (Physics.Running) Physics.StopPhysics();
 		}
+
 		ImGui.SameLine();
 
 		ImGui.PushStyleColor(ImGuiCol.Text, Global.GameRunning ? activeColor : inactiveColor);
 
-		bool playButtonClicked = ImGui.Button("play");
-		if (playButtonClicked)
-		{
-			Global.GameRunning = !Global.GameRunning;
-		}
+		var playButtonClicked = ImGui.Button("play");
+		if (playButtonClicked) Global.GameRunning = !Global.GameRunning;
 
 		ImGui.PopStyleVar();
 		ImGui.PopStyleColor();
 		ImGui.PopStyleColor();
 
 		ImGui.SameLine();
-		bool resetDataButtonClicked = ImGui.Button("delete data");
-		if (resetDataButtonClicked)
-		{
-			PersistentData.DeleteAll();
-		}
+		var resetDataButtonClicked = ImGui.Button("delete data");
+		if (resetDataButtonClicked) PersistentData.DeleteAll();
 
 		ImGui.End();
 	}

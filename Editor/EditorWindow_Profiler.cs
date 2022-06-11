@@ -1,5 +1,5 @@
-﻿using ImGuiNET;
-using System.Linq;
+﻿using System.Linq;
+using ImGuiNET;
 
 namespace Engine;
 
@@ -11,6 +11,7 @@ public class EditorWindow_Profiler : EditorWindow
 	{
 		I = this;
 	}
+
 	public override void Draw()
 	{
 		if (active == false) return;
@@ -22,15 +23,12 @@ public class EditorWindow_Profiler : EditorWindow
 
 		ImGui.Text($"GameObjects in scene: {Scene.I.gameObjects.Count}");
 
-		for (int i = 0; i < Debug.stats.Count; i++)
-		{
-			ImGui.Text($"{Debug.stats.Keys.ElementAt(i)} : {Debug.stats.Values.ElementAt(i)}");
-		}
+		for (var i = 0; i < Debug.stats.Count; i++) ImGui.Text($"{Debug.stats.Keys.ElementAt(i)} : {Debug.stats.Values.ElementAt(i)}");
 
-		for (int i = 0; i < Debug.timers.Count; i++)
+		for (var i = 0; i < Debug.timers.Count; i++)
 		{
 			float timerDuration = Debug.timers.Values.ElementAt(i).ElapsedMilliseconds;
-			ImGui.PushStyleColor(ImGuiCol.Text, Color.Lerp(Color.White, Color.Red, (float)Mathf.Clamp((timerDuration / 40) - 1, 0, 1)).ToVector4());
+			ImGui.PushStyleColor(ImGuiCol.Text, Color.Lerp(Color.White, Color.Red, Mathf.Clamp(timerDuration / 40 - 1, 0, 1)).ToVector4());
 			ImGui.Text($"{Debug.timers.Keys.ElementAt(i)} : {timerDuration} ms");
 			ImGui.PopStyleColor();
 		}
@@ -42,6 +40,5 @@ public class EditorWindow_Profiler : EditorWindow
 
 	public override void Update()
 	{
-
 	}
 }

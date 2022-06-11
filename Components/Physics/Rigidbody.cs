@@ -1,49 +1,71 @@
-﻿using Genbox.VelcroPhysics.Collision.Shapes;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 using Genbox.VelcroPhysics.Definitions;
 using Genbox.VelcroPhysics.Dynamics;
-using System.Collections.Generic;
-using System.Xml.Serialization;
 
 namespace Scripts;
 
 public class Rigidbody : Component
 {
-	[XmlIgnore] public Body body;
-	[XmlIgnore]
-	public List<Rigidbody> touchingRigidbodies = new List<Rigidbody>();
-
 	public new bool allowMultiple = false;
 
-	[XmlIgnore]
-	[LinkableComponent]
-	public Shape shape;
-	public bool useGravity = false;
+	public float angularDrag = 1f;
+	[XmlIgnore] public Body body;
+
+	public float friction = 1;
+	public bool isButton = false;
 	public bool isStatic = false;
 	public bool isTrigger = false;
-	public bool isButton = false;
-	[XmlIgnore] public Vector2 Velocity { get { if (body == null) { return Vector2.Zero; } else { return body.LinearVelocity; } } set { if (body == null) { return; } else { body.LinearVelocity = value; } } }
+
+	[XmlIgnore] [LinkableComponent] public Shape shape;
+	[XmlIgnore] public List<Rigidbody> touchingRigidbodies = new();
+	public bool useGravity = false;
+	[XmlIgnore]
+	public Vector2 Velocity
+	{
+		get
+		{
+			if (body == null) return Vector2.Zero;
+			return body.LinearVelocity;
+		}
+		set
+		{
+			if (body == null) return;
+			body.LinearVelocity = value;
+		}
+	}
 	public float Mass { get; set; } = 100;
 	//public float velocityDrag = 0.99f;
 	[Show] public float Bounciness { get; set; } = 0f;
 
-	[Show] public float AngularVelocity { get; set; } = 0;
-	public float angularDrag = 1f;
-
-	public float friction = 1;
+	[XmlIgnore]
+	public float AngularVelocity
+	{
+		get
+		{
+			if (body == null) return 0;
+			return body.AngularVelocity;
+		}
+		set
+		{
+			if (body == null) return;
+			body.AngularVelocity = value;
+		}
+	}
 
 	public override void Awake()
 	{
 		//gameObject.OnComponentAdded += CheckForColliderAdded;
-		if (isButton) { return; }
+		if (isButton) return;
 
 		CreateBody();
 
 		base.Awake();
 	}
+
 	public void CreateBody()
 	{
-
-		BodyDef bodyDef = new BodyDef();
+		var bodyDef = new BodyDef();
 		bodyDef.Position = transform.position;
 		bodyDef.Type = isStatic ? BodyType.Static : BodyType.Dynamic;
 		bodyDef.AllowSleep = true;
@@ -52,9 +74,9 @@ public class Rigidbody : Component
 
 		if (GetComponent<CircleShape>() != null)
 		{
-			CircleShape circleShape = GetComponent<CircleShape>();
+			var circleShape = GetComponent<CircleShape>();
 
-			FixtureDef fixtureDef = new FixtureDef();
+			var fixtureDef = new FixtureDef();
 			fixtureDef.Shape = new Genbox.VelcroPhysics.Collision.Shapes.CircleShape(circleShape.radius, 100);
 			fixtureDef.Friction = 0.1f;
 			lock (Physics.World)
@@ -77,12 +99,10 @@ public class Rigidbody : Component
 			////body.LinearDamping = 3;
 		}
 	}
+
 	public override void FixedUpdate()
 	{
-		if (isStatic || isButton)
-		{
-			return;
-		}
+		if (isStatic || isButton) return;
 
 		UpdateTransform();
 
@@ -97,17 +117,17 @@ public class Rigidbody : Component
 		transform.position = new Vector2(body.Position.X, body.Position.Y);
 		transform.rotation.Z = body.Rotation * Mathf.TwoPi * 2;
 	}
+
 	public override void OnDestroyed()
 	{
 		if (body != null)
-		{
 			lock (Physics.World)
 			{
 				body.Enabled = false;
 				Physics.World.DestroyBody(body);
 			}
-		}
-		for (int i = 0; i < touchingRigidbodies.Count; i++)
+
+		for (var i = 0; i < touchingRigidbodies.Count; i++)
 		{
 			touchingRigidbodies[i].OnCollisionExit(this);
 			OnCollisionExit(touchingRigidbodies[i]);
@@ -119,55 +139,36 @@ public class Rigidbody : Component
 		touchingRigidbodies.Add(rigidbody);
 
 		// Call callback on components that implement interface IPhysicsCallbackListener
-		for (int i = 0; i < gameObject.components.Count; i++)
-		{
-			if ((gameObject.components[i] is Rigidbody) == false)
-			{
+		for (var i = 0; i < gameObject.components.Count; i++)
+			if (gameObject.components[i] is Rigidbody == false)
 				gameObject.components[i].OnCollisionEnter(rigidbody);
-			}
-		}
 	}
+
 	public override void OnCollisionExit(Rigidbody rigidbody)
 	{
-		if (touchingRigidbodies.Contains(rigidbody))
-		{
-			touchingRigidbodies.Remove(rigidbody);
-		}
+		if (touchingRigidbodies.Contains(rigidbody)) touchingRigidbodies.Remove(rigidbody);
 
-		for (int i = 0; i < gameObject.components.Count; i++)
-		{
-			if ((gameObject.components[i] is Rigidbody) == false)
-			{
+		for (var i = 0; i < gameObject.components.Count; i++)
+			if (gameObject.components[i] is Rigidbody == false)
 				gameObject.components[i].OnCollisionExit(rigidbody);
-			}
-		}
 	}
+
 	public override void OnTriggerEnter(Rigidbody rigidbody)
 	{
 		touchingRigidbodies.Add(rigidbody);
 
 		// Call callback on components that implement interface IPhysicsCallbackListener
-		for (int i = 0; i < gameObject.components.Count; i++)
-		{
-			if ((gameObject.components[i] is Rigidbody) == false)
-			{
+		for (var i = 0; i < gameObject.components.Count; i++)
+			if (gameObject.components[i] is Rigidbody == false)
 				gameObject.components[i].OnTriggerEnter(rigidbody);
-			}
-		}
 	}
+
 	public override void OnTriggerExit(Rigidbody rigidbody)
 	{
-		if (touchingRigidbodies.Contains(rigidbody))
-		{
-			touchingRigidbodies.Remove(rigidbody);
-		}
+		if (touchingRigidbodies.Contains(rigidbody)) touchingRigidbodies.Remove(rigidbody);
 
-		for (int i = 0; i < gameObject.components.Count; i++)
-		{
-			if ((gameObject.components[i] is Rigidbody) == false)
-			{
+		for (var i = 0; i < gameObject.components.Count; i++)
+			if (gameObject.components[i] is Rigidbody == false)
 				gameObject.components[i].OnTriggerExit(rigidbody);
-			}
-		}
 	}
 }

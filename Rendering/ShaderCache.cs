@@ -27,11 +27,11 @@ public static class ShaderCache
 
 	private static Shader CreateShader(string path)
 	{
-		string shaderFile = File.ReadAllText(path);
-		string vertexShader = GetVertexShaderFromFileString(shaderFile);
-		string fragmentShader = GetFragmentShaderFromFileString(shaderFile);
+		var shaderFile = File.ReadAllText(path);
+		var vertexShader = GetVertexShaderFromFileString(shaderFile);
+		var fragmentShader = GetFragmentShaderFromFileString(shaderFile);
 
-		using (Shader shader = new Shader(vertexShader, fragmentShader))
+		using (var shader = new Shader(vertexShader, fragmentShader))
 		{
 			shader.Load();
 
@@ -41,10 +41,7 @@ public static class ShaderCache
 
 	public static void UseShader(Shader shader)
 	{
-		if (shader.ProgramID == shaderInUse)
-		{
-			return;
-		}
+		if (shader.ProgramID == shaderInUse) return;
 
 		shaderInUse = shader.ProgramID;
 		GL.UseProgram(shader.ProgramID);

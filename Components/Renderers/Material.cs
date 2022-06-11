@@ -2,14 +2,14 @@ namespace Scripts;
 
 public class Material
 {
+	public bool additive = false;
 	public Shader shader;
 	public int vao;
-	public bool additive = false;
+
 	public Material()
 	{
-		
 	}
-		
+
 	public Material(Shader shader, int vao)
 	{
 		this.shader = shader;

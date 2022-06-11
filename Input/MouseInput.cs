@@ -6,23 +6,6 @@ public static class MouseInput
 {
 	public delegate void MouseEvent();
 
-	public static Vector2 ScreenDelta;
-
-	public static Vector2 WorldDelta
-	{
-		get { return ScreenDelta * Camera.I.ortographicSize; }
-	}
-
-	/// <summary>
-	/// Screen position of mouse
-	/// </summary>
-	public static Vector2 ScreenPosition = Vector2.Zero;
-
-	public static Vector2 WorldPosition
-	{
-		get { return Camera.I.ScreenToWorld(ScreenPosition); }
-	}
-
 	//
 	// Summary:
 	//     Specifies the buttons of a mouse.
@@ -89,6 +72,23 @@ public static class MouseInput
 		Last = 7
 	}
 
+	public static Vector2 ScreenDelta;
+
+	/// <summary>
+	///         Screen position of mouse
+	/// </summary>
+	public static Vector2 ScreenPosition = Vector2.Zero;
+
+	public static Vector2 WorldDelta
+	{
+		get { return ScreenDelta * Camera.I.ortographicSize; }
+	}
+
+	public static Vector2 WorldPosition
+	{
+		get { return Camera.I.ScreenToWorld(ScreenPosition); }
+	}
+
 	public static float ScrollDelta
 	{
 		get
@@ -98,45 +98,43 @@ public static class MouseInput
 		}
 	}
 
-	public static bool IsButtonDown(Buttons button = MouseInput.Buttons.Left)
+	public static bool IsButtonDown(Buttons button = Buttons.Left)
 	{
 		if (IsMouseInSceneView() == false) return false;
 
 		return Window.I.MouseState.IsButtonDown((MouseButton) button);
 	}
 
-	public static bool IsButtonUp(Buttons button = MouseInput.Buttons.Left)
+	public static bool IsButtonUp(Buttons button = Buttons.Left)
 	{
 		if (IsMouseInSceneView() == false) return false;
 
-		return (Window.I.MouseState.IsButtonDown((MouseButton) button) == false);
+		return Window.I.MouseState.IsButtonDown((MouseButton) button) == false;
 	}
 
-	public static bool ButtonPressed(Buttons button = MouseInput.Buttons.Left)
+	public static bool ButtonPressed(Buttons button = Buttons.Left)
 	{
 		if (IsMouseInSceneView() == false) return false;
 
-		return Window.I.MouseState.WasButtonDown((MouseButton) button) == false &&
-		       (Window.I.MouseState.IsButtonDown((MouseButton) button));
+		return Window.I.MouseState.WasButtonDown((MouseButton) button) == false && Window.I.MouseState.IsButtonDown((MouseButton) button);
 	}
 
-	public static bool ButtonReleased(Buttons button = MouseInput.Buttons.Left)
+	public static bool ButtonReleased(Buttons button = Buttons.Left)
 	{
 		if (IsMouseInSceneView() == false) return false;
 
-		return Window.I.MouseState.WasButtonDown((MouseButton) button) &&
-		       (Window.I.MouseState.IsButtonDown((MouseButton) button) == false);
+		return Window.I.MouseState.WasButtonDown((MouseButton) button) && Window.I.MouseState.IsButtonDown((MouseButton) button) == false;
 	}
 
 	public static void Update()
 	{
-		MouseState state = Window.I.MouseState;
+		var state = Window.I.MouseState;
 
 		ScreenDelta = new Vector2(state.Delta.X, -state.Delta.Y);
 
 
 		ScreenPosition = new Vector2(Window.I.MouseState.X - Editor.sceneViewPosition.X,
-			-Window.I.MouseState.Y + Camera.I.size.Y + Editor.sceneViewPosition.Y);
+		                             -Window.I.MouseState.Y + Camera.I.size.Y + Editor.sceneViewPosition.Y);
 
 		//Debug.Log($"ScreenPos: [{(int)ScreenPosition.X}:{(int)ScreenPosition.Y}]");
 		//Debug.Log($"WorldPos: [{(int)WorldPosition.X}:{(int)WorldPosition.Y}]");
@@ -146,7 +144,6 @@ public static class MouseInput
 
 	private static bool IsMouseInSceneView()
 	{
-		return ScreenPosition.X < Camera.I.size.X && ScreenPosition.Y < Camera.I.size.Y &&
-		       ScreenPosition.X > 0 && ScreenPosition.Y > 0;
+		return ScreenPosition.X < Camera.I.size.X && ScreenPosition.Y < Camera.I.size.Y && ScreenPosition.X > 0 && ScreenPosition.Y > 0;
 	}
 }

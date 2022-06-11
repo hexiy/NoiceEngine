@@ -2,9 +2,10 @@ namespace Scripts;
 
 public class PartyBoi : Component
 {
-	private float hue = 0;
 	private BoxRenderer boxRenderer;
+	private float hue;
 	private Text text;
+
 	public override void Awake()
 	{
 		boxRenderer = GetComponent<BoxRenderer>();
@@ -13,6 +14,7 @@ public class PartyBoi : Component
 
 		base.Awake();
 	}
+
 	public override void Update()
 	{
 		hue += Time.deltaTime * 300;

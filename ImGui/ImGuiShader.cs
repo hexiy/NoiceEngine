@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Dear_ImGui_Sample;
 
-struct UniformFieldInfo
+internal struct UniformFieldInfo
 {
 	public int Location;
 	public string Name;
@@ -11,24 +11,26 @@ struct UniformFieldInfo
 	public ActiveUniformType Type;
 }
 
-class ImGuiShader
+internal class ImGuiShader
 {
-	public readonly string Name;
-	public int Program { get; private set; }
-	private readonly Dictionary<string, int> UniformToLocation = new Dictionary<string, int>();
-	private bool Initialized = false;
-
 	private readonly (ShaderType Type, string Path)[] Files;
+	public readonly string Name;
+	private readonly Dictionary<string, int> UniformToLocation = new();
+	private bool Initialized;
 
 	public ImGuiShader(string name, string vertexShader, string fragmentShader)
 	{
 		Name = name;
-		Files = new[]{
-				(ShaderType.VertexShader, vertexShader),
-				(ShaderType.FragmentShader, fragmentShader),
-			};
+		Files = new[]
+		        {
+			        (ShaderType.VertexShader, vertexShader),
+			        (ShaderType.FragmentShader, fragmentShader)
+		        };
 		Program = CreateProgram(name, Files);
 	}
+
+	public int Program { get; }
+
 	public void UseShader()
 	{
 		ShaderCache.shaderInUse = Program;
@@ -46,13 +48,13 @@ class ImGuiShader
 
 	public UniformFieldInfo[] GetUniforms()
 	{
-		GL.GetProgram(Program, GetProgramParameterName.ActiveUniforms, out int UnifromCount);
+		GL.GetProgram(Program, GetProgramParameterName.ActiveUniforms, out var UnifromCount);
 
-		UniformFieldInfo[] Uniforms = new UniformFieldInfo[UnifromCount];
+		var Uniforms = new UniformFieldInfo[UnifromCount];
 
-		for (int i = 0; i < UnifromCount; i++)
+		for (var i = 0; i < UnifromCount; i++)
 		{
-			string Name = GL.GetActiveUniform(Program, i, out int Size, out ActiveUniformType Type);
+			var Name = GL.GetActiveUniform(Program, i, out var Size, out var Type);
 
 			UniformFieldInfo FieldInfo;
 			FieldInfo.Location = GetUniformLocation(Name);
@@ -69,15 +71,12 @@ class ImGuiShader
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public int GetUniformLocation(string uniform)
 	{
-		if (UniformToLocation.TryGetValue(uniform, out int location) == false)
+		if (UniformToLocation.TryGetValue(uniform, out var location) == false)
 		{
 			location = GL.GetUniformLocation(Program, uniform);
 			UniformToLocation.Add(uniform, location);
 
-			if (location == -1)
-			{
-				Debug.Log($"The uniform '{uniform}' does not exist in the shader '{Name}'!");
-			}
+			if (location == -1) Debug.Log($"The uniform '{uniform}' does not exist in the shader '{Name}'!");
 		}
 
 		return location;
@@ -85,23 +84,19 @@ class ImGuiShader
 
 	private int CreateProgram(string name, params (ShaderType Type, string source)[] shaderPaths)
 	{
-		Util.CreateProgram(name, out int Program);
+		Util.CreateProgram(name, out var Program);
 
-		int[] Shaders = new int[shaderPaths.Length];
-		for (int i = 0; i < shaderPaths.Length; i++)
-		{
-			Shaders[i] = CompileShader(name, shaderPaths[i].Type, shaderPaths[i].source);
-		}
+		var Shaders = new int[shaderPaths.Length];
+		for (var i = 0; i < shaderPaths.Length; i++) Shaders[i] = CompileShader(name, shaderPaths[i].Type, shaderPaths[i].source);
 
-		foreach (var shader in Shaders)
-			GL.AttachShader(Program, shader);
+		foreach (var shader in Shaders) GL.AttachShader(Program, shader);
 
 		GL.LinkProgram(Program);
 
-		GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out int Success);
+		GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out var Success);
 		if (Success == 0)
 		{
-			string Info = GL.GetProgramInfoLog(Program);
+			var Info = GL.GetProgramInfoLog(Program);
 			Debug.Log($"GL.LinkProgram had info log [{name}]:\n{Info}");
 		}
 
@@ -118,14 +113,14 @@ class ImGuiShader
 
 	private int CompileShader(string name, ShaderType type, string source)
 	{
-		Util.CreateShader(type, name, out int Shader);
+		Util.CreateShader(type, name, out var Shader);
 		GL.ShaderSource(Shader, source);
 		GL.CompileShader(Shader);
 
-		GL.GetShader(Shader, ShaderParameter.CompileStatus, out int success);
+		GL.GetShader(Shader, ShaderParameter.CompileStatus, out var success);
 		if (success == 0)
 		{
-			string Info = GL.GetShaderInfoLog(Shader);
+			var Info = GL.GetShaderInfoLog(Shader);
 			Debug.Log($"GL.CompileShader for shader '{Name}' [{type}] had info log:\n{Info}");
 		}
 

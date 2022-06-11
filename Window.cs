@@ -1,26 +1,28 @@
-﻿using OpenTK.Windowing.Common;
+﻿using Dear_ImGui_Sample;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using Dear_ImGui_Sample;
 
 namespace Engine;
 
-class Window : GameWindow
+internal class Window : GameWindow
 {
-	public static Window I { get; private set; }
-	ImGuiController imGuiController;
-	public RenderTexture sceneRenderTexture;
-	public RenderTexture postProcessRenderTexture;
 	public RenderTexture bloomDownscaledRenderTexture;
+	private ImGuiController imGuiController;
+	public RenderTexture postProcessRenderTexture;
+	public RenderTexture sceneRenderTexture;
 
 	public Window() : base(GameWindowSettings.Default,
-		new NativeWindowSettings() {Size = new Vector2i(1920, 1027), APIVersion = new Version(4, 6)})
+	                       new NativeWindowSettings
+	                       {Size = new Vector2i(1920, 1027), APIVersion = new Version(4, 6)})
 	{
 		I = this;
 
 		WindowState = WindowState.Maximized;
 		//WindowState = WindowState.Fullscreen;
 	}
+
+	public static Window I { get; private set; }
 
 	protected override void OnLoad()
 	{
@@ -35,7 +37,7 @@ class Window : GameWindow
 
 		Editor.I.Init();
 		Scene.I.Start();
-		
+
 		sceneRenderTexture = new RenderTexture(Camera.I.size);
 		postProcessRenderTexture = new RenderTexture(Camera.I.size);
 		bloomDownscaledRenderTexture = new RenderTexture(Camera.I.size);
@@ -86,11 +88,11 @@ class Window : GameWindow
 
 		// draw sceneRenderTexture.colorAttachment with post process- into postProcessRenderTexture target
 		postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);
-		
+
 		postProcessRenderTexture.Unbind();
-		
-		bool bloom_enabled = false;
-		float sampleSize = 0.1f;
+
+		var bloom_enabled = false;
+		var sampleSize = 0.1f;
 		if (bloom_enabled)
 		{
 			bloomDownscaledRenderTexture.Bind();

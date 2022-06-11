@@ -1,6 +1,6 @@
 ﻿namespace Engine;
 
-interface IDestroyable
+internal interface IDestroyable
 {
 	void OnDestroyed();
 }

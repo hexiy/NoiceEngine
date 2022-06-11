@@ -4,8 +4,8 @@ namespace Engine;
 
 public class RenderTexture
 {
-	public int id;
 	public int colorAttachment;
+	public int id;
 
 	public Shader shader;
 
@@ -31,10 +31,7 @@ public class RenderTexture
 
 		GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, colorAttachment, 0);
 
-		if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
-		{
-			Debug.Log("RENDER TEXTURE ERROR");
-		}
+		if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete) Debug.Log("RENDER TEXTURE ERROR");
 
 		GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 	}
@@ -85,7 +82,7 @@ public class RenderTexture
 
 		//GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 		GL.BlendFunc(BlendingFactor.SrcColor, BlendingFactor.One);
-		
+
 		TextureCache.BindTexture(targetTexture);
 
 		GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

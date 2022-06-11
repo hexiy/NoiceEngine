@@ -2,15 +2,13 @@
 
 public class Particle
 {
-	public bool visible = false;
-	public Vector2 worldPosition = new Vector2(0, 0);
-	public Vector2 velocity = new Vector2(0, 0);
 	public Color color = Color.White;
 	public float lifetime = 0;
 	public float radius = 10;
-	public Particle()
-	{
-	}
+	public Vector2 velocity = new(0, 0);
+	public bool visible = false;
+	public Vector2 worldPosition = new(0, 0);
+
 	/*public override void Update()
 	{
 		float dist = Vector2.Distance(MouseInput.Position, transform.Position);

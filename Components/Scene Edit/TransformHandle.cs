@@ -8,25 +8,25 @@ public class TransformHandle : Component
 	{
 		return instance;
 	}*/
-	public enum Axis { X, Y, XY };
-	public Axis? CurrentAxisSelected = null;
-	public bool clicked = false;
+	public enum Axis
+	{
+		X,
+		Y,
+		XY
+	}
 
 	public static bool objectSelected;
-	private Transform selectedTransform;
+	public BoxShape boxColliderX;
 
 	public BoxShape boxColliderXY;
-	public BoxShape boxColliderX;
 	public BoxShape boxColliderY;
-	public BoxRenderer boxRendererXY;
 	public BoxRenderer boxRendererX;
+	public BoxRenderer boxRendererXY;
 	public BoxRenderer boxRendererY;
+	public bool clicked;
+	public Axis? CurrentAxisSelected;
+	private Transform selectedTransform;
 
-	public TransformHandle() : base()
-	{
-		//Awoken = false;
-		//instance = this;
-	}
 	public override void Awake()
 	{
 		objectSelected = false;
@@ -64,7 +64,7 @@ public class TransformHandle : Component
 			boxRendererX = gameObject.AddComponent<BoxRenderer>();
 			boxRendererY = gameObject.AddComponent<BoxRenderer>();
 
-			boxRendererXY.Layer =1000;
+			boxRendererXY.Layer = 1000;
 			boxRendererX.Layer = 1000;
 			boxRendererY.Layer = 1000;
 
@@ -76,24 +76,21 @@ public class TransformHandle : Component
 			boxRendererXY.boxShape = boxColliderXY;
 			boxRendererY.boxShape = boxColliderY;
 		}
+
 		base.Awake();
 	}
+
 	private void SetSelectedObjectRigidbodyAwake(bool tgl)
 	{
-		if (selectedTransform?.HasComponent<Rigidbody>() == true && selectedTransform?.GetComponent<Rigidbody>().body?.Awake == false)
-		{
-			selectedTransform.GetComponent<Rigidbody>().body.Awake = tgl;
-		}
+		if (selectedTransform?.HasComponent<Rigidbody>() == true && selectedTransform?.GetComponent<Rigidbody>().body?.Awake == false) selectedTransform.GetComponent<Rigidbody>().body.Awake = tgl;
 	}
+
 	public override void Update()
 	{
 		transform.scale = Vector3.One * Camera.I.ortographicSize;
 
-		if (MouseInput.ButtonReleased(MouseInput.Buttons.Left))
-		{
-			CurrentAxisSelected = null;
-		}
-		if (MouseInput.ButtonPressed(MouseInput.Buttons.Left))
+		if (MouseInput.ButtonReleased()) CurrentAxisSelected = null;
+		if (MouseInput.ButtonPressed())
 		{
 			clicked = false;
 			if (MouseInput.WorldPosition.In(boxColliderX))
@@ -101,11 +98,13 @@ public class TransformHandle : Component
 				CurrentAxisSelected = Axis.X;
 				clicked = true;
 			}
+
 			if (MouseInput.WorldPosition.In(boxColliderY))
 			{
 				CurrentAxisSelected = Axis.Y;
 				clicked = true;
 			}
+
 			if (MouseInput.WorldPosition.In(boxColliderXY))
 			{
 				CurrentAxisSelected = Axis.XY;
@@ -113,7 +112,7 @@ public class TransformHandle : Component
 			}
 		}
 
-		if (MouseInput.IsButtonDown(MouseInput.Buttons.Left) && gameObject.activeInHierarchy && clicked)
+		if (MouseInput.IsButtonDown() && gameObject.activeInHierarchy && clicked)
 		{
 			SetSelectedObjectRigidbodyAwake(false);
 			Move(MouseInput.WorldDelta);
@@ -124,46 +123,22 @@ public class TransformHandle : Component
 		}
 
 		if (objectSelected == false || selectedTransform == null)
-		{
 			//GameObject.Active = false;
 			return;
-		}
-		else
-		{
-			//GameObject.Active = true;
-		}
 
 		transform.position = selectedTransform.position;
-		if (MouseInput.WorldPosition.In(boxColliderX) || CurrentAxisSelected == Axis.X)
-		{
-			boxRendererX.color = Color.WhiteSmoke;
-		}
-		else
-		{
-			boxRendererX.color = Color.Red;
-		}
-		if (MouseInput.WorldPosition.In(boxColliderY) || CurrentAxisSelected == Axis.Y)
-		{
-			boxRendererY.color = Color.WhiteSmoke;
-		}
-		else
-		{
-			boxRendererY.color = Color.Cyan;
-		}
-		if (MouseInput.WorldPosition.In(boxColliderXY) || CurrentAxisSelected == Axis.XY)
-		{
-			boxRendererXY.color = Color.WhiteSmoke;
-		}
-		else
-		{
-			boxRendererXY.color = Color.Orange;
-		}
+		if (MouseInput.WorldPosition.In(boxColliderX) || CurrentAxisSelected == Axis.X) boxRendererX.color = Color.WhiteSmoke;
+		else boxRendererX.color = Color.Red;
+		if (MouseInput.WorldPosition.In(boxColliderY) || CurrentAxisSelected == Axis.Y) boxRendererY.color = Color.WhiteSmoke;
+		else boxRendererY.color = Color.Cyan;
+		if (MouseInput.WorldPosition.In(boxColliderXY) || CurrentAxisSelected == Axis.XY) boxRendererXY.color = Color.WhiteSmoke;
+		else boxRendererXY.color = Color.Orange;
 		base.Update();
 	}
 
 	public void Move(Vector3 deltaVector)
 	{
-		Vector3 moveVector = Vector3.Zero;
+		var moveVector = Vector3.Zero;
 		switch (CurrentAxisSelected)
 		{
 			case Axis.X:
@@ -176,41 +151,35 @@ public class TransformHandle : Component
 				moveVector += deltaVector;
 				break;
 		}
-		transform.position += moveVector;// we will grab it with offset, soe we want to move it only by change of mouse position
+
+		transform.position += moveVector; // we will grab it with offset, soe we want to move it only by change of mouse position
 		selectedTransform.position = transform.position;
 
-		for (int i = 0; i < selectedTransform.children.Count; i++)
-		{
-			selectedTransform.children[i].position += moveVector;
-		}
+		for (var i = 0; i < selectedTransform.children.Count; i++) selectedTransform.children[i].position += moveVector;
 
 		if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().isButton == false)
-		{
 			lock (Physics.World)
 			{
-				Rigidbody rigidbody = selectedTransform.GetComponent<Rigidbody>();
+				var rigidbody = selectedTransform.GetComponent<Rigidbody>();
 				rigidbody.Velocity = Vector2.Zero;
 				rigidbody.body.Position = selectedTransform.position;
 			}
-		}
 
 		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftShift))
-		{
 			switch (CurrentAxisSelected)
 			{
 				case Axis.X:
-					selectedTransform.position = new Vector3(MouseInput.ScreenPosition.TranslateToGrid(10).X, selectedTransform.position.Y, 0);
+					selectedTransform.position = new Vector3(MouseInput.WorldPosition.TranslateToGrid().X, selectedTransform.position.Y, 0);
 					break;
 				case Axis.Y:
-					selectedTransform.position = new Vector3(selectedTransform.position.X, MouseInput.ScreenPosition.TranslateToGrid(10).Y, 0);
+					selectedTransform.position = new Vector3(selectedTransform.position.X, MouseInput.WorldPosition.TranslateToGrid().Y, 0);
 					break;
 				case Axis.XY:
-					selectedTransform.position = MouseInput.ScreenPosition.TranslateToGrid(10);
+					selectedTransform.position = MouseInput.WorldPosition.TranslateToGrid(50);
 					break;
 			}
-
-		}
 	}
+
 	public void SelectObject(GameObject selectedGO)
 	{
 		gameObject.activeSelf = selectedGO != null;
@@ -220,6 +189,7 @@ public class TransformHandle : Component
 			objectSelected = false;
 			return;
 		}
+
 		transform.position = selectedGO.transform.position;
 		selectedTransform = selectedGO.transform;
 		objectSelected = true;

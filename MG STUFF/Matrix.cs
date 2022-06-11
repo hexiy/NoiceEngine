@@ -10,7 +10,8 @@ using System.Runtime.Serialization;
 namespace Engine;
 
 /// <summary>
-/// Represents the right-handed 4x4 floating point matrix, which can store translation, scale and rotation information.
+///         Represents the right-handed 4x4 floating point matrix, which can store translation, scale and rotation
+///         information.
 /// </summary>
 [DataContract]
 [DebuggerDisplay("{DebugDisplayString,nq}")]
@@ -19,7 +20,7 @@ public struct Matrix : IEquatable<Matrix>
 	#region Public Constructors
 
 	/// <summary>
-	/// Constructs a matrix.
+	///         Constructs a matrix.
 	/// </summary>
 	/// <param name="m11">A first row and first column value.</param>
 	/// <param name="m12">A first row and second column value.</param>
@@ -38,28 +39,28 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="m43">A fourth row and third column value.</param>
 	/// <param name="m44">A fourth row and fourth column value.</param>
 	public Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31,
-				  float m32, float m33, float m34, float m41, float m42, float m43, float m44)
+	              float m32, float m33, float m34, float m41, float m42, float m43, float m44)
 	{
-		this.M11 = m11;
-		this.M12 = m12;
-		this.M13 = m13;
-		this.M14 = m14;
-		this.M21 = m21;
-		this.M22 = m22;
-		this.M23 = m23;
-		this.M24 = m24;
-		this.M31 = m31;
-		this.M32 = m32;
-		this.M33 = m33;
-		this.M34 = m34;
-		this.M41 = m41;
-		this.M42 = m42;
-		this.M43 = m43;
-		this.M44 = m44;
+		M11 = m11;
+		M12 = m12;
+		M13 = m13;
+		M14 = m14;
+		M21 = m21;
+		M22 = m22;
+		M23 = m23;
+		M24 = m24;
+		M31 = m31;
+		M32 = m32;
+		M33 = m33;
+		M34 = m34;
+		M41 = m41;
+		M42 = m42;
+		M43 = m43;
+		M44 = m44;
 	}
 
 	/// <summary>
-	/// Constructs a matrix.
+	///         Constructs a matrix.
 	/// </summary>
 	/// <param name="row1">A first row of the created matrix.</param>
 	/// <param name="row2">A second row of the created matrix.</param>
@@ -67,22 +68,22 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="row4">A fourth row of the created matrix.</param>
 	public Matrix(Vector4 row1, Vector4 row2, Vector4 row3, Vector4 row4)
 	{
-		this.M11 = row1.X;
-		this.M12 = row1.Y;
-		this.M13 = row1.Z;
-		this.M14 = row1.W;
-		this.M21 = row2.X;
-		this.M22 = row2.Y;
-		this.M23 = row2.Z;
-		this.M24 = row2.W;
-		this.M31 = row3.X;
-		this.M32 = row3.Y;
-		this.M33 = row3.Z;
-		this.M34 = row3.W;
-		this.M41 = row4.X;
-		this.M42 = row4.Y;
-		this.M43 = row4.Z;
-		this.M44 = row4.W;
+		M11 = row1.X;
+		M12 = row1.Y;
+		M13 = row1.Z;
+		M14 = row1.W;
+		M21 = row2.X;
+		M22 = row2.Y;
+		M23 = row2.Z;
+		M24 = row2.W;
+		M31 = row3.X;
+		M32 = row3.Y;
+		M33 = row3.Z;
+		M34 = row3.W;
+		M41 = row4.X;
+		M42 = row4.Y;
+		M43 = row4.Z;
+		M44 = row4.W;
 	}
 
 	#endregion
@@ -90,111 +91,95 @@ public struct Matrix : IEquatable<Matrix>
 	#region Public Fields
 
 	/// <summary>
-	/// A first row and first column value.
+	///         A first row and first column value.
 	/// </summary>
-	[DataMember]
-	public float M11;
+	[DataMember] public float M11;
 
 	/// <summary>
-	/// A first row and second column value.
+	///         A first row and second column value.
 	/// </summary>
-	[DataMember]
-	public float M12;
+	[DataMember] public float M12;
 
 	/// <summary>
-	/// A first row and third column value.
+	///         A first row and third column value.
 	/// </summary>
-	[DataMember]
-	public float M13;
+	[DataMember] public float M13;
 
 	/// <summary>
-	/// A first row and fourth column value.
+	///         A first row and fourth column value.
 	/// </summary>
-	[DataMember]
-	public float M14;
+	[DataMember] public float M14;
 
 	/// <summary>
-	/// A second row and first column value.
+	///         A second row and first column value.
 	/// </summary>
-	[DataMember]
-	public float M21;
+	[DataMember] public float M21;
 
 	/// <summary>
-	/// A second row and second column value.
+	///         A second row and second column value.
 	/// </summary>
-	[DataMember]
-	public float M22;
+	[DataMember] public float M22;
 
 	/// <summary>
-	/// A second row and third column value.
+	///         A second row and third column value.
 	/// </summary>
-	[DataMember]
-	public float M23;
+	[DataMember] public float M23;
 
 	/// <summary>
-	/// A second row and fourth column value.
+	///         A second row and fourth column value.
 	/// </summary>
-	[DataMember]
-	public float M24;
+	[DataMember] public float M24;
 
 	/// <summary>
-	/// A third row and first column value.
+	///         A third row and first column value.
 	/// </summary>
-	[DataMember]
-	public float M31;
+	[DataMember] public float M31;
 
 	/// <summary>
-	/// A third row and second column value.
+	///         A third row and second column value.
 	/// </summary>
-	[DataMember]
-	public float M32;
+	[DataMember] public float M32;
 
 	/// <summary>
-	/// A third row and third column value.
+	///         A third row and third column value.
 	/// </summary>
-	[DataMember]
-	public float M33;
+	[DataMember] public float M33;
 
 	/// <summary>
-	/// A third row and fourth column value.
+	///         A third row and fourth column value.
 	/// </summary>
-	[DataMember]
-	public float M34;
+	[DataMember] public float M34;
 
 	/// <summary>
-	/// A fourth row and first column value.
+	///         A fourth row and first column value.
 	/// </summary>
-	[DataMember]
-	public float M41;
+	[DataMember] public float M41;
 
 	/// <summary>
-	/// A fourth row and second column value.
+	///         A fourth row and second column value.
 	/// </summary>
-	[DataMember]
-	public float M42;
+	[DataMember] public float M42;
 
 	/// <summary>
-	/// A fourth row and third column value.
+	///         A fourth row and third column value.
 	/// </summary>
-	[DataMember]
-	public float M43;
+	[DataMember] public float M43;
 
 	/// <summary>
-	/// A fourth row and fourth column value.
+	///         A fourth row and fourth column value.
 	/// </summary>
-	[DataMember]
-	public float M44;
+	[DataMember] public float M44;
 
 	#endregion
 
 	#region Indexers
 
 	/// <summary>
-	/// Get or set the matrix element at the given index, indexed in row major order.
+	///         Get or set the matrix element at the given index, indexed in row major order.
 	/// </summary>
 	/// <param name="index">The linearized, zero-based index of the matrix element.</param>
 	/// <exception cref="ArgumentOutOfRangeException">
-	/// If the index is less than <code>0</code> or larger than <code>15</code>.
+	///         If the index is less than <code>0</code> or larger than <code>15</code>.
 	/// </exception>
 	public float this[int index]
 	{
@@ -202,23 +187,40 @@ public struct Matrix : IEquatable<Matrix>
 		{
 			switch (index)
 			{
-				case 0: return M11;
-				case 1: return M12;
-				case 2: return M13;
-				case 3: return M14;
-				case 4: return M21;
-				case 5: return M22;
-				case 6: return M23;
-				case 7: return M24;
-				case 8: return M31;
-				case 9: return M32;
-				case 10: return M33;
-				case 11: return M34;
-				case 12: return M41;
-				case 13: return M42;
-				case 14: return M43;
-				case 15: return M44;
+				case 0:
+					return M11;
+				case 1:
+					return M12;
+				case 2:
+					return M13;
+				case 3:
+					return M14;
+				case 4:
+					return M21;
+				case 5:
+					return M22;
+				case 6:
+					return M23;
+				case 7:
+					return M24;
+				case 8:
+					return M31;
+				case 9:
+					return M32;
+				case 10:
+					return M33;
+				case 11:
+					return M34;
+				case 12:
+					return M41;
+				case 13:
+					return M42;
+				case 14:
+					return M43;
+				case 15:
+					return M44;
 			}
+
 			throw new ArgumentOutOfRangeException();
 		}
 
@@ -226,191 +228,195 @@ public struct Matrix : IEquatable<Matrix>
 		{
 			switch (index)
 			{
-				case 0: M11 = value; break;
-				case 1: M12 = value; break;
-				case 2: M13 = value; break;
-				case 3: M14 = value; break;
-				case 4: M21 = value; break;
-				case 5: M22 = value; break;
-				case 6: M23 = value; break;
-				case 7: M24 = value; break;
-				case 8: M31 = value; break;
-				case 9: M32 = value; break;
-				case 10: M33 = value; break;
-				case 11: M34 = value; break;
-				case 12: M41 = value; break;
-				case 13: M42 = value; break;
-				case 14: M43 = value; break;
-				case 15: M44 = value; break;
-				default: throw new ArgumentOutOfRangeException();
+				case 0:
+					M11 = value;
+					break;
+				case 1:
+					M12 = value;
+					break;
+				case 2:
+					M13 = value;
+					break;
+				case 3:
+					M14 = value;
+					break;
+				case 4:
+					M21 = value;
+					break;
+				case 5:
+					M22 = value;
+					break;
+				case 6:
+					M23 = value;
+					break;
+				case 7:
+					M24 = value;
+					break;
+				case 8:
+					M31 = value;
+					break;
+				case 9:
+					M32 = value;
+					break;
+				case 10:
+					M33 = value;
+					break;
+				case 11:
+					M34 = value;
+					break;
+				case 12:
+					M41 = value;
+					break;
+				case 13:
+					M42 = value;
+					break;
+				case 14:
+					M43 = value;
+					break;
+				case 15:
+					M44 = value;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
 		}
 	}
 
 	/// <summary>
-	/// Get or set the value at the specified row and column (indices are zero-based).
+	///         Get or set the value at the specified row and column (indices are zero-based).
 	/// </summary>
 	/// <param name="row">The row of the element.</param>
 	/// <param name="column">The column of the element.</param>
 	/// <exception cref="ArgumentOutOfRangeException">
-	/// If the row or column is less than <code>0</code> or larger than <code>3</code>.
+	///         If the row or column is less than <code>0</code> or larger than <code>3</code>.
 	/// </exception>
 	public float this[int row, int column]
 	{
-		get
-		{
-			return this[(row * 4) + column];
-		}
+		get { return this[row * 4 + column]; }
 
-		set
-		{
-			this[(row * 4) + column] = value;
-		}
+		set { this[row * 4 + column] = value; }
 	}
 
 	#endregion
 
 	#region Private Members
-	private static Matrix identity = new Matrix(1f, 0f, 0f, 0f,
-												0f, 1f, 0f, 0f,
-												0f, 0f, 1f, 0f,
-												0f, 0f, 0f, 1f);
+
 	#endregion
 
 	#region Public Properties
 
 	/// <summary>
-	/// The backward vector formed from the third row M31, M32, M33 elements.
+	///         The backward vector formed from the third row M31, M32, M33 elements.
 	/// </summary>
 	public Vector3 Backward
 	{
-		get
-		{
-			return new Vector3(this.M31, this.M32, this.M33);
-		}
+		get { return new Vector3(M31, M32, M33); }
 		set
 		{
-			this.M31 = value.X;
-			this.M32 = value.Y;
-			this.M33 = value.Z;
+			M31 = value.X;
+			M32 = value.Y;
+			M33 = value.Z;
 		}
 	}
 
 	/// <summary>
-	/// The down vector formed from the second row -M21, -M22, -M23 elements.
+	///         The down vector formed from the second row -M21, -M22, -M23 elements.
 	/// </summary>
 	public Vector3 Down
 	{
-		get
-		{
-			return new Vector3(-this.M21, -this.M22, -this.M23);
-		}
+		get { return new Vector3(-M21, -M22, -M23); }
 		set
 		{
-			this.M21 = -value.X;
-			this.M22 = -value.Y;
-			this.M23 = -value.Z;
+			M21 = -value.X;
+			M22 = -value.Y;
+			M23 = -value.Z;
 		}
 	}
 
 	/// <summary>
-	/// The forward vector formed from the third row -M31, -M32, -M33 elements.
+	///         The forward vector formed from the third row -M31, -M32, -M33 elements.
 	/// </summary>
 	public Vector3 Forward
 	{
-		get
-		{
-			return new Vector3(-this.M31, -this.M32, -this.M33);
-		}
+		get { return new Vector3(-M31, -M32, -M33); }
 		set
 		{
-			this.M31 = -value.X;
-			this.M32 = -value.Y;
-			this.M33 = -value.Z;
+			M31 = -value.X;
+			M32 = -value.Y;
+			M33 = -value.Z;
 		}
 	}
 
 	/// <summary>
-	/// Returns the identity matrix.
+	///         Returns the identity matrix.
 	/// </summary>
-	public static Matrix Identity
-	{
-		get { return identity; }
-	}
+	public static Matrix Identity { get; } = new(1f, 0f, 0f, 0f,
+	                                             0f, 1f, 0f, 0f,
+	                                             0f, 0f, 1f, 0f,
+	                                             0f, 0f, 0f, 1f);
 
 	/// <summary>
-	/// The left vector formed from the first row -M11, -M12, -M13 elements.
+	///         The left vector formed from the first row -M11, -M12, -M13 elements.
 	/// </summary>
 	public Vector3 Left
 	{
-		get
-		{
-			return new Vector3(-this.M11, -this.M12, -this.M13);
-		}
+		get { return new Vector3(-M11, -M12, -M13); }
 		set
 		{
-			this.M11 = -value.X;
-			this.M12 = -value.Y;
-			this.M13 = -value.Z;
+			M11 = -value.X;
+			M12 = -value.Y;
+			M13 = -value.Z;
 		}
 	}
 
 	/// <summary>
-	/// The right vector formed from the first row M11, M12, M13 elements.
+	///         The right vector formed from the first row M11, M12, M13 elements.
 	/// </summary>
 	public Vector3 Right
 	{
-		get
-		{
-			return new Vector3(this.M11, this.M12, this.M13);
-		}
+		get { return new Vector3(M11, M12, M13); }
 		set
 		{
-			this.M11 = value.X;
-			this.M12 = value.Y;
-			this.M13 = value.Z;
+			M11 = value.X;
+			M12 = value.Y;
+			M13 = value.Z;
 		}
 	}
 
 	/// <summary>
-	/// Position stored in this matrix.
+	///         Position stored in this matrix.
 	/// </summary>
 	public Vector3 Translation
 	{
-		get
-		{
-			return new Vector3(this.M41, this.M42, this.M43);
-		}
+		get { return new Vector3(M41, M42, M43); }
 		set
 		{
-			this.M41 = value.X;
-			this.M42 = value.Y;
-			this.M43 = value.Z;
+			M41 = value.X;
+			M42 = value.Y;
+			M43 = value.Z;
 		}
 	}
 
 	/// <summary>
-	/// The upper vector formed from the second row M21, M22, M23 elements.
+	///         The upper vector formed from the second row M21, M22, M23 elements.
 	/// </summary>
 	public Vector3 Up
 	{
-		get
-		{
-			return new Vector3(this.M21, this.M22, this.M23);
-		}
+		get { return new Vector3(M21, M22, M23); }
 		set
 		{
-			this.M21 = value.X;
-			this.M22 = value.Y;
-			this.M23 = value.Z;
+			M21 = value.X;
+			M22 = value.Y;
+			M23 = value.Z;
 		}
 	}
+
 	#endregion
 
 	#region Public Methods
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> which contains sum of two matrixes.
+	///         Creates a new <see cref="Matrix" /> which contains sum of two matrixes.
 	/// </summary>
 	/// <param name="matrix1">The first matrix to add.</param>
 	/// <param name="matrix2">The second matrix to add.</param>
@@ -437,7 +443,7 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> which contains sum of two matrixes.
+	///         Creates a new <see cref="Matrix" /> which contains sum of two matrixes.
 	/// </summary>
 	/// <param name="matrix1">The first matrix to add.</param>
 	/// <param name="matrix2">The second matrix to add.</param>
@@ -460,19 +466,18 @@ public struct Matrix : IEquatable<Matrix>
 		result.M42 = matrix1.M42 + matrix2.M42;
 		result.M43 = matrix1.M43 + matrix2.M43;
 		result.M44 = matrix1.M44 + matrix2.M44;
-
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> for spherical billboarding that rotates around specified object position.
+	///         Creates a new <see cref="Matrix" /> for spherical billboarding that rotates around specified object position.
 	/// </summary>
 	/// <param name="objectPosition">Position of billboard object. It will rotate around that vector.</param>
 	/// <param name="cameraPosition">The camera position.</param>
 	/// <param name="cameraUpVector">The camera up vector.</param>
 	/// <param name="cameraForwardVector">Optional camera forward vector.</param>
-	/// <returns>The <see cref="Matrix"/> for spherical billboarding.</returns>
+	/// <returns>The <see cref="Matrix" /> for spherical billboarding.</returns>
 	public static Matrix CreateBillboard(Vector3 objectPosition, Vector3 cameraPosition,
-		Vector3 cameraUpVector, Nullable<Vector3> cameraForwardVector)
+	                                     Vector3 cameraUpVector, Vector3? cameraForwardVector)
 	{
 		Matrix result;
 
@@ -483,15 +488,15 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> for spherical billboarding that rotates around specified object position.
+	///         Creates a new <see cref="Matrix" /> for spherical billboarding that rotates around specified object position.
 	/// </summary>
 	/// <param name="objectPosition">Position of billboard object. It will rotate around that vector.</param>
 	/// <param name="cameraPosition">The camera position.</param>
 	/// <param name="cameraUpVector">The camera up vector.</param>
 	/// <param name="cameraForwardVector">Optional camera forward vector.</param>
-	/// <param name="result">The <see cref="Matrix"/> for spherical billboarding as an output parameter.</param>
+	/// <param name="result">The <see cref="Matrix" /> for spherical billboarding as an output parameter.</param>
 	public static void CreateBillboard(ref Vector3 objectPosition, ref Vector3 cameraPosition,
-		ref Vector3 cameraUpVector, Vector3? cameraForwardVector, out Matrix result)
+	                                   ref Vector3 cameraUpVector, Vector3? cameraForwardVector, out Matrix result)
 	{
 		Vector3 vector;
 		Vector3 vector2;
@@ -499,15 +504,9 @@ public struct Matrix : IEquatable<Matrix>
 		vector.X = objectPosition.X - cameraPosition.X;
 		vector.Y = objectPosition.Y - cameraPosition.Y;
 		vector.Z = objectPosition.Z - cameraPosition.Z;
-		float num = vector.LengthSquared();
-		if (num < 0.0001f)
-		{
-			vector = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
-		}
-		else
-		{
-			Vector3.Multiply(ref vector, 1f / MathF.Sqrt(num), out vector);
-		}
+		var num = vector.LengthSquared();
+		if (num < 0.0001f) vector = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
+		else Vector3.Multiply(ref vector, 1f / MathF.Sqrt(num), out vector);
 		Vector3.Cross(ref cameraUpVector, ref vector, out vector3);
 		vector3.Normalize();
 		Vector3.Cross(ref vector, ref vector3, out vector2);
@@ -530,34 +529,34 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> for cylindrical billboarding that rotates around specified axis.
+	///         Creates a new <see cref="Matrix" /> for cylindrical billboarding that rotates around specified axis.
 	/// </summary>
 	/// <param name="objectPosition">Object position the billboard will rotate around.</param>
 	/// <param name="cameraPosition">Camera position.</param>
 	/// <param name="rotateAxis">Axis of billboard for rotation.</param>
 	/// <param name="cameraForwardVector">Optional camera forward vector.</param>
 	/// <param name="objectForwardVector">Optional object forward vector.</param>
-	/// <returns>The <see cref="Matrix"/> for cylindrical billboarding.</returns>
+	/// <returns>The <see cref="Matrix" /> for cylindrical billboarding.</returns>
 	public static Matrix CreateConstrainedBillboard(Vector3 objectPosition, Vector3 cameraPosition,
-		Vector3 rotateAxis, Nullable<Vector3> cameraForwardVector, Nullable<Vector3> objectForwardVector)
+	                                                Vector3 rotateAxis, Vector3? cameraForwardVector, Vector3? objectForwardVector)
 	{
 		Matrix result;
 		CreateConstrainedBillboard(ref objectPosition, ref cameraPosition, ref rotateAxis,
-			cameraForwardVector, objectForwardVector, out result);
+		                           cameraForwardVector, objectForwardVector, out result);
 		return result;
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> for cylindrical billboarding that rotates around specified axis.
+	///         Creates a new <see cref="Matrix" /> for cylindrical billboarding that rotates around specified axis.
 	/// </summary>
 	/// <param name="objectPosition">Object position the billboard will rotate around.</param>
 	/// <param name="cameraPosition">Camera position.</param>
 	/// <param name="rotateAxis">Axis of billboard for rotation.</param>
 	/// <param name="cameraForwardVector">Optional camera forward vector.</param>
 	/// <param name="objectForwardVector">Optional object forward vector.</param>
-	/// <param name="result">The <see cref="Matrix"/> for cylindrical billboarding as an output parameter.</param>
+	/// <param name="result">The <see cref="Matrix" /> for cylindrical billboarding as an output parameter.</param>
 	public static void CreateConstrainedBillboard(ref Vector3 objectPosition, ref Vector3 cameraPosition,
-		ref Vector3 rotateAxis, Vector3? cameraForwardVector, Vector3? objectForwardVector, out Matrix result)
+	                                              ref Vector3 rotateAxis, Vector3? cameraForwardVector, Vector3? objectForwardVector, out Matrix result)
 	{
 		float num;
 		Vector3 vector;
@@ -566,16 +565,10 @@ public struct Matrix : IEquatable<Matrix>
 		vector2.X = objectPosition.X - cameraPosition.X;
 		vector2.Y = objectPosition.Y - cameraPosition.Y;
 		vector2.Z = objectPosition.Z - cameraPosition.Z;
-		float num2 = vector2.LengthSquared();
-		if (num2 < 0.0001f)
-		{
-			vector2 = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
-		}
-		else
-		{
-			Vector3.Multiply(ref vector2, 1f / MathF.Sqrt(num2), out vector2);
-		}
-		Vector3 vector4 = rotateAxis;
+		var num2 = vector2.LengthSquared();
+		if (num2 < 0.0001f) vector2 = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
+		else Vector3.Multiply(ref vector2, 1f / MathF.Sqrt(num2), out vector2);
+		var vector4 = rotateAxis;
 		Vector3.Dot(ref rotateAxis, ref vector2, out num);
 		if (Math.Abs(num) > 0.9982547f)
 		{
@@ -585,15 +578,16 @@ public struct Matrix : IEquatable<Matrix>
 				Vector3.Dot(ref rotateAxis, ref vector, out num);
 				if (Math.Abs(num) > 0.9982547f)
 				{
-					num = ((rotateAxis.X * Vector3.Forward.X) + (rotateAxis.Y * Vector3.Forward.Y)) + (rotateAxis.Z * Vector3.Forward.Z);
-					vector = (Math.Abs(num) > 0.9982547f) ? Vector3.Right : Vector3.Forward;
+					num = rotateAxis.X * Vector3.Forward.X + rotateAxis.Y * Vector3.Forward.Y + rotateAxis.Z * Vector3.Forward.Z;
+					vector = Math.Abs(num) > 0.9982547f ? Vector3.Right : Vector3.Forward;
 				}
 			}
 			else
 			{
-				num = ((rotateAxis.X * Vector3.Forward.X) + (rotateAxis.Y * Vector3.Forward.Y)) + (rotateAxis.Z * Vector3.Forward.Z);
-				vector = (Math.Abs(num) > 0.9982547f) ? Vector3.Right : Vector3.Forward;
+				num = rotateAxis.X * Vector3.Forward.X + rotateAxis.Y * Vector3.Forward.Y + rotateAxis.Z * Vector3.Forward.Z;
+				vector = Math.Abs(num) > 0.9982547f ? Vector3.Right : Vector3.Forward;
 			}
+
 			Vector3.Cross(ref rotateAxis, ref vector, out vector3);
 			vector3.Normalize();
 			Vector3.Cross(ref vector3, ref rotateAxis, out vector);
@@ -606,6 +600,7 @@ public struct Matrix : IEquatable<Matrix>
 			Vector3.Cross(ref vector3, ref vector4, out vector);
 			vector.Normalize();
 		}
+
 		result.M11 = vector3.X;
 		result.M12 = vector3.Y;
 		result.M13 = vector3.Z;
@@ -622,15 +617,14 @@ public struct Matrix : IEquatable<Matrix>
 		result.M42 = objectPosition.Y;
 		result.M43 = objectPosition.Z;
 		result.M44 = 1;
-
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> which contains the rotation moment around specified axis.
+	///         Creates a new <see cref="Matrix" /> which contains the rotation moment around specified axis.
 	/// </summary>
 	/// <param name="axis">The axis of rotation.</param>
 	/// <param name="angle">The angle of rotation in radians.</param>
-	/// <returns>The rotation <see cref="Matrix"/>.</returns>
+	/// <returns>The rotation <see cref="Matrix" />.</returns>
 	public static Matrix CreateFromAxisAngle(Vector3 axis, float angle)
 	{
 		Matrix result;
@@ -639,35 +633,35 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> which contains the rotation moment around specified axis.
+	///         Creates a new <see cref="Matrix" /> which contains the rotation moment around specified axis.
 	/// </summary>
 	/// <param name="axis">The axis of rotation.</param>
 	/// <param name="angle">The angle of rotation in radians.</param>
-	/// <param name="result">The rotation <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The rotation <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Matrix result)
 	{
-		float x = axis.X;
-		float y = axis.Y;
-		float z = axis.Z;
-		float num2 = MathF.Sin(angle);
-		float num = MathF.Cos(angle);
-		float num11 = x * x;
-		float num10 = y * y;
-		float num9 = z * z;
-		float num8 = x * y;
-		float num7 = x * z;
-		float num6 = y * z;
-		result.M11 = num11 + (num * (1f - num11));
-		result.M12 = (num8 - (num * num8)) + (num2 * z);
-		result.M13 = (num7 - (num * num7)) - (num2 * y);
+		var x = axis.X;
+		var y = axis.Y;
+		var z = axis.Z;
+		var num2 = MathF.Sin(angle);
+		var num = MathF.Cos(angle);
+		var num11 = x * x;
+		var num10 = y * y;
+		var num9 = z * z;
+		var num8 = x * y;
+		var num7 = x * z;
+		var num6 = y * z;
+		result.M11 = num11 + num * (1f - num11);
+		result.M12 = num8 - num * num8 + num2 * z;
+		result.M13 = num7 - num * num7 - num2 * y;
 		result.M14 = 0;
-		result.M21 = (num8 - (num * num8)) - (num2 * z);
-		result.M22 = num10 + (num * (1f - num10));
-		result.M23 = (num6 - (num * num6)) + (num2 * x);
+		result.M21 = num8 - num * num8 - num2 * z;
+		result.M22 = num10 + num * (1f - num10);
+		result.M23 = num6 - num * num6 + num2 * x;
 		result.M24 = 0;
-		result.M31 = (num7 - (num * num7)) + (num2 * y);
-		result.M32 = (num6 - (num * num6)) - (num2 * x);
-		result.M33 = num9 + (num * (1f - num9));
+		result.M31 = num7 - num * num7 + num2 * y;
+		result.M32 = num6 - num * num6 - num2 * x;
+		result.M33 = num9 + num * (1f - num9);
 		result.M34 = 0;
 		result.M41 = 0;
 		result.M42 = 0;
@@ -676,10 +670,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> from a <see cref="Quaternion"/>.
+	///         Creates a new rotation <see cref="Matrix" /> from a <see cref="Quaternion" />.
 	/// </summary>
-	/// <param name="quaternion"><see cref="Quaternion"/> of rotation moment.</param>
-	/// <returns>The rotation <see cref="Matrix"/>.</returns>
+	/// <param name="quaternion"><see cref="Quaternion" /> of rotation moment.</param>
+	/// <returns>The rotation <see cref="Matrix" />.</returns>
 	public static Matrix CreateFromQuaternion(Quaternion quaternion)
 	{
 		Matrix result;
@@ -688,32 +682,32 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> from a <see cref="Quaternion"/>.
+	///         Creates a new rotation <see cref="Matrix" /> from a <see cref="Quaternion" />.
 	/// </summary>
-	/// <param name="quaternion"><see cref="Quaternion"/> of rotation moment.</param>
-	/// <param name="result">The rotation <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="quaternion"><see cref="Quaternion" /> of rotation moment.</param>
+	/// <param name="result">The rotation <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix result)
 	{
-		float num9 = quaternion.X * quaternion.X;
-		float num8 = quaternion.Y * quaternion.Y;
-		float num7 = quaternion.Z * quaternion.Z;
-		float num6 = quaternion.X * quaternion.Y;
-		float num5 = quaternion.Z * quaternion.W;
-		float num4 = quaternion.Z * quaternion.X;
-		float num3 = quaternion.Y * quaternion.W;
-		float num2 = quaternion.Y * quaternion.Z;
-		float num = quaternion.X * quaternion.W;
-		result.M11 = 1f - (2f * (num8 + num7));
+		var num9 = quaternion.X * quaternion.X;
+		var num8 = quaternion.Y * quaternion.Y;
+		var num7 = quaternion.Z * quaternion.Z;
+		var num6 = quaternion.X * quaternion.Y;
+		var num5 = quaternion.Z * quaternion.W;
+		var num4 = quaternion.Z * quaternion.X;
+		var num3 = quaternion.Y * quaternion.W;
+		var num2 = quaternion.Y * quaternion.Z;
+		var num = quaternion.X * quaternion.W;
+		result.M11 = 1f - 2f * (num8 + num7);
 		result.M12 = 2f * (num6 + num5);
 		result.M13 = 2f * (num4 - num3);
 		result.M14 = 0f;
 		result.M21 = 2f * (num6 - num5);
-		result.M22 = 1f - (2f * (num7 + num9));
+		result.M22 = 1f - 2f * (num7 + num9);
 		result.M23 = 2f * (num2 + num);
 		result.M24 = 0f;
 		result.M31 = 2f * (num4 + num3);
 		result.M32 = 2f * (num2 - num);
-		result.M33 = 1f - (2f * (num8 + num9));
+		result.M33 = 1f - 2f * (num8 + num9);
 		result.M34 = 0f;
 		result.M41 = 0f;
 		result.M42 = 0f;
@@ -722,13 +716,14 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> from the specified yaw, pitch and roll values.
+	///         Creates a new rotation <see cref="Matrix" /> from the specified yaw, pitch and roll values.
 	/// </summary>
 	/// <param name="yaw">The yaw rotation value in radians.</param>
 	/// <param name="pitch">The pitch rotation value in radians.</param>
 	/// <param name="roll">The roll rotation value in radians.</param>
-	/// <returns>The rotation <see cref="Matrix"/>.</returns>
-	/// <remarks>For more information about yaw, pitch and roll visit http://en.wikipedia.org/wiki/Euler_angles.
+	/// <returns>The rotation <see cref="Matrix" />.</returns>
+	/// <remarks>
+	///         For more information about yaw, pitch and roll visit http://en.wikipedia.org/wiki/Euler_angles.
 	/// </remarks>
 	public static Matrix CreateFromYawPitchRoll(float yaw, float pitch, float roll)
 	{
@@ -738,28 +733,29 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> from the specified yaw, pitch and roll values.
+	///         Creates a new rotation <see cref="Matrix" /> from the specified yaw, pitch and roll values.
 	/// </summary>
 	/// <param name="yaw">The yaw rotation value in radians.</param>
 	/// <param name="pitch">The pitch rotation value in radians.</param>
 	/// <param name="roll">The roll rotation value in radians.</param>
-	/// <param name="result">The rotation <see cref="Matrix"/> as an output parameter.</param>
-	/// <remarks>For more information about yaw, pitch and roll visit http://en.wikipedia.org/wiki/Euler_angles.
+	/// <param name="result">The rotation <see cref="Matrix" /> as an output parameter.</param>
+	/// <remarks>
+	///         For more information about yaw, pitch and roll visit http://en.wikipedia.org/wiki/Euler_angles.
 	/// </remarks>
 	public static void CreateFromYawPitchRoll(float yaw, float pitch, float roll, out Matrix result)
 	{
-		Quaternion quaternion = Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll);
+		var quaternion = Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll);
 
 		CreateFromQuaternion(ref quaternion, out result);
 	}
 
 	/// <summary>
-	/// Creates a new viewing <see cref="Matrix"/>.
+	///         Creates a new viewing <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="cameraPosition">Position of the camera.</param>
 	/// <param name="cameraTarget">Lookup vector of the camera.</param>
 	/// <param name="cameraUpVector">The direction of the upper edge of the camera.</param>
-	/// <returns>The viewing <see cref="Matrix"/>.</returns>
+	/// <returns>The viewing <see cref="Matrix" />.</returns>
 	public static Matrix CreateLookAt(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector)
 	{
 		Matrix matrix;
@@ -768,12 +764,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new viewing <see cref="Matrix"/>.
+	///         Creates a new viewing <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="cameraPosition">Position of the camera.</param>
 	/// <param name="cameraTarget">Lookup vector of the camera.</param>
 	/// <param name="cameraUpVector">The direction of the upper edge of the camera.</param>
-	/// <param name="result">The viewing <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The viewing <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateLookAt(ref Vector3 cameraPosition, ref Vector3 cameraTarget, ref Vector3 cameraUpVector, out Matrix result)
 	{
 		var vector = Vector3.Normalize(cameraPosition - cameraTarget);
@@ -798,13 +794,13 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for orthographic view.
+	///         Creates a new projection <see cref="Matrix" /> for orthographic view.
 	/// </summary>
 	/// <param name="width">Width of the viewing volume.</param>
 	/// <param name="height">Height of the viewing volume.</param>
 	/// <param name="zNearPlane">Depth of the near plane.</param>
 	/// <param name="zFarPlane">Depth of the far plane.</param>
-	/// <returns>The new projection <see cref="Matrix"/> for orthographic view.</returns>
+	/// <returns>The new projection <see cref="Matrix" /> for orthographic view.</returns>
 	public static Matrix CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
 	{
 		Matrix matrix;
@@ -813,13 +809,13 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for orthographic view.
+	///         Creates a new projection <see cref="Matrix" /> for orthographic view.
 	/// </summary>
 	/// <param name="width">Width of the viewing volume.</param>
 	/// <param name="height">Height of the viewing volume.</param>
 	/// <param name="zNearPlane">Depth of the near plane.</param>
 	/// <param name="zFarPlane">Depth of the far plane.</param>
-	/// <param name="result">The new projection <see cref="Matrix"/> for orthographic view as an output parameter.</param>
+	/// <param name="result">The new projection <see cref="Matrix" /> for orthographic view as an output parameter.</param>
 	public static void CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane, out Matrix result)
 	{
 		result.M11 = 2f / width;
@@ -834,7 +830,7 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for customized orthographic view.
+	///         Creates a new projection <see cref="Matrix" /> for customized orthographic view.
 	/// </summary>
 	/// <param name="left">Lower x-value at the near plane.</param>
 	/// <param name="right">Upper x-value at the near plane.</param>
@@ -842,7 +838,7 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="top">Upper y-value at the near plane.</param>
 	/// <param name="zNearPlane">Depth of the near plane.</param>
 	/// <param name="zFarPlane">Depth of the far plane.</param>
-	/// <returns>The new projection <see cref="Matrix"/> for customized orthographic view.</returns>
+	/// <returns>The new projection <see cref="Matrix" /> for customized orthographic view.</returns>
 	public static Matrix CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane)
 	{
 		Matrix matrix;
@@ -851,12 +847,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for customized orthographic view.
+	///         Creates a new projection <see cref="Matrix" /> for customized orthographic view.
 	/// </summary>
 	/// <param name="viewingVolume">The viewing volume.</param>
 	/// <param name="zNearPlane">Depth of the near plane.</param>
 	/// <param name="zFarPlane">Depth of the far plane.</param>
-	/// <returns>The new projection <see cref="Matrix"/> for customized orthographic view.</returns>
+	/// <returns>The new projection <see cref="Matrix" /> for customized orthographic view.</returns>
 	public static Matrix CreateOrthographicOffCenter(Rectangle viewingVolume, float zNearPlane, float zFarPlane)
 	{
 		Matrix matrix;
@@ -865,7 +861,7 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for customized orthographic view.
+	///         Creates a new projection <see cref="Matrix" /> for customized orthographic view.
 	/// </summary>
 	/// <param name="left">Lower x-value at the near plane.</param>
 	/// <param name="right">Upper x-value at the near plane.</param>
@@ -873,35 +869,35 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="top">Upper y-value at the near plane.</param>
 	/// <param name="zNearPlane">Depth of the near plane.</param>
 	/// <param name="zFarPlane">Depth of the far plane.</param>
-	/// <param name="result">The new projection <see cref="Matrix"/> for customized orthographic view as an output parameter.</param>
+	/// <param name="result">The new projection <see cref="Matrix" /> for customized orthographic view as an output parameter.</param>
 	public static void CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane, out Matrix result)
 	{
-		result.M11 = (float)(2.0 / ((double)right - (double)left));
+		result.M11 = (float) (2.0 / (right - (double) left));
 		result.M12 = 0.0f;
 		result.M13 = 0.0f;
 		result.M14 = 0.0f;
 		result.M21 = 0.0f;
-		result.M22 = (float)(2.0 / ((double)top - (double)bottom));
+		result.M22 = (float) (2.0 / (top - (double) bottom));
 		result.M23 = 0.0f;
 		result.M24 = 0.0f;
 		result.M31 = 0.0f;
 		result.M32 = 0.0f;
-		result.M33 = (float)(1.0 / ((double)zNearPlane - (double)zFarPlane));
+		result.M33 = (float) (1.0 / (zNearPlane - (double) zFarPlane));
 		result.M34 = 0.0f;
-		result.M41 = (float)(((double)left + (double)right) / ((double)left - (double)right));
-		result.M42 = (float)(((double)top + (double)bottom) / ((double)bottom - (double)top));
-		result.M43 = (float)((double)zNearPlane / ((double)zNearPlane - (double)zFarPlane));
+		result.M41 = (float) ((left + (double) right) / (left - (double) right));
+		result.M42 = (float) ((top + (double) bottom) / (bottom - (double) top));
+		result.M43 = (float) (zNearPlane / (zNearPlane - (double) zFarPlane));
 		result.M44 = 1.0f;
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for perspective view.
+	///         Creates a new projection <see cref="Matrix" /> for perspective view.
 	/// </summary>
 	/// <param name="width">Width of the viewing volume.</param>
 	/// <param name="height">Height of the viewing volume.</param>
 	/// <param name="nearPlaneDistance">Distance to the near plane.</param>
 	/// <param name="farPlaneDistance">Distance to the far plane.</param>
-	/// <returns>The new projection <see cref="Matrix"/> for perspective view.</returns>
+	/// <returns>The new projection <see cref="Matrix" /> for perspective view.</returns>
 	public static Matrix CreatePerspective(float width, float height, float nearPlaneDistance, float farPlaneDistance)
 	{
 		Matrix matrix;
@@ -910,33 +906,24 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for perspective view.
+	///         Creates a new projection <see cref="Matrix" /> for perspective view.
 	/// </summary>
 	/// <param name="width">Width of the viewing volume.</param>
 	/// <param name="height">Height of the viewing volume.</param>
 	/// <param name="nearPlaneDistance">Distance to the near plane.</param>
-	/// <param name="farPlaneDistance">Distance to the far plane, or <see cref="float.PositiveInfinity"/>.</param>
-	/// <param name="result">The new projection <see cref="Matrix"/> for perspective view as an output parameter.</param>
+	/// <param name="farPlaneDistance">Distance to the far plane, or <see cref="float.PositiveInfinity" />.</param>
+	/// <param name="result">The new projection <see cref="Matrix" /> for perspective view as an output parameter.</param>
 	public static void CreatePerspective(float width, float height, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
 	{
-		if (nearPlaneDistance <= 0f)
-		{
-			throw new ArgumentException("nearPlaneDistance <= 0");
-		}
-		if (farPlaneDistance <= 0f)
-		{
-			throw new ArgumentException("farPlaneDistance <= 0");
-		}
-		if (nearPlaneDistance >= farPlaneDistance)
-		{
-			throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
-		}
+		if (nearPlaneDistance <= 0f) throw new ArgumentException("nearPlaneDistance <= 0");
+		if (farPlaneDistance <= 0f) throw new ArgumentException("farPlaneDistance <= 0");
+		if (nearPlaneDistance >= farPlaneDistance) throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
 
 		var negFarRange = float.IsPositiveInfinity(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-		result.M11 = (2.0f * nearPlaneDistance) / width;
+		result.M11 = 2.0f * nearPlaneDistance / width;
 		result.M12 = result.M13 = result.M14 = 0.0f;
-		result.M22 = (2.0f * nearPlaneDistance) / height;
+		result.M22 = 2.0f * nearPlaneDistance / height;
 		result.M21 = result.M23 = result.M24 = 0.0f;
 		result.M33 = negFarRange;
 		result.M31 = result.M32 = 0.0f;
@@ -946,13 +933,13 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for perspective view with field of view.
+	///         Creates a new projection <see cref="Matrix" /> for perspective view with field of view.
 	/// </summary>
 	/// <param name="fieldOfView">Field of view in the y direction in radians.</param>
 	/// <param name="aspectRatio">Width divided by height of the viewing volume.</param>
 	/// <param name="nearPlaneDistance">Distance to the near plane.</param>
-	/// <param name="farPlaneDistance">Distance to the far plane, or <see cref="float.PositiveInfinity"/>.</param>
-	/// <returns>The new projection <see cref="Matrix"/> for perspective view with FOV.</returns>
+	/// <param name="farPlaneDistance">Distance to the far plane, or <see cref="float.PositiveInfinity" />.</param>
+	/// <returns>The new projection <see cref="Matrix" /> for perspective view with FOV.</returns>
 	public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
 	{
 		Matrix result;
@@ -961,33 +948,21 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for perspective view with field of view.
+	///         Creates a new projection <see cref="Matrix" /> for perspective view with field of view.
 	/// </summary>
 	/// <param name="fieldOfView">Field of view in the y direction in radians.</param>
 	/// <param name="aspectRatio">Width divided by height of the viewing volume.</param>
 	/// <param name="nearPlaneDistance">Distance of the near plane.</param>
-	/// <param name="farPlaneDistance">Distance of the far plane, or <see cref="float.PositiveInfinity"/>.</param>
-	/// <param name="result">The new projection <see cref="Matrix"/> for perspective view with FOV as an output parameter.</param>
+	/// <param name="farPlaneDistance">Distance of the far plane, or <see cref="float.PositiveInfinity" />.</param>
+	/// <param name="result">The new projection <see cref="Matrix" /> for perspective view with FOV as an output parameter.</param>
 	public static void CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
 	{
-		if ((fieldOfView <= 0f) || (fieldOfView >= 3.141593f))
-		{
-			throw new ArgumentException("fieldOfView <= 0 or >= PI");
-		}
-		if (nearPlaneDistance <= 0f)
-		{
-			throw new ArgumentException("nearPlaneDistance <= 0");
-		}
-		if (farPlaneDistance <= 0f)
-		{
-			throw new ArgumentException("farPlaneDistance <= 0");
-		}
-		if (nearPlaneDistance >= farPlaneDistance)
-		{
-			throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
-		}
+		if (fieldOfView <= 0f || fieldOfView >= 3.141593f) throw new ArgumentException("fieldOfView <= 0 or >= PI");
+		if (nearPlaneDistance <= 0f) throw new ArgumentException("nearPlaneDistance <= 0");
+		if (farPlaneDistance <= 0f) throw new ArgumentException("farPlaneDistance <= 0");
+		if (nearPlaneDistance >= farPlaneDistance) throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
 
-		var yScale = 1.0f / (float)Math.Tan((double)fieldOfView * 0.5f);
+		var yScale = 1.0f / (float) Math.Tan((double) fieldOfView * 0.5f);
 		var xScale = yScale / aspectRatio;
 		var negFarRange = float.IsPositiveInfinity(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
@@ -1003,7 +978,7 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for customized perspective view.
+	///         Creates a new projection <see cref="Matrix" /> for customized perspective view.
 	/// </summary>
 	/// <param name="left">Lower x-value at the near plane.</param>
 	/// <param name="right">Upper x-value at the near plane.</param>
@@ -1011,7 +986,7 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="top">Upper y-value at the near plane.</param>
 	/// <param name="nearPlaneDistance">Distance to the near plane.</param>
 	/// <param name="farPlaneDistance">Distance to the far plane.</param>
-	/// <returns>The new <see cref="Matrix"/> for customized perspective view.</returns>
+	/// <returns>The new <see cref="Matrix" /> for customized perspective view.</returns>
 	public static Matrix CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlaneDistance, float farPlaneDistance)
 	{
 		Matrix result;
@@ -1020,12 +995,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for customized perspective view.
+	///         Creates a new projection <see cref="Matrix" /> for customized perspective view.
 	/// </summary>
 	/// <param name="viewingVolume">The viewing volume.</param>
 	/// <param name="nearPlaneDistance">Distance to the near plane.</param>
 	/// <param name="farPlaneDistance">Distance to the far plane.</param>
-	/// <returns>The new <see cref="Matrix"/> for customized perspective view.</returns>
+	/// <returns>The new <see cref="Matrix" /> for customized perspective view.</returns>
 	public static Matrix CreatePerspectiveOffCenter(Rectangle viewingVolume, float nearPlaneDistance, float farPlaneDistance)
 	{
 		Matrix result;
@@ -1034,7 +1009,7 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new projection <see cref="Matrix"/> for customized perspective view.
+	///         Creates a new projection <see cref="Matrix" /> for customized perspective view.
 	/// </summary>
 	/// <param name="left">Lower x-value at the near plane.</param>
 	/// <param name="right">Upper x-value at the near plane.</param>
@@ -1042,38 +1017,29 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="top">Upper y-value at the near plane.</param>
 	/// <param name="nearPlaneDistance">Distance to the near plane.</param>
 	/// <param name="farPlaneDistance">Distance to the far plane.</param>
-	/// <param name="result">The new <see cref="Matrix"/> for customized perspective view as an output parameter.</param>
+	/// <param name="result">The new <see cref="Matrix" /> for customized perspective view as an output parameter.</param>
 	public static void CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
 	{
-		if (nearPlaneDistance <= 0f)
-		{
-			throw new ArgumentException("nearPlaneDistance <= 0");
-		}
-		if (farPlaneDistance <= 0f)
-		{
-			throw new ArgumentException("farPlaneDistance <= 0");
-		}
-		if (nearPlaneDistance >= farPlaneDistance)
-		{
-			throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
-		}
-		result.M11 = (2f * nearPlaneDistance) / (right - left);
+		if (nearPlaneDistance <= 0f) throw new ArgumentException("nearPlaneDistance <= 0");
+		if (farPlaneDistance <= 0f) throw new ArgumentException("farPlaneDistance <= 0");
+		if (nearPlaneDistance >= farPlaneDistance) throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		result.M11 = 2f * nearPlaneDistance / (right - left);
 		result.M12 = result.M13 = result.M14 = 0;
-		result.M22 = (2f * nearPlaneDistance) / (top - bottom);
+		result.M22 = 2f * nearPlaneDistance / (top - bottom);
 		result.M21 = result.M23 = result.M24 = 0;
 		result.M31 = (left + right) / (right - left);
 		result.M32 = (top + bottom) / (top - bottom);
 		result.M33 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 		result.M34 = -1;
-		result.M43 = (nearPlaneDistance * farPlaneDistance) / (nearPlaneDistance - farPlaneDistance);
+		result.M43 = nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 		result.M41 = result.M42 = result.M44 = 0;
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> around X axis.
+	///         Creates a new rotation <see cref="Matrix" /> around X axis.
 	/// </summary>
 	/// <param name="radians">Angle in radians.</param>
-	/// <returns>The rotation <see cref="Matrix"/> around X axis.</returns>
+	/// <returns>The rotation <see cref="Matrix" /> around X axis.</returns>
 	public static Matrix CreateRotationX(float radians)
 	{
 		Matrix result;
@@ -1082,13 +1048,13 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> around X axis.
+	///         Creates a new rotation <see cref="Matrix" /> around X axis.
 	/// </summary>
 	/// <param name="radians">Angle in radians.</param>
-	/// <param name="result">The rotation <see cref="Matrix"/> around X axis as an output parameter.</param>
+	/// <param name="result">The rotation <see cref="Matrix" /> around X axis as an output parameter.</param>
 	public static void CreateRotationX(float radians, out Matrix result)
 	{
-		result = Matrix.Identity;
+		result = Identity;
 
 		var val1 = MathF.Cos(radians);
 		var val2 = MathF.Sin(radians);
@@ -1100,10 +1066,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> around Y axis.
+	///         Creates a new rotation <see cref="Matrix" /> around Y axis.
 	/// </summary>
 	/// <param name="radians">Angle in radians.</param>
-	/// <returns>The rotation <see cref="Matrix"/> around Y axis.</returns>
+	/// <returns>The rotation <see cref="Matrix" /> around Y axis.</returns>
 	public static Matrix CreateRotationY(float radians)
 	{
 		Matrix result;
@@ -1112,13 +1078,13 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> around Y axis.
+	///         Creates a new rotation <see cref="Matrix" /> around Y axis.
 	/// </summary>
 	/// <param name="radians">Angle in radians.</param>
-	/// <param name="result">The rotation <see cref="Matrix"/> around Y axis as an output parameter.</param>
+	/// <param name="result">The rotation <see cref="Matrix" /> around Y axis as an output parameter.</param>
 	public static void CreateRotationY(float radians, out Matrix result)
 	{
-		result = Matrix.Identity;
+		result = Identity;
 
 		var val1 = MathF.Cos(radians);
 		var val2 = MathF.Sin(radians);
@@ -1130,10 +1096,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> around Z axis.
+	///         Creates a new rotation <see cref="Matrix" /> around Z axis.
 	/// </summary>
 	/// <param name="radians">Angle in radians.</param>
-	/// <returns>The rotation <see cref="Matrix"/> around Z axis.</returns>
+	/// <returns>The rotation <see cref="Matrix" /> around Z axis.</returns>
 	public static Matrix CreateRotationZ(float radians)
 	{
 		Matrix result;
@@ -1142,13 +1108,13 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new rotation <see cref="Matrix"/> around Z axis.
+	///         Creates a new rotation <see cref="Matrix" /> around Z axis.
 	/// </summary>
 	/// <param name="radians">Angle in radians.</param>
-	/// <param name="result">The rotation <see cref="Matrix"/> around Z axis as an output parameter.</param>
+	/// <param name="result">The rotation <see cref="Matrix" /> around Z axis as an output parameter.</param>
 	public static void CreateRotationZ(float radians, out Matrix result)
 	{
-		result = Matrix.Identity;
+		result = Identity;
 
 		var val1 = MathF.Cos(radians);
 		var val2 = MathF.Sin(radians);
@@ -1160,10 +1126,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new scaling <see cref="Matrix"/>.
+	///         Creates a new scaling <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="scale">Scale value for all three axises.</param>
-	/// <returns>The scaling <see cref="Matrix"/>.</returns>
+	/// <returns>The scaling <see cref="Matrix" />.</returns>
 	public static Matrix CreateScale(float scale)
 	{
 		Matrix result;
@@ -1172,22 +1138,22 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new scaling <see cref="Matrix"/>.
+	///         Creates a new scaling <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="scale">Scale value for all three axises.</param>
-	/// <param name="result">The scaling <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The scaling <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateScale(float scale, out Matrix result)
 	{
 		CreateScale(scale, scale, scale, out result);
 	}
 
 	/// <summary>
-	/// Creates a new scaling <see cref="Matrix"/>.
+	///         Creates a new scaling <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="xScale">Scale value for X axis.</param>
 	/// <param name="yScale">Scale value for Y axis.</param>
 	/// <param name="zScale">Scale value for Z axis.</param>
-	/// <returns>The scaling <see cref="Matrix"/>.</returns>
+	/// <returns>The scaling <see cref="Matrix" />.</returns>
 	public static Matrix CreateScale(float xScale, float yScale, float zScale)
 	{
 		Matrix result;
@@ -1196,12 +1162,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new scaling <see cref="Matrix"/>.
+	///         Creates a new scaling <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="xScale">Scale value for X axis.</param>
 	/// <param name="yScale">Scale value for Y axis.</param>
 	/// <param name="zScale">Scale value for Z axis.</param>
-	/// <param name="result">The scaling <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The scaling <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateScale(float xScale, float yScale, float zScale, out Matrix result)
 	{
 		result.M11 = xScale;
@@ -1223,10 +1189,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new scaling <see cref="Matrix"/>.
+	///         Creates a new scaling <see cref="Matrix" />.
 	/// </summary>
-	/// <param name="scales"><see cref="Vector3"/> representing x,y and z scale values.</param>
-	/// <returns>The scaling <see cref="Matrix"/>.</returns>
+	/// <param name="scales"><see cref="Vector3" /> representing x,y and z scale values.</param>
+	/// <returns>The scaling <see cref="Matrix" />.</returns>
 	public static Matrix CreateScale(Vector3 scales)
 	{
 		Matrix result;
@@ -1235,10 +1201,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new scaling <see cref="Matrix"/>.
+	///         Creates a new scaling <see cref="Matrix" />.
 	/// </summary>
-	/// <param name="scales"><see cref="Vector3"/> representing x,y and z scale values.</param>
-	/// <param name="result">The scaling <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="scales"><see cref="Vector3" /> representing x,y and z scale values.</param>
+	/// <param name="result">The scaling <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateScale(ref Vector3 scales, out Matrix result)
 	{
 		result.M11 = scales.X;
@@ -1258,43 +1224,59 @@ public struct Matrix : IEquatable<Matrix>
 		result.M43 = 0;
 		result.M44 = 1;
 	}
+
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that flattens geometry into a specified <see cref="Plane"/> as if casting a shadow from a specified light source. 
+	///         Creates a new <see cref="Matrix" /> that flattens geometry into a specified <see cref="Plane" /> as if casting
+	///         a shadow from a specified light source.
 	/// </summary>
-	/// <param name="lightDirection">A vector specifying the direction from which the light that will cast the shadow is coming.</param>
+	/// <param name="lightDirection">
+	///         A vector specifying the direction from which the light that will cast the shadow is
+	///         coming.
+	/// </param>
 	/// <param name="plane">The plane onto which the new matrix should flatten geometry so as to cast a shadow.</param>
-	/// <returns>A <see cref="Matrix"/> that can be used to flatten geometry onto the specified plane from the specified direction. </returns>
+	/// <returns>
+	///         A <see cref="Matrix" /> that can be used to flatten geometry onto the specified plane from the specified
+	///         direction.
+	/// </returns>
 	public static Matrix CreateShadow(Vector3 lightDirection, Plane plane)
 	{
 		Matrix result;
 		CreateShadow(ref lightDirection, ref plane, out result);
 		return result;
 	}
+
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that flattens geometry into a specified <see cref="Plane"/> as if casting a shadow from a specified light source. 
+	///         Creates a new <see cref="Matrix" /> that flattens geometry into a specified <see cref="Plane" /> as if casting
+	///         a shadow from a specified light source.
 	/// </summary>
-	/// <param name="lightDirection">A vector specifying the direction from which the light that will cast the shadow is coming.</param>
+	/// <param name="lightDirection">
+	///         A vector specifying the direction from which the light that will cast the shadow is
+	///         coming.
+	/// </param>
 	/// <param name="plane">The plane onto which the new matrix should flatten geometry so as to cast a shadow.</param>
-	/// <param name="result">A <see cref="Matrix"/> that can be used to flatten geometry onto the specified plane from the specified direction as an output parameter.</param>
+	/// <param name="result">
+	///         A <see cref="Matrix" /> that can be used to flatten geometry onto the specified plane from the
+	///         specified direction as an output parameter.
+	/// </param>
 	public static void CreateShadow(ref Vector3 lightDirection, ref Plane plane, out Matrix result)
 	{
-		float dot = (plane.Normal.X * lightDirection.X) + (plane.Normal.Y * lightDirection.Y) + (plane.Normal.Z * lightDirection.Z);
-		float x = -plane.Normal.X;
-		float y = -plane.Normal.Y;
-		float z = -plane.Normal.Z;
-		float d = -plane.D;
+		var dot = plane.Normal.X * lightDirection.X + plane.Normal.Y * lightDirection.Y + plane.Normal.Z * lightDirection.Z;
+		var x = -plane.Normal.X;
+		var y = -plane.Normal.Y;
+		var z = -plane.Normal.Z;
+		var d = -plane.D;
 
-		result.M11 = (x * lightDirection.X) + dot;
+		result.M11 = x * lightDirection.X + dot;
 		result.M12 = x * lightDirection.Y;
 		result.M13 = x * lightDirection.Z;
 		result.M14 = 0;
 		result.M21 = y * lightDirection.X;
-		result.M22 = (y * lightDirection.Y) + dot;
+		result.M22 = y * lightDirection.Y + dot;
 		result.M23 = y * lightDirection.Z;
 		result.M24 = 0;
 		result.M31 = z * lightDirection.X;
 		result.M32 = z * lightDirection.Y;
-		result.M33 = (z * lightDirection.Z) + dot;
+		result.M33 = z * lightDirection.Z + dot;
 		result.M34 = 0;
 		result.M41 = d * lightDirection.X;
 		result.M42 = d * lightDirection.Y;
@@ -1303,12 +1285,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new translation <see cref="Matrix"/>.
+	///         Creates a new translation <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="xPosition">X coordinate of translation.</param>
 	/// <param name="yPosition">Y coordinate of translation.</param>
 	/// <param name="zPosition">Z coordinate of translation.</param>
-	/// <returns>The translation <see cref="Matrix"/>.</returns>
+	/// <returns>The translation <see cref="Matrix" />.</returns>
 	public static Matrix CreateTranslation(float xPosition, float yPosition, float zPosition)
 	{
 		Matrix result;
@@ -1317,10 +1299,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new translation <see cref="Matrix"/>.
+	///         Creates a new translation <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="position">X,Y and Z coordinates of translation.</param>
-	/// <param name="result">The translation <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The translation <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateTranslation(ref Vector3 position, out Matrix result)
 	{
 		result.M11 = 1;
@@ -1342,10 +1324,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new translation <see cref="Matrix"/>.
+	///         Creates a new translation <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="position">X,Y and Z coordinates of translation.</param>
-	/// <returns>The translation <see cref="Matrix"/>.</returns>
+	/// <returns>The translation <see cref="Matrix" />.</returns>
 	public static Matrix CreateTranslation(Vector3 position)
 	{
 		Matrix result;
@@ -1354,12 +1336,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new translation <see cref="Matrix"/>.
+	///         Creates a new translation <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="xPosition">X coordinate of translation.</param>
 	/// <param name="yPosition">Y coordinate of translation.</param>
 	/// <param name="zPosition">Z coordinate of translation.</param>
-	/// <param name="result">The translation <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The translation <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateTranslation(float xPosition, float yPosition, float zPosition, out Matrix result)
 	{
 		result.M11 = 1;
@@ -1381,10 +1363,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new reflection <see cref="Matrix"/>.
+	///         Creates a new reflection <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="value">The plane that used for reflection calculation.</param>
-	/// <returns>The reflection <see cref="Matrix"/>.</returns>
+	/// <returns>The reflection <see cref="Matrix" />.</returns>
 	public static Matrix CreateReflection(Plane value)
 	{
 		Matrix result;
@@ -1393,30 +1375,30 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new reflection <see cref="Matrix"/>.
+	///         Creates a new reflection <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="value">The plane that used for reflection calculation.</param>
-	/// <param name="result">The reflection <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="result">The reflection <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateReflection(ref Plane value, out Matrix result)
 	{
-		Plane plane = Plane.Normalize(value);
-		float x = plane.Normal.X;
-		float y = plane.Normal.Y;
-		float z = plane.Normal.Z;
-		float num3 = -2f * x;
-		float num2 = -2f * y;
-		float num = -2f * z;
-		result.M11 = (num3 * x) + 1f;
+		var plane = Plane.Normalize(value);
+		var x = plane.Normal.X;
+		var y = plane.Normal.Y;
+		var z = plane.Normal.Z;
+		var num3 = -2f * x;
+		var num2 = -2f * y;
+		var num = -2f * z;
+		result.M11 = num3 * x + 1f;
 		result.M12 = num2 * x;
 		result.M13 = num * x;
 		result.M14 = 0;
 		result.M21 = num3 * y;
-		result.M22 = (num2 * y) + 1;
+		result.M22 = num2 * y + 1;
 		result.M23 = num * y;
 		result.M24 = 0;
 		result.M31 = num3 * z;
 		result.M32 = num2 * z;
-		result.M33 = (num * z) + 1;
+		result.M33 = num * z + 1;
 		result.M34 = 0;
 		result.M41 = num3 * plane.D;
 		result.M42 = num2 * plane.D;
@@ -1425,12 +1407,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new world <see cref="Matrix"/>.
+	///         Creates a new world <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="position">The position vector.</param>
 	/// <param name="forward">The forward direction vector.</param>
-	/// <param name="up">The upward direction vector. Usually <see cref="Vector3.Up"/>.</param>
-	/// <returns>The world <see cref="Matrix"/>.</returns>
+	/// <param name="up">The upward direction vector. Usually <see cref="Vector3.Up" />.</param>
+	/// <returns>The world <see cref="Matrix" />.</returns>
 	public static Matrix CreateWorld(Vector3 position, Vector3 forward, Vector3 up)
 	{
 		Matrix ret;
@@ -1439,12 +1421,12 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new world <see cref="Matrix"/>.
+	///         Creates a new world <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="position">The position vector.</param>
 	/// <param name="forward">The forward direction vector.</param>
-	/// <param name="up">The upward direction vector. Usually <see cref="Vector3.Up"/>.</param>
-	/// <param name="result">The world <see cref="Matrix"/> as an output parameter.</param>
+	/// <param name="up">The upward direction vector. Usually <see cref="Vector3.Up" />.</param>
+	/// <param name="result">The world <see cref="Matrix" /> as an output parameter.</param>
 	public static void CreateWorld(ref Vector3 position, ref Vector3 forward, ref Vector3 up, out Matrix result)
 	{
 		Vector3 x, y, z;
@@ -1463,7 +1445,8 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Decomposes this matrix to translation, rotation and scale elements. Returns <c>true</c> if matrix can be decomposed; <c>false</c> otherwise.
+	///         Decomposes this matrix to translation, rotation and scale elements. Returns <c>true</c> if matrix can be
+	///         decomposed; <c>false</c> otherwise.
 	/// </summary>
 	/// <param name="scale">Scale vector as an output parameter.</param>
 	/// <param name="rotation">Rotation quaternion as an output parameter.</param>
@@ -1471,17 +1454,17 @@ public struct Matrix : IEquatable<Matrix>
 	/// <returns><c>true</c> if matrix can be decomposed; <c>false</c> otherwise.</returns>
 	public bool Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation)
 	{
-		translation.X = this.M41;
-		translation.Y = this.M42;
-		translation.Z = this.M43;
+		translation.X = M41;
+		translation.Y = M42;
+		translation.Z = M43;
 
-		float xs = (Math.Sign(M11 * M12 * M13 * M14) < 0) ? -1 : 1;
-		float ys = (Math.Sign(M21 * M22 * M23 * M24) < 0) ? -1 : 1;
-		float zs = (Math.Sign(M31 * M32 * M33 * M34) < 0) ? -1 : 1;
+		float xs = Math.Sign(M11 * M12 * M13 * M14) < 0 ? -1 : 1;
+		float ys = Math.Sign(M21 * M22 * M23 * M24) < 0 ? -1 : 1;
+		float zs = Math.Sign(M31 * M32 * M33 * M34) < 0 ? -1 : 1;
 
-		scale.X = xs * MathF.Sqrt(this.M11 * this.M11 + this.M12 * this.M12 + this.M13 * this.M13);
-		scale.Y = ys * MathF.Sqrt(this.M21 * this.M21 + this.M22 * this.M22 + this.M23 * this.M23);
-		scale.Z = zs * MathF.Sqrt(this.M31 * this.M31 + this.M32 * this.M32 + this.M33 * this.M33);
+		scale.X = xs * MathF.Sqrt(M11 * M11 + M12 * M12 + M13 * M13);
+		scale.Y = ys * MathF.Sqrt(M21 * M21 + M22 * M22 + M23 * M23);
+		scale.Z = zs * MathF.Sqrt(M31 * M31 + M32 * M32 + M33 * M33);
 
 		if (scale.X == 0.0 || scale.Y == 0.0 || scale.Z == 0.0)
 		{
@@ -1489,53 +1472,57 @@ public struct Matrix : IEquatable<Matrix>
 			return false;
 		}
 
-		Matrix m1 = new Matrix(this.M11 / scale.X, M12 / scale.X, M13 / scale.X, 0,
-							   this.M21 / scale.Y, M22 / scale.Y, M23 / scale.Y, 0,
-							   this.M31 / scale.Z, M32 / scale.Z, M33 / scale.Z, 0,
-							   0, 0, 0, 1);
+		var m1 = new Matrix(M11 / scale.X, M12 / scale.X, M13 / scale.X, 0,
+		                    M21 / scale.Y, M22 / scale.Y, M23 / scale.Y, 0,
+		                    M31 / scale.Z, M32 / scale.Z, M33 / scale.Z, 0,
+		                    0, 0, 0, 1);
 
 		rotation = Quaternion.CreateFromRotationMatrix(m1.ToNumerics());
 		return true;
 	}
 
 	/// <summary>
-	/// Returns a determinant of this <see cref="Matrix"/>.
+	///         Returns a determinant of this <see cref="Matrix" />.
 	/// </summary>
-	/// <returns>Determinant of this <see cref="Matrix"/></returns>
-	/// <remarks>See more about determinant here - http://en.wikipedia.org/wiki/Determinant.
+	/// <returns>Determinant of this <see cref="Matrix" /></returns>
+	/// <remarks>
+	///         See more about determinant here - http://en.wikipedia.org/wiki/Determinant.
 	/// </remarks>
 	public float Determinant()
 	{
-		float num22 = this.M11;
-		float num21 = this.M12;
-		float num20 = this.M13;
-		float num19 = this.M14;
-		float num12 = this.M21;
-		float num11 = this.M22;
-		float num10 = this.M23;
-		float num9 = this.M24;
-		float num8 = this.M31;
-		float num7 = this.M32;
-		float num6 = this.M33;
-		float num5 = this.M34;
-		float num4 = this.M41;
-		float num3 = this.M42;
-		float num2 = this.M43;
-		float num = this.M44;
-		float num18 = (num6 * num) - (num5 * num2);
-		float num17 = (num7 * num) - (num5 * num3);
-		float num16 = (num7 * num2) - (num6 * num3);
-		float num15 = (num8 * num) - (num5 * num4);
-		float num14 = (num8 * num2) - (num6 * num4);
-		float num13 = (num8 * num3) - (num7 * num4);
-		return ((((num22 * (((num11 * num18) - (num10 * num17)) + (num9 * num16))) - (num21 * (((num12 * num18) - (num10 * num15)) + (num9 * num14)))) + (num20 * (((num12 * num17) - (num11 * num15)) + (num9 * num13)))) - (num19 * (((num12 * num16) - (num11 * num14)) + (num10 * num13))));
+		var num22 = M11;
+		var num21 = M12;
+		var num20 = M13;
+		var num19 = M14;
+		var num12 = M21;
+		var num11 = M22;
+		var num10 = M23;
+		var num9 = M24;
+		var num8 = M31;
+		var num7 = M32;
+		var num6 = M33;
+		var num5 = M34;
+		var num4 = M41;
+		var num3 = M42;
+		var num2 = M43;
+		var num = M44;
+		var num18 = num6 * num - num5 * num2;
+		var num17 = num7 * num - num5 * num3;
+		var num16 = num7 * num2 - num6 * num3;
+		var num15 = num8 * num - num5 * num4;
+		var num14 = num8 * num2 - num6 * num4;
+		var num13 = num8 * num3 - num7 * num4;
+		return num22 * (num11 * num18 - num10 * num17 + num9 * num16)
+		     - num21 * (num12 * num18 - num10 * num15 + num9 * num14)
+		     + num20 * (num12 * num17 - num11 * num15 + num9 * num13)
+		     - num19 * (num12 * num16 - num11 * num14 + num10 * num13);
 	}
 
 	/// <summary>
-	/// Divides the elements of a <see cref="Matrix"/> by the elements of another matrix.
+	///         Divides the elements of a <see cref="Matrix" /> by the elements of another matrix.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">Divisor <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
+	/// <param name="matrix2">Divisor <see cref="Matrix" />.</param>
 	/// <returns>The result of dividing the matrix.</returns>
 	public static Matrix Divide(Matrix matrix1, Matrix matrix2)
 	{
@@ -1559,10 +1546,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Divides the elements of a <see cref="Matrix"/> by the elements of another matrix.
+	///         Divides the elements of a <see cref="Matrix" /> by the elements of another matrix.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">Divisor <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
+	/// <param name="matrix2">Divisor <see cref="Matrix" />.</param>
 	/// <param name="result">The result of dividing the matrix as an output parameter.</param>
 	public static void Divide(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
 	{
@@ -1585,14 +1572,14 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Divides the elements of a <see cref="Matrix"/> by a scalar.
+	///         Divides the elements of a <see cref="Matrix" /> by a scalar.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
 	/// <param name="divider">Divisor scalar.</param>
 	/// <returns>The result of dividing a matrix by a scalar.</returns>
 	public static Matrix Divide(Matrix matrix1, float divider)
 	{
-		float num = 1f / divider;
+		var num = 1f / divider;
 		matrix1.M11 = matrix1.M11 * num;
 		matrix1.M12 = matrix1.M12 * num;
 		matrix1.M13 = matrix1.M13 * num;
@@ -1613,14 +1600,14 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Divides the elements of a <see cref="Matrix"/> by a scalar.
+	///         Divides the elements of a <see cref="Matrix" /> by a scalar.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
 	/// <param name="divider">Divisor scalar.</param>
 	/// <param name="result">The result of dividing a matrix by a scalar as an output parameter.</param>
 	public static void Divide(ref Matrix matrix1, float divider, out Matrix result)
 	{
-		float num = 1f / divider;
+		var num = 1f / divider;
 		result.M11 = matrix1.M11 * num;
 		result.M12 = matrix1.M12 * num;
 		result.M13 = matrix1.M13 * num;
@@ -1640,43 +1627,70 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Compares whether current instance is equal to specified <see cref="Matrix"/> without any tolerance.
+	///         Compares whether current instance is equal to specified <see cref="Matrix" /> without any tolerance.
 	/// </summary>
-	/// <param name="other">The <see cref="Matrix"/> to compare.</param>
+	/// <param name="other">The <see cref="Matrix" /> to compare.</param>
 	/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 	public bool Equals(Matrix other)
 	{
-		return ((((((this.M11 == other.M11) && (this.M22 == other.M22)) && ((this.M33 == other.M33) && (this.M44 == other.M44))) && (((this.M12 == other.M12) && (this.M13 == other.M13)) && ((this.M14 == other.M14) && (this.M21 == other.M21)))) && ((((this.M23 == other.M23) && (this.M24 == other.M24)) && ((this.M31 == other.M31) && (this.M32 == other.M32))) && (((this.M34 == other.M34) && (this.M41 == other.M41)) && (this.M42 == other.M42)))) && (this.M43 == other.M43));
+		return M11 == other.M11
+		    && M22 == other.M22
+		    && M33 == other.M33
+		    && M44 == other.M44
+		    && M12 == other.M12
+		    && M13 == other.M13
+		    && M14 == other.M14
+		    && M21 == other.M21
+		    && M23 == other.M23
+		    && M24 == other.M24
+		    && M31 == other.M31
+		    && M32 == other.M32
+		    && M34 == other.M34
+		    && M41 == other.M41
+		    && M42 == other.M42
+		    && M43 == other.M43;
 	}
 
 	/// <summary>
-	/// Compares whether current instance is equal to specified <see cref="Object"/> without any tolerance.
+	///         Compares whether current instance is equal to specified <see cref="Object" /> without any tolerance.
 	/// </summary>
-	/// <param name="obj">The <see cref="Object"/> to compare.</param>
+	/// <param name="obj">The <see cref="Object" /> to compare.</param>
 	/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 	public override bool Equals(object obj)
 	{
-		bool flag = false;
-		if (obj is Matrix)
-		{
-			flag = this.Equals((Matrix)obj);
-		}
+		var flag = false;
+		if (obj is Matrix) flag = Equals((Matrix) obj);
 		return flag;
 	}
 
 	/// <summary>
-	/// Gets the hash code of this <see cref="Matrix"/>.
+	///         Gets the hash code of this <see cref="Matrix" />.
 	/// </summary>
-	/// <returns>Hash code of this <see cref="Matrix"/>.</returns>
+	/// <returns>Hash code of this <see cref="Matrix" />.</returns>
 	public override int GetHashCode()
 	{
-		return (((((((((((((((this.M11.GetHashCode() + this.M12.GetHashCode()) + this.M13.GetHashCode()) + this.M14.GetHashCode()) + this.M21.GetHashCode()) + this.M22.GetHashCode()) + this.M23.GetHashCode()) + this.M24.GetHashCode()) + this.M31.GetHashCode()) + this.M32.GetHashCode()) + this.M33.GetHashCode()) + this.M34.GetHashCode()) + this.M41.GetHashCode()) + this.M42.GetHashCode()) + this.M43.GetHashCode()) + this.M44.GetHashCode());
+		return M11.GetHashCode()
+		     + M12.GetHashCode()
+		     + M13.GetHashCode()
+		     + M14.GetHashCode()
+		     + M21.GetHashCode()
+		     + M22.GetHashCode()
+		     + M23.GetHashCode()
+		     + M24.GetHashCode()
+		     + M31.GetHashCode()
+		     + M32.GetHashCode()
+		     + M33.GetHashCode()
+		     + M34.GetHashCode()
+		     + M41.GetHashCode()
+		     + M42.GetHashCode()
+		     + M43.GetHashCode()
+		     + M44.GetHashCode();
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> which contains inversion of the specified matrix. 
+	///         Creates a new <see cref="Matrix" /> which contains inversion of the specified matrix.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix">Source <see cref="Matrix" />.</param>
 	/// <returns>The inverted matrix.</returns>
 	public static Matrix Invert(Matrix matrix)
 	{
@@ -1686,68 +1700,68 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> which contains inversion of the specified matrix. 
+	///         Creates a new <see cref="Matrix" /> which contains inversion of the specified matrix.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix">Source <see cref="Matrix" />.</param>
 	/// <param name="result">The inverted matrix as output parameter.</param>
 	public static void Invert(ref Matrix matrix, out Matrix result)
 	{
-		float num1 = matrix.M11;
-		float num2 = matrix.M12;
-		float num3 = matrix.M13;
-		float num4 = matrix.M14;
-		float num5 = matrix.M21;
-		float num6 = matrix.M22;
-		float num7 = matrix.M23;
-		float num8 = matrix.M24;
-		float num9 = matrix.M31;
-		float num10 = matrix.M32;
-		float num11 = matrix.M33;
-		float num12 = matrix.M34;
-		float num13 = matrix.M41;
-		float num14 = matrix.M42;
-		float num15 = matrix.M43;
-		float num16 = matrix.M44;
-		float num17 = (float)((double)num11 * (double)num16 - (double)num12 * (double)num15);
-		float num18 = (float)((double)num10 * (double)num16 - (double)num12 * (double)num14);
-		float num19 = (float)((double)num10 * (double)num15 - (double)num11 * (double)num14);
-		float num20 = (float)((double)num9 * (double)num16 - (double)num12 * (double)num13);
-		float num21 = (float)((double)num9 * (double)num15 - (double)num11 * (double)num13);
-		float num22 = (float)((double)num9 * (double)num14 - (double)num10 * (double)num13);
-		float num23 = (float)((double)num6 * (double)num17 - (double)num7 * (double)num18 + (double)num8 * (double)num19);
-		float num24 = (float)-((double)num5 * (double)num17 - (double)num7 * (double)num20 + (double)num8 * (double)num21);
-		float num25 = (float)((double)num5 * (double)num18 - (double)num6 * (double)num20 + (double)num8 * (double)num22);
-		float num26 = (float)-((double)num5 * (double)num19 - (double)num6 * (double)num21 + (double)num7 * (double)num22);
-		float num27 = (float)(1.0 / ((double)num1 * (double)num23 + (double)num2 * (double)num24 + (double)num3 * (double)num25 + (double)num4 * (double)num26));
+		var num1 = matrix.M11;
+		var num2 = matrix.M12;
+		var num3 = matrix.M13;
+		var num4 = matrix.M14;
+		var num5 = matrix.M21;
+		var num6 = matrix.M22;
+		var num7 = matrix.M23;
+		var num8 = matrix.M24;
+		var num9 = matrix.M31;
+		var num10 = matrix.M32;
+		var num11 = matrix.M33;
+		var num12 = matrix.M34;
+		var num13 = matrix.M41;
+		var num14 = matrix.M42;
+		var num15 = matrix.M43;
+		var num16 = matrix.M44;
+		var num17 = (float) (num11 * (double) num16 - num12 * (double) num15);
+		var num18 = (float) (num10 * (double) num16 - num12 * (double) num14);
+		var num19 = (float) (num10 * (double) num15 - num11 * (double) num14);
+		var num20 = (float) (num9 * (double) num16 - num12 * (double) num13);
+		var num21 = (float) (num9 * (double) num15 - num11 * (double) num13);
+		var num22 = (float) (num9 * (double) num14 - num10 * (double) num13);
+		var num23 = (float) (num6 * (double) num17 - num7 * (double) num18 + num8 * (double) num19);
+		var num24 = (float) -(num5 * (double) num17 - num7 * (double) num20 + num8 * (double) num21);
+		var num25 = (float) (num5 * (double) num18 - num6 * (double) num20 + num8 * (double) num22);
+		var num26 = (float) -(num5 * (double) num19 - num6 * (double) num21 + num7 * (double) num22);
+		var num27 = (float) (1.0 / (num1 * (double) num23 + num2 * (double) num24 + num3 * (double) num25 + num4 * (double) num26));
 
 		result.M11 = num23 * num27;
 		result.M21 = num24 * num27;
 		result.M31 = num25 * num27;
 		result.M41 = num26 * num27;
-		result.M12 = (float)-((double)num2 * (double)num17 - (double)num3 * (double)num18 + (double)num4 * (double)num19) * num27;
-		result.M22 = (float)((double)num1 * (double)num17 - (double)num3 * (double)num20 + (double)num4 * (double)num21) * num27;
-		result.M32 = (float)-((double)num1 * (double)num18 - (double)num2 * (double)num20 + (double)num4 * (double)num22) * num27;
-		result.M42 = (float)((double)num1 * (double)num19 - (double)num2 * (double)num21 + (double)num3 * (double)num22) * num27;
-		float num28 = (float)((double)num7 * (double)num16 - (double)num8 * (double)num15);
-		float num29 = (float)((double)num6 * (double)num16 - (double)num8 * (double)num14);
-		float num30 = (float)((double)num6 * (double)num15 - (double)num7 * (double)num14);
-		float num31 = (float)((double)num5 * (double)num16 - (double)num8 * (double)num13);
-		float num32 = (float)((double)num5 * (double)num15 - (double)num7 * (double)num13);
-		float num33 = (float)((double)num5 * (double)num14 - (double)num6 * (double)num13);
-		result.M13 = (float)((double)num2 * (double)num28 - (double)num3 * (double)num29 + (double)num4 * (double)num30) * num27;
-		result.M23 = (float)-((double)num1 * (double)num28 - (double)num3 * (double)num31 + (double)num4 * (double)num32) * num27;
-		result.M33 = (float)((double)num1 * (double)num29 - (double)num2 * (double)num31 + (double)num4 * (double)num33) * num27;
-		result.M43 = (float)-((double)num1 * (double)num30 - (double)num2 * (double)num32 + (double)num3 * (double)num33) * num27;
-		float num34 = (float)((double)num7 * (double)num12 - (double)num8 * (double)num11);
-		float num35 = (float)((double)num6 * (double)num12 - (double)num8 * (double)num10);
-		float num36 = (float)((double)num6 * (double)num11 - (double)num7 * (double)num10);
-		float num37 = (float)((double)num5 * (double)num12 - (double)num8 * (double)num9);
-		float num38 = (float)((double)num5 * (double)num11 - (double)num7 * (double)num9);
-		float num39 = (float)((double)num5 * (double)num10 - (double)num6 * (double)num9);
-		result.M14 = (float)-((double)num2 * (double)num34 - (double)num3 * (double)num35 + (double)num4 * (double)num36) * num27;
-		result.M24 = (float)((double)num1 * (double)num34 - (double)num3 * (double)num37 + (double)num4 * (double)num38) * num27;
-		result.M34 = (float)-((double)num1 * (double)num35 - (double)num2 * (double)num37 + (double)num4 * (double)num39) * num27;
-		result.M44 = (float)((double)num1 * (double)num36 - (double)num2 * (double)num38 + (double)num3 * (double)num39) * num27;
+		result.M12 = (float) -(num2 * (double) num17 - num3 * (double) num18 + num4 * (double) num19) * num27;
+		result.M22 = (float) (num1 * (double) num17 - num3 * (double) num20 + num4 * (double) num21) * num27;
+		result.M32 = (float) -(num1 * (double) num18 - num2 * (double) num20 + num4 * (double) num22) * num27;
+		result.M42 = (float) (num1 * (double) num19 - num2 * (double) num21 + num3 * (double) num22) * num27;
+		var num28 = (float) (num7 * (double) num16 - num8 * (double) num15);
+		var num29 = (float) (num6 * (double) num16 - num8 * (double) num14);
+		var num30 = (float) (num6 * (double) num15 - num7 * (double) num14);
+		var num31 = (float) (num5 * (double) num16 - num8 * (double) num13);
+		var num32 = (float) (num5 * (double) num15 - num7 * (double) num13);
+		var num33 = (float) (num5 * (double) num14 - num6 * (double) num13);
+		result.M13 = (float) (num2 * (double) num28 - num3 * (double) num29 + num4 * (double) num30) * num27;
+		result.M23 = (float) -(num1 * (double) num28 - num3 * (double) num31 + num4 * (double) num32) * num27;
+		result.M33 = (float) (num1 * (double) num29 - num2 * (double) num31 + num4 * (double) num33) * num27;
+		result.M43 = (float) -(num1 * (double) num30 - num2 * (double) num32 + num3 * (double) num33) * num27;
+		var num34 = (float) (num7 * (double) num12 - num8 * (double) num11);
+		var num35 = (float) (num6 * (double) num12 - num8 * (double) num10);
+		var num36 = (float) (num6 * (double) num11 - num7 * (double) num10);
+		var num37 = (float) (num5 * (double) num12 - num8 * (double) num9);
+		var num38 = (float) (num5 * (double) num11 - num7 * (double) num9);
+		var num39 = (float) (num5 * (double) num10 - num6 * (double) num9);
+		result.M14 = (float) -(num2 * (double) num34 - num3 * (double) num35 + num4 * (double) num36) * num27;
+		result.M24 = (float) (num1 * (double) num34 - num3 * (double) num37 + num4 * (double) num38) * num27;
+		result.M34 = (float) -(num1 * (double) num35 - num2 * (double) num37 + num4 * (double) num39) * num27;
+		result.M44 = (float) (num1 * (double) num36 - num2 * (double) num38 + num3 * (double) num39) * num27;
 		/*
 		///
 		// Use Laplace expansion theorem to calculate the inverse of a 4x4 matrix
@@ -1787,84 +1801,84 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains linear interpolation of the values in specified matrixes.
+	///         Creates a new <see cref="Matrix" /> that contains linear interpolation of the values in specified matrixes.
 	/// </summary>
-	/// <param name="matrix1">The first <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">The second <see cref="Vector2"/>.</param>
+	/// <param name="matrix1">The first <see cref="Matrix" />.</param>
+	/// <param name="matrix2">The second <see cref="Vector2" />.</param>
 	/// <param name="amount">Weighting value(between 0.0 and 1.0).</param>
 	/// <returns>>The result of linear interpolation of the specified matrixes.</returns>
 	public static Matrix Lerp(Matrix matrix1, Matrix matrix2, float amount)
 	{
-		matrix1.M11 = matrix1.M11 + ((matrix2.M11 - matrix1.M11) * amount);
-		matrix1.M12 = matrix1.M12 + ((matrix2.M12 - matrix1.M12) * amount);
-		matrix1.M13 = matrix1.M13 + ((matrix2.M13 - matrix1.M13) * amount);
-		matrix1.M14 = matrix1.M14 + ((matrix2.M14 - matrix1.M14) * amount);
-		matrix1.M21 = matrix1.M21 + ((matrix2.M21 - matrix1.M21) * amount);
-		matrix1.M22 = matrix1.M22 + ((matrix2.M22 - matrix1.M22) * amount);
-		matrix1.M23 = matrix1.M23 + ((matrix2.M23 - matrix1.M23) * amount);
-		matrix1.M24 = matrix1.M24 + ((matrix2.M24 - matrix1.M24) * amount);
-		matrix1.M31 = matrix1.M31 + ((matrix2.M31 - matrix1.M31) * amount);
-		matrix1.M32 = matrix1.M32 + ((matrix2.M32 - matrix1.M32) * amount);
-		matrix1.M33 = matrix1.M33 + ((matrix2.M33 - matrix1.M33) * amount);
-		matrix1.M34 = matrix1.M34 + ((matrix2.M34 - matrix1.M34) * amount);
-		matrix1.M41 = matrix1.M41 + ((matrix2.M41 - matrix1.M41) * amount);
-		matrix1.M42 = matrix1.M42 + ((matrix2.M42 - matrix1.M42) * amount);
-		matrix1.M43 = matrix1.M43 + ((matrix2.M43 - matrix1.M43) * amount);
-		matrix1.M44 = matrix1.M44 + ((matrix2.M44 - matrix1.M44) * amount);
+		matrix1.M11 = matrix1.M11 + (matrix2.M11 - matrix1.M11) * amount;
+		matrix1.M12 = matrix1.M12 + (matrix2.M12 - matrix1.M12) * amount;
+		matrix1.M13 = matrix1.M13 + (matrix2.M13 - matrix1.M13) * amount;
+		matrix1.M14 = matrix1.M14 + (matrix2.M14 - matrix1.M14) * amount;
+		matrix1.M21 = matrix1.M21 + (matrix2.M21 - matrix1.M21) * amount;
+		matrix1.M22 = matrix1.M22 + (matrix2.M22 - matrix1.M22) * amount;
+		matrix1.M23 = matrix1.M23 + (matrix2.M23 - matrix1.M23) * amount;
+		matrix1.M24 = matrix1.M24 + (matrix2.M24 - matrix1.M24) * amount;
+		matrix1.M31 = matrix1.M31 + (matrix2.M31 - matrix1.M31) * amount;
+		matrix1.M32 = matrix1.M32 + (matrix2.M32 - matrix1.M32) * amount;
+		matrix1.M33 = matrix1.M33 + (matrix2.M33 - matrix1.M33) * amount;
+		matrix1.M34 = matrix1.M34 + (matrix2.M34 - matrix1.M34) * amount;
+		matrix1.M41 = matrix1.M41 + (matrix2.M41 - matrix1.M41) * amount;
+		matrix1.M42 = matrix1.M42 + (matrix2.M42 - matrix1.M42) * amount;
+		matrix1.M43 = matrix1.M43 + (matrix2.M43 - matrix1.M43) * amount;
+		matrix1.M44 = matrix1.M44 + (matrix2.M44 - matrix1.M44) * amount;
 		return matrix1;
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains linear interpolation of the values in specified matrixes.
+	///         Creates a new <see cref="Matrix" /> that contains linear interpolation of the values in specified matrixes.
 	/// </summary>
-	/// <param name="matrix1">The first <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">The second <see cref="Vector2"/>.</param>
+	/// <param name="matrix1">The first <see cref="Matrix" />.</param>
+	/// <param name="matrix2">The second <see cref="Vector2" />.</param>
 	/// <param name="amount">Weighting value(between 0.0 and 1.0).</param>
 	/// <param name="result">The result of linear interpolation of the specified matrixes as an output parameter.</param>
 	public static void Lerp(ref Matrix matrix1, ref Matrix matrix2, float amount, out Matrix result)
 	{
-		result.M11 = matrix1.M11 + ((matrix2.M11 - matrix1.M11) * amount);
-		result.M12 = matrix1.M12 + ((matrix2.M12 - matrix1.M12) * amount);
-		result.M13 = matrix1.M13 + ((matrix2.M13 - matrix1.M13) * amount);
-		result.M14 = matrix1.M14 + ((matrix2.M14 - matrix1.M14) * amount);
-		result.M21 = matrix1.M21 + ((matrix2.M21 - matrix1.M21) * amount);
-		result.M22 = matrix1.M22 + ((matrix2.M22 - matrix1.M22) * amount);
-		result.M23 = matrix1.M23 + ((matrix2.M23 - matrix1.M23) * amount);
-		result.M24 = matrix1.M24 + ((matrix2.M24 - matrix1.M24) * amount);
-		result.M31 = matrix1.M31 + ((matrix2.M31 - matrix1.M31) * amount);
-		result.M32 = matrix1.M32 + ((matrix2.M32 - matrix1.M32) * amount);
-		result.M33 = matrix1.M33 + ((matrix2.M33 - matrix1.M33) * amount);
-		result.M34 = matrix1.M34 + ((matrix2.M34 - matrix1.M34) * amount);
-		result.M41 = matrix1.M41 + ((matrix2.M41 - matrix1.M41) * amount);
-		result.M42 = matrix1.M42 + ((matrix2.M42 - matrix1.M42) * amount);
-		result.M43 = matrix1.M43 + ((matrix2.M43 - matrix1.M43) * amount);
-		result.M44 = matrix1.M44 + ((matrix2.M44 - matrix1.M44) * amount);
+		result.M11 = matrix1.M11 + (matrix2.M11 - matrix1.M11) * amount;
+		result.M12 = matrix1.M12 + (matrix2.M12 - matrix1.M12) * amount;
+		result.M13 = matrix1.M13 + (matrix2.M13 - matrix1.M13) * amount;
+		result.M14 = matrix1.M14 + (matrix2.M14 - matrix1.M14) * amount;
+		result.M21 = matrix1.M21 + (matrix2.M21 - matrix1.M21) * amount;
+		result.M22 = matrix1.M22 + (matrix2.M22 - matrix1.M22) * amount;
+		result.M23 = matrix1.M23 + (matrix2.M23 - matrix1.M23) * amount;
+		result.M24 = matrix1.M24 + (matrix2.M24 - matrix1.M24) * amount;
+		result.M31 = matrix1.M31 + (matrix2.M31 - matrix1.M31) * amount;
+		result.M32 = matrix1.M32 + (matrix2.M32 - matrix1.M32) * amount;
+		result.M33 = matrix1.M33 + (matrix2.M33 - matrix1.M33) * amount;
+		result.M34 = matrix1.M34 + (matrix2.M34 - matrix1.M34) * amount;
+		result.M41 = matrix1.M41 + (matrix2.M41 - matrix1.M41) * amount;
+		result.M42 = matrix1.M42 + (matrix2.M42 - matrix1.M42) * amount;
+		result.M43 = matrix1.M43 + (matrix2.M43 - matrix1.M43) * amount;
+		result.M44 = matrix1.M44 + (matrix2.M44 - matrix1.M44) * amount;
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains a multiplication of two matrix.
+	///         Creates a new <see cref="Matrix" /> that contains a multiplication of two matrix.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" />.</param>
 	/// <returns>Result of the matrix multiplication.</returns>
 	public static Matrix Multiply(Matrix matrix1, Matrix matrix2)
 	{
-		var m11 = (((matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21)) + (matrix1.M13 * matrix2.M31)) + (matrix1.M14 * matrix2.M41);
-		var m12 = (((matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22)) + (matrix1.M13 * matrix2.M32)) + (matrix1.M14 * matrix2.M42);
-		var m13 = (((matrix1.M11 * matrix2.M13) + (matrix1.M12 * matrix2.M23)) + (matrix1.M13 * matrix2.M33)) + (matrix1.M14 * matrix2.M43);
-		var m14 = (((matrix1.M11 * matrix2.M14) + (matrix1.M12 * matrix2.M24)) + (matrix1.M13 * matrix2.M34)) + (matrix1.M14 * matrix2.M44);
-		var m21 = (((matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21)) + (matrix1.M23 * matrix2.M31)) + (matrix1.M24 * matrix2.M41);
-		var m22 = (((matrix1.M21 * matrix2.M12) + (matrix1.M22 * matrix2.M22)) + (matrix1.M23 * matrix2.M32)) + (matrix1.M24 * matrix2.M42);
-		var m23 = (((matrix1.M21 * matrix2.M13) + (matrix1.M22 * matrix2.M23)) + (matrix1.M23 * matrix2.M33)) + (matrix1.M24 * matrix2.M43);
-		var m24 = (((matrix1.M21 * matrix2.M14) + (matrix1.M22 * matrix2.M24)) + (matrix1.M23 * matrix2.M34)) + (matrix1.M24 * matrix2.M44);
-		var m31 = (((matrix1.M31 * matrix2.M11) + (matrix1.M32 * matrix2.M21)) + (matrix1.M33 * matrix2.M31)) + (matrix1.M34 * matrix2.M41);
-		var m32 = (((matrix1.M31 * matrix2.M12) + (matrix1.M32 * matrix2.M22)) + (matrix1.M33 * matrix2.M32)) + (matrix1.M34 * matrix2.M42);
-		var m33 = (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33)) + (matrix1.M34 * matrix2.M43);
-		var m34 = (((matrix1.M31 * matrix2.M14) + (matrix1.M32 * matrix2.M24)) + (matrix1.M33 * matrix2.M34)) + (matrix1.M34 * matrix2.M44);
-		var m41 = (((matrix1.M41 * matrix2.M11) + (matrix1.M42 * matrix2.M21)) + (matrix1.M43 * matrix2.M31)) + (matrix1.M44 * matrix2.M41);
-		var m42 = (((matrix1.M41 * matrix2.M12) + (matrix1.M42 * matrix2.M22)) + (matrix1.M43 * matrix2.M32)) + (matrix1.M44 * matrix2.M42);
-		var m43 = (((matrix1.M41 * matrix2.M13) + (matrix1.M42 * matrix2.M23)) + (matrix1.M43 * matrix2.M33)) + (matrix1.M44 * matrix2.M43);
-		var m44 = (((matrix1.M41 * matrix2.M14) + (matrix1.M42 * matrix2.M24)) + (matrix1.M43 * matrix2.M34)) + (matrix1.M44 * matrix2.M44);
+		var m11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
+		var m12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
+		var m13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
+		var m14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M24 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
+		var m21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
+		var m22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
+		var m23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
+		var m24 = matrix1.M21 * matrix2.M14 + matrix1.M22 * matrix2.M24 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
+		var m31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
+		var m32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
+		var m33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
+		var m34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M24 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
+		var m41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
+		var m42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
+		var m43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
+		var m44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M24 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;
 		matrix1.M11 = m11;
 		matrix1.M12 = m12;
 		matrix1.M13 = m13;
@@ -1885,29 +1899,29 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains a multiplication of two matrix.
+	///         Creates a new <see cref="Matrix" /> that contains a multiplication of two matrix.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" />.</param>
 	/// <param name="result">Result of the matrix multiplication as an output parameter.</param>
 	public static void Multiply(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
 	{
-		var m11 = (((matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21)) + (matrix1.M13 * matrix2.M31)) + (matrix1.M14 * matrix2.M41);
-		var m12 = (((matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22)) + (matrix1.M13 * matrix2.M32)) + (matrix1.M14 * matrix2.M42);
-		var m13 = (((matrix1.M11 * matrix2.M13) + (matrix1.M12 * matrix2.M23)) + (matrix1.M13 * matrix2.M33)) + (matrix1.M14 * matrix2.M43);
-		var m14 = (((matrix1.M11 * matrix2.M14) + (matrix1.M12 * matrix2.M24)) + (matrix1.M13 * matrix2.M34)) + (matrix1.M14 * matrix2.M44);
-		var m21 = (((matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21)) + (matrix1.M23 * matrix2.M31)) + (matrix1.M24 * matrix2.M41);
-		var m22 = (((matrix1.M21 * matrix2.M12) + (matrix1.M22 * matrix2.M22)) + (matrix1.M23 * matrix2.M32)) + (matrix1.M24 * matrix2.M42);
-		var m23 = (((matrix1.M21 * matrix2.M13) + (matrix1.M22 * matrix2.M23)) + (matrix1.M23 * matrix2.M33)) + (matrix1.M24 * matrix2.M43);
-		var m24 = (((matrix1.M21 * matrix2.M14) + (matrix1.M22 * matrix2.M24)) + (matrix1.M23 * matrix2.M34)) + (matrix1.M24 * matrix2.M44);
-		var m31 = (((matrix1.M31 * matrix2.M11) + (matrix1.M32 * matrix2.M21)) + (matrix1.M33 * matrix2.M31)) + (matrix1.M34 * matrix2.M41);
-		var m32 = (((matrix1.M31 * matrix2.M12) + (matrix1.M32 * matrix2.M22)) + (matrix1.M33 * matrix2.M32)) + (matrix1.M34 * matrix2.M42);
-		var m33 = (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33)) + (matrix1.M34 * matrix2.M43);
-		var m34 = (((matrix1.M31 * matrix2.M14) + (matrix1.M32 * matrix2.M24)) + (matrix1.M33 * matrix2.M34)) + (matrix1.M34 * matrix2.M44);
-		var m41 = (((matrix1.M41 * matrix2.M11) + (matrix1.M42 * matrix2.M21)) + (matrix1.M43 * matrix2.M31)) + (matrix1.M44 * matrix2.M41);
-		var m42 = (((matrix1.M41 * matrix2.M12) + (matrix1.M42 * matrix2.M22)) + (matrix1.M43 * matrix2.M32)) + (matrix1.M44 * matrix2.M42);
-		var m43 = (((matrix1.M41 * matrix2.M13) + (matrix1.M42 * matrix2.M23)) + (matrix1.M43 * matrix2.M33)) + (matrix1.M44 * matrix2.M43);
-		var m44 = (((matrix1.M41 * matrix2.M14) + (matrix1.M42 * matrix2.M24)) + (matrix1.M43 * matrix2.M34)) + (matrix1.M44 * matrix2.M44);
+		var m11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
+		var m12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
+		var m13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
+		var m14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M24 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
+		var m21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
+		var m22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
+		var m23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
+		var m24 = matrix1.M21 * matrix2.M14 + matrix1.M22 * matrix2.M24 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
+		var m31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
+		var m32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
+		var m33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
+		var m34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M24 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
+		var m41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
+		var m42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
+		var m43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
+		var m44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M24 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;
 		result.M11 = m11;
 		result.M12 = m12;
 		result.M13 = m13;
@@ -1927,9 +1941,9 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains a multiplication of <see cref="Matrix"/> and a scalar.
+	///         Creates a new <see cref="Matrix" /> that contains a multiplication of <see cref="Matrix" /> and a scalar.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
 	/// <param name="scaleFactor">Scalar value.</param>
 	/// <returns>Result of the matrix multiplication with a scalar.</returns>
 	public static Matrix Multiply(Matrix matrix1, float scaleFactor)
@@ -1954,9 +1968,9 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains a multiplication of <see cref="Matrix"/> and a scalar.
+	///         Creates a new <see cref="Matrix" /> that contains a multiplication of <see cref="Matrix" /> and a scalar.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" />.</param>
 	/// <param name="scaleFactor">Scalar value.</param>
 	/// <param name="result">Result of the matrix multiplication with a scalar as an output parameter.</param>
 	public static void Multiply(ref Matrix matrix1, float scaleFactor, out Matrix result)
@@ -1977,32 +1991,32 @@ public struct Matrix : IEquatable<Matrix>
 		result.M42 = matrix1.M42 * scaleFactor;
 		result.M43 = matrix1.M43 * scaleFactor;
 		result.M44 = matrix1.M44 * scaleFactor;
-
 	}
 
 	/// <summary>
-	/// Copy the values of specified <see cref="Matrix"/> to the float array.
+	///         Copy the values of specified <see cref="Matrix" /> to the float array.
 	/// </summary>
-	/// <param name="matrix">The source <see cref="Matrix"/>.</param>
+	/// <param name="matrix">The source <see cref="Matrix" />.</param>
 	/// <returns>The array which matrix values will be stored.</returns>
 	/// <remarks>
-	/// Required for OpenGL 2.0 projection matrix stuff.
+	///         Required for OpenGL 2.0 projection matrix stuff.
 	/// </remarks>
 	public static float[] ToFloatArray(Matrix matrix)
 	{
-		float[] matarray = {
-									matrix.M11, matrix.M12, matrix.M13, matrix.M14,
-									matrix.M21, matrix.M22, matrix.M23, matrix.M24,
-									matrix.M31, matrix.M32, matrix.M33, matrix.M34,
-									matrix.M41, matrix.M42, matrix.M43, matrix.M44
-								};
+		float[] matarray =
+		{
+			matrix.M11, matrix.M12, matrix.M13, matrix.M14,
+			matrix.M21, matrix.M22, matrix.M23, matrix.M24,
+			matrix.M31, matrix.M32, matrix.M33, matrix.M34,
+			matrix.M41, matrix.M42, matrix.M43, matrix.M44
+		};
 		return matarray;
 	}
 
 	/// <summary>
-	/// Returns a matrix with the all values negated.
+	///         Returns a matrix with the all values negated.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix">Source <see cref="Matrix" />.</param>
 	/// <returns>Result of the matrix negation.</returns>
 	public static Matrix Negate(Matrix matrix)
 	{
@@ -2026,9 +2040,9 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Returns a matrix with the all values negated.
+	///         Returns a matrix with the all values negated.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/>.</param>
+	/// <param name="matrix">Source <see cref="Matrix" />.</param>
 	/// <param name="result">Result of the matrix negation as an output parameter.</param>
 	public static void Negate(ref Matrix matrix, out Matrix result)
 	{
@@ -2051,23 +2065,23 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Converts a <see cref="System.Numerics.Matrix4x4"/> to a <see cref="Matrix"/>.
+	///         Converts a <see cref="System.Numerics.Matrix4x4" /> to a <see cref="Matrix" />.
 	/// </summary>
 	/// <param name="value">The converted value.</param>
-	public static implicit operator Matrix(System.Numerics.Matrix4x4 value)
+	public static implicit operator Matrix(Matrix4x4 value)
 	{
 		return new Matrix(
-			value.M11, value.M12, value.M13, value.M14,
-			value.M21, value.M22, value.M23, value.M24,
-			value.M31, value.M32, value.M33, value.M34,
-			value.M41, value.M42, value.M43, value.M44);
+		                  value.M11, value.M12, value.M13, value.M14,
+		                  value.M21, value.M22, value.M23, value.M24,
+		                  value.M31, value.M32, value.M33, value.M34,
+		                  value.M41, value.M42, value.M43, value.M44);
 	}
 
 	/// <summary>
-	/// Adds two matrixes.
+	///         Adds two matrixes.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/> on the left of the add sign.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/> on the right of the add sign.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" /> on the left of the add sign.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" /> on the right of the add sign.</param>
 	/// <returns>Sum of the matrixes.</returns>
 	public static Matrix operator +(Matrix matrix1, Matrix matrix2)
 	{
@@ -2091,10 +2105,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Divides the elements of a <see cref="Matrix"/> by the elements of another <see cref="Matrix"/>.
+	///         Divides the elements of a <see cref="Matrix" /> by the elements of another <see cref="Matrix" />.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/> on the left of the div sign.</param>
-	/// <param name="matrix2">Divisor <see cref="Matrix"/> on the right of the div sign.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" /> on the left of the div sign.</param>
+	/// <param name="matrix2">Divisor <see cref="Matrix" /> on the right of the div sign.</param>
 	/// <returns>The result of dividing the matrixes.</returns>
 	public static Matrix operator /(Matrix matrix1, Matrix matrix2)
 	{
@@ -2118,14 +2132,14 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Divides the elements of a <see cref="Matrix"/> by a scalar.
+	///         Divides the elements of a <see cref="Matrix" /> by a scalar.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/> on the left of the div sign.</param>
+	/// <param name="matrix">Source <see cref="Matrix" /> on the left of the div sign.</param>
 	/// <param name="divider">Divisor scalar on the right of the div sign.</param>
 	/// <returns>The result of dividing a matrix by a scalar.</returns>
 	public static Matrix operator /(Matrix matrix, float divider)
 	{
-		float num = 1f / divider;
+		var num = 1f / divider;
 		matrix.M11 = matrix.M11 * num;
 		matrix.M12 = matrix.M12 * num;
 		matrix.M13 = matrix.M13 * num;
@@ -2146,88 +2160,84 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Compares whether two <see cref="Matrix"/> instances are equal without any tolerance.
+	///         Compares whether two <see cref="Matrix" /> instances are equal without any tolerance.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/> on the left of the equal sign.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/> on the right of the equal sign.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" /> on the left of the equal sign.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" /> on the right of the equal sign.</param>
 	/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 	public static bool operator ==(Matrix matrix1, Matrix matrix2)
 	{
-		return (
-			matrix1.M11 == matrix2.M11 &&
-			matrix1.M12 == matrix2.M12 &&
-			matrix1.M13 == matrix2.M13 &&
-			matrix1.M14 == matrix2.M14 &&
-			matrix1.M21 == matrix2.M21 &&
-			matrix1.M22 == matrix2.M22 &&
-			matrix1.M23 == matrix2.M23 &&
-			matrix1.M24 == matrix2.M24 &&
-			matrix1.M31 == matrix2.M31 &&
-			matrix1.M32 == matrix2.M32 &&
-			matrix1.M33 == matrix2.M33 &&
-			matrix1.M34 == matrix2.M34 &&
-			matrix1.M41 == matrix2.M41 &&
-			matrix1.M42 == matrix2.M42 &&
-			matrix1.M43 == matrix2.M43 &&
-			matrix1.M44 == matrix2.M44
-			);
+		return matrix1.M11 == matrix2.M11
+		    && matrix1.M12 == matrix2.M12
+		    && matrix1.M13 == matrix2.M13
+		    && matrix1.M14 == matrix2.M14
+		    && matrix1.M21 == matrix2.M21
+		    && matrix1.M22 == matrix2.M22
+		    && matrix1.M23 == matrix2.M23
+		    && matrix1.M24 == matrix2.M24
+		    && matrix1.M31 == matrix2.M31
+		    && matrix1.M32 == matrix2.M32
+		    && matrix1.M33 == matrix2.M33
+		    && matrix1.M34 == matrix2.M34
+		    && matrix1.M41 == matrix2.M41
+		    && matrix1.M42 == matrix2.M42
+		    && matrix1.M43 == matrix2.M43
+		    && matrix1.M44 == matrix2.M44;
 	}
 
 	/// <summary>
-	/// Compares whether two <see cref="Matrix"/> instances are not equal without any tolerance.
+	///         Compares whether two <see cref="Matrix" /> instances are not equal without any tolerance.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/> on the left of the not equal sign.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/> on the right of the not equal sign.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" /> on the left of the not equal sign.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" /> on the right of the not equal sign.</param>
 	/// <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
 	public static bool operator !=(Matrix matrix1, Matrix matrix2)
 	{
-		return (
-			matrix1.M11 != matrix2.M11 ||
-			matrix1.M12 != matrix2.M12 ||
-			matrix1.M13 != matrix2.M13 ||
-			matrix1.M14 != matrix2.M14 ||
-			matrix1.M21 != matrix2.M21 ||
-			matrix1.M22 != matrix2.M22 ||
-			matrix1.M23 != matrix2.M23 ||
-			matrix1.M24 != matrix2.M24 ||
-			matrix1.M31 != matrix2.M31 ||
-			matrix1.M32 != matrix2.M32 ||
-			matrix1.M33 != matrix2.M33 ||
-			matrix1.M34 != matrix2.M34 ||
-			matrix1.M41 != matrix2.M41 ||
-			matrix1.M42 != matrix2.M42 ||
-			matrix1.M43 != matrix2.M43 ||
-			matrix1.M44 != matrix2.M44
-			);
+		return matrix1.M11 != matrix2.M11
+		    || matrix1.M12 != matrix2.M12
+		    || matrix1.M13 != matrix2.M13
+		    || matrix1.M14 != matrix2.M14
+		    || matrix1.M21 != matrix2.M21
+		    || matrix1.M22 != matrix2.M22
+		    || matrix1.M23 != matrix2.M23
+		    || matrix1.M24 != matrix2.M24
+		    || matrix1.M31 != matrix2.M31
+		    || matrix1.M32 != matrix2.M32
+		    || matrix1.M33 != matrix2.M33
+		    || matrix1.M34 != matrix2.M34
+		    || matrix1.M41 != matrix2.M41
+		    || matrix1.M42 != matrix2.M42
+		    || matrix1.M43 != matrix2.M43
+		    || matrix1.M44 != matrix2.M44;
 	}
 
 	/// <summary>
-	/// Multiplies two matrixes.
+	///         Multiplies two matrixes.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/> on the left of the mul sign.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/> on the right of the mul sign.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" /> on the left of the mul sign.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" /> on the right of the mul sign.</param>
 	/// <returns>Result of the matrix multiplication.</returns>
 	/// <remarks>
-	/// Using matrix multiplication algorithm - see http://en.wikipedia.org/wiki/Matrix_multiplication.
+	///         Using matrix multiplication algorithm - see http://en.wikipedia.org/wiki/Matrix_multiplication.
 	/// </remarks>
 	public static Matrix operator *(Matrix matrix1, Matrix matrix2)
 	{
-		var m11 = (((matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21)) + (matrix1.M13 * matrix2.M31)) + (matrix1.M14 * matrix2.M41);
-		var m12 = (((matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22)) + (matrix1.M13 * matrix2.M32)) + (matrix1.M14 * matrix2.M42);
-		var m13 = (((matrix1.M11 * matrix2.M13) + (matrix1.M12 * matrix2.M23)) + (matrix1.M13 * matrix2.M33)) + (matrix1.M14 * matrix2.M43);
-		var m14 = (((matrix1.M11 * matrix2.M14) + (matrix1.M12 * matrix2.M24)) + (matrix1.M13 * matrix2.M34)) + (matrix1.M14 * matrix2.M44);
-		var m21 = (((matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21)) + (matrix1.M23 * matrix2.M31)) + (matrix1.M24 * matrix2.M41);
-		var m22 = (((matrix1.M21 * matrix2.M12) + (matrix1.M22 * matrix2.M22)) + (matrix1.M23 * matrix2.M32)) + (matrix1.M24 * matrix2.M42);
-		var m23 = (((matrix1.M21 * matrix2.M13) + (matrix1.M22 * matrix2.M23)) + (matrix1.M23 * matrix2.M33)) + (matrix1.M24 * matrix2.M43);
-		var m24 = (((matrix1.M21 * matrix2.M14) + (matrix1.M22 * matrix2.M24)) + (matrix1.M23 * matrix2.M34)) + (matrix1.M24 * matrix2.M44);
-		var m31 = (((matrix1.M31 * matrix2.M11) + (matrix1.M32 * matrix2.M21)) + (matrix1.M33 * matrix2.M31)) + (matrix1.M34 * matrix2.M41);
-		var m32 = (((matrix1.M31 * matrix2.M12) + (matrix1.M32 * matrix2.M22)) + (matrix1.M33 * matrix2.M32)) + (matrix1.M34 * matrix2.M42);
-		var m33 = (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33)) + (matrix1.M34 * matrix2.M43);
-		var m34 = (((matrix1.M31 * matrix2.M14) + (matrix1.M32 * matrix2.M24)) + (matrix1.M33 * matrix2.M34)) + (matrix1.M34 * matrix2.M44);
-		var m41 = (((matrix1.M41 * matrix2.M11) + (matrix1.M42 * matrix2.M21)) + (matrix1.M43 * matrix2.M31)) + (matrix1.M44 * matrix2.M41);
-		var m42 = (((matrix1.M41 * matrix2.M12) + (matrix1.M42 * matrix2.M22)) + (matrix1.M43 * matrix2.M32)) + (matrix1.M44 * matrix2.M42);
-		var m43 = (((matrix1.M41 * matrix2.M13) + (matrix1.M42 * matrix2.M23)) + (matrix1.M43 * matrix2.M33)) + (matrix1.M44 * matrix2.M43);
-		var m44 = (((matrix1.M41 * matrix2.M14) + (matrix1.M42 * matrix2.M24)) + (matrix1.M43 * matrix2.M34)) + (matrix1.M44 * matrix2.M44);
+		var m11 = matrix1.M11 * matrix2.M11 + matrix1.M12 * matrix2.M21 + matrix1.M13 * matrix2.M31 + matrix1.M14 * matrix2.M41;
+		var m12 = matrix1.M11 * matrix2.M12 + matrix1.M12 * matrix2.M22 + matrix1.M13 * matrix2.M32 + matrix1.M14 * matrix2.M42;
+		var m13 = matrix1.M11 * matrix2.M13 + matrix1.M12 * matrix2.M23 + matrix1.M13 * matrix2.M33 + matrix1.M14 * matrix2.M43;
+		var m14 = matrix1.M11 * matrix2.M14 + matrix1.M12 * matrix2.M24 + matrix1.M13 * matrix2.M34 + matrix1.M14 * matrix2.M44;
+		var m21 = matrix1.M21 * matrix2.M11 + matrix1.M22 * matrix2.M21 + matrix1.M23 * matrix2.M31 + matrix1.M24 * matrix2.M41;
+		var m22 = matrix1.M21 * matrix2.M12 + matrix1.M22 * matrix2.M22 + matrix1.M23 * matrix2.M32 + matrix1.M24 * matrix2.M42;
+		var m23 = matrix1.M21 * matrix2.M13 + matrix1.M22 * matrix2.M23 + matrix1.M23 * matrix2.M33 + matrix1.M24 * matrix2.M43;
+		var m24 = matrix1.M21 * matrix2.M14 + matrix1.M22 * matrix2.M24 + matrix1.M23 * matrix2.M34 + matrix1.M24 * matrix2.M44;
+		var m31 = matrix1.M31 * matrix2.M11 + matrix1.M32 * matrix2.M21 + matrix1.M33 * matrix2.M31 + matrix1.M34 * matrix2.M41;
+		var m32 = matrix1.M31 * matrix2.M12 + matrix1.M32 * matrix2.M22 + matrix1.M33 * matrix2.M32 + matrix1.M34 * matrix2.M42;
+		var m33 = matrix1.M31 * matrix2.M13 + matrix1.M32 * matrix2.M23 + matrix1.M33 * matrix2.M33 + matrix1.M34 * matrix2.M43;
+		var m34 = matrix1.M31 * matrix2.M14 + matrix1.M32 * matrix2.M24 + matrix1.M33 * matrix2.M34 + matrix1.M34 * matrix2.M44;
+		var m41 = matrix1.M41 * matrix2.M11 + matrix1.M42 * matrix2.M21 + matrix1.M43 * matrix2.M31 + matrix1.M44 * matrix2.M41;
+		var m42 = matrix1.M41 * matrix2.M12 + matrix1.M42 * matrix2.M22 + matrix1.M43 * matrix2.M32 + matrix1.M44 * matrix2.M42;
+		var m43 = matrix1.M41 * matrix2.M13 + matrix1.M42 * matrix2.M23 + matrix1.M43 * matrix2.M33 + matrix1.M44 * matrix2.M43;
+		var m44 = matrix1.M41 * matrix2.M14 + matrix1.M42 * matrix2.M24 + matrix1.M43 * matrix2.M34 + matrix1.M44 * matrix2.M44;
 		matrix1.M11 = m11;
 		matrix1.M12 = m12;
 		matrix1.M13 = m13;
@@ -2248,9 +2258,9 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Multiplies the elements of matrix by a scalar.
+	///         Multiplies the elements of matrix by a scalar.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/> on the left of the mul sign.</param>
+	/// <param name="matrix">Source <see cref="Matrix" /> on the left of the mul sign.</param>
 	/// <param name="scaleFactor">Scalar value on the right of the mul sign.</param>
 	/// <returns>Result of the matrix multiplication with a scalar.</returns>
 	public static Matrix operator *(Matrix matrix, float scaleFactor)
@@ -2275,10 +2285,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Subtracts the values of one <see cref="Matrix"/> from another <see cref="Matrix"/>.
+	///         Subtracts the values of one <see cref="Matrix" /> from another <see cref="Matrix" />.
 	/// </summary>
-	/// <param name="matrix1">Source <see cref="Matrix"/> on the left of the sub sign.</param>
-	/// <param name="matrix2">Source <see cref="Matrix"/> on the right of the sub sign.</param>
+	/// <param name="matrix1">Source <see cref="Matrix" /> on the left of the sub sign.</param>
+	/// <param name="matrix2">Source <see cref="Matrix" /> on the right of the sub sign.</param>
 	/// <returns>Result of the matrix subtraction.</returns>
 	public static Matrix operator -(Matrix matrix1, Matrix matrix2)
 	{
@@ -2302,9 +2312,9 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Inverts values in the specified <see cref="Matrix"/>.
+	///         Inverts values in the specified <see cref="Matrix" />.
 	/// </summary>
-	/// <param name="matrix">Source <see cref="Matrix"/> on the right of the sub sign.</param>
+	/// <param name="matrix">Source <see cref="Matrix" /> on the right of the sub sign.</param>
 	/// <returns>Result of the inversion.</returns>
 	public static Matrix operator -(Matrix matrix)
 	{
@@ -2328,10 +2338,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains subtraction of one matrix from another.
+	///         Creates a new <see cref="Matrix" /> that contains subtraction of one matrix from another.
 	/// </summary>
-	/// <param name="matrix1">The first <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">The second <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">The first <see cref="Matrix" />.</param>
+	/// <param name="matrix2">The second <see cref="Matrix" />.</param>
 	/// <returns>The result of the matrix subtraction.</returns>
 	public static Matrix Subtract(Matrix matrix1, Matrix matrix2)
 	{
@@ -2355,10 +2365,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="Matrix"/> that contains subtraction of one matrix from another.
+	///         Creates a new <see cref="Matrix" /> that contains subtraction of one matrix from another.
 	/// </summary>
-	/// <param name="matrix1">The first <see cref="Matrix"/>.</param>
-	/// <param name="matrix2">The second <see cref="Matrix"/>.</param>
+	/// <param name="matrix1">The first <see cref="Matrix" />.</param>
+	/// <param name="matrix2">The second <see cref="Matrix" />.</param>
 	/// <param name="result">The result of the matrix subtraction as an output parameter.</param>
 	public static void Subtract(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
 	{
@@ -2384,40 +2394,69 @@ public struct Matrix : IEquatable<Matrix>
 	{
 		get
 		{
-			if (this == Identity)
-			{
-				return "Identity";
-			}
+			if (this == Identity) return "Identity";
 
 			return string.Concat(
-				 "( ", this.M11.ToString(), "  ", this.M12.ToString(), "  ", this.M13.ToString(), "  ", this.M14.ToString(), " )  \r\n",
-				 "( ", this.M21.ToString(), "  ", this.M22.ToString(), "  ", this.M23.ToString(), "  ", this.M24.ToString(), " )  \r\n",
-				 "( ", this.M31.ToString(), "  ", this.M32.ToString(), "  ", this.M33.ToString(), "  ", this.M34.ToString(), " )  \r\n",
-				 "( ", this.M41.ToString(), "  ", this.M42.ToString(), "  ", this.M43.ToString(), "  ", this.M44.ToString(), " )");
+			                     "( ", M11.ToString(), "  ", M12.ToString(), "  ", M13.ToString(), "  ", M14.ToString(), " )  \r\n",
+			                     "( ", M21.ToString(), "  ", M22.ToString(), "  ", M23.ToString(), "  ", M24.ToString(), " )  \r\n",
+			                     "( ", M31.ToString(), "  ", M32.ToString(), "  ", M33.ToString(), "  ", M34.ToString(), " )  \r\n",
+			                     "( ", M41.ToString(), "  ", M42.ToString(), "  ", M43.ToString(), "  ", M44.ToString(), " )");
 		}
 	}
 
 	/// <summary>
-	/// Returns a <see cref="String"/> representation of this <see cref="Matrix"/> in the format:
-	/// {M11:[<see cref="M11"/>] M12:[<see cref="M12"/>] M13:[<see cref="M13"/>] M14:[<see cref="M14"/>]}
-	/// {M21:[<see cref="M21"/>] M12:[<see cref="M22"/>] M13:[<see cref="M23"/>] M14:[<see cref="M24"/>]}
-	/// {M31:[<see cref="M31"/>] M32:[<see cref="M32"/>] M33:[<see cref="M33"/>] M34:[<see cref="M34"/>]}
-	/// {M41:[<see cref="M41"/>] M42:[<see cref="M42"/>] M43:[<see cref="M43"/>] M44:[<see cref="M44"/>]}
+	///         Returns a <see cref="String" /> representation of this <see cref="Matrix" /> in the format:
+	///         {M11:[<see cref="M11" />] M12:[<see cref="M12" />] M13:[<see cref="M13" />] M14:[<see cref="M14" />]}
+	///         {M21:[<see cref="M21" />] M12:[<see cref="M22" />] M13:[<see cref="M23" />] M14:[<see cref="M24" />]}
+	///         {M31:[<see cref="M31" />] M32:[<see cref="M32" />] M33:[<see cref="M33" />] M34:[<see cref="M34" />]}
+	///         {M41:[<see cref="M41" />] M42:[<see cref="M42" />] M43:[<see cref="M43" />] M44:[<see cref="M44" />]}
 	/// </summary>
-	/// <returns>A <see cref="String"/> representation of this <see cref="Matrix"/>.</returns>
+	/// <returns>A <see cref="String" /> representation of this <see cref="Matrix" />.</returns>
 	public override string ToString()
 	{
-		return "{M11:" + M11 + " M12:" + M12 + " M13:" + M13 + " M14:" + M14 + "}"
-			+ " {M21:" + M21 + " M22:" + M22 + " M23:" + M23 + " M24:" + M24 + "}"
-			+ " {M31:" + M31 + " M32:" + M32 + " M33:" + M33 + " M34:" + M34 + "}"
-			+ " {M41:" + M41 + " M42:" + M42 + " M43:" + M43 + " M44:" + M44 + "}";
+		return "{M11:"
+		     + M11
+		     + " M12:"
+		     + M12
+		     + " M13:"
+		     + M13
+		     + " M14:"
+		     + M14
+		     + "}"
+		     + " {M21:"
+		     + M21
+		     + " M22:"
+		     + M22
+		     + " M23:"
+		     + M23
+		     + " M24:"
+		     + M24
+		     + "}"
+		     + " {M31:"
+		     + M31
+		     + " M32:"
+		     + M32
+		     + " M33:"
+		     + M33
+		     + " M34:"
+		     + M34
+		     + "}"
+		     + " {M41:"
+		     + M41
+		     + " M42:"
+		     + M42
+		     + " M43:"
+		     + M43
+		     + " M44:"
+		     + M44
+		     + "}";
 	}
 
 	/// <summary>
-	/// Swap the matrix rows and columns.
+	///         Swap the matrix rows and columns.
 	/// </summary>
 	/// <param name="matrix">The matrix for transposing operation.</param>
-	/// <returns>The new <see cref="Matrix"/> which contains the transposing result.</returns>
+	/// <returns>The new <see cref="Matrix" /> which contains the transposing result.</returns>
 	public static Matrix Transpose(Matrix matrix)
 	{
 		Matrix ret;
@@ -2426,10 +2465,10 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Swap the matrix rows and columns.
+	///         Swap the matrix rows and columns.
 	/// </summary>
 	/// <param name="matrix">The matrix for transposing operation.</param>
-	/// <param name="result">The new <see cref="Matrix"/> which contains the transposing result as an output parameter.</param>
+	/// <param name="result">The new <see cref="Matrix" /> which contains the transposing result as an output parameter.</param>
 	public static void Transpose(ref Matrix matrix, out Matrix result)
 	{
 		Matrix ret;
@@ -2458,15 +2497,15 @@ public struct Matrix : IEquatable<Matrix>
 	}
 
 	/// <summary>
-	/// Returns a <see cref="System.Numerics.Matrix4x4"/>.
+	///         Returns a <see cref="System.Numerics.Matrix4x4" />.
 	/// </summary>
-	public System.Numerics.Matrix4x4 ToNumerics()
+	public Matrix4x4 ToNumerics()
 	{
-		return new System.Numerics.Matrix4x4(
-			this.M11, this.M12, this.M13, this.M14,
-			this.M21, this.M22, this.M23, this.M24,
-			this.M31, this.M32, this.M33, this.M34,
-			this.M41, this.M42, this.M43, this.M44);
+		return new Matrix4x4(
+		                     M11, M12, M13, M14,
+		                     M21, M22, M23, M24,
+		                     M31, M32, M33, M34,
+		                     M41, M42, M43, M44);
 	}
 
 	#endregion
@@ -2474,39 +2513,39 @@ public struct Matrix : IEquatable<Matrix>
 	#region Private Static Methods
 
 	/// <summary>
-	/// Helper method for using the Laplace expansion theorem using two rows expansions to calculate major and 
-	/// minor determinants of a 4x4 matrix. This method is used for inverting a matrix.
+	///         Helper method for using the Laplace expansion theorem using two rows expansions to calculate major and
+	///         minor determinants of a 4x4 matrix. This method is used for inverting a matrix.
 	/// </summary>
 	private static void FindDeterminants(ref Matrix matrix, out float major,
-										 out float minor1, out float minor2, out float minor3, out float minor4, out float minor5, out float minor6,
-										 out float minor7, out float minor8, out float minor9, out float minor10, out float minor11, out float minor12)
+	                                     out float minor1, out float minor2, out float minor3, out float minor4, out float minor5, out float minor6,
+	                                     out float minor7, out float minor8, out float minor9, out float minor10, out float minor11, out float minor12)
 	{
-		double det1 = (double)matrix.M11 * (double)matrix.M22 - (double)matrix.M12 * (double)matrix.M21;
-		double det2 = (double)matrix.M11 * (double)matrix.M23 - (double)matrix.M13 * (double)matrix.M21;
-		double det3 = (double)matrix.M11 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M21;
-		double det4 = (double)matrix.M12 * (double)matrix.M23 - (double)matrix.M13 * (double)matrix.M22;
-		double det5 = (double)matrix.M12 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M22;
-		double det6 = (double)matrix.M13 * (double)matrix.M24 - (double)matrix.M14 * (double)matrix.M23;
-		double det7 = (double)matrix.M31 * (double)matrix.M42 - (double)matrix.M32 * (double)matrix.M41;
-		double det8 = (double)matrix.M31 * (double)matrix.M43 - (double)matrix.M33 * (double)matrix.M41;
-		double det9 = (double)matrix.M31 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M41;
-		double det10 = (double)matrix.M32 * (double)matrix.M43 - (double)matrix.M33 * (double)matrix.M42;
-		double det11 = (double)matrix.M32 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M42;
-		double det12 = (double)matrix.M33 * (double)matrix.M44 - (double)matrix.M34 * (double)matrix.M43;
+		var det1 = matrix.M11 * (double) matrix.M22 - matrix.M12 * (double) matrix.M21;
+		var det2 = matrix.M11 * (double) matrix.M23 - matrix.M13 * (double) matrix.M21;
+		var det3 = matrix.M11 * (double) matrix.M24 - matrix.M14 * (double) matrix.M21;
+		var det4 = matrix.M12 * (double) matrix.M23 - matrix.M13 * (double) matrix.M22;
+		var det5 = matrix.M12 * (double) matrix.M24 - matrix.M14 * (double) matrix.M22;
+		var det6 = matrix.M13 * (double) matrix.M24 - matrix.M14 * (double) matrix.M23;
+		var det7 = matrix.M31 * (double) matrix.M42 - matrix.M32 * (double) matrix.M41;
+		var det8 = matrix.M31 * (double) matrix.M43 - matrix.M33 * (double) matrix.M41;
+		var det9 = matrix.M31 * (double) matrix.M44 - matrix.M34 * (double) matrix.M41;
+		var det10 = matrix.M32 * (double) matrix.M43 - matrix.M33 * (double) matrix.M42;
+		var det11 = matrix.M32 * (double) matrix.M44 - matrix.M34 * (double) matrix.M42;
+		var det12 = matrix.M33 * (double) matrix.M44 - matrix.M34 * (double) matrix.M43;
 
-		major = (float)(det1 * det12 - det2 * det11 + det3 * det10 + det4 * det9 - det5 * det8 + det6 * det7);
-		minor1 = (float)det1;
-		minor2 = (float)det2;
-		minor3 = (float)det3;
-		minor4 = (float)det4;
-		minor5 = (float)det5;
-		minor6 = (float)det6;
-		minor7 = (float)det7;
-		minor8 = (float)det8;
-		minor9 = (float)det9;
-		minor10 = (float)det10;
-		minor11 = (float)det11;
-		minor12 = (float)det12;
+		major = (float) (det1 * det12 - det2 * det11 + det3 * det10 + det4 * det9 - det5 * det8 + det6 * det7);
+		minor1 = (float) det1;
+		minor2 = (float) det2;
+		minor3 = (float) det3;
+		minor4 = (float) det4;
+		minor5 = (float) det5;
+		minor6 = (float) det6;
+		minor7 = (float) det7;
+		minor8 = (float) det8;
+		minor9 = (float) det9;
+		minor10 = (float) det10;
+		minor11 = (float) det11;
+		minor12 = (float) det12;
 	}
 
 	#endregion
