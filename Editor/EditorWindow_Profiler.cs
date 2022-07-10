@@ -14,7 +14,10 @@ public class EditorWindow_Profiler : EditorWindow
 
 	public override void Draw()
 	{
-		if (active == false) return;
+		if (active == false)
+		{
+			return;
+		}
 
 		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 4, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
 		ImGui.SetNextWindowPos(new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(1, 1));

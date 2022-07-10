@@ -76,7 +76,10 @@ internal class ImGuiShader
 			location = GL.GetUniformLocation(Program, uniform);
 			UniformToLocation.Add(uniform, location);
 
-			if (location == -1) Debug.Log($"The uniform '{uniform}' does not exist in the shader '{Name}'!");
+			if (location == -1)
+			{
+				Debug.Log($"The uniform '{uniform}' does not exist in the shader '{Name}'!");
+			}
 		}
 
 		return location;

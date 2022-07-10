@@ -36,9 +36,15 @@ public abstract class Batcher
 	public void AddGameObject(int gameObjectID, int instanceIndex = 0)
 	{
 		var index = gameObjectID;
-		if (instanceIndex != 0) index = -gameObjectID - instanceIndex * vertexAttribSize;
+		if (instanceIndex != 0)
+		{
+			index = -gameObjectID - instanceIndex * vertexAttribSize;
+		}
 
-		if (rendererLocationsInAttribs.ContainsKey(index)) return;
+		if (rendererLocationsInAttribs.ContainsKey(index))
+		{
+			return;
+		}
 
 		rendererLocationsInAttribs.Add(index, attribs.Count);
 
@@ -50,7 +56,10 @@ public abstract class Batcher
 	public void SetAttribs(int gameObjectID, float[] _attribs, int instanceIndex = 0)
 	{
 		var index = gameObjectID;
-		if (instanceIndex != 0) index = -gameObjectID - instanceIndex * vertexAttribSize;
+		if (instanceIndex != 0)
+		{
+			index = -gameObjectID - instanceIndex * vertexAttribSize;
+		}
 
 		for (var i = 0; i < 6; i++)
 		for (var j = 0; j < vertexAttribSize; j++)

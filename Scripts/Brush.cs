@@ -5,7 +5,11 @@ public class Brush : Component
 	public override void Update()
 	{
 		var spawn = 0;
-		if (MouseInput.IsButtonDown()) spawn = 1;
+		if (MouseInput.IsButtonDown())
+		{
+			spawn = 1;
+		}
+
 		if (MouseInput.IsButtonDown(MouseInput.Buttons.Button2))
 		{
 			Camera.I.GetComponent<CameraController>().enabled = false;
@@ -39,8 +43,15 @@ public class Brush : Component
 			go.GetComponent<Rigidbody>().AngularVelocity = Rendom.Range(-10f, 10f);
 
 			//go.GetComponent<SpriteRenderer>().additive=true;
-			if (spawn == 1) go.GetComponent<BoxRenderer>().color = new Color(1, 1, 1, 0.9f);
-			if (spawn == 2) go.GetComponent<BoxRenderer>().color = new Color(0.5f, 0.6f, 0.4f, 1f);
+			if (spawn == 1)
+			{
+				go.GetComponent<BoxRenderer>().color = new Color(1, 1, 1, 0.9f);
+			}
+
+			if (spawn == 2)
+			{
+				go.GetComponent<BoxRenderer>().color = new Color(0.5f, 0.6f, 0.4f, 1f);
+			}
 
 			go.transform.pivot = new Vector2(0.5f, 0.5f);
 		}

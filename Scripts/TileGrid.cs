@@ -15,6 +15,7 @@ public class TileGrid : Component
 	{
 		playerSmoothPosition = Player.I.transform.position;
 		if (tiles.Count == 0)
+		{
 			for (var x = 0; x < size.X; x++)
 			for (var y = 0; y < size.Y; y++)
 			{
@@ -35,9 +36,18 @@ public class TileGrid : Component
 				spriteSheetRenderer.SpritesCount = new Vector2(16, 16);
 				if (y == 0)
 				{
-					if (x == 0) spriteSheetRenderer.currentSpriteIndex = 0;
-					else if (x == size.X - 1) spriteSheetRenderer.currentSpriteIndex = 2;
-					else spriteSheetRenderer.currentSpriteIndex = 1;
+					if (x == 0)
+					{
+						spriteSheetRenderer.currentSpriteIndex = 0;
+					}
+					else if (x == size.X - 1)
+					{
+						spriteSheetRenderer.currentSpriteIndex = 2;
+					}
+					else
+					{
+						spriteSheetRenderer.currentSpriteIndex = 1;
+					}
 				}
 				else
 				{
@@ -47,6 +57,7 @@ public class TileGrid : Component
 				tiles.Add(tile);
 				tilesOGPositionsY.Add(tile.transform.position.Y);
 			}
+		}
 	}
 
 	//public override void PreSceneSave()
@@ -60,11 +71,14 @@ public class TileGrid : Component
 	//}
 	public override void Update()
 	{
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.Space))
+		if (KeyboardInput.IsKeyDown(Keys.Space))
 		{
 			for (var i = Scene.I.gameObjects.Count - 1; i > 0; i--)
 				if (Scene.I.gameObjects[i].name.ToLower().Contains("tile") && Scene.I.gameObjects[i].GetComponent<TileGrid>() == null)
+				{
 					Scene.I.gameObjects[i].Destroy();
+				}
+
 			tiles.Clear();
 		}
 		//UpdateFallingGroundPosition();
@@ -75,7 +89,10 @@ public class TileGrid : Component
 
 	private void UpdateLighting()
 	{
-		if (Player.I == null) return;
+		if (Player.I == null)
+		{
+			return;
+		}
 
 		playerSmoothPosition = Vector2.Lerp(playerSmoothPosition, Player.I.transform.position, Time.deltaTime * 7);
 		var lights = Scene.I.FindComponentsInScene<LightSource>();
@@ -101,8 +118,14 @@ public class TileGrid : Component
 		{
 			var distanceFromPlayerOnXAxis = MathF.Abs(tiles[i].transform.position.X - Player.I.transform.position.X);
 			float goDown;
-			if (distanceFromPlayerOnXAxis < 22) goDown = 0;
-			else goDown = distanceFromPlayerOnXAxis - 22;
+			if (distanceFromPlayerOnXAxis < 22)
+			{
+				goDown = 0;
+			}
+			else
+			{
+				goDown = distanceFromPlayerOnXAxis - 22;
+			}
 
 			tiles[i].transform.position.Y = Mathf.Lerp(tiles[i].transform.position.Y, tilesOGPositionsY[i] + goDown, Time.deltaTime * (11 + MathF.Abs(Player.I.GetComponent<Rigidbody>().Velocity.X) * 2));
 		}

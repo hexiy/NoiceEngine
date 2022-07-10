@@ -68,9 +68,20 @@ public class SpriteSheetBatcher : Batcher
 
 	public override void Render()
 	{
-		if (material == null) return;
-		if (texture == null) return;
-		if (vao == -1) CreateBuffers();
+		if (material == null)
+		{
+			return;
+		}
+
+		if (texture == null)
+		{
+			return;
+		}
+
+		if (vao == -1)
+		{
+			CreateBuffers();
+		}
 
 		var createdBufferThisFrame = false;
 		if (vbo_attribs == -1)
@@ -153,8 +164,14 @@ public class SpriteSheetBatcher : Batcher
 
 		BufferCache.BindVAO(vao);
 
-		if (material.additive) GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
-		else GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		if (material.additive)
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+		}
+		else
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		}
 
 		TextureCache.BindTexture(texture.id);
 

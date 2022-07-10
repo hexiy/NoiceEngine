@@ -493,7 +493,10 @@ public struct Vector3 : IEquatable<Vector3>
 	/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 	public override bool Equals(object obj)
 	{
-		if (!(obj is Vector3)) return false;
+		if (!(obj is Vector3))
+		{
+			return false;
+		}
 
 		var other = (Vector3) obj;
 		return X == other.X && Y == other.Y && Z == other.Z;
@@ -555,8 +558,8 @@ public struct Vector3 : IEquatable<Vector3>
 		unchecked
 		{
 			var hashCode = X.GetHashCode();
-			hashCode = (hashCode * 397) ^ Y.GetHashCode();
-			hashCode = (hashCode * 397) ^ Z.GetHashCode();
+			hashCode = hashCode * 397 ^ Y.GetHashCode();
+			hashCode = hashCode * 397 ^ Z.GetHashCode();
 			return hashCode;
 		}
 	}
@@ -1075,10 +1078,25 @@ public struct Vector3 : IEquatable<Vector3>
 	/// <param name="length">The number of vectors to be transformed.</param>
 	public static void Transform(Vector3[] sourceArray, int sourceIndex, ref Matrix matrix, Vector3[] destinationArray, int destinationIndex, int length)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (sourceArray.Length < sourceIndex + length) throw new ArgumentException("Source array length is lesser than sourceIndex + length");
-		if (destinationArray.Length < destinationIndex + length) throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (sourceArray.Length < sourceIndex + length)
+		{
+			throw new ArgumentException("Source array length is lesser than sourceIndex + length");
+		}
+
+		if (destinationArray.Length < destinationIndex + length)
+		{
+			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		}
 
 		// TODO: Are there options on some platforms to implement a vectorized version of this?
 
@@ -1108,10 +1126,25 @@ public struct Vector3 : IEquatable<Vector3>
 	/// <param name="length">The number of vectors to be transformed.</param>
 	public static void Transform(Vector3[] sourceArray, int sourceIndex, ref Quaternion rotation, Vector3[] destinationArray, int destinationIndex, int length)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (sourceArray.Length < sourceIndex + length) throw new ArgumentException("Source array length is lesser than sourceIndex + length");
-		if (destinationArray.Length < destinationIndex + length) throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (sourceArray.Length < sourceIndex + length)
+		{
+			throw new ArgumentException("Source array length is lesser than sourceIndex + length");
+		}
+
+		if (destinationArray.Length < destinationIndex + length)
+		{
+			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		}
 
 		// TODO: Are there options on some platforms to implement a vectorized version of this?
 
@@ -1140,9 +1173,20 @@ public struct Vector3 : IEquatable<Vector3>
 	/// <param name="destinationArray">Destination array.</param>
 	public static void Transform(Vector3[] sourceArray, ref Matrix matrix, Vector3[] destinationArray)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (destinationArray.Length < sourceArray.Length) throw new ArgumentException("Destination array length is lesser than source array length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (destinationArray.Length < sourceArray.Length)
+		{
+			throw new ArgumentException("Destination array length is lesser than source array length");
+		}
 
 		// TODO: Are there options on some platforms to implement a vectorized version of this?
 
@@ -1166,9 +1210,20 @@ public struct Vector3 : IEquatable<Vector3>
 	/// <param name="destinationArray">Destination array.</param>
 	public static void Transform(Vector3[] sourceArray, ref Quaternion rotation, Vector3[] destinationArray)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (destinationArray.Length < sourceArray.Length) throw new ArgumentException("Destination array length is lesser than source array length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (destinationArray.Length < sourceArray.Length)
+		{
+			throw new ArgumentException("Destination array length is lesser than source array length");
+		}
 
 		// TODO: Are there options on some platforms to implement a vectorized version of this?
 
@@ -1242,10 +1297,25 @@ public struct Vector3 : IEquatable<Vector3>
 	                                   int destinationIndex,
 	                                   int length)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (sourceArray.Length < sourceIndex + length) throw new ArgumentException("Source array length is lesser than sourceIndex + length");
-		if (destinationArray.Length < destinationIndex + length) throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (sourceArray.Length < sourceIndex + length)
+		{
+			throw new ArgumentException("Source array length is lesser than sourceIndex + length");
+		}
+
+		if (destinationArray.Length < destinationIndex + length)
+		{
+			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		}
 
 		for (var x = 0; x < length; x++)
 		{
@@ -1268,9 +1338,20 @@ public struct Vector3 : IEquatable<Vector3>
 	/// <param name="destinationArray">Destination array.</param>
 	public static void TransformNormal(Vector3[] sourceArray, ref Matrix matrix, Vector3[] destinationArray)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (destinationArray.Length < sourceArray.Length) throw new ArgumentException("Destination array length is lesser than source array length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (destinationArray.Length < sourceArray.Length)
+		{
+			throw new ArgumentException("Destination array length is lesser than source array length");
+		}
 
 		for (var i = 0; i < sourceArray.Length; i++)
 		{

@@ -17,7 +17,10 @@ public class EditorWindow_SceneTopbar : EditorWindow
 
 	public override void Draw()
 	{
-		if (active == false) return;
+		if (active == false)
+		{
+			return;
+		}
 
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
 
@@ -33,8 +36,14 @@ public class EditorWindow_SceneTopbar : EditorWindow
 		var physicsButtonClicked = ImGui.Button("physics");
 		if (physicsButtonClicked)
 		{
-			if (Physics.Running == false) Physics.StartPhysics();
-			else if (Physics.Running) Physics.StopPhysics();
+			if (Physics.Running == false)
+			{
+				Physics.StartPhysics();
+			}
+			else if (Physics.Running)
+			{
+				Physics.StopPhysics();
+			}
 		}
 
 		ImGui.SameLine();
@@ -42,7 +51,10 @@ public class EditorWindow_SceneTopbar : EditorWindow
 		ImGui.PushStyleColor(ImGuiCol.Text, Global.GameRunning ? activeColor : inactiveColor);
 
 		var playButtonClicked = ImGui.Button("play");
-		if (playButtonClicked) Global.GameRunning = !Global.GameRunning;
+		if (playButtonClicked)
+		{
+			Global.GameRunning = !Global.GameRunning;
+		}
 
 		ImGui.PopStyleVar();
 		ImGui.PopStyleColor();
@@ -50,7 +62,10 @@ public class EditorWindow_SceneTopbar : EditorWindow
 
 		ImGui.SameLine();
 		var resetDataButtonClicked = ImGui.Button("delete data");
-		if (resetDataButtonClicked) PersistentData.DeleteAll();
+		if (resetDataButtonClicked)
+		{
+			PersistentData.DeleteAll();
+		}
 
 		ImGui.End();
 	}

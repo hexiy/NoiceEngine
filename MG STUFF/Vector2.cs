@@ -654,7 +654,10 @@ public struct Vector2 : IEquatable<Vector2>
 	/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 	public override bool Equals(object obj)
 	{
-		if (obj is Vector2) return Equals((Vector2) obj);
+		if (obj is Vector2)
+		{
+			return Equals((Vector2) obj);
+		}
 
 		return false;
 	}
@@ -711,7 +714,7 @@ public struct Vector2 : IEquatable<Vector2>
 	{
 		unchecked
 		{
-			return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+			return X.GetHashCode() * 397 ^ Y.GetHashCode();
 		}
 	}
 
@@ -1194,10 +1197,25 @@ public struct Vector2 : IEquatable<Vector2>
 	                             int destinationIndex,
 	                             int length)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (sourceArray.Length < sourceIndex + length) throw new ArgumentException("Source array length is lesser than sourceIndex + length");
-		if (destinationArray.Length < destinationIndex + length) throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (sourceArray.Length < sourceIndex + length)
+		{
+			throw new ArgumentException("Source array length is lesser than sourceIndex + length");
+		}
+
+		if (destinationArray.Length < destinationIndex + length)
+		{
+			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		}
 
 		for (var x = 0; x < length; x++)
 		{
@@ -1229,10 +1247,25 @@ public struct Vector2 : IEquatable<Vector2>
 	                             int destinationIndex,
 	                             int length)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (sourceArray.Length < sourceIndex + length) throw new ArgumentException("Source array length is lesser than sourceIndex + length");
-		if (destinationArray.Length < destinationIndex + length) throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (sourceArray.Length < sourceIndex + length)
+		{
+			throw new ArgumentException("Source array length is lesser than sourceIndex + length");
+		}
+
+		if (destinationArray.Length < destinationIndex + length)
+		{
+			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		}
 
 		for (var x = 0; x < length; x++)
 		{
@@ -1324,10 +1357,25 @@ public struct Vector2 : IEquatable<Vector2>
 	                                   int destinationIndex,
 	                                   int length)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (sourceArray.Length < sourceIndex + length) throw new ArgumentException("Source array length is lesser than sourceIndex + length");
-		if (destinationArray.Length < destinationIndex + length) throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (sourceArray.Length < sourceIndex + length)
+		{
+			throw new ArgumentException("Source array length is lesser than sourceIndex + length");
+		}
+
+		if (destinationArray.Length < destinationIndex + length)
+		{
+			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
+		}
 
 		for (var i = 0; i < length; i++)
 		{
@@ -1349,9 +1397,20 @@ public struct Vector2 : IEquatable<Vector2>
 	                                   ref Matrix matrix,
 	                                   Vector2[] destinationArray)
 	{
-		if (sourceArray == null) throw new ArgumentNullException("sourceArray");
-		if (destinationArray == null) throw new ArgumentNullException("destinationArray");
-		if (destinationArray.Length < sourceArray.Length) throw new ArgumentException("Destination array length is lesser than source array length");
+		if (sourceArray == null)
+		{
+			throw new ArgumentNullException("sourceArray");
+		}
+
+		if (destinationArray == null)
+		{
+			throw new ArgumentNullException("destinationArray");
+		}
+
+		if (destinationArray.Length < sourceArray.Length)
+		{
+			throw new ArgumentException("Destination array length is lesser than source array length");
+		}
 
 		for (var i = 0; i < sourceArray.Length; i++)
 		{

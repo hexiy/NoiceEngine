@@ -14,15 +14,24 @@ public static class Debug
 
 	public static void Log(string message)
 	{
-		if (Global.EditorAttached == false) return;
+		if (Global.EditorAttached == false)
+		{
+			return;
+		}
 
 		logs.Add($"[{DateTime.Now.ToString("HH:mm:ss")}]   " + message);
-		if (logs.Count > LOG_LIMIT + 1) logs.RemoveAt(0);
+		if (logs.Count > LOG_LIMIT + 1)
+		{
+			logs.RemoveAt(0);
+		}
 	}
 
 	public static void StartTimer(string timerName)
 	{
-		if (Global.EditorAttached == false) return;
+		if (Global.EditorAttached == false)
+		{
+			return;
+		}
 
 		if (timers.ContainsKey(timerName))
 		{
@@ -38,23 +47,40 @@ public static class Debug
 
 	public static void CountStat(string statName, float value)
 	{
-		if (Global.EditorAttached == false) return;
+		if (Global.EditorAttached == false)
+		{
+			return;
+		}
 
-		if (stats.ContainsKey(statName) == false) stats[statName] = 0;
+		if (stats.ContainsKey(statName) == false)
+		{
+			stats[statName] = 0;
+		}
+
 		stats[statName] += value;
 	}
 
 	public static void Stat(string statName, float value)
 	{
-		if (Global.EditorAttached == false) return;
+		if (Global.EditorAttached == false)
+		{
+			return;
+		}
 
-		if (stats.ContainsKey(statName) == false) stats[statName] = 0;
+		if (stats.ContainsKey(statName) == false)
+		{
+			stats[statName] = 0;
+		}
+
 		stats[statName] = value;
 	}
 
 	public static void EndTimer(string timerName)
 	{
-		if (Global.EditorAttached == false) return;
+		if (Global.EditorAttached == false)
+		{
+			return;
+		}
 
 		timers[timerName].Stop();
 	}

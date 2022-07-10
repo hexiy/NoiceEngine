@@ -50,7 +50,11 @@ public class Transform : Component
 
 	public Vector3 GetParentPosition()
 	{
-		if (parent != null) return parent.transform.position;
+		if (parent != null)
+		{
+			return parent.transform.position;
+		}
+
 		return Vector3.Zero;
 	}
 

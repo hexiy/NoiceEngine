@@ -26,7 +26,13 @@ public class ButtonTween : Component
 			clicked = false;
 		}
 
-		if (clicked) transform.scale = Vector3.Lerp(transform.scale, Vector3.One * scaleTarget, Time.deltaTime * scaleSpeed);
-		else transform.scale = Vector3.Lerp(transform.scale, Vector3.One, Time.deltaTime * scaleSpeed);
+		if (clicked)
+		{
+			transform.scale = Vector3.Lerp(transform.scale, Vector3.One * scaleTarget, Time.deltaTime * scaleSpeed);
+		}
+		else
+		{
+			transform.scale = Vector3.Lerp(transform.scale, Vector3.One, Time.deltaTime * scaleSpeed);
+		}
 	}
 }

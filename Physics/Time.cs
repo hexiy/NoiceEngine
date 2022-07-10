@@ -11,6 +11,11 @@ public static class Time
 
 	public static void Update()
 	{
+		if (Global.GameRunning == false)
+		{
+			return;
+		}
+
 		deltaTime = (float) Window.I.UpdateTime;
 		if (elapsedTicks % 5 == 0)
 		{

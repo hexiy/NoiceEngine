@@ -250,7 +250,10 @@ public static class BufferCache
 
 	public static void BindVAO(int vao)
 	{
-		if (vao == vaoInUse) return;
+		if (vao == vaoInUse)
+		{
+			return;
+		}
 
 		vaoInUse = vao;
 		GL.BindVertexArray(vao);

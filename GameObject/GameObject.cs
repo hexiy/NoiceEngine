@@ -31,6 +31,7 @@ public class GameObject
 	public bool selected = false;
 	public bool silent;
 	public bool started;
+	public bool isPrefab = false;
 
 	/*		[XmlIgnore]
 			public GameObject Parent
@@ -64,7 +65,7 @@ public class GameObject
 	{
 		OnDestroyed += RemoveFromLists;
 		OnDestroyed += DestroyChildren;
-
+		
 		OnComponentAdded += LinkComponents;
 		OnComponentAdded += InvokeOnComponentAddedOnComponents;
 		OnComponentAdded += CheckForTransformComponent;
@@ -75,7 +76,11 @@ public class GameObject
 	{
 		get
 		{
-			if (transform.parent == null) return activeSelf;
+			if (transform.parent == null)
+			{
+				return activeSelf;
+			}
+
 			return transform.parent.gameObject.activeInHierarchy && activeSelf;
 		}
 	}
@@ -94,7 +99,11 @@ public class GameObject
 			IDsManager.gameObjectNextID++;
 		}
 
-		if (transform == null && GetComponent<Transform>() == null) transform = AddComponent<Transform>();
+		if (transform == null && GetComponent<Transform>() == null)
+		{
+			transform = AddComponent<Transform>();
+		}
+
 		Scene.I.AddGameObjectToScene(this);
 	}
 
@@ -105,8 +114,16 @@ public class GameObject
 		go.name = name;
 		go.silent = _silent;
 		go.Setup();
-		if (position != null) go.transform.position = position.Value;
-		if (scale != null) go.transform.scale = scale.Value;
+		if (position != null)
+		{
+			go.transform.position = position.Value;
+		}
+
+		if (scale != null)
+		{
+			go.transform.scale = scale.Value;
+		}
+
 		return go;
 	}
 
@@ -117,7 +134,10 @@ public class GameObject
 
 	private void CheckForTransformComponent(GameObject gameObject, Component component)
 	{
-		if (component is Transform) transform = component as Transform;
+		if (component is Transform)
+		{
+			transform = component as Transform;
+		}
 	}
 
 	private void InvokeOnComponentAddedOnComponents(GameObject go, Component comp)
@@ -129,7 +149,10 @@ public class GameObject
 	{
 		for (var compIndex1 = 0; compIndex1 < components.Count; compIndex1++)
 		{
-			if (components[compIndex1] == component) continue;
+			if (components[compIndex1] == component)
+			{
+				continue;
+			}
 
 			// BoxRenderer -> Renderer -> Component
 			// BoxShape    -> Shape    -> Component
@@ -162,7 +185,9 @@ public class GameObject
 							var parentClassInfos = parentType.GetFields();
 							for (var j = 0; j < parentClassInfos.Length; j++)
 								if (parentClassInfos[j].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // found linkable field in parent class
+								{
 									parentClassInfos[j].SetValue(components[compIndex1], component);
+								}
 						}
 					}
 				}
@@ -187,7 +212,9 @@ public class GameObject
 							var parentClassInfos = parentType.GetFields();
 							for (var j = 0; j < parentClassInfos.Length; j++)
 								if (parentClassInfos[j].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // found linkable field in parent class
+								{
 									parentClassInfos[j].SetValue(component, components[compIndex1]);
+								}
 						}
 					}
 			}
@@ -252,8 +279,11 @@ public class GameObject
 	{
 		var rb = GetComponent<Rigidbody>();
 		if (rb != null)
+		{
 			for (var i = 0; i < rb.touchingRigidbodies.Count; i++)
 				rb.touchingRigidbodies[i].touchingRigidbodies.Remove(rb);
+		}
+
 		lock (ComponentsLock)
 		{
 			for (var i = 0; i < components.Count; i++) components[i].OnDestroyed();
@@ -278,7 +308,11 @@ public class GameObject
 
 	public virtual void Update()
 	{
-		if (activeInHierarchy == false && updateWhenDisabled == false) return;
+		if (activeInHierarchy == false && updateWhenDisabled == false)
+		{
+			return;
+		}
+
 		if (destroy)
 		{
 			destroyTimer -= Time.deltaTime;
@@ -295,7 +329,10 @@ public class GameObject
 
 	public virtual void FixedUpdate()
 	{
-		if (activeInHierarchy == false && updateWhenDisabled == false) return;
+		if (activeInHierarchy == false && updateWhenDisabled == false)
+		{
+			return;
+		}
 
 		FixedUpdateComponents();
 	}
@@ -308,7 +345,10 @@ public class GameObject
 		components.Add(comp);
 
 		OnComponentAdded?.Invoke(this, comp);
-		if (awoken) comp.Awake();
+		if (awoken)
+		{
+			comp.Awake();
+		}
 
 		/* for (int i = 0; i < ComponentsWaitingToBePaired.Count; i++)
 		 {
@@ -348,8 +388,15 @@ public class GameObject
 		components.Add(component);
 
 		OnComponentAdded?.Invoke(this, component);
-		if (awoken && component.awoken == false) component.Awake();
-		if (started && component.started == false) component.Start();
+		if (awoken && component.awoken == false)
+		{
+			component.Awake();
+		}
+
+		if (started && component.started == false)
+		{
+			component.Start();
+		}
 
 		/* for (int i = 0; i < ComponentsWaitingToBePaired.Count; i++)
 		 {
@@ -406,7 +453,11 @@ public class GameObject
 		for (var i = 0; i < components.Count; i++)
 			if (components[i] is T)
 			{
-				if (k == 0) return (T) components[i];
+				if (k == 0)
+				{
+					return (T) components[i];
+				}
+
 				k--;
 			}
 
@@ -417,7 +468,10 @@ public class GameObject
 	{
 		for (var i = 0; i < components.Count; i++)
 			if (components[i] is T)
+			{
 				return true;
+			}
+
 		return false;
 	}
 
@@ -426,7 +480,10 @@ public class GameObject
 		var componentsToReturn = new List<T>();
 		for (var i = 0; i < components.Count; i++)
 			if (components[i] is T)
+			{
 				componentsToReturn.Add(components[i] as T);
+			}
+
 		return componentsToReturn;
 	}
 
@@ -434,7 +491,10 @@ public class GameObject
 	{
 		for (var i = 0; i < components.Count; i++)
 			if (components[i].GetType() == type)
+			{
 				return components[i];
+			}
+
 		return null;
 	}
 
@@ -443,7 +503,10 @@ public class GameObject
 		var componentsToReturn = new List<Component>();
 		for (var i = 0; i < components.Count; i++)
 			if (components[i].GetType() == type)
+			{
 				componentsToReturn.Add(components[i]);
+			}
+
 		return componentsToReturn;
 	}
 
@@ -453,7 +516,9 @@ public class GameObject
 		{
 			for (var i = 0; i < components.Count; i++)
 				if (components[i].enabled && components[i].awoken)
+				{
 					components[i].Update();
+				}
 		}
 	}
 
@@ -461,7 +526,9 @@ public class GameObject
 	{
 		for (var i = 0; i < components.Count; i++)
 			if (components[i].enabled && components[i].awoken)
+			{
 				components[i].FixedUpdate();
+			}
 	}
 	/* public void RegisterComponentPair(Component comp, Type type)
 	 {
@@ -474,10 +541,16 @@ public class GameObject
 
 	public void Render()
 	{
-		if (activeInHierarchy == false) return;
+		if (activeInHierarchy == false)
+		{
+			return;
+		}
+
 		for (var i = 0; i < components.Count; i++)
 			if (components[i] is Renderer && components[i].enabled && components[i].awoken && activeInHierarchy)
+			{
 				(components[i] as Renderer).Render();
+			}
 	}
 
 	public Vector3 TransformToWorld(Vector3 localPoint)

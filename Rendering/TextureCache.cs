@@ -16,7 +16,10 @@ public static class TextureCache
 		BindTexture(id);
 
 		var image = Image.Load<Rgba32>(texturePath);
-		if (flipX) image.Mutate(x => x.Flip(FlipMode.Vertical));
+		if (flipX)
+		{
+			image.Mutate(x => x.Flip(FlipMode.Vertical));
+		}
 
 		var pixels = new List<byte>(4 * image.Width * image.Height);
 
@@ -51,7 +54,11 @@ public static class TextureCache
 
 	public static Texture GetTexture(string texturePath, bool flipX = true)
 	{
-		if (cachedTextures.ContainsKey(GetHash(texturePath)) == false) return LoadAndCreateTexture(texturePath, flipX);
+		if (cachedTextures.ContainsKey(GetHash(texturePath)) == false)
+		{
+			return LoadAndCreateTexture(texturePath, flipX);
+		}
+
 		return cachedTextures[GetHash(texturePath)];
 	}
 
@@ -72,7 +79,11 @@ public static class TextureCache
 
 	public static void BindTexture(int id)
 	{
-		if (id == textureInUse) return;
+		if (id == textureInUse)
+		{
+			return;
+		}
+
 		textureInUse = id;
 		GL.BindTexture(TextureTarget.Texture2D, id);
 	}

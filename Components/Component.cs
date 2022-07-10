@@ -90,13 +90,21 @@ public class Component : IDestroyable
 
 	public int CompareTo(bool other)
 	{
-		if (this == null) return 0;
+		if (this == null)
+		{
+			return 0;
+		}
+
 		return 1;
 	}
 
 	public static implicit operator bool(Component instance)
 	{
-		if (instance == null) return false;
+		if (instance == null)
+		{
+			return false;
+		}
+
 		return true;
 	}
 }

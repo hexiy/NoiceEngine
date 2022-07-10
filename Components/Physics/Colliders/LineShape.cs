@@ -11,13 +11,21 @@ public class LineShape : Shape
 
 	public Vector2 GetLineStart() // put both methods into tuple method?
 	{
-		if (staticAngle != null) return transform.position + new Vector2((float) Math.Cos((float) staticAngle), (float) Math.Sin((float) staticAngle));
+		if (staticAngle != null)
+		{
+			return transform.position + new Vector2((float) Math.Cos((float) staticAngle), (float) Math.Sin((float) staticAngle));
+		}
+
 		return transform.position + new Vector2((float) Math.Cos(transform.rotation.Z), (float) Math.Sin(transform.rotation.Z));
 	}
 
 	public Vector2 GetLineEnd()
 	{
-		if (staticAngle != null) return transform.position + new Vector2(-(float) Math.Cos((float) staticAngle), (float) Math.Sin((float) staticAngle)) * length;
+		if (staticAngle != null)
+		{
+			return transform.position + new Vector2(-(float) Math.Cos((float) staticAngle), (float) Math.Sin((float) staticAngle)) * length;
+		}
+
 		return transform.position + new Vector2(-(float) Math.Cos(transform.rotation.Z), (float) Math.Sin(transform.rotation.Z)) * length;
 	}
 }

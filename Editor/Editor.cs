@@ -140,6 +140,7 @@ public class Editor
 		}
 
 		if (Global.EditorAttached)
+		{
 			editorWindows = new EditorWindow[]
 			                {
 				                new EditorWindow_Hierarchy(),
@@ -149,11 +150,14 @@ public class Editor
 				                new EditorWindow_Profiler(),
 				                new EditorWindow_SceneView()
 			                };
+		}
 		else
+		{
 			editorWindows = new EditorWindow[]
 			                {
 				                new EditorWindow_SceneView()
 			                };
+		}
 
 		for (var i = 0; i < editorWindows.Length; i++) editorWindows[i].Init();
 
@@ -168,17 +172,28 @@ public class Editor
 	{
 		for (var i = 0; i < editorWindows.Length; i++) editorWindows[i].Update();
 
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftControl) && KeyboardInput.IsKeyDown(KeyboardInput.Keys.S)) Scene.I.SaveScene();
+		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
+		{
+			Scene.I.SaveScene();
+		}
 
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftControl) && KeyboardInput.IsKeyDown(KeyboardInput.Keys.R)) Scene.I.LoadScene(Serializer.lastScene);
+		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
+		{
+			Scene.I.LoadScene(Serializer.lastScene);
+		}
 	}
 
 	public void Draw()
 	{
 		if (Global.EditorAttached)
+		{
 			for (var i = 0; i < editorWindows.Length; i++)
 				editorWindows[i].Draw();
-		else EditorWindow_SceneView.I.Draw();
+		}
+		else
+		{
+			EditorWindow_SceneView.I.Draw();
+		}
 	}
 
 	public void SelectGameObject(GameObject go)
@@ -187,7 +202,9 @@ public class Editor
 		{
 			for (var i = 0; i < Scene.I.gameObjects.Count; i++)
 				if (Scene.I.gameObjects[i].id != go.id)
+				{
 					Scene.I.gameObjects[i].selected = false;
+				}
 
 			go.selected = true;
 		}
@@ -205,14 +222,21 @@ public class Editor
 
 	public void SelectGameObject(int id)
 	{
-		if (Global.EditorAttached == false) id = -1;
+		if (Global.EditorAttached == false)
+		{
+			id = -1;
+		}
+
 		if (id == -1)
 		{
 			SelectGameObject(null);
 		}
 		else
 		{
-			if (GetGameObjectIndexInHierarchy(id) == -1) return;
+			if (GetGameObjectIndexInHierarchy(id) == -1)
+			{
+				return;
+			}
 
 			SelectGameObject(Scene.I.gameObjects[GetGameObjectIndexInHierarchy(id)]);
 		}
@@ -222,7 +246,9 @@ public class Editor
 	{
 		for (var i = 0; i < Scene.I.gameObjects.Count; i++)
 			if (Scene.I.gameObjects[i].id == id)
+			{
 				return i;
+			}
 
 		return -1;
 	}
@@ -232,7 +258,9 @@ public class Editor
 		var selectedGameObjects = new List<GameObject>();
 		for (var i = 0; i < Scene.I.gameObjects.Count; i++)
 			if (Scene.I.gameObjects[i].selected)
+			{
 				selectedGameObjects.Add(Scene.I.gameObjects[i]);
+			}
 
 		return selectedGameObjects;
 	}
@@ -241,7 +269,9 @@ public class Editor
 	{
 		for (var i = 0; i < Scene.I.gameObjects.Count; i++)
 			if (Scene.I.gameObjects[i].selected)
+			{
 				return Scene.I.gameObjects[i];
+			}
 
 		return null;
 	}

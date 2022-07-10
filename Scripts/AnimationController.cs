@@ -29,7 +29,11 @@ public class AnimationController : Component
 
 	public override void Update()
 	{
-		if (animationSpeed == 0) return;
+		if (animationSpeed == 0)
+		{
+			return;
+		}
+
 		timeOnCurrentFrame += Time.deltaTime * animationSpeed;
 		while (timeOnCurrentFrame > 1 / animationSpeed)
 		{
@@ -56,8 +60,14 @@ public class AnimationController : Component
 
 	public void Turn(Vector2 direction)
 	{
-		if (direction == Vector2.Right) transform.rotation.Y = 0;
-		else transform.rotation.Y = 180;
+		if (direction == Vector2.Right)
+		{
+			transform.rotation.Y = 0;
+		}
+		else
+		{
+			transform.rotation.Y = 180;
+		}
 	}
 
 	public void Jump()
@@ -77,12 +87,18 @@ public class AnimationController : Component
 
 	public void SetAnimation(Vector2 animRange)
 	{
-		if (jumping && animRange != animRange_Jump) return;
+		if (jumping && animRange != animRange_Jump)
+		{
+			return;
+		}
 
 		var oldAnim = currentAnimRange;
 
 		currentAnimRange = animRange;
 
-		if (oldAnim != currentAnimRange) ResetCurrentAnimation();
+		if (oldAnim != currentAnimRange)
+		{
+			ResetCurrentAnimation();
+		}
 	}
 }

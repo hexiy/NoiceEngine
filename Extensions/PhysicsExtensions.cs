@@ -9,7 +9,11 @@ public static class PhysicsExtensions
 		switch (shape)
 		{
 			case CircleShape circleCollider:
-				if ((distance = Vector2.Distance(circleCollider.transform.position.ToVector2(), point)) < circleCollider.radius) isIn = true;
+				if ((distance = Vector2.Distance(circleCollider.transform.position.ToVector2(), point)) < circleCollider.radius)
+				{
+					isIn = true;
+				}
+
 				break;
 			case BoxShape boxCollider:
 				Vector2 boxPosition = boxCollider.transform.position;

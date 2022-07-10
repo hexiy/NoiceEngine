@@ -6228,19 +6228,19 @@
     ]
   },
   "packageFolders": {
-    "/home/hexiy/.nuget/packages/": {}
+    "C:\\Users\\slavk\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/hexiy/dev/Noice/NoiceEngine/NoiceEngine.csproj",
+      "projectUniqueName": "C:\\dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
       "projectName": "NoiceEngine",
-      "projectPath": "/home/hexiy/dev/Noice/NoiceEngine/NoiceEngine.csproj",
-      "packagesPath": "/home/hexiy/.nuget/packages/",
-      "outputPath": "/home/hexiy/dev/Noice/NoiceEngine/obj/",
+      "projectPath": "C:\\dev\\Noice\\NoiceEngine\\NoiceEngine.csproj",
+      "packagesPath": "C:\\Users\\slavk\\.nuget\\packages\\",
+      "outputPath": "C:\\dev\\Noice\\NoiceEngine\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/hexiy/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\slavk\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -6312,7 +6312,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\slavk\\.dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   },

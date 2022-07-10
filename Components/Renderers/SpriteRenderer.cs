@@ -6,37 +6,58 @@ public class SpriteRenderer : Renderer
 {
 	public Texture texture;
 
-	[Hide] public virtual bool Batched { get; set; } = false;
+	[Hide] public virtual bool Batched { get; set; } = true;
 
 	public override void Awake()
 	{
 		material = new Material(ShaderCache.spriteRendererShader, BufferCache.spriteRendererVAO);
-		if (texture == null) texture = new Texture();
-		else LoadTexture(texture.path);
+		if (texture == null)
+		{
+			texture = new Texture();
+		}
+		else
+		{
+			LoadTexture(texture.path);
+		}
 
 		base.Awake();
 	}
 
 	public virtual void LoadTexture(string _texturePath)
 	{
-		if (_texturePath.Contains("Assets") == false) _texturePath = Path.Combine("Assets", _texturePath);
+		if (_texturePath.Contains("Assets") == false)
+		{
+			_texturePath = Path.Combine("Assets", _texturePath);
+		}
 
-		if (File.Exists(_texturePath) == false) return;
+		if (File.Exists(_texturePath) == false)
+		{
+			return;
+		}
 
 		texture.Load(_texturePath);
 
 		UpdateBoxShapeSize();
-		if (Batched) BatchingManager.AddObjectToBatcher(texture.id, this);
+		if (Batched)
+		{
+			BatchingManager.AddObjectToBatcher(texture.id, this);
+		}
 	}
 
 	internal virtual void UpdateBoxShapeSize()
 	{
-		if (boxShape != null) boxShape.size = texture.size;
+		if (boxShape != null)
+		{
+			boxShape.size = texture.size;
+		}
 	}
 
 	public override void OnNewComponentAdded(Component comp)
 	{
-		if (comp is BoxShape && texture != null) UpdateBoxShapeSize();
+		if (comp is BoxShape && texture != null)
+		{
+			UpdateBoxShapeSize();
+		}
 
 		base.OnNewComponentAdded(comp);
 	}
@@ -45,12 +66,30 @@ public class SpriteRenderer : Renderer
 	{
 	}
 
+	public override void OnDestroyed()
+	{
+		BatchingManager.RemoveAttribs(texture.id, gameObjectID);
+		base.OnDestroyed();
+	}
+
 	public override void Render()
 	{
-		if (onScreen == false) return;
-		if (boxShape == null) return;
-		if (texture.loaded == false) return;
+		if (onScreen == false)
+		{
+			return;
+		}
 
+		if (boxShape == null)
+		{
+			return;
+		}
+
+		if (texture.loaded == false)
+		{
+			return;
+		}
+
+		Batched = true;
 		if (Batched)
 		{
 			BatchingManager.UpdateAttribs(texture.id, gameObjectID, transform.position, new Vector2(GetComponent<BoxShape>().size.X * transform.scale.X, GetComponent<BoxShape>().size.Y * transform.scale.Y),
@@ -65,8 +104,14 @@ public class SpriteRenderer : Renderer
 
 		BufferCache.BindVAO(BufferCache.spriteRendererVAO);
 
-		if (material.additive) GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
-		else GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		if (material.additive)
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+		}
+		else
+		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		}
 
 		TextureCache.BindTexture(texture.id);
 

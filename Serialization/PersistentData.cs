@@ -11,7 +11,10 @@ public static class PersistentData
 
 	private static void LoadAllData()
 	{
-		if (File.Exists("persistentData") == false) return;
+		if (File.Exists("persistentData") == false)
+		{
+			return;
+		}
 
 		data = new Dictionary<string, object>();
 		using (var sr = new StreamReader("persistentData"))
@@ -31,7 +34,10 @@ public static class PersistentData
 
 	private static void Save()
 	{
-		if (File.Exists("persistentData") == false) File.Delete("persitentData");
+		if (File.Exists("persistentData") == false)
+		{
+			File.Delete("persitentData");
+		}
 
 		var fs = File.Create("persistentData");
 		fs.Close();
@@ -49,9 +55,20 @@ public static class PersistentData
 
 	private static object Get(string key, object? defaultValue = null)
 	{
-		if (data.Count == 0) LoadAllData();
-		if (data.ContainsKey(key) == false && defaultValue != null) return defaultValue;
-		if (data.ContainsKey(key) == false) return null;
+		if (data.Count == 0)
+		{
+			LoadAllData();
+		}
+
+		if (data.ContainsKey(key) == false && defaultValue != null)
+		{
+			return defaultValue;
+		}
+
+		if (data.ContainsKey(key) == false)
+		{
+			return null;
+		}
 
 		return data[key];
 	}
@@ -73,7 +90,10 @@ public static class PersistentData
 
 	public static void Set(string key, object value)
 	{
-		if (data.Count == 0) LoadAllData();
+		if (data.Count == 0)
+		{
+			LoadAllData();
+		}
 
 		data[key] = value;
 

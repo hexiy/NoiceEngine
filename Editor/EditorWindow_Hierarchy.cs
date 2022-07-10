@@ -6,10 +6,11 @@ namespace Engine;
 public class EditorWindow_Hierarchy : EditorWindow
 {
 	private bool canDelete = true;
-	private List<GameObject> gameObjectsChildrened = new();
 	public Action<int> GameObjectSelected;
+	private List<GameObject> gameObjectsChildrened = new();
 
 	private int selectedGameObjectIndex;
+	private bool showUpdatePrefabPopup;
 	public static EditorWindow_Hierarchy I { get; private set; }
 
 	public override void Init()
@@ -17,15 +18,38 @@ public class EditorWindow_Hierarchy : EditorWindow
 		I = this;
 	}
 
+	private GameObject clipboardGameObject;
+
 	public override void Update()
 	{
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.Delete) && canDelete)
+		if (KeyboardInput.IsKeyDown(Keys.Delete) && canDelete)
 		{
 			canDelete = false;
 			DestroySelectedGameObjects();
 		}
 
-		if (KeyboardInput.IsKeyUp(KeyboardInput.Keys.Delete)) canDelete = true;
+		if (KeyboardInput.IsKeyUp(Keys.Delete))
+		{
+			canDelete = true;
+		}
+
+		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyUp(Keys.C))
+		{
+			if (Editor.I.GetSelectedGameObject() != null)
+			{
+				clipboardGameObject = Editor.I.GetSelectedGameObject();
+				Serializer.I.SaveClipboardGameObject(clipboardGameObject);
+			}
+		}
+
+		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyUp(Keys.V))
+		{
+			if (clipboardGameObject != null)
+			{
+				GameObject loadedGO = Serializer.I.LoadClipboardGameObject();
+				EditorWindow_Hierarchy.I.SelectGameObject(loadedGO.id);
+			}
+		}
 	}
 
 	private void DestroySelectedGameObjects()
@@ -34,7 +58,11 @@ public class EditorWindow_Hierarchy : EditorWindow
 		{
 			selectedGameObject.Destroy();
 			selectedGameObjectIndex--;
-			if (selectedGameObjectIndex < 0) return;
+			if (selectedGameObjectIndex < 0)
+			{
+				return;
+			}
+
 			GameObjectSelected.Invoke(Scene.I.gameObjects[selectedGameObjectIndex].id);
 		}
 	}
@@ -42,12 +70,19 @@ public class EditorWindow_Hierarchy : EditorWindow
 	private void MoveSelectedGameObject(int addToIndex = 1)
 	{
 		var direction = addToIndex;
-		if (Editor.I.GetSelectedGameObjects().Count == 0) return;
+		if (Editor.I.GetSelectedGameObjects().Count == 0)
+		{
+			return;
+		}
 
 		var go = Editor.I.GetSelectedGameObjects()[0];
 		var oldIndex = go.indexInHierarchy;
 
-		if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0) return;
+		if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0)
+		{
+			return;
+		}
+
 		while (Scene.I.gameObjects[oldIndex + direction].transform.parent != null) direction += addToIndex;
 
 		Scene.I.gameObjects.RemoveAt(oldIndex);
@@ -65,7 +100,10 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 	public override void Draw()
 	{
-		if (active == false) return;
+		if (active == false)
+		{
+			return;
+		}
 
 		ResetID();
 		ImGui.SetNextWindowSize(new Vector2(300, Editor.sceneViewSize.Y), ImGuiCond.Always);
@@ -81,15 +119,25 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 		ImGui.SameLine();
 
-		if (ImGui.Button("-")) DestroySelectedGameObjects();
+		if (ImGui.Button("-"))
+		{
+			DestroySelectedGameObjects();
+		}
 
 		ImGui.SameLine();
 		ImGui.Dummy(new Vector2(15, 0));
 		ImGui.SameLine();
-		if (ImGui.Button("^")) MoveSelectedGameObject(-1);
+		if (ImGui.Button("^"))
+		{
+			MoveSelectedGameObject(-1);
+		}
 
 		ImGui.SameLine();
-		if (ImGui.Button("V")) MoveSelectedGameObject();
+		if (ImGui.Button("V"))
+		{
+			MoveSelectedGameObject();
+		}
+
 		ImGui.SameLine();
 		if (ImGui.Button("Add children"))
 		{
@@ -100,17 +148,39 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 		for (var goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)
 		{
-			if (Scene.I.gameObjects[goIndex].transform.parent != null) continue;
-			if (Scene.I.gameObjects[goIndex].silent) continue;
+			if (Scene.I.gameObjects[goIndex].transform.parent != null)
+			{
+				continue;
+			}
+
+			if (Scene.I.gameObjects[goIndex].silent)
+			{
+				continue;
+			}
+
 			var hasAnyChildren = false; //Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
 			var flags = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.OpenOnArrow;
-			if (hasAnyChildren == false) flags = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
+			if (hasAnyChildren == false)
+			{
+				flags = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
+			}
 
-			ImGui.PushStyleColor(ImGuiCol.Text, Scene.I.gameObjects[goIndex].activeInHierarchy ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
+			Vector4 nameColor = Scene.I.gameObjects[goIndex].activeInHierarchy ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4();
+
+			if (Scene.I.gameObjects[goIndex].isPrefab)
+			{
+				nameColor = Scene.I.gameObjects[goIndex].activeInHierarchy ? Color.SkyBlue.ToVector4() : new Color(135, 206, 235, 130).ToVector4();
+			}
+
+			ImGui.PushStyleColor(ImGuiCol.Text, nameColor);
 			var opened = ImGui.TreeNodeEx($"[{Scene.I.gameObjects[goIndex].id}]" + Scene.I.gameObjects[goIndex].name, flags);
 			ImGui.PopStyleColor();
 
-			if (ImGui.IsItemClicked(ImGuiMouseButton.Left)) SelectGameObject(Scene.I.gameObjects[goIndex].id);
+			if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
+			{
+				SelectGameObject(Scene.I.gameObjects[goIndex].id);
+			}
+
 			if (opened)
 			{
 				var children = Scene.I.gameObjects[goIndex].transform.children;
@@ -123,12 +193,20 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 					var hasAnyChildren2 = Scene.I.gameObjects[goIndex].transform.children.Count != 0;
 					var flags2 = (selectedGameObjectIndex == indexInHierarchy ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
-					if (hasAnyChildren2 == false) flags2 = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
+					if (hasAnyChildren2 == false)
+					{
+						flags2 = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Leaf : 0) | ImGuiTreeNodeFlags.Leaf;
+					}
+
 					ImGui.PushStyleColor(ImGuiCol.Text, children[childrenIndex].gameObject.activeInHierarchy ? Color.White.ToVector4() : new Color(1, 1, 1, 0.4f).ToVector4());
 					var opened2 = ImGui.TreeNodeEx($"[{children[childrenIndex].gameObject.id}]" + children[childrenIndex].gameObject.name, flags2);
 					ImGui.PopStyleColor();
 
-					if (ImGui.IsItemClicked()) SelectGameObject(Scene.I.gameObjects[indexInHierarchy].id);
+					if (ImGui.IsItemClicked())
+					{
+						SelectGameObject(Scene.I.gameObjects[indexInHierarchy].id);
+					}
+
 					ImGui.TreePop();
 				}
 

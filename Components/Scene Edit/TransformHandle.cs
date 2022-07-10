@@ -82,14 +82,21 @@ public class TransformHandle : Component
 
 	private void SetSelectedObjectRigidbodyAwake(bool tgl)
 	{
-		if (selectedTransform?.HasComponent<Rigidbody>() == true && selectedTransform?.GetComponent<Rigidbody>().body?.Awake == false) selectedTransform.GetComponent<Rigidbody>().body.Awake = tgl;
+		if (selectedTransform?.HasComponent<Rigidbody>() == true && selectedTransform?.GetComponent<Rigidbody>().body?.Awake == false)
+		{
+			selectedTransform.GetComponent<Rigidbody>().body.Awake = tgl;
+		}
 	}
 
 	public override void Update()
 	{
 		transform.scale = Vector3.One * Camera.I.ortographicSize;
 
-		if (MouseInput.ButtonReleased()) CurrentAxisSelected = null;
+		if (MouseInput.ButtonReleased())
+		{
+			CurrentAxisSelected = null;
+		}
+
 		if (MouseInput.ButtonPressed())
 		{
 			clicked = false;
@@ -124,15 +131,38 @@ public class TransformHandle : Component
 
 		if (objectSelected == false || selectedTransform == null)
 			//GameObject.Active = false;
+		{
 			return;
+		}
 
 		transform.position = selectedTransform.position;
-		if (MouseInput.WorldPosition.In(boxColliderX) || CurrentAxisSelected == Axis.X) boxRendererX.color = Color.WhiteSmoke;
-		else boxRendererX.color = Color.Red;
-		if (MouseInput.WorldPosition.In(boxColliderY) || CurrentAxisSelected == Axis.Y) boxRendererY.color = Color.WhiteSmoke;
-		else boxRendererY.color = Color.Cyan;
-		if (MouseInput.WorldPosition.In(boxColliderXY) || CurrentAxisSelected == Axis.XY) boxRendererXY.color = Color.WhiteSmoke;
-		else boxRendererXY.color = Color.Orange;
+		if (MouseInput.WorldPosition.In(boxColliderX) || CurrentAxisSelected == Axis.X)
+		{
+			boxRendererX.color = Color.WhiteSmoke;
+		}
+		else
+		{
+			boxRendererX.color = Color.Red;
+		}
+
+		if (MouseInput.WorldPosition.In(boxColliderY) || CurrentAxisSelected == Axis.Y)
+		{
+			boxRendererY.color = Color.WhiteSmoke;
+		}
+		else
+		{
+			boxRendererY.color = Color.Cyan;
+		}
+
+		if (MouseInput.WorldPosition.In(boxColliderXY) || CurrentAxisSelected == Axis.XY)
+		{
+			boxRendererXY.color = Color.WhiteSmoke;
+		}
+		else
+		{
+			boxRendererXY.color = Color.Orange;
+		}
+
 		base.Update();
 	}
 
@@ -158,14 +188,17 @@ public class TransformHandle : Component
 		for (var i = 0; i < selectedTransform.children.Count; i++) selectedTransform.children[i].position += moveVector;
 
 		if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().isButton == false)
+		{
 			lock (Physics.World)
 			{
 				var rigidbody = selectedTransform.GetComponent<Rigidbody>();
 				rigidbody.Velocity = Vector2.Zero;
 				rigidbody.body.Position = selectedTransform.position;
 			}
+		}
 
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.LeftShift))
+		if (KeyboardInput.IsKeyDown(Keys.LeftShift))
+		{
 			switch (CurrentAxisSelected)
 			{
 				case Axis.X:
@@ -178,6 +211,7 @@ public class TransformHandle : Component
 					selectedTransform.position = MouseInput.WorldPosition.TranslateToGrid(50);
 					break;
 			}
+		}
 	}
 
 	public void SelectObject(GameObject selectedGO)

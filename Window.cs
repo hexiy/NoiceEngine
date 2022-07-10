@@ -60,7 +60,11 @@ internal class Window : GameWindow
 		Scene.I.Update();
 		Debug.EndTimer("Scene Update");
 
-		if (Global.EditorAttached) Editor.I.Update();
+		if (Global.EditorAttached)
+		{
+			Editor.I.Update();
+		}
+
 		base.OnUpdateFrame(args);
 	}
 
@@ -88,10 +92,11 @@ internal class Window : GameWindow
 
 		// draw sceneRenderTexture.colorAttachment with post process- into postProcessRenderTexture target
 		postProcessRenderTexture.RenderWithPostProcess(sceneRenderTexture.colorAttachment);
+		postProcessRenderTexture.RenderSnow(sceneRenderTexture.colorAttachment);
 
 		postProcessRenderTexture.Unbind();
 
-		var bloom_enabled = false;
+		var bloom_enabled = true;
 		var sampleSize = 0.1f;
 		if (bloom_enabled)
 		{

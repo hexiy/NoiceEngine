@@ -185,9 +185,19 @@ public static class Mathf
 		var sCubed = s * s * s;
 		var sSquared = s * s;
 
-		if (amount == 0f) result = value1;
-		else if (amount == 1f) result = value2;
-		else result = (2 * v1 - 2 * v2 + t2 + t1) * sCubed + (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared + t1 * s + v1;
+		if (amount == 0f)
+		{
+			result = value1;
+		}
+		else if (amount == 1f)
+		{
+			result = value2;
+		}
+		else
+		{
+			result = (2 * v1 - 2 * v2 + t2 + t1) * sCubed + (3 * v2 - 3 * v1 - 2 * t1 - t2) * sSquared + t1 * s + v1;
+		}
+
 		return (float) result;
 	}
 
@@ -359,10 +369,22 @@ public static class Mathf
 	/// <returns>The new angle, in radians.</returns>
 	public static float WrapAngle(float angle)
 	{
-		if (angle > -Pi && angle <= Pi) return angle;
+		if (angle > -Pi && angle <= Pi)
+		{
+			return angle;
+		}
+
 		angle %= TwoPi;
-		if (angle <= -Pi) return angle + TwoPi;
-		if (angle > Pi) return angle - TwoPi;
+		if (angle <= -Pi)
+		{
+			return angle + TwoPi;
+		}
+
+		if (angle > Pi)
+		{
+			return angle - TwoPi;
+		}
+
 		return angle;
 	}
 
@@ -373,6 +395,6 @@ public static class Mathf
 	/// <returns><c>true</c> if <c>value</c> is powered by two; otherwise <c>false</c>.</returns>
 	public static bool IsPowerOfTwo(int value)
 	{
-		return value > 0 && (value & (value - 1)) == 0;
+		return value > 0 && (value & value - 1) == 0;
 	}
 }

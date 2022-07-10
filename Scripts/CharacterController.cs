@@ -17,17 +17,28 @@ public class CharacterController : Component
 
 	public override void FixedUpdate()
 	{
-		if (rb == null) return;
-		var input = Vector2.Zero;
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.A)) input.X = -moveSpeed;
-		if (KeyboardInput.IsKeyDown(KeyboardInput.Keys.D)) input.X = moveSpeed;
+		if (rb == null)
+		{
+			return;
+		}
 
-		if (jumpKeyDown == false && KeyboardInput.IsKeyDown(KeyboardInput.Keys.W))
+		var input = Vector2.Zero;
+		if (KeyboardInput.IsKeyDown(Keys.A))
+		{
+			input.X = -moveSpeed;
+		}
+
+		if (KeyboardInput.IsKeyDown(Keys.D))
+		{
+			input.X = moveSpeed;
+		}
+
+		if (jumpKeyDown == false && KeyboardInput.IsKeyDown(Keys.W))
 		{
 			//rb.body.ApplyForce(new Vector2(0, -JumpForce));
 		}
 
-		jumpKeyDown = KeyboardInput.IsKeyDown(KeyboardInput.Keys.W);
+		jumpKeyDown = KeyboardInput.IsKeyDown(Keys.W);
 		//rb.body.ApplyForce(new Vector2(input.X, 0));
 		base.Update();
 	}

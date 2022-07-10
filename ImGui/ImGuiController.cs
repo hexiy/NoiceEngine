@@ -5,6 +5,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Vector2 = System.Numerics.Vector2;
+using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
 namespace Dear_ImGui_Sample;
 
@@ -181,7 +182,10 @@ void main()
 	/// </summary>
 	public void Update(GameWindow wnd, float deltaSeconds)
 	{
-		if (_frameBegun) ImGui.Render();
+		if (_frameBegun)
+		{
+			ImGui.Render();
+		}
 
 		SetPerFrameImGuiData(deltaSeconds);
 		UpdateImGuiInput(wnd);
@@ -221,7 +225,11 @@ void main()
 
 		foreach (Keys key in Enum.GetValues(typeof(Keys)))
 		{
-			if (key == Keys.Unknown) continue;
+			if (key == Keys.Unknown)
+			{
+				continue;
+			}
+
 			io.KeysDown[(int) key] = KeyboardState.IsKeyDown(key);
 		}
 
@@ -273,7 +281,10 @@ void main()
 
 	private void RenderImDrawData(ImDrawDataPtr draw_data)
 	{
-		if (draw_data.CmdListsCount == 0) return;
+		if (draw_data.CmdListsCount == 0)
+		{
+			return;
+		}
 
 		for (var i = 0; i < draw_data.CmdListsCount; i++)
 		{
@@ -341,7 +352,10 @@ void main()
 			for (var cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
 			{
 				var pcmd = cmd_list.CmdBuffer[cmd_i];
-				if (pcmd.UserCallback != IntPtr.Zero) throw new NotImplementedException();
+				if (pcmd.UserCallback != IntPtr.Zero)
+				{
+					throw new NotImplementedException();
+				}
 
 				GL.ActiveTexture(TextureUnit.Texture0);
 				TextureCache.BindTexture((int) pcmd.TextureId);
@@ -353,8 +367,14 @@ void main()
 				Util.CheckGLError("Scissor");
 
 				if ((io.BackendFlags & ImGuiBackendFlags.RendererHasVtxOffset) != 0)
+				{
 					GL.DrawElementsBaseVertex(PrimitiveType.Triangles, (int) pcmd.ElemCount, DrawElementsType.UnsignedShort, (IntPtr) (pcmd.IdxOffset * sizeof(ushort)), (int) pcmd.VtxOffset);
-				else GL.DrawElements(BeginMode.Triangles, (int) pcmd.ElemCount, DrawElementsType.UnsignedShort, (int) pcmd.IdxOffset * sizeof(ushort));
+				}
+				else
+				{
+					GL.DrawElements(BeginMode.Triangles, (int) pcmd.ElemCount, DrawElementsType.UnsignedShort, (int) pcmd.IdxOffset * sizeof(ushort));
+				}
+
 				Util.CheckGLError("Draw");
 			}
 		}

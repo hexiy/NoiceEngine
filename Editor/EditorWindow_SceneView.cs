@@ -8,7 +8,10 @@ public class EditorWindow_SceneView : EditorWindow
 
 	public override void Draw()
 	{
-		if (active == false) return;
+		if (active == false)
+		{
+			return;
+		}
 
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
@@ -29,8 +32,14 @@ public class EditorWindow_SceneView : EditorWindow
 			var physicsButtonClicked = ImGui.Button("physics");
 			if (physicsButtonClicked)
 			{
-				if (Physics.Running == false) Physics.StartPhysics();
-				else if (Physics.Running) Physics.StopPhysics();
+				if (Physics.Running == false)
+				{
+					Physics.StartPhysics();
+				}
+				else if (Physics.Running)
+				{
+					Physics.StopPhysics();
+				}
 			}
 
 			ImGui.PopStyleColor();
@@ -40,13 +49,19 @@ public class EditorWindow_SceneView : EditorWindow
 			ImGui.PushStyleColor(ImGuiCol.Text, Global.GameRunning ? activeColor : inactiveColor);
 
 			var playButtonClicked = ImGui.Button("play");
-			if (playButtonClicked) Global.GameRunning = !Global.GameRunning;
+			if (playButtonClicked)
+			{
+				Global.GameRunning = !Global.GameRunning;
+			}
 
 			ImGui.PopStyleColor();
 
 			ImGui.SameLine();
 			var resetDataButtonClicked = ImGui.Button("delete data");
-			if (resetDataButtonClicked) PersistentData.DeleteAll();
+			if (resetDataButtonClicked)
+			{
+				PersistentData.DeleteAll();
+			}
 
 			ImGui.SetCursorPosX(0);
 			Editor.sceneViewPosition = new Vector2(ImGui.GetCursorPosX(), ImGui.GetCursorPosY());

@@ -9,7 +9,10 @@ public class BoxRenderer : Renderer
 
 	public override void Render()
 	{
-		if (boxShape == null) return;
+		if (boxShape == null)
+		{
+			return;
+		}
 
 		ShaderCache.UseShader(ShaderCache.boxRendererShader);
 		ShaderCache.boxRendererShader.SetMatrix4x4("u_mvp", LatestModelViewProjection);

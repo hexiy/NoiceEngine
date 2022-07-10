@@ -505,8 +505,15 @@ public struct Matrix : IEquatable<Matrix>
 		vector.Y = objectPosition.Y - cameraPosition.Y;
 		vector.Z = objectPosition.Z - cameraPosition.Z;
 		var num = vector.LengthSquared();
-		if (num < 0.0001f) vector = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
-		else Vector3.Multiply(ref vector, 1f / MathF.Sqrt(num), out vector);
+		if (num < 0.0001f)
+		{
+			vector = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
+		}
+		else
+		{
+			Vector3.Multiply(ref vector, 1f / MathF.Sqrt(num), out vector);
+		}
+
 		Vector3.Cross(ref cameraUpVector, ref vector, out vector3);
 		vector3.Normalize();
 		Vector3.Cross(ref vector, ref vector3, out vector2);
@@ -566,8 +573,15 @@ public struct Matrix : IEquatable<Matrix>
 		vector2.Y = objectPosition.Y - cameraPosition.Y;
 		vector2.Z = objectPosition.Z - cameraPosition.Z;
 		var num2 = vector2.LengthSquared();
-		if (num2 < 0.0001f) vector2 = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
-		else Vector3.Multiply(ref vector2, 1f / MathF.Sqrt(num2), out vector2);
+		if (num2 < 0.0001f)
+		{
+			vector2 = cameraForwardVector.HasValue ? -cameraForwardVector.Value : Vector3.Forward;
+		}
+		else
+		{
+			Vector3.Multiply(ref vector2, 1f / MathF.Sqrt(num2), out vector2);
+		}
+
 		var vector4 = rotateAxis;
 		Vector3.Dot(ref rotateAxis, ref vector2, out num);
 		if (Math.Abs(num) > 0.9982547f)
@@ -915,9 +929,20 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="result">The new projection <see cref="Matrix" /> for perspective view as an output parameter.</param>
 	public static void CreatePerspective(float width, float height, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
 	{
-		if (nearPlaneDistance <= 0f) throw new ArgumentException("nearPlaneDistance <= 0");
-		if (farPlaneDistance <= 0f) throw new ArgumentException("farPlaneDistance <= 0");
-		if (nearPlaneDistance >= farPlaneDistance) throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		if (nearPlaneDistance <= 0f)
+		{
+			throw new ArgumentException("nearPlaneDistance <= 0");
+		}
+
+		if (farPlaneDistance <= 0f)
+		{
+			throw new ArgumentException("farPlaneDistance <= 0");
+		}
+
+		if (nearPlaneDistance >= farPlaneDistance)
+		{
+			throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		}
 
 		var negFarRange = float.IsPositiveInfinity(farPlaneDistance) ? -1.0f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
@@ -957,10 +982,25 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="result">The new projection <see cref="Matrix" /> for perspective view with FOV as an output parameter.</param>
 	public static void CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
 	{
-		if (fieldOfView <= 0f || fieldOfView >= 3.141593f) throw new ArgumentException("fieldOfView <= 0 or >= PI");
-		if (nearPlaneDistance <= 0f) throw new ArgumentException("nearPlaneDistance <= 0");
-		if (farPlaneDistance <= 0f) throw new ArgumentException("farPlaneDistance <= 0");
-		if (nearPlaneDistance >= farPlaneDistance) throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		if (fieldOfView <= 0f || fieldOfView >= 3.141593f)
+		{
+			throw new ArgumentException("fieldOfView <= 0 or >= PI");
+		}
+
+		if (nearPlaneDistance <= 0f)
+		{
+			throw new ArgumentException("nearPlaneDistance <= 0");
+		}
+
+		if (farPlaneDistance <= 0f)
+		{
+			throw new ArgumentException("farPlaneDistance <= 0");
+		}
+
+		if (nearPlaneDistance >= farPlaneDistance)
+		{
+			throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		}
 
 		var yScale = 1.0f / (float) Math.Tan((double) fieldOfView * 0.5f);
 		var xScale = yScale / aspectRatio;
@@ -1020,9 +1060,21 @@ public struct Matrix : IEquatable<Matrix>
 	/// <param name="result">The new <see cref="Matrix" /> for customized perspective view as an output parameter.</param>
 	public static void CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlaneDistance, float farPlaneDistance, out Matrix result)
 	{
-		if (nearPlaneDistance <= 0f) throw new ArgumentException("nearPlaneDistance <= 0");
-		if (farPlaneDistance <= 0f) throw new ArgumentException("farPlaneDistance <= 0");
-		if (nearPlaneDistance >= farPlaneDistance) throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		if (nearPlaneDistance <= 0f)
+		{
+			throw new ArgumentException("nearPlaneDistance <= 0");
+		}
+
+		if (farPlaneDistance <= 0f)
+		{
+			throw new ArgumentException("farPlaneDistance <= 0");
+		}
+
+		if (nearPlaneDistance >= farPlaneDistance)
+		{
+			throw new ArgumentException("nearPlaneDistance >= farPlaneDistance");
+		}
+
 		result.M11 = 2f * nearPlaneDistance / (right - left);
 		result.M12 = result.M13 = result.M14 = 0;
 		result.M22 = 2f * nearPlaneDistance / (top - bottom);
@@ -1659,7 +1711,11 @@ public struct Matrix : IEquatable<Matrix>
 	public override bool Equals(object obj)
 	{
 		var flag = false;
-		if (obj is Matrix) flag = Equals((Matrix) obj);
+		if (obj is Matrix)
+		{
+			flag = Equals((Matrix) obj);
+		}
+
 		return flag;
 	}
 
@@ -2394,7 +2450,10 @@ public struct Matrix : IEquatable<Matrix>
 	{
 		get
 		{
-			if (this == Identity) return "Identity";
+			if (this == Identity)
+			{
+				return "Identity";
+			}
 
 			return string.Concat(
 			                     "( ", M11.ToString(), "  ", M12.ToString(), "  ", M13.ToString(), "  ", M14.ToString(), " )  \r\n",

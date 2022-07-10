@@ -17,9 +17,20 @@ public class ParticleSystemRenderer : SpriteRenderer
 
 	public override void Render()
 	{
-		if (onScreen == false) return;
-		if (boxShape == null) return;
-		if (texture.loaded == false) return;
+		if (onScreen == false)
+		{
+			return;
+		}
+
+		if (boxShape == null)
+		{
+			return;
+		}
+
+		if (texture.loaded == false)
+		{
+			return;
+		}
 
 		while (particlesInBatcher < particleSystem.particles.Count)
 		{

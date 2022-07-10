@@ -21,7 +21,11 @@ public class Camera : Component
 	public override void Awake()
 	{
 		I = this;
-		if (Global.EditorAttached == false) size = new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y);
+		if (Global.EditorAttached == false)
+		{
+			size = new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y);
+		}
+
 		projectionMatrix = GetProjectionMatrix();
 		viewMatrix = GetViewMatrix();
 		/*	renderTarget = new RenderTarget2D(

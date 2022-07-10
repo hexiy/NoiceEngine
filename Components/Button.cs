@@ -21,7 +21,10 @@ public class Button : Component
 		//onReleasedAction += () => renderer.color = Color.White;
 		onReleasedAction += SpawnCubes;
 
-		if (GetComponent<ButtonTween>() == null) gameObject.AddComponent<ButtonTween>().Awake();
+		if (GetComponent<ButtonTween>() == null)
+		{
+			gameObject.AddComponent<ButtonTween>().Awake();
+		}
 
 		renderer = GetComponent<Renderer>();
 		boxShape = GetComponent<BoxShape>();
@@ -59,7 +62,11 @@ public class Button : Component
 
 	public override void Update()
 	{
-		if (renderer == false || boxShape == false) return;
+		if (renderer == false || boxShape == false)
+		{
+			return;
+		}
+
 		mouseIsOver = MouseInput.WorldPosition.In(boxShape);
 		if (MouseInput.ButtonPressed() && mouseIsOver)
 		{
@@ -68,7 +75,11 @@ public class Button : Component
 		}
 		else if (MouseInput.ButtonReleased())
 		{
-			if (mouseIsOver) onReleasedAction?.Invoke();
+			if (mouseIsOver)
+			{
+				onReleasedAction?.Invoke();
+			}
+
 			clicked = false;
 		}
 

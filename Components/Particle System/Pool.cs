@@ -9,7 +9,11 @@ public class Pool<T>
 
 	public Pool(Func<T> generator)
 	{
-		if (generator == null) throw new ArgumentNullException("objectGenerator");
+		if (generator == null)
+		{
+			throw new ArgumentNullException("objectGenerator");
+		}
+
 		collection = new ConcurrentBag<T>();
 		objectGenerator = generator;
 	}
@@ -27,7 +31,11 @@ public class Pool<T>
 	public T GetObject()
 	{
 		T item;
-		if (collection.TryTake(out item)) return item;
+		if (collection.TryTake(out item))
+		{
+			return item;
+		}
+
 		return objectGenerator();
 	}
 }

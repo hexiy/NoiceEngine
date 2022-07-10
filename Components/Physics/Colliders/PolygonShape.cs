@@ -19,7 +19,7 @@ public class PolygonShape : Shape
 	public List<Vector2> OriginalPoints { get; } = new();
 
 	public List<Vector2> Edges { get; } = new()
-	                                      {new(0, 0)};
+	                                      {new Vector2(0, 0)};
 
 	/// <summary>
 	///         Returns center in WORLD
@@ -60,8 +60,15 @@ public class PolygonShape : Shape
 		for (var i = 0; i < Points.Count; i++)
 		{
 			p1 = Points[i];
-			if (i + 1 >= Points.Count) p2 = Points[0];
-			else p2 = Points[i + 1];
+			if (i + 1 >= Points.Count)
+			{
+				p2 = Points[0];
+			}
+			else
+			{
+				p2 = Points[i + 1];
+			}
+
 			Edges.Add(p2 - p1);
 		}
 	}

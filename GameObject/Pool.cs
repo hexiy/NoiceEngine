@@ -18,7 +18,11 @@ public class Pool
 
 	public GameObject Request()
 	{
-		if (freeObjects.Count == 0) AddNewObject();
+		if (freeObjects.Count == 0)
+		{
+			AddNewObject();
+		}
+
 		var gameObject = freeObjects.Pop();
 		gameObject.activeSelf = true;
 		usedObjects.Push(gameObject);

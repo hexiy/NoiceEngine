@@ -31,7 +31,10 @@ public class Renderer : Component, IComparable<Renderer>
 	public int CompareTo(Renderer comparePart)
 	{
 		// A null value means that this object is greater.
-		if (comparePart == null) return 1;
+		if (comparePart == null)
+		{
+			return 1;
+		}
 
 		return Layer.CompareTo(comparePart.Layer + comparePart.layerFromHierarchy);
 	}
@@ -61,10 +64,17 @@ public class Renderer : Component, IComparable<Renderer>
 
 	public override void Update()
 	{
-		if (boxShape == null) return;
+		if (boxShape == null)
+		{
+			return;
+		}
 		//if (Time.elapsedTicks % 10 == 0) onScreen = Camera.I.RectangleVisible(boxShape);
 
-		if (onScreen) LatestModelViewProjection = GetModelViewProjection();
+		if (onScreen)
+		{
+			LatestModelViewProjection = GetModelViewProjection();
+		}
+
 		base.Update();
 	}
 

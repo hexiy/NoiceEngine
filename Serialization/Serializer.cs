@@ -35,9 +35,22 @@ public class Serializer
 
 	public void SaveGameObject(GameObject go, string prefabPath)
 	{
+		go.isPrefab = true;
 		var prefabSceneFile = SceneFile.CreateForOneGameObject(go);
 
 		SaveGameObjects(prefabSceneFile, prefabPath);
+	}
+
+	public void SaveClipboardGameObject(GameObject go)
+	{
+		var prefabSceneFile = SceneFile.CreateForOneGameObject(go);
+
+		SaveGameObjects(prefabSceneFile, Path.Combine("Temp", "clipboardGameObject"));
+	}
+
+	public GameObject LoadClipboardGameObject()
+	{
+		return LoadPrefab(Path.Combine("Temp", "clipboardGameObject"));
 	}
 
 	public GameObject LoadPrefab(string prefabPath)
@@ -62,7 +75,10 @@ public class Serializer
 				for (var j = 0; j < sceneFile.GameObjects[i].components.Count; j++) sceneFile.GameObjects[i].components[j].gameObjectID = sceneFile.GameObjects[i].id;
 				var go = sceneFile.GameObjects[i];
 
-				if (i == 0) mainGo = go;
+				if (i == 0)
+				{
+					mainGo = go;
+				}
 
 				Scene.I.AddGameObjectToScene(go);
 
@@ -156,7 +172,11 @@ public class Serializer
 
 		for (var goIndex = 0; goIndex < gos.Length; goIndex++)
 		{
-			if (gos[goIndex].components.Count == 0) continue;
+			if (gos[goIndex].components.Count == 0)
+			{
+				continue;
+			}
+
 			if (goIndex == gos.Length - 1 && gos[goIndex].transform.children.Count == 0)
 			{
 				if (newIDs)

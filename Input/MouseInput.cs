@@ -93,35 +93,51 @@ public static class MouseInput
 	{
 		get
 		{
-			if (IsMouseInSceneView() == false) return 0;
+			if (IsMouseInSceneView() == false)
+			{
+				return 0;
+			}
+
 			return Window.I.MouseState.ScrollDelta.Y;
 		}
 	}
 
 	public static bool IsButtonDown(Buttons button = Buttons.Left)
 	{
-		if (IsMouseInSceneView() == false) return false;
+		if (IsMouseInSceneView() == false)
+		{
+			return false;
+		}
 
 		return Window.I.MouseState.IsButtonDown((MouseButton) button);
 	}
 
 	public static bool IsButtonUp(Buttons button = Buttons.Left)
 	{
-		if (IsMouseInSceneView() == false) return false;
+		if (IsMouseInSceneView() == false)
+		{
+			return false;
+		}
 
 		return Window.I.MouseState.IsButtonDown((MouseButton) button) == false;
 	}
 
 	public static bool ButtonPressed(Buttons button = Buttons.Left)
 	{
-		if (IsMouseInSceneView() == false) return false;
+		if (IsMouseInSceneView() == false)
+		{
+			return false;
+		}
 
 		return Window.I.MouseState.WasButtonDown((MouseButton) button) == false && Window.I.MouseState.IsButtonDown((MouseButton) button);
 	}
 
 	public static bool ButtonReleased(Buttons button = Buttons.Left)
 	{
-		if (IsMouseInSceneView() == false) return false;
+		if (IsMouseInSceneView() == false)
+		{
+			return false;
+		}
 
 		return Window.I.MouseState.WasButtonDown((MouseButton) button) && Window.I.MouseState.IsButtonDown((MouseButton) button) == false;
 	}

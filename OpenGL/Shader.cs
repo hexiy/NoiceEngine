@@ -36,7 +36,10 @@ public class Shader : IDisposable
 
 		var error = "";
 		GL.GetShaderInfoLog(vs, out error);
-		if (error.Length > 0) System.Diagnostics.Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
+		if (error.Length > 0)
+		{
+			System.Diagnostics.Debug.WriteLine("ERROR COMPILING VERTEX SHADER " + error);
+		}
 
 		fs = GL.CreateShader(ShaderType.FragmentShader);
 		GL.ShaderSource(fs, fragmentCode);
@@ -44,7 +47,10 @@ public class Shader : IDisposable
 
 		error = "";
 		GL.GetShaderInfoLog(fs, out error);
-		if (error.Length > 0) System.Diagnostics.Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
+		if (error.Length > 0)
+		{
+			System.Diagnostics.Debug.WriteLine("ERROR COMPILING FRAGMENT SHADER " + error);
+		}
 
 		ProgramID = GL.CreateProgram();
 		GL.AttachShader(ProgramID, vs);

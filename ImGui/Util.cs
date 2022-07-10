@@ -16,7 +16,10 @@ internal static class Util
 	public static void CheckGLError(string title)
 	{
 		var error = GL.GetError();
-		if (error != ErrorCode.NoError) Debug.Log($"{title}: {error}");
+		if (error != ErrorCode.NoError)
+		{
+			Debug.Log($"{title}: {error}");
+		}
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -56,7 +56,11 @@ public static class Physics
 
 	private static void Wait(double seconds)
 	{
-		if (seconds < 0) return;
+		if (seconds < 0)
+		{
+			return;
+		}
+
 		Thread.Sleep((int) (seconds * 1000f));
 		//sw.Restart();
 		//

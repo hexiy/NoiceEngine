@@ -205,11 +205,11 @@ public struct Color : IEquatable<Color>
 		{
 			var clampedA = (uint) Mathf.Clamp(alpha, byte.MinValue, byte.MaxValue);
 
-			PackedValue = (color.PackedValue & 0x00FFFFFF) | (clampedA << 24);
+			PackedValue = color.PackedValue & 0x00FFFFFF | clampedA << 24;
 		}
 		else
 		{
-			PackedValue = (color.PackedValue & 0x00FFFFFF) | ((uint) alpha << 24);
+			PackedValue = color.PackedValue & 0x00FFFFFF | (uint) alpha << 24;
 		}
 	}
 
@@ -262,11 +262,11 @@ public struct Color : IEquatable<Color>
 			var clampedG = (uint) Mathf.Clamp(g, byte.MinValue, byte.MaxValue);
 			var clampedB = (uint) Mathf.Clamp(b, byte.MinValue, byte.MaxValue);
 
-			PackedValue |= (clampedB << 16) | (clampedG << 8) | clampedR;
+			PackedValue |= clampedB << 16 | clampedG << 8 | clampedR;
 		}
 		else
 		{
-			PackedValue |= ((uint) b << 16) | ((uint) g << 8) | (uint) r;
+			PackedValue |= (uint) b << 16 | (uint) g << 8 | (uint) r;
 		}
 	}
 
@@ -286,11 +286,11 @@ public struct Color : IEquatable<Color>
 			var clampedB = (uint) Mathf.Clamp(b, byte.MinValue, byte.MaxValue);
 			var clampedA = (uint) Mathf.Clamp(alpha, byte.MinValue, byte.MaxValue);
 
-			PackedValue = (clampedA << 24) | (clampedB << 16) | (clampedG << 8) | clampedR;
+			PackedValue = clampedA << 24 | clampedB << 16 | clampedG << 8 | clampedR;
 		}
 		else
 		{
-			PackedValue = ((uint) alpha << 24) | ((uint) b << 16) | ((uint) g << 8) | (uint) r;
+			PackedValue = (uint) alpha << 24 | (uint) b << 16 | (uint) g << 8 | (uint) r;
 		}
 	}
 
@@ -306,7 +306,7 @@ public struct Color : IEquatable<Color>
 	/// <param name="alpha"></param>
 	public Color(byte r, byte g, byte b, byte alpha)
 	{
-		PackedValue = ((uint) alpha << 24) | ((uint) b << 16) | ((uint) g << 8) | r;
+		PackedValue = (uint) alpha << 24 | (uint) b << 16 | (uint) g << 8 | r;
 	}
 
 	/// <summary>
@@ -322,7 +322,7 @@ public struct Color : IEquatable<Color>
 				return (byte) (PackedValue >> 16);
 			}
 		}
-		set { PackedValue = (PackedValue & 0xff00ffff) | ((uint) value << 16); }
+		set { PackedValue = PackedValue & 0xff00ffff | (uint) value << 16; }
 	}
 
 	/// <summary>
@@ -338,7 +338,7 @@ public struct Color : IEquatable<Color>
 				return (byte) (PackedValue >> 8);
 			}
 		}
-		set { PackedValue = (PackedValue & 0xffff00ff) | ((uint) value << 8); }
+		set { PackedValue = PackedValue & 0xffff00ff | (uint) value << 8; }
 	}
 
 	/// <summary>
@@ -354,7 +354,7 @@ public struct Color : IEquatable<Color>
 				return (byte) PackedValue;
 			}
 		}
-		set { PackedValue = (PackedValue & 0xffffff00) | value; }
+		set { PackedValue = PackedValue & 0xffffff00 | value; }
 	}
 
 	/// <summary>
@@ -370,7 +370,7 @@ public struct Color : IEquatable<Color>
 				return (byte) (PackedValue >> 24);
 			}
 		}
-		set { PackedValue = (PackedValue & 0x00ffffff) | ((uint) value << 24); }
+		set { PackedValue = PackedValue & 0x00ffffff | (uint) value << 24; }
 	}
 
 	/// <summary>

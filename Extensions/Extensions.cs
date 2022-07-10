@@ -13,26 +13,46 @@ public static class Extensions
 
 	public static Vector2 MaxY(Vector2 vector1, Vector2 vector2)
 	{
-		if (vector1.Y > vector2.Y) return vector1;
+		if (vector1.Y > vector2.Y)
+		{
+			return vector1;
+		}
+
 		return vector2;
 	}
 
 	public static float MaxVectorMember(this Vector2 vector)
 	{
-		if (vector.X > vector.Y) return vector.X;
+		if (vector.X > vector.Y)
+		{
+			return vector.X;
+		}
+
 		return vector.Y;
 	}
 
 	public static float MaxVectorMember(this Vector3 vector)
 	{
-		if (vector.X >= vector.Y && vector.X >= vector.Z) return vector.X;
-		if (vector.Y >= vector.X && vector.Y >= vector.Z) return vector.Y;
+		if (vector.X >= vector.Y && vector.X >= vector.Z)
+		{
+			return vector.X;
+		}
+
+		if (vector.Y >= vector.X && vector.Y >= vector.Z)
+		{
+			return vector.Y;
+		}
+
 		return vector.Z;
 	}
 
 	public static Vector2 MinY(Vector2 vector1, Vector2 vector2)
 	{
-		if (vector1.Y < vector2.Y) return vector1;
+		if (vector1.Y < vector2.Y)
+		{
+			return vector1;
+		}
+
 		return vector2;
 	}
 
@@ -91,14 +111,22 @@ public static class Extensions
 	public static Vector3 Normalized(this Vector3 vec)
 	{
 		var v = new Vector3(vec.X / vec.Length(), vec.Y / vec.Length(), vec.Z / vec.Length());
-		if (vec.Length() == 0) v = Vector3.Zero;
+		if (vec.Length() == 0)
+		{
+			v = Vector3.Zero;
+		}
+
 		return v;
 	}
 
 	public static Vector2 Normalized(this Vector2 vec)
 	{
 		var v = new Vector2(vec.X / vec.Length(), vec.Y / vec.Length());
-		if (vec.Length() == 0) v = Vector2.Zero;
+		if (vec.Length() == 0)
+		{
+			v = Vector2.Zero;
+		}
+
 		return v;
 	}
 
@@ -129,11 +157,31 @@ public static class Extensions
 		var q = Convert.ToInt32(value * (1 - f * saturation));
 		var t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
-		if (hi == 0) return new Color(v, t, p, 255);
-		if (hi == 1) return new Color(q, v, p, 255);
-		if (hi == 2) return new Color(p, v, t, 255);
-		if (hi == 3) return new Color(p, q, v, 255);
-		if (hi == 4) return new Color(t, p, v, 255);
+		if (hi == 0)
+		{
+			return new Color(v, t, p, 255);
+		}
+
+		if (hi == 1)
+		{
+			return new Color(q, v, p, 255);
+		}
+
+		if (hi == 2)
+		{
+			return new Color(p, v, t, 255);
+		}
+
+		if (hi == 3)
+		{
+			return new Color(p, q, v, 255);
+		}
+
+		if (hi == 4)
+		{
+			return new Color(t, p, v, 255);
+		}
+
 		return new Color(v, p, q, 255);
 	}
 
@@ -148,47 +196,111 @@ public static class Extensions
 		var q = Convert.ToInt32(value * (1 - f * saturation));
 		var t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
-		if (hi == 0) return new Color(255, v, t, p);
-		if (hi == 1) return new Color(255, q, v, p);
-		if (hi == 2) return new Color(255, p, v, t);
-		if (hi == 3) return new Color(255, p, q, v);
-		if (hi == 4) return new Color(255, t, p, v);
+		if (hi == 0)
+		{
+			return new Color(255, v, t, p);
+		}
+
+		if (hi == 1)
+		{
+			return new Color(255, q, v, p);
+		}
+
+		if (hi == 2)
+		{
+			return new Color(255, p, v, t);
+		}
+
+		if (hi == 3)
+		{
+			return new Color(255, p, q, v);
+		}
+
+		if (hi == 4)
+		{
+			return new Color(255, t, p, v);
+		}
+
 		return new Color(255, v, p, q);
 	}
 
 	public static int Clamp(int value, int min, int max)
 	{
-		if (value < min) return min;
-		if (value > max) return max;
+		if (value < min)
+		{
+			return min;
+		}
+
+		if (value > max)
+		{
+			return max;
+		}
+
 		return value;
 	}
 
 	public static Vector2 Clamp(Vector2 value, float minX, float maxX, float minY, float maxY)
 	{
-		if (value.X < minX) value.X = minX;
-		if (value.X > maxX) value.X = maxX;
-		if (value.Y < minY) value.Y = minY;
-		if (value.Y > maxY) value.Y = maxY;
+		if (value.X < minX)
+		{
+			value.X = minX;
+		}
+
+		if (value.X > maxX)
+		{
+			value.X = maxX;
+		}
+
+		if (value.Y < minY)
+		{
+			value.Y = minY;
+		}
+
+		if (value.Y > maxY)
+		{
+			value.Y = maxY;
+		}
+
 		return value;
 	}
 
 	public static float Clamp(float value, float min, float max)
 	{
-		if (value < min) return min;
-		if (value > max) return max;
+		if (value < min)
+		{
+			return min;
+		}
+
+		if (value > max)
+		{
+			return max;
+		}
+
 		return value;
 	}
 
 	public static float ClampMin(float value, float min)
 	{
-		if (value < min) return min;
+		if (value < min)
+		{
+			return min;
+		}
+
 		return value;
 	}
 
 	public static float Clamp01(float value)
 	{
-		if (value < 0) return 0;
-		if (value > 1) return 1;
+		if (value < 0)
+		{
+			return 0;
+		}
+
+		if (value > 1)
+		{
+			return 1;
+		}
+
 		return value;
 	}
 
@@ -225,7 +337,11 @@ public static class Extensions
 	public static float AngleBetween(Vector2 vector1, Vector2 vector2)
 	{
 		var returnAngle = (float) Math.Acos(Vector2.Dot(vector1, vector2) / (vector1.Length() * vector2.Length()));
-		if (returnAngle == float.NaN) returnAngle = 0;
+		if (returnAngle == float.NaN)
+		{
+			returnAngle = 0;
+		}
+
 		return returnAngle;
 	}
 }

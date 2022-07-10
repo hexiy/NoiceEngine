@@ -40,10 +40,14 @@ internal class ImGuiTexture : IDisposable
 
 		if (generateMipmaps)
 			// Calculate how many levels to generate for this texture
+		{
 			MipmapLevels = (int) Math.Floor(Math.Log(Math.Max(Width, Height), 2));
+		}
 		else
 			// There is only one level
+		{
 			MipmapLevels = 1;
+		}
 
 		Util.CheckGLError("Clear");
 
@@ -59,7 +63,10 @@ internal class ImGuiTexture : IDisposable
 
 		image.UnlockBits(data);
 
-		if (generateMipmaps) GL.GenerateTextureMipmap(GLTexture);
+		if (generateMipmaps)
+		{
+			GL.GenerateTextureMipmap(GLTexture);
+		}
 
 		GL.TextureParameter(GLTexture, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat);
 		Util.CheckGLError("WrapS");
@@ -99,7 +106,10 @@ internal class ImGuiTexture : IDisposable
 
 		GL.TextureSubImage2D(GLTexture, 0, 0, 0, Width, Height, OpenTK.Graphics.OpenGL4.PixelFormat.Bgra, PixelType.UnsignedByte, data);
 
-		if (generateMipmaps) GL.GenerateTextureMipmap(GLTexture);
+		if (generateMipmaps)
+		{
+			GL.GenerateTextureMipmap(GLTexture);
+		}
 
 		SetWrap(TextureCoordinate.S, TextureWrapMode.Repeat);
 		SetWrap(TextureCoordinate.T, TextureWrapMode.Repeat);

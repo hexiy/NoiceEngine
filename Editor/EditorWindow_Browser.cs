@@ -39,13 +39,20 @@ public class EditorWindow_Browser : EditorWindow
 
 	private void RefreshAssets()
 	{
-		if (Directory.Exists(currentDirectory.FullName) == false) return;
+		if (Directory.Exists(currentDirectory.FullName) == false)
+		{
+			return;
+		}
+
 		assets = Directory.GetDirectories(currentDirectory.FullName);
 		assets = assets.Concat(Directory.GetFiles(currentDirectory.FullName, "", SearchOption.TopDirectoryOnly)).ToArray();
 
 		for (var i = 0; i < textures.Length; i++)
 			if (textures[i] != null && textures[i].loaded)
+			{
 				textures[i].Delete();
+			}
+
 		textures = new Texture[assets.Length];
 		for (var i = 0; i < assets.Length; i++)
 		{
@@ -61,7 +68,11 @@ public class EditorWindow_Browser : EditorWindow
 
 	public override void Draw()
 	{
-		if (active == false) return;
+		if (active == false)
+		{
+			return;
+		}
+
 		ImGui.SetNextWindowSize(new Vector2(Window.I.ClientSize.X / 2 + 1, Window.I.ClientSize.Y - Editor.sceneViewSize.Y + 1), ImGuiCond.Always);
 		ImGui.SetNextWindowPos(new Vector2(0, Window.I.ClientSize.Y), ImGuiCond.Always, new Vector2(0, 1));
 		//ImGui.SetNextWindowBgAlpha (0);
@@ -74,20 +85,20 @@ public class EditorWindow_Browser : EditorWindow
 			RefreshAssets();
 		}
 
-		//ResetID();
-		//if (Scene.I.GetSelectedGameObject() != null)
-		//{
-		//	PushNextID();
-		//	bool saveBtnPressed = ImGui.Button("Save Prefab");
-		//	if (saveBtnPressed)
-		//	{
-		//		if (Directory.Exists("Prefabs") == false)
-		//		{
-		//			Directory.CreateDirectory("Prefabs");
-		//		}
-		//		Serializer.I.SaveGameObject(Scene.I.GetSelectedGameObject(), "Prefabs/" + Scene.I.GetSelectedGameObject().name + ".prefab");
-		//	}
-		//}
+		ResetID();
+		if (Editor.I.GetSelectedGameObject() != null)
+		{
+			PushNextID();
+			bool saveBtnPressed = ImGui.Button("Save Prefab");
+			if (saveBtnPressed)
+			{
+				if (Directory.Exists("Assets/Prefabs") == false)
+				{
+					Directory.CreateDirectory("Assets/Prefabs");
+				}
+				Serializer.I.SaveGameObject(Editor.I.GetSelectedGameObject(), "Assets/Prefabs/" + Editor.I.GetSelectedGameObject().name + ".prefab");
+			}
+		}
 
 		//for (int i = 0; i < assets.Length; i++)
 		//{
@@ -121,7 +132,10 @@ public class EditorWindow_Browser : EditorWindow
 		//}
 		for (var i = 0; i < assets.Length; i++)
 		{
-			if (i != 0 && i % 8 != 0) ImGui.SameLine();
+			if (i != 0 && i % 8 != 0)
+			{
+				ImGui.SameLine();
+			}
 
 			var directoryInfo = new DirectoryInfo(assets[i]);
 			var isDirectory = directoryInfo.Exists;
@@ -140,11 +154,18 @@ public class EditorWindow_Browser : EditorWindow
 			}
 			else
 			{
-				if (textures[i] != null && textures[i].loaded) ImGui.ImageButton((IntPtr) textures[i].id, new Vector2(100, 90));
-				else ImGui.ImageButton((IntPtr) fileIcon.id, new Vector2(100, 90));
+				if (textures[i] != null && textures[i].loaded)
+				{
+					ImGui.ImageButton((IntPtr) textures[i].id, new Vector2(100, 90));
+				}
+				else
+				{
+					ImGui.ImageButton((IntPtr) fileIcon.id, new Vector2(100, 90));
+				}
 			}
 
 			if (assetExtension.ToLower().Contains(".jpg") || assetExtension.ToLower().Contains(".png") || assetExtension.ToLower().Contains(".jpeg"))
+			{
 				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
 				{
 					var itemPath = assets[i];
@@ -162,6 +183,7 @@ public class EditorWindow_Browser : EditorWindow
 
 					ImGui.EndDragDropSource();
 				}
+			}
 
 			if (ImGui.IsItemHovered() && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
 			{
@@ -178,7 +200,10 @@ public class EditorWindow_Browser : EditorWindow
 					EditorWindow_Hierarchy.I.SelectGameObject(go.id);
 				}
 
-				if (assetExtension == ".scene") Scene.I.LoadScene(assets[i]);
+				if (assetExtension == ".scene")
+				{
+					Scene.I.LoadScene(assets[i]);
+				}
 			}
 
 			//ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 25);
@@ -219,7 +244,7 @@ public class EditorWindow_Browser : EditorWindow
 
 				ImGui.SameLine();
 
-				if (ImGui.Button("Cancel") || ImGui.IsKeyPressed((int) KeyboardInput.Keys.Escape))
+				if (ImGui.Button("Cancel") || ImGui.IsKeyPressed((int) Keys.Escape))
 				{
 					showCreateScenePopup = false;
 					ImGui.CloseCurrentPopup();

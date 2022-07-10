@@ -34,7 +34,10 @@ public class ParticleSystem : Component
 	public override void Awake()
 	{
 		renderer = gameObject.GetComponent<ParticleSystemRenderer>();
-		if (renderer == null) renderer = gameObject.AddComponent<ParticleSystemRenderer>();
+		if (renderer == null)
+		{
+			renderer = gameObject.AddComponent<ParticleSystemRenderer>();
+		}
 
 		renderer.particleSystem = this;
 		// BuildShape();

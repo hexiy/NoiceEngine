@@ -92,9 +92,15 @@ internal class Scene
 	{
 		Physics.Init();
 
-		if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene)) LoadScene(Serializer.lastScene);
+		if (Serializer.lastScene != "" && File.Exists(Serializer.lastScene))
+		{
+			LoadScene(Serializer.lastScene);
+		}
 		//SpawnTestSpriteRenderers();
-		else CreateDefaultObjects();
+		else
+		{
+			CreateDefaultObjects();
+		}
 		//SpawnTestSpriteSheetRenderer();
 	}
 
@@ -128,7 +134,10 @@ internal class Scene
 		for (var i = 0; i < gameObjects.Count; i++)
 			if (gameObjects[i].GetComponent<Renderer>())
 				//renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
+			{
 				renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
+			}
+
 		for (var i = 0; i < renderQueue.Count; i++) renderQueue[i].layerFromHierarchy = renderQueue[i].gameObject.indexInHierarchy * 0.00000000000000000000000000000001f;
 		renderQueue.Sort();
 	}
@@ -142,7 +151,9 @@ internal class Scene
 
 		for (var i = 0; i < renderQueue.Count; i++)
 			if (renderQueue[i].enabled && renderQueue[i].awoken && renderQueue[i].gameObject.activeInHierarchy)
+			{
 				renderQueue[i].Render();
+			}
 	}
 
 	public SceneFile GetSceneFile()
@@ -152,7 +163,10 @@ internal class Scene
 		sf.GameObjects = new List<GameObject>();
 		for (var i = 0; i < gameObjects.Count; i++)
 		{
-			if (gameObjects[i].dynamicallyCreated) continue;
+			if (gameObjects[i].dynamicallyCreated)
+			{
+				continue;
+			}
 
 			sf.Components.AddRange(gameObjects[i].components);
 			sf.GameObjects.Add(gameObjects[i]);
@@ -167,7 +181,10 @@ internal class Scene
 		foreach (var gameObject in gameObjects)
 		{
 			var bl = gameObject.GetComponent(type);
-			if (bl != null) return gameObject;
+			if (bl != null)
+			{
+				return gameObject;
+			}
 		}
 
 		return null;
@@ -179,7 +196,10 @@ internal class Scene
 		foreach (var gameObject in gameObjects)
 		{
 			var bl = gameObject.GetComponent<T>();
-			if (bl != null) components.Add(bl);
+			if (bl != null)
+			{
+				components.Add(bl);
+			}
 		}
 
 		return components;
@@ -189,13 +209,18 @@ internal class Scene
 	{
 		for (var i = 0; i < gameObjects.Count; i++)
 			if (gameObjects[i].id == ID)
+			{
 				return gameObjects[i];
+			}
+
 		return null;
 	}
 
 	public void AddGameObjectToScene(GameObject gameObject)
 	{
 		gameObjects.Add(gameObject);
+
+		RenderQueueChanged();
 	}
 
 	public bool LoadScene(string path = null)
@@ -230,7 +255,10 @@ internal class Scene
 
 		var lastSelectedGameObjectId = PersistentData.GetInt("lastSelectedGameObjectId", 0);
 		Editor.I.SelectGameObject(lastSelectedGameObjectId);
-		if (Global.EditorAttached) EditorWindow_Hierarchy.I.SelectGameObject(lastSelectedGameObjectId);
+		if (Global.EditorAttached)
+		{
+			EditorWindow_Hierarchy.I.SelectGameObject(lastSelectedGameObjectId);
+		}
 
 		return true;
 	}
@@ -253,7 +281,11 @@ internal class Scene
 
 	public void OnGameObjectDestroyed(GameObject gameObject)
 	{
-		if (gameObjects.Contains(gameObject)) gameObjects.Remove(gameObject);
+		if (gameObjects.Contains(gameObject))
+		{
+			gameObjects.Remove(gameObject);
+		}
+		RenderQueueChanged();
 	}
 
 	private void OnMouse3Clicked()
@@ -263,28 +295,4 @@ internal class Scene
 	private void OnMouse3Released()
 	{
 	}
-	//  mgremoval       protected override void Update()
-	//  mgremoval       {
-	//  mgremoval       
-	//  mgremoval       	Time.Update(gameTime);
-	//  mgremoval       
-	//  mgremoval       
-	//  mgremoval       	MouseInput.Update(Mouse.GetState());
-	//  mgremoval       
-	//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
-	//  mgremoval       	{
-	//  mgremoval       		SaveScene();
-	//  mgremoval       	}
-	//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
-	//  mgremoval       	{
-	//  mgremoval       		LoadScene(Serializer.lastScene);
-	//  mgremoval       	}
-	//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.O) && GetSelectedGameObjects() != null)
-	//  mgremoval       	{
-	//  mgremoval       		serializer.SaveGameObject(GetSelectedGameObject(), "Prefabs/yo.prefab");
-	//  mgremoval       	}
-	//  mgremoval       	if (KeyboardInput.IsKeyDown(Keys.P))
-	//  mgremoval       	{
-	//  mgremoval       		GameObject go = serializer.LoadGameObject("Prefabs/yo.prefab");
-	//  mgremoval       	}
 }

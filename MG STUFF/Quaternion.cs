@@ -101,7 +101,10 @@ public struct Quaternion : IEquatable<Quaternion>
 	{
 		get
 		{
-			if (this == Identity) return "Identity";
+			if (this == Identity)
+			{
+				return "Identity";
+			}
 
 			return string.Concat(
 			                     X.ToString(), " ",
@@ -553,7 +556,11 @@ public struct Quaternion : IEquatable<Quaternion>
 	/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 	public override bool Equals(object obj)
 	{
-		if (obj is Quaternion) return Equals((Quaternion) obj);
+		if (obj is Quaternion)
+		{
+			return Equals((Quaternion) obj);
+		}
+
 		return false;
 	}
 
@@ -1116,7 +1123,11 @@ public struct Quaternion : IEquatable<Quaternion>
 	/// <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
 	public static bool operator !=(Quaternion quaternion1, Quaternion quaternion2)
 	{
-		if (quaternion1.X == quaternion2.X && quaternion1.Y == quaternion2.Y && quaternion1.Z == quaternion2.Z) return quaternion1.W != quaternion2.W;
+		if (quaternion1.X == quaternion2.X && quaternion1.Y == quaternion2.Y && quaternion1.Z == quaternion2.Z)
+		{
+			return quaternion1.W != quaternion2.W;
+		}
+
 		return true;
 	}
 

@@ -17,7 +17,10 @@ public class SpriteSheetRenderer : SpriteRenderer
 		set
 		{
 			spritesCount = value;
-			if (texture != null) spriteSize = new Vector2(texture.size.X / SpritesCount.X, texture.size.Y / SpritesCount.Y);
+			if (texture != null)
+			{
+				spriteSize = new Vector2(texture.size.X / SpritesCount.X, texture.size.Y / SpritesCount.Y);
+			}
 		}
 	}
 
@@ -26,8 +29,14 @@ public class SpriteSheetRenderer : SpriteRenderer
 		drawOffset = new Vector2(0, spriteSize.Y * spritesCount.Y - spriteSize.Y);
 
 		material = new Material(ShaderCache.spriteSheetRendererShader, BufferCache.spriteSheetRendererVAO);
-		if (texture == null) texture = new Texture();
-		else LoadTexture(texture.path);
+		if (texture == null)
+		{
+			texture = new Texture();
+		}
+		else
+		{
+			LoadTexture(texture.path);
+		}
 
 		base.Awake();
 	}
@@ -42,21 +51,41 @@ public class SpriteSheetRenderer : SpriteRenderer
 
 	public override void LoadTexture(string _texturePath)
 	{
-		if (_texturePath.Contains("Assets") == false) _texturePath = Path.Combine("Assets", _texturePath);
+		if (_texturePath.Contains("Assets") == false)
+		{
+			_texturePath = Path.Combine("Assets", _texturePath);
+		}
 
-		if (File.Exists(_texturePath) == false) return;
+		if (File.Exists(_texturePath) == false)
+		{
+			return;
+		}
 
 		texture.Load(_texturePath);
 
 		UpdateBoxShapeSize();
-		if (Batched) BatchingManager.AddObjectToBatcher(texture.id, this);
+		if (Batched)
+		{
+			BatchingManager.AddObjectToBatcher(texture.id, this);
+		}
 	}
 
 	public override void Render()
 	{
-		if (onScreen == false) return;
-		if (boxShape == null) return;
-		if (texture.loaded == false) return;
+		if (onScreen == false)
+		{
+			return;
+		}
+
+		if (boxShape == null)
+		{
+			return;
+		}
+
+		if (texture.loaded == false)
+		{
+			return;
+		}
 
 		if (Batched)
 		{
@@ -86,8 +115,14 @@ public class SpriteSheetRenderer : SpriteRenderer
 
 			BufferCache.BindVAO(BufferCache.spriteSheetRendererVAO);
 
-			if (material.additive) GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
-			else GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+			if (material.additive)
+			{
+				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusConstantColor);
+			}
+			else
+			{
+				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+			}
 
 			TextureCache.BindTexture(texture.id);
 
