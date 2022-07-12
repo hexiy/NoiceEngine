@@ -104,7 +104,7 @@ internal class Window : GameWindow
 			GL.ClearColor(0, 0, 0, 1);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			// draw postProcessRenderTexture.colorAttachment downscaled with bloom- into bloomDownscaledRenderTexture target
-			bloomDownscaledRenderTexture.RenderBloom(postProcessRenderTexture.colorAttachment, sampleSize);
+			//bloomDownscaledRenderTexture.RenderBloom(postProcessRenderTexture.colorAttachment, sampleSize);
 			bloomDownscaledRenderTexture.Unbind();
 
 			// now we need to draw bloomDownscaledRenderTexture.colorAttachment upscaled

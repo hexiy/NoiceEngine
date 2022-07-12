@@ -47,7 +47,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 			if (clipboardGameObject != null)
 			{
 				GameObject loadedGO = Serializer.I.LoadClipboardGameObject();
-				EditorWindow_Hierarchy.I.SelectGameObject(loadedGO.id);
+				SelectGameObject(loadedGO.id);
 			}
 		}
 	}
@@ -173,7 +173,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 			}
 
 			ImGui.PushStyleColor(ImGuiCol.Text, nameColor);
-			var opened = ImGui.TreeNodeEx($"[{Scene.I.gameObjects[goIndex].id}]" + Scene.I.gameObjects[goIndex].name, flags);
+			var opened = ImGui.TreeNodeEx(/*$"[{Scene.I.gameObjects[goIndex].id}]" +*/ Scene.I.gameObjects[goIndex].name, flags);
 			ImGui.PopStyleColor();
 
 			if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
