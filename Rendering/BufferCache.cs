@@ -4,38 +4,24 @@ namespace Engine;
 
 public static class BufferCache
 {
-	public static int boxRendererVAO;
-	public static int boxRendererVBO;
-
-	public static int spriteRendererVAO;
-	public static int spriteRendererVBO;
-
-	public static int spriteSheetRendererVAO;
-	public static int spriteSheetRendererVBO;
-
-	public static int renderTextureVAO;
-	public static int renderTextureVBO;
-
-	public static int renderTexturePostProcessVAO;
-	public static int renderTexturePostProcessVBO;
-
-	public static int snowVAO;
-	public static int snowVBO;
-
-	public static int renderTextureBloomVAO;
-	public static int renderTextureBloomVBO;
-
 	public static int vaoInUse = -100;
 
-	public static void CreateBuffers()
+	public static void CreateBufferForShader(Material material)
 	{
-		CreateBoxRendererBuffers(ref boxRendererVAO, ref boxRendererVBO);
-		CreateSpriteRendererBuffers(ref spriteRendererVAO, ref spriteRendererVBO);
-		CreateSpriteRendererBuffers(ref spriteSheetRendererVAO, ref spriteSheetRendererVBO);
-		CreateRenderTextureBuffers(ref renderTextureVAO, ref renderTextureVBO);
-		CreateRenderTextureBuffers(ref renderTexturePostProcessVAO, ref renderTexturePostProcessVBO);
-		CreateRenderTextureBuffers(ref renderTextureBloomVAO, ref renderTextureBloomVBO);
-		CreateRenderTextureBuffers(ref snowVAO, ref snowVBO);
+		if (material.shader.bufferType == BufferType.BOX)
+		{
+			CreateBoxRendererBuffers(ref material.vao, ref material.vbo);
+		}
+
+		if (material.shader.bufferType == BufferType.RENDERTEXTURE)
+		{
+			CreateRenderTextureBuffers(ref material.vao, ref material.vbo);
+		}
+
+		if (material.shader.bufferType == BufferType.SPRITE)
+		{
+			CreateSpriteRendererBuffers(ref material.vao, ref material.vbo);
+		}
 	}
 
 	private static void CreateRenderTextureBuffers(ref int vao, ref int vbo)

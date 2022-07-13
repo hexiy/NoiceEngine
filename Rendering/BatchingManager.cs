@@ -34,7 +34,7 @@ public class BatchingManager
 		batchers[textureID].AddGameObject(renderer.gameObjectID, instanceIndex);
 	}
 
-	public static void AddObjectToBatcher(int textureID, SpriteSheetRenderer renderer, int instanceIndex = 0)
+	/*public static void AddObjectToBatcher(int textureID, SpriteSheetRenderer renderer, int instanceIndex = 0)
 	{
 		if (batchers.ContainsKey(textureID) == false)
 		{
@@ -42,7 +42,7 @@ public class BatchingManager
 		}
 
 		batchers[textureID].AddGameObject(renderer.gameObjectID, instanceIndex);
-	}
+	}*/
 
 	public static void UpdateAttribs(int textureID, int gameObjectID, Vector2 position, Vector2 size, Color color, int instanceIndex = 0) //  use instanceIndex for particles-when we use single gameObject
 	{

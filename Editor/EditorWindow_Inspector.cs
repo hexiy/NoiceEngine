@@ -22,7 +22,7 @@ public class EditorWindow_Inspector : EditorWindow
 	{
 	}
 
-	public void SelectGameObject(int id)
+	public void OnGameObjectSelected(int id)
 	{
 		if (id == -1)
 		{
@@ -55,7 +55,7 @@ public class EditorWindow_Inspector : EditorWindow
 			{
 				if (ImGui.Button("Update prefab"))
 				{
-					Serializer.I.SaveGameObject(selectedGameObject,  "Assets/Prefabs/" +selectedGameObject.name + ".prefab");
+					Serializer.I.SaveGameObject(selectedGameObject, "Assets/Prefabs/" + selectedGameObject.name + ".prefab");
 				}
 			}
 
@@ -95,6 +95,8 @@ public class EditorWindow_Inspector : EditorWindow
 						infos = new FieldOrPropertyInfo[_fields.Length + properties.Length];
 						var inspectorSupportedTypes = new List<Type>
 						                              {
+							                              typeof(GameObject),
+							                              typeof(Material),
 							                              typeof(Vector3),
 							                              typeof(Vector2),
 							                              typeof(Texture),
@@ -109,7 +111,7 @@ public class EditorWindow_Inspector : EditorWindow
 							infos[fieldIndex] = new FieldOrPropertyInfo(_fields[fieldIndex]);
 							if (_fields[fieldIndex].GetValue(selectedGameObject.components[i]) == null)
 							{
-								infos[fieldIndex].canShowInEditor = false;
+								//infos[fieldIndex].canShowInEditor = false;
 							}
 						}
 
@@ -169,13 +171,6 @@ public class EditorWindow_Inspector : EditorWindow
 							ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 							ImGui.SetNextItemWidth(itemWidth);
 
-							//Texture2D fieldValue = ((Texture2D)infos[infoIndex].GetValue(selectedGameObject.Components[i]));
-							//ImGui.SameLine();
-							//if (ImGui.Button("..."))
-							//{
-							//	OpenFileDialog ofd
-							//}
-
 							var textureName = Path.GetFileName((selectedGameObject.components[i] as SpriteRenderer).texture.path);
 
 							var clicked = ImGui.Button(textureName, new Vector2(ImGui.GetContentRegionAvail().X, 20));
@@ -196,6 +191,71 @@ public class EditorWindow_Inspector : EditorWindow
 									textureName = payload;
 
 									(selectedGameObject.components[i] as SpriteRenderer).LoadTexture(textureName);
+								}
+
+								ImGui.EndDragDropTarget();
+							}
+						}
+						else if (infos[infoIndex].FieldOrPropertyType == typeof(Material))
+						{
+							float itemWidth = 200;
+							ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
+							ImGui.SetNextItemWidth(itemWidth);
+
+							string shaderPath = Path.GetFileName((selectedGameObject.components[i] as Renderer).material.shader.path);
+
+							var clicked = ImGui.Button(shaderPath, new Vector2(ImGui.GetContentRegionAvail().X, 20));
+							if (clicked)
+							{
+								EditorWindow_Browser.I.GoToFile(shaderPath);
+							}
+
+							if (ImGui.BeginDragDropTarget())
+							{
+								ImGui.AcceptDragDropPayload("CONTENT_BROWSER_MATERIAL", ImGuiDragDropFlags.None);
+								var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+								if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && payload.Length > 0)
+								{
+									payload = Path.GetRelativePath("Assets", payload);
+									string materialName = Path.GetFileName(payload);
+									Material draggedMaterial = MaterialAssetManager.LoadMaterial(materialName);
+									if (draggedMaterial.shader == null)
+									{
+										Debug.Log("No Shader attached to material.");
+									}
+									else
+									{
+										(selectedGameObject.components[i] as Renderer).material = draggedMaterial;
+									}
+									// load new material
+								}
+
+								ImGui.EndDragDropTarget();
+							}
+						}
+						else if (infos[infoIndex].FieldOrPropertyType == typeof(GameObject))
+						{
+							float itemWidth = 200;
+							ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
+							ImGui.SetNextItemWidth(itemWidth);
+
+							GameObject goObject = (infos[infoIndex].GetValue(selectedGameObject.components[i]) as GameObject);
+							string fieldGoName = goObject?.name ?? "";
+							var clicked = ImGui.Button(fieldGoName, new Vector2(ImGui.GetContentRegionAvail().X, 20));
+							if (clicked && goObject != null)
+							{
+								EditorWindow_Hierarchy.I.SelectGameObject(goObject.id);
+								return;
+							}
+
+							if (ImGui.BeginDragDropTarget())
+							{
+								ImGui.AcceptDragDropPayload("GAMEOBJECT", ImGuiDragDropFlags.None);
+								var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+								if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && payload.Length > 0)
+								{
+									GameObject foundGO = Scene.I.GetGameObject(int.Parse(payload));
+									infos[infoIndex].SetValue(selectedGameObject.components[i], foundGO);
 								}
 
 								ImGui.EndDragDropTarget();

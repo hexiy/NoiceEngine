@@ -5,14 +5,14 @@ namespace Engine;
 
 public class Camera : Component
 {
-	public int antialiasingStrength = 0;
+	//public int antialiasingStrength = 0;
 	public Color color = new(34, 34, 34);
 	public float ortographicSize = 2;
 	//public float cameraSize = 0.1f;
 
 	[XmlIgnore] public Matrix4x4 projectionMatrix;
 
-	public Vector2 size = new(1200, 500);
+	public Vector2 size = new(1220, 500);
 	[XmlIgnore] public Matrix4x4 viewMatrix;
 	//[XmlIgnore] public RenderTarget2D renderTarget;
 

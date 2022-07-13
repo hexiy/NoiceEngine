@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using ImGuiNET;
 
 namespace Engine;
@@ -12,6 +13,13 @@ public class EditorWindow_Hierarchy : EditorWindow
 	private int selectedGameObjectIndex;
 	private bool showUpdatePrefabPopup;
 	public static EditorWindow_Hierarchy I { get; private set; }
+	private int gameObjectIndexSelectedBefore = 0;
+
+	private enum MoveDirection
+	{
+		up,
+		down
+	}
 
 	public override void Init()
 	{
@@ -96,6 +104,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 	{
 		selectedGameObjectIndex = Editor.I.GetGameObjectIndexInHierarchy(id);
 		GameObjectSelected.Invoke(id);
+		Debug.Log("Selected go: "+id);
 	}
 
 	public override void Draw()
@@ -173,17 +182,41 @@ public class EditorWindow_Hierarchy : EditorWindow
 			}
 
 			ImGui.PushStyleColor(ImGuiCol.Text, nameColor);
-			var opened = ImGui.TreeNodeEx(/*$"[{Scene.I.gameObjects[goIndex].id}]" +*/ Scene.I.gameObjects[goIndex].name, flags);
+			bool opened = ImGui.TreeNodeEx( /*$"[{Scene.I.gameObjects[goIndex].id}]" +*/ Scene.I.gameObjects[goIndex].name, flags);
+			if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
+			{
+				if (selectedGameObjectIndex != gameObjectIndexSelectedBefore)
+				{
+					SelectGameObject(Scene.I.gameObjects[gameObjectIndexSelectedBefore].id);
+				}
+
+				// select gameobject selected before
+				string gameObjectID = Scene.I.gameObjects[goIndex].id.ToString();
+				var stringPointer = Marshal.StringToHGlobalAnsi(gameObjectID);
+
+				ImGui.SetDragDropPayload("GAMEOBJECT", stringPointer, (uint) (sizeof(char) * gameObjectID.Length));
+
+				var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+
+
+				Marshal.FreeHGlobal(stringPointer);
+
+				ImGui.EndDragDropSource();
+			}
+
 			ImGui.PopStyleColor();
 
 			if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
 			{
+				gameObjectIndexSelectedBefore = selectedGameObjectIndex;
 				SelectGameObject(Scene.I.gameObjects[goIndex].id);
 			}
 
 			if (opened)
 			{
-				var children = Scene.I.gameObjects[goIndex].transform.children;
+				/*
+				 * refactor this so we can have more children and use the same code for drawing them all aswell as the base gameobject
+				 var children = Scene.I.gameObjects[goIndex].transform.children;
 
 				for (var childrenIndex = 0; childrenIndex < children.Count; childrenIndex++)
 				{
@@ -208,18 +241,12 @@ public class EditorWindow_Hierarchy : EditorWindow
 					}
 
 					ImGui.TreePop();
-				}
+				}*/
 
 				ImGui.TreePop();
 			}
 		}
 
 		ImGui.End();
-	}
-
-	private enum MoveDirection
-	{
-		up,
-		down
 	}
 }

@@ -45,19 +45,6 @@ internal class Scene
 		CreateTransformHandle();
 	}
 
-	private void SpawnTestSpriteSheetRenderer()
-	{
-		var go2 = GameObject.Create(name: "sprite ");
-		go2.dynamicallyCreated = true;
-		go2.AddComponent<SpriteSheetRenderer>();
-		go2.AddComponent<BoxShape>().size = new Vector2(400, 180);
-
-		go2.Awake();
-		go2.GetComponent<SpriteSheetRenderer>().LoadTexture("2D/adventurer.png");
-
-		go2.transform.position = Camera.I.CenterOfScreenToWorld();
-	}
-
 	private void SpawnTestSpriteRenderers()
 	{
 		var parent = GameObject.Create(name: "parent");
@@ -246,15 +233,21 @@ internal class Scene
 			for (var j = 0; j < sceneFile.GameObjects[i].components.Count; j++) sceneFile.GameObjects[i].components[j].gameObjectID = sceneFile.GameObjects[i].id;
 			I.AddGameObjectToScene(sceneFile.GameObjects[i]);
 
+		}
+		
+		for (var i = 0; i < sceneFile.GameObjects.Count; i++)
+		{
+			
+			sceneFile.GameObjects[i].LinkGameObjectFieldsInComponents();
 			sceneFile.GameObjects[i].Awake();
 		}
+
 
 		CreateTransformHandle();
 
 		scenePath = path;
 
 		var lastSelectedGameObjectId = PersistentData.GetInt("lastSelectedGameObjectId", 0);
-		Editor.I.SelectGameObject(lastSelectedGameObjectId);
 		if (Global.EditorAttached)
 		{
 			EditorWindow_Hierarchy.I.SelectGameObject(lastSelectedGameObjectId);
@@ -266,6 +259,10 @@ internal class Scene
 	public void SaveScene(string path = null)
 	{
 		path = path ?? Serializer.lastScene;
+		if (path.Length < 1)
+		{
+			path = Path.Combine("Assets", "scene1.scene");
+		}
 		Serializer.lastScene = path;
 		Serializer.I.SaveGameObjects(GetSceneFile(), path);
 	}

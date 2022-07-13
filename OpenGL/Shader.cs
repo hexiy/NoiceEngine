@@ -1,33 +1,43 @@
-﻿using System.Numerics;
+﻿using System.IO;
+using System.Numerics;
 
 namespace Engine;
 
+[Serializable]
 public class Shader : IDisposable
 {
-	private string fragmentCode;
 	private int uLocation_u_color = -1;
 
 	private int uLocation_u_mvp = -1;
-	private string vertexCode;
-
-	public Shader()
-	{
-	}
-
-	public Shader(string vertexCode, string fragmentCode)
-	{
-		this.vertexCode = vertexCode;
-		this.fragmentCode = fragmentCode;
-	}
 
 	public int ProgramID { get; set; }
 
+	public string path;
+	public BufferType bufferType;
+
+
+	public Shader()
+	{
+		
+	}
+
+	public Shader(string filePath)
+	{
+		path = filePath;
+	}
 	public void Dispose()
 	{
 	}
 
 	public void Load()
 	{
+		var shaderFile = File.ReadAllText(path);
+
+		string vertexCode = GetVertexShaderFromFileString(shaderFile);
+		string fragmentCode = GetFragmentShaderFromFileString(shaderFile);
+		bufferType = GetBufferTypeFromFileString(shaderFile);
+
+
 		int vs, fs;
 
 		vs = GL.CreateShader(ShaderType.VertexShaderArb);
@@ -125,5 +135,27 @@ public class Shader : IDisposable
 	public int GetAttribLocation(string attribName)
 	{
 		return GL.GetAttribLocation(ProgramID, attribName);
+	}
+
+	public static BufferType GetBufferTypeFromFileString(string shaderFile)
+	{
+		string typeString = shaderFile.Substring(shaderFile.IndexOf("[BUFFERTYPE]:") + 13,
+		                                         shaderFile.IndexOf("[VERTEX]") - shaderFile.IndexOf("[BUFFERTYPE]") - 13); //File.ReadA;
+
+		BufferType type;
+		BufferType.TryParse(typeString, out type);
+
+		return type;
+	}
+
+	public static string GetVertexShaderFromFileString(string shaderFile)
+	{
+		return shaderFile.Substring(shaderFile.IndexOf("[VERTEX]") + 8,
+		                            shaderFile.IndexOf("[FRAGMENT]") - shaderFile.IndexOf("[VERTEX]") - 8); //File.ReadA;
+	}
+
+	public static string GetFragmentShaderFromFileString(string shaderFile)
+	{
+		return shaderFile.Substring(shaderFile.IndexOf("[FRAGMENT]") + 10); //File.ReadA;
 	}
 }

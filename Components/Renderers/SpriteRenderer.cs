@@ -10,7 +10,7 @@ public class SpriteRenderer : Renderer
 
 	public override void Awake()
 	{
-		material = new Material(ShaderCache.spriteRendererShader, BufferCache.spriteRendererVAO);
+		CreateMaterial();
 		if (texture == null)
 		{
 			texture = new Texture();
@@ -22,7 +22,12 @@ public class SpriteRenderer : Renderer
 
 		base.Awake();
 	}
-
+	public override void CreateMaterial()
+	{
+		material = new Material();
+		Shader shader = new Shader(Path.Combine(Folders.Shaders, "SpriteRenderer.glsl"));
+		material.SetShader(shader);
+	}
 	public virtual void LoadTexture(string _texturePath)
 	{
 		if (_texturePath.Contains("Assets") == false)
@@ -102,7 +107,7 @@ public class SpriteRenderer : Renderer
 		material.shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
 		material.shader.SetColor("u_color", color.ToVector4());
 
-		BufferCache.BindVAO(BufferCache.spriteRendererVAO);
+		BufferCache.BindVAO(material.vao);
 
 		if (material.additive)
 		{

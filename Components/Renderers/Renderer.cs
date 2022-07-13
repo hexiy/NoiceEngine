@@ -14,7 +14,7 @@ public class Renderer : Component, IComparable<Renderer>
 
 	[Hide] public float layerFromHierarchy = 0;
 
-	public Material material;
+	[Show] public Material material;
 	internal bool onScreen = true;
 
 	public float Layer
@@ -41,7 +41,12 @@ public class Renderer : Component, IComparable<Renderer>
 
 	public override void Awake()
 	{
+		CreateMaterial();
 		base.Awake();
+	}
+
+	public virtual void CreateMaterial()
+	{
 	}
 
 	private Matrix4x4 GetModelViewProjection()

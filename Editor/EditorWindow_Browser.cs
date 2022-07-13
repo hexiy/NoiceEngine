@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using ImGuiNET;
@@ -8,20 +9,23 @@ namespace Engine;
 public class EditorWindow_Browser : EditorWindow
 {
 	private string[] assets = new string[0];
-	private string createScenePopupSceneName = "scene1";
 
-	private DirectoryInfo currentDirectory;
+	private List<BrowserContextItem> contextItems;
+
+	public DirectoryInfo currentDirectory;
 	private Texture directoryIcon;
 
 	private Texture fileIcon;
 
-	private bool showCreateScenePopup;
 	private Texture[] textures = new Texture[0];
 	public static EditorWindow_Browser I { get; private set; }
 
 	public override void Init()
 	{
 		I = this;
+
+		CreateContextItems();
+
 		fileIcon = new Texture();
 		fileIcon.Load("Resources/FileIcon.png", false);
 
@@ -31,6 +35,23 @@ public class EditorWindow_Browser : EditorWindow
 		currentDirectory = new DirectoryInfo("Assets");
 
 		RefreshAssets();
+	}
+
+	void CreateContextItems()
+	{
+		BrowserContextItem createSceneContextItem = new BrowserContextItem("Create Scene", "scene", ".scene", (filePath) =>
+		{
+			Scene.I.CreateEmptySceneAndOpenIt(filePath);
+			RefreshAssets();
+		});
+		BrowserContextItem createMaterialContextItem = new BrowserContextItem("Create Material", "mat", ".mat", (filePath) =>
+		{
+			Material createdMaterial = new Material();
+			createdMaterial.path = filePath;
+			MaterialAssetManager.SaveMaterial(createdMaterial);
+			RefreshAssets();
+		});
+		contextItems = new List<BrowserContextItem>() {createSceneContextItem, createMaterialContextItem};
 	}
 
 	public override void Update()
@@ -96,6 +117,7 @@ public class EditorWindow_Browser : EditorWindow
 				{
 					Directory.CreateDirectory("Assets/Prefabs");
 				}
+
 				Serializer.I.SaveGameObject(Editor.I.GetSelectedGameObject(), "Assets/Prefabs/" + Editor.I.GetSelectedGameObject().name + ".prefab");
 			}
 		}
@@ -185,6 +207,48 @@ public class EditorWindow_Browser : EditorWindow
 				}
 			}
 
+			if (assetExtension.ToLower().Contains(".mat"))
+			{
+				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
+				{
+					var itemPath = assets[i];
+					var stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
+
+					ImGui.SetDragDropPayload("CONTENT_BROWSER_MATERIAL", stringPointer, (uint) (sizeof(char) * itemPath.Length));
+
+					var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+
+					ImGui.Image((IntPtr) fileIcon.id, new Vector2(100, 90));
+
+					//ImGui.Text(Path.GetFileNameWithoutExtension(itemPath));
+
+					Marshal.FreeHGlobal(stringPointer);
+
+					ImGui.EndDragDropSource();
+				}
+			}
+
+			if (assetExtension.ToLower().Contains(".glsl"))
+			{
+				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
+				{
+					var itemPath = assets[i];
+					var stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
+
+					ImGui.SetDragDropPayload("CONTENT_BROWSER_SHADER", stringPointer, (uint) (sizeof(char) * itemPath.Length));
+
+					var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+
+					ImGui.Image((IntPtr) fileIcon.id, new Vector2(100, 90));
+
+					//ImGui.Text(Path.GetFileNameWithoutExtension(itemPath));
+
+					Marshal.FreeHGlobal(stringPointer);
+
+					ImGui.EndDragDropSource();
+				}
+			}
+
 			if (ImGui.IsItemHovered() && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
 			{
 				if (isDirectory)
@@ -214,49 +278,34 @@ public class EditorWindow_Browser : EditorWindow
 			ImGui.EndGroup();
 		}
 
+
 		// show prefabs as btns from array that updates in Update()
 		if (ImGui.BeginPopupContextWindow("BrowserPopup"))
 		{
-			if (ImGui.Button("New Scene"))
+			for (int i = 0; i < contextItems.Count; i++)
+			{
+				contextItems[i].ShowContextItem();
+			}
+			/*if (ImGui.Button("New Scene"))
 			{
 				showCreateScenePopup = true;
 				ImGui.CloseCurrentPopup();
 			}
 
+			if (ImGui.Button("New Material"))
+			{
+				showCreateMaterialPopup = true;
+				ImGui.CloseCurrentPopup();
+			}*/
+
 			ImGui.EndPopup();
 		}
 
-		if (showCreateScenePopup)
+		for (int i = 0; i < contextItems.Count; i++)
 		{
-			ImGui.OpenPopup("AddComponentPopup");
-
-			if (ImGui.BeginPopupContextWindow("AddComponentPopup"))
-			{
-				ImGui.InputText("", ref createScenePopupSceneName, 100);
-				if (ImGui.Button("Save"))
-				{
-					Scene.I.CreateEmptySceneAndOpenIt(Path.Combine(currentDirectory.FullName, createScenePopupSceneName + ".scene"));
-					RefreshAssets();
-
-					showCreateScenePopup = false;
-					ImGui.CloseCurrentPopup();
-				}
-
-				ImGui.SameLine();
-
-				if (ImGui.Button("Cancel") || ImGui.IsKeyPressed((int) Keys.Escape))
-				{
-					showCreateScenePopup = false;
-					ImGui.CloseCurrentPopup();
-				}
-
-				ImGui.EndPopup();
-			}
-			else
-			{
-				showCreateScenePopup = false;
-			}
+			contextItems[i].ShowPopupIfOpen();
 		}
+
 
 		ImGui.End();
 	}

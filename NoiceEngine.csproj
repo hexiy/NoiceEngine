@@ -42,29 +42,6 @@
         <None Remove="Shaders\SpriteSheetRenderer.glsl" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="Shaders\RenderTexture.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Shaders\BoxRenderer.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Shaders\Snow.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Shaders\SpriteSheetRenderer.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Shaders\SpriteRenderer.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Shaders\RenderTexturePostProcess.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Shaders\RenderTextureBloom.glsl">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
         <EmbeddedResource Include="Icon.ico" />
         <EmbeddedResource Include="Icon.bmp" />
     </ItemGroup>
@@ -78,4 +55,7 @@
         <PackageReference Include="System.CodeDom" Version="6.0.0" />
         <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="XCOPY &quot;$(TargetDir)\Shaders\&quot; &quot;$(TargetDir)\Assets\Shaders&quot; /s /i /y" />
+    </Target>
 </Project>

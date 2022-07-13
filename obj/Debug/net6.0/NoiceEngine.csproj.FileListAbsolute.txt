@@ -84,13 +84,6 @@
 /home/hexiy/dev/Noice/NoiceEngine/obj/Debug/net6.0/NoiceEngine.pdb
 /home/hexiy/dev/Noice/NoiceEngine/obj/Debug/net6.0/NoiceEngine.genruntimeconfig.cache
 /home/hexiy/dev/Noice/NoiceEngine/bin/Debug/net6.0/Shaders/Snow.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\RenderTexture.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\BoxRenderer.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\Snow.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\SpriteSheetRenderer.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\SpriteRenderer.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\RenderTexturePostProcess.glsl
-C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\Shaders\RenderTextureBloom.glsl
 C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NoiceEngine.exe
 C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NoiceEngine.deps.json
 C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NoiceEngine.runtimeconfig.json

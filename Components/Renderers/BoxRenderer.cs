@@ -1,4 +1,6 @@
-﻿namespace Engine;
+﻿using System.IO;
+
+namespace Engine;
 
 public class BoxRenderer : Renderer
 {
@@ -6,19 +8,23 @@ public class BoxRenderer : Renderer
 	{
 		base.Awake();
 	}
+	public override void CreateMaterial()
+	{
+		material = MaterialAssetManager.LoadMaterial("BoxMaterial.mat");
+	}
 
 	public override void Render()
 	{
-		if (boxShape == null)
+		if (boxShape == null || material == null)
 		{
 			return;
 		}
 
-		ShaderCache.UseShader(ShaderCache.boxRendererShader);
-		ShaderCache.boxRendererShader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
-		ShaderCache.boxRendererShader.SetColor("u_color", color.ToVector4());
+		ShaderCache.UseShader(material.shader);
+		material.shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
+		material.shader.SetColor("u_color", color.ToVector4());
 
-		BufferCache.BindVAO(BufferCache.boxRendererVAO);
+		BufferCache.BindVAO(material.vao);
 
 		GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 

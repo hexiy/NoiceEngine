@@ -145,6 +145,37 @@ public class GameObject
 		for (var i = 0; i < components.Count; i++) components[i].OnNewComponentAdded(comp);
 	}
 
+	public void LinkGameObjectFieldsInComponents()
+	{
+		// find "GameObject" members and find them in the scene
+		for (int c = 0; c < components.Count;c++)
+		{
+			Component component = components[c];
+
+			var sourceType1 = component.GetType();
+
+			var infos = sourceType1.GetFields();
+			for (var i = 0; i < infos.Length; i++)
+				if (infos[i].FieldType == typeof(GameObject) && infos[i].Name != "gameObject")
+				{
+					GameObject goFieldValue = infos[i].GetValue(component) as GameObject;
+					if (goFieldValue == null)
+					{
+						continue;
+
+					}
+
+					GameObject foundGameObject = Scene.I.GetGameObject(goFieldValue.id);
+					if (foundGameObject != null)
+					{
+						Debug.Log("Found Gameobject for field :" + infos[i].Name);
+
+					}
+
+					infos[i].SetValue(component, foundGameObject);
+				}
+		}
+	}
 	public void LinkComponents(GameObject gameObject, Component component)
 	{
 		for (var compIndex1 = 0; compIndex1 < components.Count; compIndex1++)

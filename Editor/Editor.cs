@@ -163,8 +163,8 @@ public class Editor
 
 		if (Global.EditorAttached)
 		{
-			EditorWindow_Hierarchy.I.GameObjectSelected += SelectGameObject;
-			EditorWindow_Hierarchy.I.GameObjectSelected += EditorWindow_Inspector.I.SelectGameObject;
+			EditorWindow_Hierarchy.I.GameObjectSelected += OnGameObjectSelected;
+			EditorWindow_Hierarchy.I.GameObjectSelected += EditorWindow_Inspector.I.OnGameObjectSelected;
 		}
 	}
 
@@ -220,7 +220,7 @@ public class Editor
 		}
 	}
 
-	public void SelectGameObject(int id)
+	private void OnGameObjectSelected(int id)
 	{
 		if (Global.EditorAttached == false)
 		{

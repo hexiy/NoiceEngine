@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Scripts;
@@ -130,4 +130,4 @@ public class TileGrid : Component
 			tiles[i].transform.position.Y = Mathf.Lerp(tiles[i].transform.position.Y, tilesOGPositionsY[i] + goDown, Time.deltaTime * (11 + MathF.Abs(Player.I.GetComponent<Rigidbody>().Velocity.X) * 2));
 		}
 	}
-}
+}*/

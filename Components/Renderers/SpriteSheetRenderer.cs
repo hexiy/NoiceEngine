@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿/*using System.IO;
 
 namespace Scripts;
 
@@ -28,7 +28,7 @@ public class SpriteSheetRenderer : SpriteRenderer
 	{
 		drawOffset = new Vector2(0, spriteSize.Y * spritesCount.Y - spriteSize.Y);
 
-		material = new Material(ShaderCache.spriteSheetRendererShader, BufferCache.spriteSheetRendererVAO);
+		//material = new Material(ShaderCache.spriteSheetRendererShader, BufferCache.spriteSheetRendererVAO);
 		if (texture == null)
 		{
 			texture = new Texture();
@@ -140,4 +140,4 @@ public class SpriteSheetRenderer : SpriteRenderer
 	SpriteSize = new Vector2(_texture.Width / SpritesCount.X, _texture.Height / SpritesCount.Y);
 
 	base.OnTextureLoaded(_texture, _path);
-}*/
+}#1#*/

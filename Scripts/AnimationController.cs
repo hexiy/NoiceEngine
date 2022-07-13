@@ -1,4 +1,4 @@
-﻿namespace Scripts;
+﻿/*namespace Scripts;
 
 public class AnimationController : Component
 {
@@ -101,4 +101,4 @@ public class AnimationController : Component
 			ResetCurrentAnimation();
 		}
 	}
-}
+}*/

@@ -13,7 +13,8 @@ public static class Noice
 		//_ = new GameWindow();
 
 		var window = new Window();
-		BufferCache.CreateBuffers();
+		//BufferCache.CreateBuffers();
+		
 
 		window.VSync = VSyncMode.Off;
 

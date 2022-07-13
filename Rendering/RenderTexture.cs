@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.IO;
+using System.Numerics;
 
 namespace Engine;
 
@@ -7,11 +8,19 @@ public class RenderTexture
 	public int colorAttachment;
 	public int id;
 
-	public Shader shader;
+	public Material renderTextureMaterial;
+
+	private void CreateMaterial()
+	{
+		renderTextureMaterial = new Material();
+		Shader shader = new Shader(Path.Combine(Folders.Shaders, "RenderTexture.glsl"));
+		renderTextureMaterial.SetShader(shader);
+	}
 
 	public RenderTexture(Vector2 size)
 	{
 		GL.DeleteFramebuffers(1, ref id);
+		CreateMaterial();
 		Invalidate(size);
 	}
 
@@ -51,11 +60,15 @@ public class RenderTexture
 
 	public void Render(int targetTexture, float sampleSize = 1)
 	{
-		ShaderCache.UseShader(ShaderCache.renderTextureShader);
-		ShaderCache.renderTextureShader.SetVector2("u_resolution", Camera.I.size);
-		ShaderCache.renderTextureShader.SetMatrix4x4("u_mvp", GetModelViewProjection(sampleSize));
+		if (renderTextureMaterial == null)
+		{
+			return;
+		}
+		ShaderCache.UseShader(renderTextureMaterial.shader);
+		renderTextureMaterial.shader.SetVector2("u_resolution", Camera.I.size);
+		renderTextureMaterial.shader.SetMatrix4x4("u_mvp", GetModelViewProjection(sampleSize));
 
-		BufferCache.BindVAO(BufferCache.renderTextureVAO);
+		BufferCache.BindVAO(renderTextureMaterial.vao);
 		GL.Enable(EnableCap.Blend);
 
 
@@ -69,7 +82,7 @@ public class RenderTexture
 		GL.Disable(EnableCap.Blend);
 	}
 
-	public void RenderSnow(int targetTexture)
+	/*public void RenderSnow(int targetTexture)
 	{
 		ShaderCache.UseShader(ShaderCache.snowShader);
 		ShaderCache.snowShader.SetFloat("time", Time.elapsedTime * 0.08f);
@@ -93,9 +106,9 @@ public class RenderTexture
 		BufferCache.BindVAO(0);
 		GL.Disable(EnableCap.Blend);
 		GL.Disable(EnableCap.DepthTest);
-	}
+	}*/
 
-	public void RenderWithPostProcess(int targetTexture)
+	/*public void RenderWithPostProcess(int targetTexture)
 	{
 		ShaderCache.UseShader(ShaderCache.renderTexturePostProcessShader);
 		ShaderCache.renderTexturePostProcessShader.SetVector2("u_resolution", Camera.I.size);
@@ -113,9 +126,9 @@ public class RenderTexture
 
 		BufferCache.BindVAO(0);
 		GL.Disable(EnableCap.Blend);
-	}
+	}*/
 
-	public void RenderBloom(int targetTexture, float sampleSize = 1)
+	/*public void RenderBloom(int targetTexture, float sampleSize = 1)
 	{
 		ShaderCache.UseShader(ShaderCache.renderTextureBloomShader);
 		ShaderCache.renderTextureBloomShader.SetVector2("u_resolution", Camera.I.size);
@@ -134,7 +147,7 @@ public class RenderTexture
 
 		BufferCache.BindVAO(0);
 		GL.Disable(EnableCap.Blend);
-	}
+	}*/
 
 	public Matrix4x4 GetModelViewProjection(float sampleSize)
 	{
