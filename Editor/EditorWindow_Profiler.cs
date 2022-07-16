@@ -26,9 +26,9 @@ public class EditorWindow_Profiler : EditorWindow
 
 		ImGui.Text($"GameObjects in scene: {Scene.I.gameObjects.Count}");
 
-		for (var i = 0; i < Debug.stats.Count; i++) ImGui.Text($"{Debug.stats.Keys.ElementAt(i)} : {Debug.stats.Values.ElementAt(i)}");
+		for (int i = 0; i < Debug.stats.Count; i++) ImGui.Text($"{Debug.stats.Keys.ElementAt(i)} : {Debug.stats.Values.ElementAt(i)}");
 
-		for (var i = 0; i < Debug.timers.Count; i++)
+		for (int i = 0; i < Debug.timers.Count; i++)
 		{
 			float timerDuration = Debug.timers.Values.ElementAt(i).ElapsedMilliseconds;
 			ImGui.PushStyleColor(ImGuiCol.Text, Color.Lerp(Color.White, Color.Red, Mathf.Clamp(timerDuration / 40 - 1, 0, 1)).ToVector4());

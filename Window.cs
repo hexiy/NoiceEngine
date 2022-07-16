@@ -7,8 +7,8 @@ namespace Engine;
 
 internal class Window : GameWindow
 {
-	private ImGuiController imGuiController;
 	public RenderTexture bloomDownscaledRenderTexture;
+	private ImGuiController imGuiController;
 	public RenderTexture postProcessRenderTexture;
 	public RenderTexture sceneRenderTexture;
 
@@ -27,11 +27,11 @@ internal class Window : GameWindow
 	protected override void OnLoad()
 	{
 		base.OnLoad();
-		Title = $"NoiceEngine | { GL.GetString(StringName.Version)}";
+		Title = $"NoiceEngine | {GL.GetString(StringName.Version)}";
 
 		//MaterialCache.CacheAllMaterialsInProject();
 
-		Vector2 size = new Vector2(10,10); // temporaly 10x10 textures because we cant access Camera.I.size before Scene started-camera is a gameobject
+		Vector2 size = new(10, 10); // temporaly 10x10 textures because we cant access Camera.I.size before Scene started-camera is a gameobject
 		sceneRenderTexture = new RenderTexture(size);
 		postProcessRenderTexture = new RenderTexture(size);
 

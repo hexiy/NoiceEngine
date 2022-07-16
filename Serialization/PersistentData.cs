@@ -17,15 +17,15 @@ public static class PersistentData
 		}
 
 		data = new Dictionary<string, object>();
-		using (var sr = new StreamReader("persistentData"))
+		using (StreamReader sr = new StreamReader("persistentData"))
 		{
 			while (sr.Peek() != -1)
 			{
-				var line = sr.ReadLine();
+				string line = sr.ReadLine();
 				if (line?.Length > 0)
 				{
-					var key = line.Substring(0, line.IndexOf(":"));
-					var value = line.Substring(line.IndexOf(":") + 1);
+					string key = line.Substring(0, line.IndexOf(":"));
+					string value = line.Substring(line.IndexOf(":") + 1);
 					data.Add(key, value);
 				}
 			}
@@ -39,11 +39,11 @@ public static class PersistentData
 			File.Delete("persitentData");
 		}
 
-		var fs = File.Create("persistentData");
+		FileStream fs = File.Create("persistentData");
 		fs.Close();
-		using (var sw = new StreamWriter("persistentData"))
+		using (StreamWriter sw = new StreamWriter("persistentData"))
 		{
-			for (var i = 0; i < data.Count; i++) sw.WriteLine(data.Keys.ElementAt(i) + ":" + data.Values.ElementAt(i));
+			for (int i = 0; i < data.Count; i++) sw.WriteLine(data.Keys.ElementAt(i) + ":" + data.Values.ElementAt(i));
 		}
 	}
 

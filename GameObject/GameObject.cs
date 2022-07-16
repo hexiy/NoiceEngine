@@ -27,11 +27,11 @@ public class GameObject
 	public bool dynamicallyCreated = false;
 	public int id = -1;
 	[Hide] public int indexInHierarchy = 0;
+	public bool isPrefab = false;
 	public string name = "";
 	public bool selected = false;
 	public bool silent;
 	public bool started;
-	public bool isPrefab = false;
 
 	/*		[XmlIgnore]
 			public GameObject Parent
@@ -65,7 +65,7 @@ public class GameObject
 	{
 		OnDestroyed += RemoveFromLists;
 		OnDestroyed += DestroyChildren;
-		
+
 		OnComponentAdded += LinkComponents;
 		OnComponentAdded += InvokeOnComponentAddedOnComponents;
 		OnComponentAdded += CheckForTransformComponent;
@@ -109,7 +109,7 @@ public class GameObject
 
 	public static GameObject Create(Vector2? position = null, Vector2? scale = null, string name = "", bool linkComponents = true, bool _silent = false)
 	{
-		var go = new GameObject();
+		GameObject go = new GameObject();
 
 		go.name = name;
 		go.silent = _silent;
@@ -129,7 +129,7 @@ public class GameObject
 
 	private void DestroyChildren(GameObject go)
 	{
-		for (var i = 0; i < transform.children.Count; i++) transform.children[i].gameObject.Destroy();
+		for (int i = 0; i < transform.children.Count; i++) transform.children[i].gameObject.Destroy();
 	}
 
 	private void CheckForTransformComponent(GameObject gameObject, Component component)
@@ -142,43 +142,42 @@ public class GameObject
 
 	private void InvokeOnComponentAddedOnComponents(GameObject go, Component comp)
 	{
-		for (var i = 0; i < components.Count; i++) components[i].OnNewComponentAdded(comp);
+		for (int i = 0; i < components.Count; i++) components[i].OnNewComponentAdded(comp);
 	}
 
 	public void LinkGameObjectFieldsInComponents()
 	{
 		// find "GameObject" members and find them in the scene
-		for (int c = 0; c < components.Count;c++)
+		for (int c = 0; c < components.Count; c++)
 		{
 			Component component = components[c];
 
-			var sourceType1 = component.GetType();
+			Type sourceType1 = component.GetType();
 
-			var infos = sourceType1.GetFields();
-			for (var i = 0; i < infos.Length; i++)
+			FieldInfo[] infos = sourceType1.GetFields();
+			for (int i = 0; i < infos.Length; i++)
 				if (infos[i].FieldType == typeof(GameObject) && infos[i].Name != "gameObject")
 				{
 					GameObject goFieldValue = infos[i].GetValue(component) as GameObject;
 					if (goFieldValue == null)
 					{
 						continue;
-
 					}
 
 					GameObject foundGameObject = Scene.I.GetGameObject(goFieldValue.id);
 					if (foundGameObject != null)
 					{
 						Debug.Log("Found Gameobject for field :" + infos[i].Name);
-
 					}
 
 					infos[i].SetValue(component, foundGameObject);
 				}
 		}
 	}
+
 	public void LinkComponents(GameObject gameObject, Component component)
 	{
-		for (var compIndex1 = 0; compIndex1 < components.Count; compIndex1++)
+		for (int compIndex1 = 0; compIndex1 < components.Count; compIndex1++)
 		{
 			if (components[compIndex1] == component)
 			{
@@ -195,26 +194,26 @@ public class GameObject
 			// shape might be added first, not linked to anything that was added before, so do the same but reversed- for component
 
 			{
-				var sourceType1 = components[compIndex1].GetType();
-				var sourceType2 = component.GetType();
+				Type sourceType1 = components[compIndex1].GetType();
+				Type sourceType2 = component.GetType();
 
-				var infos = sourceType1.GetFields();
-				for (var i = 0; i < infos.Length; i++)
+				FieldInfo[] infos = sourceType1.GetFields();
+				for (int i = 0; i < infos.Length; i++)
 				{
-					var a = infos[i].GetCustomAttribute<LinkableComponent>();
-					var b = infos[i].GetType();
+					LinkableComponent a = infos[i].GetCustomAttribute<LinkableComponent>();
+					Type b = infos[i].GetType();
 					if (infos[i].GetCustomAttribute<LinkableComponent>() != null
 					 && infos[i].FieldType == sourceType2) // we found field that can be connected- its LinkableComponent attributed and has a type of component2
 					{
 						infos[i].SetValue(components[compIndex1], component);
 
-						var parentType = sourceType1;
+						Type parentType = sourceType1;
 						while (parentType.BaseType != null && parentType.BaseType.Name.Equals("Component") == false) // while we  arent in component, go to parent class and find all fields there
 						{
 							parentType = parentType.BaseType;
 
-							var parentClassInfos = parentType.GetFields();
-							for (var j = 0; j < parentClassInfos.Length; j++)
+							FieldInfo[] parentClassInfos = parentType.GetFields();
+							for (int j = 0; j < parentClassInfos.Length; j++)
 								if (parentClassInfos[j].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // found linkable field in parent class
 								{
 									parentClassInfos[j].SetValue(components[compIndex1], component);
@@ -225,23 +224,23 @@ public class GameObject
 			}
 
 			{
-				var sourceType1 = component.GetType();
-				var sourceType2 = components[compIndex1].GetType();
+				Type sourceType1 = component.GetType();
+				Type sourceType2 = components[compIndex1].GetType();
 
-				var infos = sourceType1.GetFields();
-				for (var i = 0; i < infos.Length; i++)
+				FieldInfo[] infos = sourceType1.GetFields();
+				for (int i = 0; i < infos.Length; i++)
 					if (infos[i].GetCustomAttribute<LinkableComponent>() != null
 					 && infos[i].FieldType == sourceType2) // we found field that can be connected- its LinkableComponent attributed and has a type of component2
 					{
 						infos[i].SetValue(component, components[compIndex1]);
 
-						var parentType = sourceType2;
+						Type parentType = sourceType2;
 						while (parentType.BaseType != null && parentType.BaseType.Name.Equals("Component") == false) // while we  arent in component, go to parent class and find all fields there
 						{
 							parentType = parentType.BaseType;
 
-							var parentClassInfos = parentType.GetFields();
-							for (var j = 0; j < parentClassInfos.Length; j++)
+							FieldInfo[] parentClassInfos = parentType.GetFields();
+							for (int j = 0; j < parentClassInfos.Length; j++)
 								if (parentClassInfos[j].GetCustomAttribute<LinkableComponent>() != null && infos[i].FieldType == sourceType2) // found linkable field in parent class
 								{
 									parentClassInfos[j].SetValue(component, components[compIndex1]);
@@ -262,20 +261,20 @@ public class GameObject
 		component.transform = transform;
 		component.gameObject = this;
 		return;
-		var sourceType = component.GetType();
+		Type sourceType = component.GetType();
 
 		// fields that are derived from Component
-		var componentFields = new List<FieldInfo>();
+		List<FieldInfo> componentFields = new List<FieldInfo>();
 
 		// Find all fields that derive from Component
 		componentFields.AddRange(sourceType.GetFields().Where(info => info.FieldType.IsSubclassOf(typeof(Component))));
 
-		var gameObjectFields = new List<FieldInfo>();
-		var transformFields = new List<FieldInfo>();
-		for (var i = 0; i < componentFields.Count; i++)
+		List<FieldInfo> gameObjectFields = new List<FieldInfo>();
+		List<FieldInfo> transformFields = new List<FieldInfo>();
+		for (int i = 0; i < componentFields.Count; i++)
 		{
-			var gameObjectFieldInfo = componentFields[0].FieldType.GetProperty("gameObject");
-			var transformFieldInfo = componentFields[0].FieldType.GetProperty("transform");
+			PropertyInfo gameObjectFieldInfo = componentFields[0].FieldType.GetProperty("gameObject");
+			PropertyInfo transformFieldInfo = componentFields[0].FieldType.GetProperty("transform");
 
 			gameObjectFieldInfo?.SetValue(component, this);
 			transformFieldInfo?.SetValue(component, transform);
@@ -284,7 +283,7 @@ public class GameObject
 
 	public virtual void Awake()
 	{
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i].awoken == false)
 			{
 				components[i].Awake();
@@ -297,27 +296,27 @@ public class GameObject
 
 	public virtual void PreSceneSave()
 	{
-		for (var i = 0; i < components.Count; i++) components[i].PreSceneSave();
+		for (int i = 0; i < components.Count; i++) components[i].PreSceneSave();
 	}
 
 	public virtual void Start()
 	{
-		for (var i = 0; i < components.Count; i++) components[i].Start();
+		for (int i = 0; i < components.Count; i++) components[i].Start();
 		started = true;
 	}
 
 	private void RemoveFromLists(GameObject gameObject)
 	{
-		var rb = GetComponent<Rigidbody>();
+		Rigidbody rb = GetComponent<Rigidbody>();
 		if (rb != null)
 		{
-			for (var i = 0; i < rb.touchingRigidbodies.Count; i++)
+			for (int i = 0; i < rb.touchingRigidbodies.Count; i++)
 				rb.touchingRigidbodies[i].touchingRigidbodies.Remove(rb);
 		}
 
 		lock (ComponentsLock)
 		{
-			for (var i = 0; i < components.Count; i++) components[i].OnDestroyed();
+			for (int i = 0; i < components.Count; i++) components[i].OnDestroyed();
 			components.Clear();
 		}
 
@@ -395,7 +394,7 @@ public class GameObject
 
 	public Component AddComponent<Component>() where Component : Scripts.Component, new()
 	{
-		var component = new Component();
+		Component component = new Component();
 
 		return AddComponent(component.GetType()) as Component;
 	}
@@ -405,7 +404,7 @@ public class GameObject
 		/* if ((transform != null || GetComponent<Transform>() != null) && type == typeof(Transform)) { 
 				return null;
 		  }*/
-		var component = (Component) Activator.CreateInstance(type);
+		Component component = (Component) Activator.CreateInstance(type);
 
 		if (component.allowMultiple == false && GetComponent(type))
 		{
@@ -459,7 +458,7 @@ public class GameObject
 
 	public void RemoveComponent<T>() where T : Component
 	{
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i] is T)
 			{
 				components[i].OnDestroyed();
@@ -469,7 +468,7 @@ public class GameObject
 
 	public void RemoveComponent(Type type)
 	{
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i].GetType() == type)
 			{
 				components[i].OnDestroyed();
@@ -480,8 +479,8 @@ public class GameObject
 
 	public T GetComponent<T>(int? index = null) where T : Component
 	{
-		var k = index == null ? 0 : (int) index;
-		for (var i = 0; i < components.Count; i++)
+		int k = index == null ? 0 : (int) index;
+		for (int i = 0; i < components.Count; i++)
 			if (components[i] is T)
 			{
 				if (k == 0)
@@ -497,7 +496,7 @@ public class GameObject
 
 	public bool HasComponent<T>() where T : Component
 	{
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i] is T)
 			{
 				return true;
@@ -508,8 +507,8 @@ public class GameObject
 
 	public List<T> GetComponents<T>() where T : Component
 	{
-		var componentsToReturn = new List<T>();
-		for (var i = 0; i < components.Count; i++)
+		List<T> componentsToReturn = new List<T>();
+		for (int i = 0; i < components.Count; i++)
 			if (components[i] is T)
 			{
 				componentsToReturn.Add(components[i] as T);
@@ -520,7 +519,7 @@ public class GameObject
 
 	public Component GetComponent(Type type)
 	{
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i].GetType() == type)
 			{
 				return components[i];
@@ -531,8 +530,8 @@ public class GameObject
 
 	public List<Component> GetComponents(Type type)
 	{
-		var componentsToReturn = new List<Component>();
-		for (var i = 0; i < components.Count; i++)
+		List<Component> componentsToReturn = new List<Component>();
+		for (int i = 0; i < components.Count; i++)
 			if (components[i].GetType() == type)
 			{
 				componentsToReturn.Add(components[i]);
@@ -545,7 +544,7 @@ public class GameObject
 	{
 		lock (ComponentsLock)
 		{
-			for (var i = 0; i < components.Count; i++)
+			for (int i = 0; i < components.Count; i++)
 				if (components[i].enabled && components[i].awoken)
 				{
 					components[i].Update();
@@ -555,7 +554,7 @@ public class GameObject
 
 	private void FixedUpdateComponents()
 	{
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i].enabled && components[i].awoken)
 			{
 				components[i].FixedUpdate();
@@ -577,7 +576,7 @@ public class GameObject
 			return;
 		}
 
-		for (var i = 0; i < components.Count; i++)
+		for (int i = 0; i < components.Count; i++)
 			if (components[i] is Renderer && components[i].enabled && components[i].awoken && activeInHierarchy)
 			{
 				(components[i] as Renderer).Render();

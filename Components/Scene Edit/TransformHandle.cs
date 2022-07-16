@@ -168,7 +168,7 @@ public class TransformHandle : Component
 
 	public void Move(Vector3 deltaVector)
 	{
-		var moveVector = Vector3.Zero;
+		Vector3 moveVector = Vector3.Zero;
 		switch (CurrentAxisSelected)
 		{
 			case Axis.X:
@@ -185,13 +185,13 @@ public class TransformHandle : Component
 		transform.position += moveVector; // we will grab it with offset, soe we want to move it only by change of mouse position
 		selectedTransform.position = transform.position;
 
-		for (var i = 0; i < selectedTransform.children.Count; i++) selectedTransform.children[i].position += moveVector;
+		for (int i = 0; i < selectedTransform.children.Count; i++) selectedTransform.children[i].position += moveVector;
 
 		if (selectedTransform.HasComponent<Rigidbody>() && selectedTransform.GetComponent<Rigidbody>().isButton == false)
 		{
 			lock (Physics.World)
 			{
-				var rigidbody = selectedTransform.GetComponent<Rigidbody>();
+				Rigidbody rigidbody = selectedTransform.GetComponent<Rigidbody>();
 				rigidbody.Velocity = Vector2.Zero;
 				rigidbody.body.Position = selectedTransform.position;
 			}

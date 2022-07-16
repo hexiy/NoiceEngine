@@ -8,9 +8,10 @@ public class BoxRenderer : Renderer
 	{
 		base.Awake();
 	}
+
 	public override void CreateMaterial()
 	{
-		material = MaterialAssetManager.LoadMaterial("BoxMaterial.mat");
+		material = MaterialAssetManager.LoadMaterial(Path.Combine(Folders.Materials,"BoxMaterial.mat"));
 	}
 
 	public override void Render()

@@ -34,10 +34,10 @@ public class Button : Component
 
 	private void SpawnCubes()
 	{
-		for (var x = 0; x < 10; x++)
-		for (var y = 0; y < 10; y++)
+		for (int x = 0; x < 10; x++)
+		for (int y = 0; y < 10; y++)
 		{
-			var go2 = GameObject.Create(name: "box " + y);
+			GameObject go2 = GameObject.Create(name: "box " + y);
 			go2.AddComponent<BoxRenderer>();
 			go2.GetComponent<BoxRenderer>().color = Rendom.RandomColor();
 

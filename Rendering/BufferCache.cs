@@ -73,10 +73,10 @@ public static class BufferCache
 		BindVAO(vao);
 		GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 
-		var verticesList = new List<float>();
+		List<float> verticesList = new List<float>();
 
 		// 100 limit for now, but it can be dynamic too
-		for (var i = 0; i < 1000; i++)
+		for (int i = 0; i < 1000; i++)
 			verticesList.AddRange(new[]
 			                      {
 				                      -0.5f, -0.5f, 0, 0,
@@ -88,7 +88,7 @@ public static class BufferCache
 				                      0.5f, 0.5f, 1, 1
 			                      });
 
-		var vertices = verticesList.ToArray();
+		float[] vertices = verticesList.ToArray();
 
 		GL.NamedBufferStorage(
 		                      vbo,
@@ -120,7 +120,7 @@ public static class BufferCache
 
 		GL.VertexArrayVertexBuffer(vao, 0, vbo, new IntPtr(0), sizeof(float) * 4);
 
-		var batching = true;
+		bool batching = true;
 		if (batching)
 		{
 			//
@@ -128,17 +128,17 @@ public static class BufferCache
 			//
 			//
 			// create new vertex buffer for positions
-			var vbo_positions = GL.GenBuffer();
+			int vbo_positions = GL.GenBuffer();
 
 			BindVAO(vao);
 			GL.BindBuffer(BufferTarget.ArrayBuffer, vbo_positions);
 
-			var attribsList = new List<float>();
+			List<float> attribsList = new List<float>();
 
 			// 100 limit for now, but it can be dynamic too\
-			var x = 0;
-			var y = 0;
-			for (var i = 0; i < 1000; i++)
+			int x = 0;
+			int y = 0;
+			for (int i = 0; i < 1000; i++)
 			{
 				attribsList.AddRange(new float[]
 				                     {
@@ -159,7 +159,7 @@ public static class BufferCache
 				}
 			}
 
-			var attribs = attribsList.ToArray();
+			float[] attribs = attribsList.ToArray();
 
 			GL.NamedBufferStorage(
 			                      vbo_positions,

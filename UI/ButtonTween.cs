@@ -14,7 +14,7 @@ public class ButtonTween : Component
 	public override void Update()
 	{
 		//if (needToScale == false) { return; }
-		var mouseInside = MouseInput.WorldPosition.In(GetComponent<BoxShape>());
+		bool mouseInside = MouseInput.WorldPosition.In(GetComponent<BoxShape>());
 		if (MouseInput.ButtonPressed() && mouseInside)
 		{
 			transform.scale = Vector3.One;

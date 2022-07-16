@@ -12,21 +12,21 @@ public static class TextureCache
 
 	private static Texture LoadAndCreateTexture(string texturePath, bool flipX = true)
 	{
-		var id = GL.GenTexture();
+		int id = GL.GenTexture();
 		BindTexture(id);
 
-		var image = Image.Load<Rgba32>(texturePath);
+		Image<Rgba32> image = Image.Load<Rgba32>(texturePath);
 		if (flipX)
 		{
 			image.Mutate(x => x.Flip(FlipMode.Vertical));
 		}
 
-		var pixels = new List<byte>(4 * image.Width * image.Height);
+		List<byte> pixels = new List<byte>(4 * image.Width * image.Height);
 
-		for (var y = 0; y < image.Height; y++)
+		for (int y = 0; y < image.Height; y++)
 		{
-			var row = image.GetPixelRowSpan(y);
-			for (var x = 0; x < image.Width; x++)
+			Span<Rgba32> row = image.GetPixelRowSpan(y);
+			for (int x = 0; x < image.Width; x++)
 			{
 				pixels.Add(row[x].R);
 				pixels.Add(row[x].G);
@@ -42,7 +42,7 @@ public static class TextureCache
 		GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
 		GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
 
-		var texture = new Texture();
+		Texture texture = new Texture();
 		texture.id = id;
 		texture.size = new Vector2(image.Width, image.Height);
 		texture.loaded = true;

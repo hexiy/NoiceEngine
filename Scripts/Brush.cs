@@ -4,7 +4,7 @@ public class Brush : Component
 {
 	public override void Update()
 	{
-		var spawn = 0;
+		int spawn = 0;
 		if (MouseInput.IsButtonDown())
 		{
 			spawn = 1;
@@ -22,7 +22,7 @@ public class Brush : Component
 
 		if (spawn != 0)
 		{
-			var go = GameObject.Create();
+			GameObject go = GameObject.Create();
 			go.dynamicallyCreated = true;
 
 			go.AddComponent<CircleShape>();

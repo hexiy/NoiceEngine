@@ -46,31 +46,31 @@ public class Camera : Component
 
 	private Matrix4x4 GetViewMatrix()
 	{
-		var _view = Matrix4x4.CreateLookAt(new Vector3(0, 0, 5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+		Matrix4x4 _view = Matrix4x4.CreateLookAt(new Vector3(0, 0, 5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
 		return _view;
 	}
 
 	private Matrix4x4 GetProjectionMatrix()
 	{
-		var left = -size.X / 2;
-		var right = size.X / 2;
-		var bottom = -size.Y / 2;
-		var top = size.Y / 2;
+		float left = -size.X / 2;
+		float right = size.X / 2;
+		float bottom = -size.Y / 2;
+		float top = size.Y / 2;
 
-		var orthoMatrix = Matrix4x4.CreateOrthographicOffCenter(left, right, bottom, top, 0.00001f, 10000000f);
+		Matrix4x4 orthoMatrix = Matrix4x4.CreateOrthographicOffCenter(left, right, bottom, top, 0.00001f, 10000000f);
 
 		return GetTranslationMatrix() * orthoMatrix * GetScaleMatrix();
 	}
 
 	public Matrix4x4 GetTranslationMatrix()
 	{
-		var translationMatrix = Matrix4x4.CreateTranslation(-transform.position);
+		Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(-transform.position);
 		return translationMatrix;
 	}
 
 	private Matrix4x4 GetScaleMatrix()
 	{
-		var scaleMatrix = Matrix4x4.CreateScale(1 / ortographicSize);
+		Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(1 / ortographicSize);
 		return scaleMatrix;
 	}
 
@@ -98,7 +98,7 @@ public class Camera : Component
 
 	public bool RectangleVisible(BoxShape shape)
 	{
-		var isIn = Vector2.Distance(shape.transform.position, transform.position) < size.X * 1.1f * (ortographicSize / 2) + shape.size.X / 2 * shape.transform.scale.MaxVectorMember();
+		bool isIn = Vector2.Distance(shape.transform.position, transform.position) < size.X * 1.1f * (ortographicSize / 2) + shape.size.X / 2 * shape.transform.scale.MaxVectorMember();
 
 		return isIn;
 	}

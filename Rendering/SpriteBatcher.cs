@@ -18,10 +18,10 @@ public class SpriteBatcher : Batcher
 		BufferCache.BindVAO(vao);
 		GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 
-		var verticesList = new List<float>();
+		List<float> verticesList = new List<float>();
 
 		// 100 limit for now, but it can be dynamic too
-		for (var i = 0; i < size; i++)
+		for (int i = 0; i < size; i++)
 			verticesList.AddRange(new[]
 			                      {
 				                      -0.5f, -0.5f, 0, 0,
@@ -33,7 +33,7 @@ public class SpriteBatcher : Batcher
 				                      0.5f, 0.5f, 1, 1
 			                      });
 
-		var vertices = verticesList.ToArray();
+		float[] vertices = verticesList.ToArray();
 
 		GL.NamedBufferStorage(
 		                      vbo,
@@ -83,7 +83,7 @@ public class SpriteBatcher : Batcher
 			CreateBuffers();
 		}
 
-		var createdBufferThisFrame = false;
+		bool createdBufferThisFrame = false;
 		if (vbo_attribs == -1)
 		{
 			vbo_attribs = GL.GenBuffer();
@@ -94,7 +94,7 @@ public class SpriteBatcher : Batcher
 		GL.BindBuffer(BufferTarget.ArrayBuffer, vbo_attribs);
 
 
-		var attribsArray = attribs.ToArray();
+		float[] attribsArray = attribs.ToArray();
 
 
 		GL.NamedBufferData(

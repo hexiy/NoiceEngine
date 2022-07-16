@@ -64,12 +64,12 @@ public class Transform : Component
 		//float cos = (float)Math.Cos(transform.Rotation.X);
 		//var zRotation = new Vector3(direction.Y * sin - direction.X * cos, direction.X * sin + direction.Y * cos, transform.Rotation);
 		//return zRotation;
-		var a = Quaternion.CreateFromRotationMatrix(
-		                                            Matrix.CreateRotationX(90 * (float) Math.PI / 180) * Matrix.CreateRotationY(0) * Matrix.CreateRotationZ(0));
-		var b = Matrix.CreateFromQuaternion(a);
+		Quaternion a = Quaternion.CreateFromRotationMatrix(
+		                                                   Matrix.CreateRotationX(90 * (float) Math.PI / 180) * Matrix.CreateRotationY(0) * Matrix.CreateRotationZ(0));
+		Matrix b = Matrix.CreateFromQuaternion(a);
 
-		var q = Quaternion.CreateFromRotationMatrix(
-		                                            Matrix.CreateRotationX(transform.rotation.X) * Matrix.CreateRotationY(transform.rotation.Y) * Matrix.CreateRotationZ(transform.rotation.Z));
+		Quaternion q = Quaternion.CreateFromRotationMatrix(
+		                                                   Matrix.CreateRotationX(transform.rotation.X) * Matrix.CreateRotationY(transform.rotation.Y) * Matrix.CreateRotationZ(transform.rotation.Z));
 		// Matrix rotation = Matrix.CreateFromYawPitchRoll(transform.rotation.Y, transform.Rotation, transform.rotation.X);
 		//Vector3 translation = Vector3.Transform(vec, rotation);
 		return transform.position + Matrix.CreateFromQuaternion(q).Backward;

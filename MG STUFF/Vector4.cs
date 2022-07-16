@@ -409,7 +409,7 @@ public struct Vector4 : IEquatable<Vector4>
 	/// <returns>The result of dividing a vector by a scalar.</returns>
 	public static Vector4 Divide(Vector4 value1, float divider)
 	{
-		var factor = 1f / divider;
+		float factor = 1f / divider;
 		value1.W *= factor;
 		value1.X *= factor;
 		value1.Y *= factor;
@@ -425,7 +425,7 @@ public struct Vector4 : IEquatable<Vector4>
 	/// <param name="result">The result of dividing a vector by a scalar as an output parameter.</param>
 	public static void Divide(ref Vector4 value1, float divider, out Vector4 result)
 	{
-		var factor = 1f / divider;
+		float factor = 1f / divider;
 		result.W = value1.W * factor;
 		result.X = value1.X * factor;
 		result.Y = value1.Y * factor;
@@ -539,7 +539,7 @@ public struct Vector4 : IEquatable<Vector4>
 	{
 		unchecked
 		{
-			var hashCode = W.GetHashCode();
+			int hashCode = W.GetHashCode();
 			hashCode = hashCode * 397 ^ X.GetHashCode();
 			hashCode = hashCode * 397 ^ Y.GetHashCode();
 			hashCode = hashCode * 397 ^ Z.GetHashCode();
@@ -813,7 +813,7 @@ public struct Vector4 : IEquatable<Vector4>
 	/// </summary>
 	public void Normalize()
 	{
-		var factor = MathF.Sqrt(X * X + Y * Y + Z * Z + W * W);
+		float factor = MathF.Sqrt(X * X + Y * Y + Z * Z + W * W);
 		factor = 1f / factor;
 		X *= factor;
 		Y *= factor;
@@ -828,7 +828,7 @@ public struct Vector4 : IEquatable<Vector4>
 	/// <returns>Unit vector.</returns>
 	public static Vector4 Normalize(Vector4 value)
 	{
-		var factor = MathF.Sqrt(value.X * value.X + value.Y * value.Y + value.Z * value.Z + value.W * value.W);
+		float factor = MathF.Sqrt(value.X * value.X + value.Y * value.Y + value.Z * value.Z + value.W * value.W);
 		factor = 1f / factor;
 		return new Vector4(value.X * factor, value.Y * factor, value.Z * factor, value.W * factor);
 	}
@@ -840,7 +840,7 @@ public struct Vector4 : IEquatable<Vector4>
 	/// <param name="result">Unit vector as an output parameter.</param>
 	public static void Normalize(ref Vector4 value, out Vector4 result)
 	{
-		var factor = MathF.Sqrt(value.X * value.X + value.Y * value.Y + value.Z * value.Z + value.W * value.W);
+		float factor = MathF.Sqrt(value.X * value.X + value.Y * value.Y + value.Z * value.Z + value.W * value.W);
 		factor = 1f / factor;
 		result.W = value.W * factor;
 		result.X = value.X * factor;
@@ -1096,10 +1096,10 @@ public struct Vector4 : IEquatable<Vector4>
 	/// <param name="result">Transformed <see cref="Vector4" /> as an output parameter.</param>
 	public static void Transform(ref Vector4 value, ref Matrix matrix, out Vector4 result)
 	{
-		var x = value.X * matrix.M11 + value.Y * matrix.M21 + value.Z * matrix.M31 + value.W * matrix.M41;
-		var y = value.X * matrix.M12 + value.Y * matrix.M22 + value.Z * matrix.M32 + value.W * matrix.M42;
-		var z = value.X * matrix.M13 + value.Y * matrix.M23 + value.Z * matrix.M33 + value.W * matrix.M43;
-		var w = value.X * matrix.M14 + value.Y * matrix.M24 + value.Z * matrix.M34 + value.W * matrix.M44;
+		float x = value.X * matrix.M11 + value.Y * matrix.M21 + value.Z * matrix.M31 + value.W * matrix.M41;
+		float y = value.X * matrix.M12 + value.Y * matrix.M22 + value.Z * matrix.M32 + value.W * matrix.M42;
+		float z = value.X * matrix.M13 + value.Y * matrix.M23 + value.Z * matrix.M33 + value.W * matrix.M43;
+		float w = value.X * matrix.M14 + value.Y * matrix.M24 + value.Z * matrix.M34 + value.W * matrix.M44;
 		result.X = x;
 		result.Y = y;
 		result.Z = z;
@@ -1158,9 +1158,9 @@ public struct Vector4 : IEquatable<Vector4>
 			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
 		}
 
-		for (var i = 0; i < length; i++)
+		for (int i = 0; i < length; i++)
 		{
-			var value = sourceArray[sourceIndex + i];
+			Vector4 value = sourceArray[sourceIndex + i];
 			destinationArray[destinationIndex + i] = Transform(value, matrix);
 		}
 	}
@@ -1205,9 +1205,9 @@ public struct Vector4 : IEquatable<Vector4>
 			throw new ArgumentException("Destination array length is lesser than destinationIndex + length");
 		}
 
-		for (var i = 0; i < length; i++)
+		for (int i = 0; i < length; i++)
 		{
-			var value = sourceArray[sourceIndex + i];
+			Vector4 value = sourceArray[sourceIndex + i];
 			destinationArray[destinationIndex + i] = Transform(value, rotation);
 		}
 	}
@@ -1236,9 +1236,9 @@ public struct Vector4 : IEquatable<Vector4>
 			throw new ArgumentException("Destination array length is lesser than source array length");
 		}
 
-		for (var i = 0; i < sourceArray.Length; i++)
+		for (int i = 0; i < sourceArray.Length; i++)
 		{
-			var value = sourceArray[i];
+			Vector4 value = sourceArray[i];
 			destinationArray[i] = Transform(value, matrix);
 		}
 	}
@@ -1267,9 +1267,9 @@ public struct Vector4 : IEquatable<Vector4>
 			throw new ArgumentException("Destination array length is lesser than source array length");
 		}
 
-		for (var i = 0; i < sourceArray.Length; i++)
+		for (int i = 0; i < sourceArray.Length; i++)
 		{
-			var value = sourceArray[i];
+			Vector4 value = sourceArray[i];
 			destinationArray[i] = Transform(value, rotation);
 		}
 	}
@@ -1464,7 +1464,7 @@ public struct Vector4 : IEquatable<Vector4>
 	/// <returns>The result of dividing a vector by a scalar.</returns>
 	public static Vector4 operator /(Vector4 value1, float divider)
 	{
-		var factor = 1f / divider;
+		float factor = 1f / divider;
 		value1.W *= factor;
 		value1.X *= factor;
 		value1.Y *= factor;

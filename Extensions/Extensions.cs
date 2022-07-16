@@ -110,7 +110,7 @@ public static class Extensions
 
 	public static Vector3 Normalized(this Vector3 vec)
 	{
-		var v = new Vector3(vec.X / vec.Length(), vec.Y / vec.Length(), vec.Z / vec.Length());
+		Vector3 v = new Vector3(vec.X / vec.Length(), vec.Y / vec.Length(), vec.Z / vec.Length());
 		if (vec.Length() == 0)
 		{
 			v = Vector3.Zero;
@@ -121,7 +121,7 @@ public static class Extensions
 
 	public static Vector2 Normalized(this Vector2 vec)
 	{
-		var v = new Vector2(vec.X / vec.Length(), vec.Y / vec.Length());
+		Vector2 v = new Vector2(vec.X / vec.Length(), vec.Y / vec.Length());
 		if (vec.Length() == 0)
 		{
 			v = Vector2.Zero;
@@ -132,7 +132,7 @@ public static class Extensions
 
 	public static Vector3 Abs(this Vector3 vec)
 	{
-		var v = new Vector3(Math.Abs(vec.X), Math.Abs(vec.Y), Math.Abs(vec.Z));
+		Vector3 v = new Vector3(Math.Abs(vec.X), Math.Abs(vec.Y), Math.Abs(vec.Z));
 		return v;
 	}
 
@@ -148,14 +148,14 @@ public static class Extensions
 
 	public static Color ColorFromHSVToXna(double hue, double saturation, double value)
 	{
-		var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-		var f = hue / 60 - Math.Floor(hue / 60);
+		int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+		double f = hue / 60 - Math.Floor(hue / 60);
 
 		value = value * 255;
-		var v = Convert.ToInt32(value);
-		var p = Convert.ToInt32(value * (1 - saturation));
-		var q = Convert.ToInt32(value * (1 - f * saturation));
-		var t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+		int v = Convert.ToInt32(value);
+		int p = Convert.ToInt32(value * (1 - saturation));
+		int q = Convert.ToInt32(value * (1 - f * saturation));
+		int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
 		if (hi == 0)
 		{
@@ -187,14 +187,14 @@ public static class Extensions
 
 	public static Color ColorFromHSV(double hue, double saturation, double value)
 	{
-		var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-		var f = hue / 60 - Math.Floor(hue / 60);
+		int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+		double f = hue / 60 - Math.Floor(hue / 60);
 
 		value = value * 255;
-		var v = Convert.ToInt32(value);
-		var p = Convert.ToInt32(value * (1 - saturation));
-		var q = Convert.ToInt32(value * (1 - f * saturation));
-		var t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+		int v = Convert.ToInt32(value);
+		int p = Convert.ToInt32(value * (1 - saturation));
+		int q = Convert.ToInt32(value * (1 - f * saturation));
+		int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
 		if (hi == 0)
 		{
@@ -336,7 +336,7 @@ public static class Extensions
 
 	public static float AngleBetween(Vector2 vector1, Vector2 vector2)
 	{
-		var returnAngle = (float) Math.Acos(Vector2.Dot(vector1, vector2) / (vector1.Length() * vector2.Length()));
+		float returnAngle = (float) Math.Acos(Vector2.Dot(vector1, vector2) / (vector1.Length() * vector2.Length()));
 		if (returnAngle == float.NaN)
 		{
 			returnAngle = 0;

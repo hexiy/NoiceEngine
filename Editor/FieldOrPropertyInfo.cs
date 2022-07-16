@@ -86,13 +86,13 @@ public class FieldOrPropertyInfo
 			canShowInEditor = false;
 		}
 
-		for (var i = 0; i < CustomAttributes.Count(); i++)
+		for (int i = 0; i < CustomAttributes.Count(); i++)
 			if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Show))
 			{
 				canShowInEditor = true;
 			}
 
-		for (var i = 0; i < CustomAttributes.Count(); i++)
+		for (int i = 0; i < CustomAttributes.Count(); i++)
 			if (CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(Hide))
 			{
 				canShowInEditor = false;

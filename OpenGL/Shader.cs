@@ -6,32 +6,31 @@ namespace Engine;
 [Serializable]
 public class Shader : IDisposable
 {
+	public BufferType bufferType;
+
+	public string path;
 	private int uLocation_u_color = -1;
 
 	private int uLocation_u_mvp = -1;
 
-	public int ProgramID { get; set; }
-
-	public string path;
-	public BufferType bufferType;
-
-
 	public Shader()
 	{
-		
 	}
 
 	public Shader(string filePath)
 	{
 		path = filePath;
 	}
+
+	public int ProgramID { get; set; }
+
 	public void Dispose()
 	{
 	}
 
 	public void Load()
 	{
-		var shaderFile = File.ReadAllText(path);
+		string shaderFile = File.ReadAllText(path);
 
 		string vertexCode = GetVertexShaderFromFileString(shaderFile);
 		string fragmentCode = GetFragmentShaderFromFileString(shaderFile);
@@ -44,7 +43,7 @@ public class Shader : IDisposable
 		GL.ShaderSource(vs, vertexCode);
 		GL.CompileShader(vs);
 
-		var error = "";
+		string error = "";
 		GL.GetShaderInfoLog(vs, out error);
 		if (error.Length > 0)
 		{
@@ -79,7 +78,7 @@ public class Shader : IDisposable
 	{
 		if (uLocation_u_mvp == -1)
 		{
-			var location = GL.GetUniformLocation(ProgramID, uniformName);
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
 			uLocation_u_mvp = location;
 		}
 
@@ -88,25 +87,25 @@ public class Shader : IDisposable
 
 	public void SetFloat(string uniformName, float fl)
 	{
-		var location = GL.GetUniformLocation(ProgramID, uniformName);
+		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform1(location, fl);
 	}
 
 	public void SetVector2(string uniformName, Vector2 vec)
 	{
-		var location = GL.GetUniformLocation(ProgramID, uniformName);
+		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform2(location, vec.X, vec.Y);
 	}
 
 	public void SetVector3(string uniformName, Vector3 vec)
 	{
-		var location = GL.GetUniformLocation(ProgramID, uniformName);
+		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform3(location, vec.X, vec.Y, vec.Z);
 	}
 
 	public void SetVector4(string uniformName, Vector4 vec)
 	{
-		var location = GL.GetUniformLocation(ProgramID, uniformName);
+		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform4(location, vec.X, vec.Y, vec.Z, vec.W);
 	}
 
@@ -114,7 +113,7 @@ public class Shader : IDisposable
 	{
 		if (uLocation_u_color == -1)
 		{
-			var location = GL.GetUniformLocation(ProgramID, uniformName);
+			int location = GL.GetUniformLocation(ProgramID, uniformName);
 			uLocation_u_color = location;
 		}
 
@@ -143,7 +142,7 @@ public class Shader : IDisposable
 		                                         shaderFile.IndexOf("[VERTEX]") - shaderFile.IndexOf("[BUFFERTYPE]") - 13); //File.ReadA;
 
 		BufferType type;
-		BufferType.TryParse(typeString, out type);
+		Enum.TryParse(typeString, out type);
 
 		return type;
 	}

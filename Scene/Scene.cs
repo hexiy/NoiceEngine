@@ -26,14 +26,14 @@ internal class Scene
 
 	private void CreateDefaultObjects()
 	{
-		var camGO = GameObject.Create(name: "Camera");
+		GameObject camGO = GameObject.Create(name: "Camera");
 		camGO.AddComponent<Camera>();
 		camGO.AddComponent<CameraController>();
 		camGO.Awake();
 
-		for (var i = 0; i < 1; i++)
+		for (int i = 0; i < 1; i++)
 		{
-			var go2 = GameObject.Create(name: "sprite " + i);
+			GameObject go2 = GameObject.Create(name: "sprite " + i);
 			go2.AddComponent<BoxRenderer>();
 			go2.AddComponent<BoxShape>().size = new Vector2(400, 180);
 
@@ -47,11 +47,11 @@ internal class Scene
 
 	private void SpawnTestSpriteRenderers()
 	{
-		var parent = GameObject.Create(name: "parent");
+		GameObject parent = GameObject.Create(name: "parent");
 		parent.Awake();
-		for (var i = 0; i < 10000; i++)
+		for (int i = 0; i < 10000; i++)
 		{
-			var go2 = GameObject.Create(name: "sprite " + i);
+			GameObject go2 = GameObject.Create(name: "sprite " + i);
 			go2.dynamicallyCreated = true;
 			go2.AddComponent<SpriteRenderer>();
 			go2.AddComponent<BoxShape>().size = new Vector2(400, 180);
@@ -66,7 +66,7 @@ internal class Scene
 
 	private void CreateTransformHandle()
 	{
-		var transformHandleGameObject = GameObject.Create(_silent: true);
+		GameObject transformHandleGameObject = GameObject.Create(_silent: true);
 		Editor.I.transformHandle = transformHandleGameObject.AddComponent<TransformHandle>();
 		transformHandleGameObject.dynamicallyCreated = true;
 		transformHandleGameObject.alwaysUpdate = true;
@@ -96,7 +96,7 @@ internal class Scene
 		Time.Update();
 		MouseInput.Update();
 
-		for (var i = 0; i < gameObjects.Count; i++)
+		for (int i = 0; i < gameObjects.Count; i++)
 		{
 			gameObjects[i].indexInHierarchy = i;
 			if (Global.GameRunning || gameObjects[i].alwaysUpdate)
@@ -118,14 +118,14 @@ internal class Scene
 	public void RenderQueueChanged()
 	{
 		renderQueue = new List<Renderer>();
-		for (var i = 0; i < gameObjects.Count; i++)
+		for (int i = 0; i < gameObjects.Count; i++)
 			if (gameObjects[i].GetComponent<Renderer>())
 				//renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
 			{
 				renderQueue.AddRange(gameObjects[i].GetComponents<Renderer>());
 			}
 
-		for (var i = 0; i < renderQueue.Count; i++) renderQueue[i].layerFromHierarchy = renderQueue[i].gameObject.indexInHierarchy * 0.00000000000000000000000000000001f;
+		for (int i = 0; i < renderQueue.Count; i++) renderQueue[i].layerFromHierarchy = renderQueue[i].gameObject.indexInHierarchy * 0.00000000000000000000000000000001f;
 		renderQueue.Sort();
 	}
 
@@ -136,7 +136,7 @@ internal class Scene
 
 		BatchingManager.RenderAllBatchers();
 
-		for (var i = 0; i < renderQueue.Count; i++)
+		for (int i = 0; i < renderQueue.Count; i++)
 			if (renderQueue[i].enabled && renderQueue[i].awoken && renderQueue[i].gameObject.activeInHierarchy)
 			{
 				renderQueue[i].Render();
@@ -145,10 +145,10 @@ internal class Scene
 
 	public SceneFile GetSceneFile()
 	{
-		var sf = new SceneFile();
+		SceneFile sf = new SceneFile();
 		sf.Components = new List<Component>();
 		sf.GameObjects = new List<GameObject>();
-		for (var i = 0; i < gameObjects.Count; i++)
+		for (int i = 0; i < gameObjects.Count; i++)
 		{
 			if (gameObjects[i].dynamicallyCreated)
 			{
@@ -165,9 +165,9 @@ internal class Scene
 
 	public GameObject FindGameObject(Type type)
 	{
-		foreach (var gameObject in gameObjects)
+		foreach (GameObject gameObject in gameObjects)
 		{
-			var bl = gameObject.GetComponent(type);
+			Component bl = gameObject.GetComponent(type);
 			if (bl != null)
 			{
 				return gameObject;
@@ -179,10 +179,10 @@ internal class Scene
 
 	public List<T> FindComponentsInScene<T>() where T : Component
 	{
-		var components = new List<T>();
-		foreach (var gameObject in gameObjects)
+		List<T> components = new List<T>();
+		foreach (GameObject gameObject in gameObjects)
 		{
-			var bl = gameObject.GetComponent<T>();
+			T bl = gameObject.GetComponent<T>();
 			if (bl != null)
 			{
 				components.Add(bl);
@@ -194,7 +194,7 @@ internal class Scene
 
 	public GameObject GetGameObject(int ID)
 	{
-		for (var i = 0; i < gameObjects.Count; i++)
+		for (int i = 0; i < gameObjects.Count; i++)
 			if (gameObjects[i].id == ID)
 			{
 				return gameObjects[i];
@@ -221,23 +221,21 @@ internal class Scene
 		//Physics.rigidbodies.Clear();
 
 		gameObjects = new List<GameObject>();
-		var sceneFile = Serializer.I.LoadGameObjects(path);
+		SceneFile sceneFile = Serializer.I.LoadGameObjects(path);
 
 		Serializer.I.ConnectGameObjectsWithComponents(sceneFile);
 		IDsManager.gameObjectNextID = sceneFile.gameObjectNextID + 1;
 
 		Serializer.I.ConnectParentsAndChildren(sceneFile);
 
-		for (var i = 0; i < sceneFile.GameObjects.Count; i++)
+		for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 		{
-			for (var j = 0; j < sceneFile.GameObjects[i].components.Count; j++) sceneFile.GameObjects[i].components[j].gameObjectID = sceneFile.GameObjects[i].id;
+			for (int j = 0; j < sceneFile.GameObjects[i].components.Count; j++) sceneFile.GameObjects[i].components[j].gameObjectID = sceneFile.GameObjects[i].id;
 			I.AddGameObjectToScene(sceneFile.GameObjects[i]);
-
 		}
-		
-		for (var i = 0; i < sceneFile.GameObjects.Count; i++)
+
+		for (int i = 0; i < sceneFile.GameObjects.Count; i++)
 		{
-			
 			sceneFile.GameObjects[i].LinkGameObjectFieldsInComponents();
 			sceneFile.GameObjects[i].Awake();
 		}
@@ -247,7 +245,7 @@ internal class Scene
 
 		scenePath = path;
 
-		var lastSelectedGameObjectId = PersistentData.GetInt("lastSelectedGameObjectId", 0);
+		int lastSelectedGameObjectId = PersistentData.GetInt("lastSelectedGameObjectId", 0);
 		if (Global.EditorAttached)
 		{
 			EditorWindow_Hierarchy.I.SelectGameObject(lastSelectedGameObjectId);
@@ -263,6 +261,7 @@ internal class Scene
 		{
 			path = Path.Combine("Assets", "scene1.scene");
 		}
+
 		Serializer.lastScene = path;
 		Serializer.I.SaveGameObjects(GetSceneFile(), path);
 	}
@@ -282,6 +281,7 @@ internal class Scene
 		{
 			gameObjects.Remove(gameObject);
 		}
+
 		RenderQueueChanged();
 	}
 

@@ -11,7 +11,7 @@ public class Texture
 	public void Load(string _path, bool flipX = true)
 	{
 		path = _path;
-		var loadedTexture = TextureCache.GetTexture(_path, flipX);
+		Texture loadedTexture = TextureCache.GetTexture(_path, flipX);
 
 		id = loadedTexture.id;
 		size = loadedTexture.size;

@@ -4,8 +4,9 @@ using ImGuiNET;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Vector2 = System.Numerics.Vector2;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
+using Vector2 = System.Numerics.Vector2;
+using Vector4 = System.Numerics.Vector4;
 
 namespace Dear_ImGui_Sample;
 
@@ -40,9 +41,9 @@ public class ImGuiController : IDisposable
 		_windowWidth = width;
 		_windowHeight = height;
 
-		var context = ImGui.CreateContext();
+		IntPtr context = ImGui.CreateContext();
 		ImGui.SetCurrentContext(context);
-		var io = ImGui.GetIO();
+		ImGuiIOPtr io = ImGui.GetIO();
 
 		io.Fonts.AddFontDefault();
 
@@ -93,7 +94,7 @@ public class ImGuiController : IDisposable
 
 		RecreateFontDeviceTexture();
 
-		var VertexSource = @"#version 460 core
+		string VertexSource = @"#version 460 core
 
 uniform mat4 projection_matrix;
 
@@ -110,7 +111,7 @@ void main()
     color = in_color;
     texCoord = in_texCoord;
 }";
-		var FragmentSource = @"#version 460 core
+		string FragmentSource = @"#version 460 core
 
 uniform sampler2D in_fontTexture;
 
@@ -148,8 +149,8 @@ void main()
 	/// </summary>
 	public void RecreateFontDeviceTexture()
 	{
-		var io = ImGui.GetIO();
-		io.Fonts.GetTexDataAsRGBA32(out IntPtr pixels, out var width, out var height, out var bytesPerPixel);
+		ImGuiIOPtr io = ImGui.GetIO();
+		io.Fonts.GetTexDataAsRGBA32(out IntPtr pixels, out int width, out int height, out int bytesPerPixel);
 
 		_fontTexture = new ImGuiTexture("ImGui Text Atlas", width, height, pixels);
 		_fontTexture.SetMagFilter(TextureMagFilter.Linear);
@@ -200,7 +201,7 @@ void main()
 	/// </summary>
 	private void SetPerFrameImGuiData(float deltaSeconds)
 	{
-		var io = ImGui.GetIO();
+		ImGuiIOPtr io = ImGui.GetIO();
 		io.DisplaySize = new Vector2(
 		                             _windowWidth / _scaleFactor.X,
 		                             _windowHeight / _scaleFactor.Y);
@@ -210,17 +211,17 @@ void main()
 
 	private void UpdateImGuiInput(GameWindow wnd)
 	{
-		var io = ImGui.GetIO();
+		ImGuiIOPtr io = ImGui.GetIO();
 
-		var MouseState = wnd.MouseState;
-		var KeyboardState = wnd.KeyboardState;
+		MouseState MouseState = wnd.MouseState;
+		KeyboardState KeyboardState = wnd.KeyboardState;
 
 		io.MouseDown[0] = MouseState[MouseButton.Left];
 		io.MouseDown[1] = MouseState[MouseButton.Right];
 		io.MouseDown[2] = MouseState[MouseButton.Middle];
 
-		var screenPoint = new Vector2i((int) MouseState.X, (int) MouseState.Y);
-		var point = screenPoint; //wnd.PointToClient(screenPoint);
+		Vector2i screenPoint = new((int) MouseState.X, (int) MouseState.Y);
+		Vector2i point = screenPoint; //wnd.PointToClient(screenPoint);
 		io.MousePos = new Vector2(point.X, point.Y);
 
 		foreach (Keys key in Enum.GetValues(typeof(Keys)))
@@ -233,7 +234,7 @@ void main()
 			io.KeysDown[(int) key] = KeyboardState.IsKeyDown(key);
 		}
 
-		foreach (var c in PressedChars) io.AddInputCharacter(c);
+		foreach (char c in PressedChars) io.AddInputCharacter(c);
 		PressedChars.Clear();
 
 		io.KeyCtrl = KeyboardState.IsKeyDown(Keys.LeftControl) || KeyboardState.IsKeyDown(Keys.RightControl);
@@ -249,7 +250,7 @@ void main()
 
 	internal void MouseScroll(Engine.Vector2 offset)
 	{
-		var io = ImGui.GetIO();
+		ImGuiIOPtr io = ImGui.GetIO();
 
 		io.MouseWheel = offset.Y;
 		io.MouseWheelH = offset.X;
@@ -257,7 +258,7 @@ void main()
 
 	private static void SetKeyMappings()
 	{
-		var io = ImGui.GetIO();
+		ImGuiIOPtr io = ImGui.GetIO();
 		io.KeyMap[(int) ImGuiKey.Tab] = (int) Keys.Tab;
 		io.KeyMap[(int) ImGuiKey.LeftArrow] = (int) Keys.Left;
 		io.KeyMap[(int) ImGuiKey.RightArrow] = (int) Keys.Right;
@@ -286,24 +287,24 @@ void main()
 			return;
 		}
 
-		for (var i = 0; i < draw_data.CmdListsCount; i++)
+		for (int i = 0; i < draw_data.CmdListsCount; i++)
 		{
-			var cmd_list = draw_data.CmdListsRange[i];
+			ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
 
-			var vertexSize = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
+			int vertexSize = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
 			if (vertexSize > _vertexBufferSize)
 			{
-				var newSize = (int) Math.Max(_vertexBufferSize * 1.5f, vertexSize);
+				int newSize = (int) Math.Max(_vertexBufferSize * 1.5f, vertexSize);
 				GL.NamedBufferData(_vertexBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
 				_vertexBufferSize = newSize;
 
 				Console.WriteLine($"Resized dear imgui vertex buffer to new size {_vertexBufferSize}");
 			}
 
-			var indexSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
+			int indexSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
 			if (indexSize > _indexBufferSize)
 			{
-				var newSize = (int) Math.Max(_indexBufferSize * 1.5f, indexSize);
+				int newSize = (int) Math.Max(_indexBufferSize * 1.5f, indexSize);
 				GL.NamedBufferData(_indexBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
 				_indexBufferSize = newSize;
 
@@ -312,14 +313,14 @@ void main()
 		}
 
 		// Setup orthographic projection matrix into our constant buffer
-		var io = ImGui.GetIO();
-		var mvp = Matrix4.CreateOrthographicOffCenter(
-		                                              0.0f,
-		                                              io.DisplaySize.X,
-		                                              io.DisplaySize.Y,
-		                                              0.0f,
-		                                              -1.0f,
-		                                              1.0f);
+		ImGuiIOPtr io = ImGui.GetIO();
+		Matrix4 mvp = Matrix4.CreateOrthographicOffCenter(
+		                                                  0.0f,
+		                                                  io.DisplaySize.X,
+		                                                  io.DisplaySize.Y,
+		                                                  0.0f,
+		                                                  -1.0f,
+		                                                  1.0f);
 
 		_shader.UseShader();
 		GL.UniformMatrix4(_shader.GetUniformLocation("projection_matrix"), false, ref mvp);
@@ -339,9 +340,9 @@ void main()
 		GL.Disable(EnableCap.DepthTest);
 
 		// Render command lists
-		for (var n = 0; n < draw_data.CmdListsCount; n++)
+		for (int n = 0; n < draw_data.CmdListsCount; n++)
 		{
-			var cmd_list = draw_data.CmdListsRange[n];
+			ImDrawListPtr cmd_list = draw_data.CmdListsRange[n];
 
 			GL.NamedBufferSubData(_vertexBuffer, IntPtr.Zero, cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>(), cmd_list.VtxBuffer.Data);
 			Util.CheckGLError($"Data Vert {n}");
@@ -349,9 +350,9 @@ void main()
 			GL.NamedBufferSubData(_indexBuffer, IntPtr.Zero, cmd_list.IdxBuffer.Size * sizeof(ushort), cmd_list.IdxBuffer.Data);
 			Util.CheckGLError($"Data Idx {n}");
 
-			for (var cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
+			for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
 			{
-				var pcmd = cmd_list.CmdBuffer[cmd_i];
+				ImDrawCmdPtr pcmd = cmd_list.CmdBuffer[cmd_i];
 				if (pcmd.UserCallback != IntPtr.Zero)
 				{
 					throw new NotImplementedException();
@@ -362,7 +363,7 @@ void main()
 				Util.CheckGLError("Texture");
 
 				// We do _windowHeight - (int)clip.W instead of (int)clip.Y because gl has flipped Y when it comes to these coordinates
-				var clip = pcmd.ClipRect;
+				Vector4 clip = pcmd.ClipRect;
 				GL.Scissor((int) clip.X, _windowHeight - (int) clip.W, (int) (clip.Z - clip.X), (int) (clip.W - clip.Y));
 				Util.CheckGLError("Scissor");
 

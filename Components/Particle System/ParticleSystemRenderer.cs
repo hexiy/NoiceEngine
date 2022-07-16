@@ -38,7 +38,7 @@ public class ParticleSystemRenderer : SpriteRenderer
 			particlesInBatcher++;
 		}
 
-		for (var i = 0; i < particleSystem.particles.Count; i++)
+		for (int i = 0; i < particleSystem.particles.Count; i++)
 			BatchingManager.UpdateAttribs(texture.id, gameObjectID, particleSystem.particles[i].worldPosition, new Vector2(particleSystem.particles[i].radius),
 			                              particleSystem.particles[i].color, i);
 

@@ -84,7 +84,7 @@ public class Rigidbody : Component
 
 	public void CreateBody()
 	{
-		var bodyDef = new BodyDef();
+		BodyDef bodyDef = new BodyDef();
 		bodyDef.Position = transform.position;
 		bodyDef.Type = isStatic ? BodyType.Static : BodyType.Dynamic;
 		bodyDef.AllowSleep = true;
@@ -93,9 +93,9 @@ public class Rigidbody : Component
 
 		if (GetComponent<CircleShape>() != null)
 		{
-			var circleShape = GetComponent<CircleShape>();
+			CircleShape circleShape = GetComponent<CircleShape>();
 
-			var fixtureDef = new FixtureDef();
+			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.Shape = new Genbox.VelcroPhysics.Collision.Shapes.CircleShape(circleShape.radius, 100);
 			fixtureDef.Friction = 0.1f;
 			lock (Physics.World)
@@ -151,7 +151,7 @@ public class Rigidbody : Component
 			}
 		}
 
-		for (var i = 0; i < touchingRigidbodies.Count; i++)
+		for (int i = 0; i < touchingRigidbodies.Count; i++)
 		{
 			touchingRigidbodies[i].OnCollisionExit(this);
 			OnCollisionExit(touchingRigidbodies[i]);
@@ -163,7 +163,7 @@ public class Rigidbody : Component
 		touchingRigidbodies.Add(rigidbody);
 
 		// Call callback on components that implement interface IPhysicsCallbackListener
-		for (var i = 0; i < gameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 			if (gameObject.components[i] is Rigidbody == false)
 			{
 				gameObject.components[i].OnCollisionEnter(rigidbody);
@@ -177,7 +177,7 @@ public class Rigidbody : Component
 			touchingRigidbodies.Remove(rigidbody);
 		}
 
-		for (var i = 0; i < gameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 			if (gameObject.components[i] is Rigidbody == false)
 			{
 				gameObject.components[i].OnCollisionExit(rigidbody);
@@ -189,7 +189,7 @@ public class Rigidbody : Component
 		touchingRigidbodies.Add(rigidbody);
 
 		// Call callback on components that implement interface IPhysicsCallbackListener
-		for (var i = 0; i < gameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 			if (gameObject.components[i] is Rigidbody == false)
 			{
 				gameObject.components[i].OnTriggerEnter(rigidbody);
@@ -203,7 +203,7 @@ public class Rigidbody : Component
 			touchingRigidbodies.Remove(rigidbody);
 		}
 
-		for (var i = 0; i < gameObject.components.Count; i++)
+		for (int i = 0; i < gameObject.components.Count; i++)
 			if (gameObject.components[i] is Rigidbody == false)
 			{
 				gameObject.components[i].OnTriggerExit(rigidbody);

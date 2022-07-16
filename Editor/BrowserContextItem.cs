@@ -5,12 +5,11 @@ namespace Engine;
 
 public class BrowserContextItem
 {
-	private string itemName;
+	private Action<string> confirmAction;
 	private string defaultFileName;
 	private string fileExtension;
-
-	private Action<string> confirmAction;
-	public bool showPopup = false;
+	private string itemName;
+	public bool showPopup;
 
 	public BrowserContextItem(string itemName, string defaultFileName, string fileExtension, Action<string> confirmAction)
 	{

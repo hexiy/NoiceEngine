@@ -4,7 +4,7 @@ public static class PhysicsExtensions
 {
 	public static bool In(this Vector2 point, Shape shape)
 	{
-		var isIn = false;
+		bool isIn = false;
 		float distance = 0;
 		switch (shape)
 		{
@@ -20,8 +20,8 @@ public static class PhysicsExtensions
 
 				//float boxEndX = boxPosition.X + boxCollider.offset.X + (boxCollider.size.X / 2) * boxCollider.transform.pivot.X;
 
-				var start = boxPosition + boxCollider.offset * boxCollider.transform.scale + boxCollider.size * boxCollider.transform.pivot;
-				var end = boxPosition + boxCollider.offset * boxCollider.transform.scale + (boxCollider.size + boxCollider.size * boxCollider.transform.pivot) * boxCollider.transform.scale;
+				Vector2 start = boxPosition + boxCollider.offset * boxCollider.transform.scale + boxCollider.size * boxCollider.transform.pivot;
+				Vector2 end = boxPosition + boxCollider.offset * boxCollider.transform.scale + (boxCollider.size + boxCollider.size * boxCollider.transform.pivot) * boxCollider.transform.scale;
 				isIn = point.X < end.X && point.X > start.X && point.Y < end.Y && point.Y > start.Y;
 				break;
 		}

@@ -22,12 +22,14 @@ public class SpriteRenderer : Renderer
 
 		base.Awake();
 	}
+
 	public override void CreateMaterial()
 	{
 		material = new Material();
-		Shader shader = new Shader(Path.Combine(Folders.Shaders, "SpriteRenderer.glsl"));
+		Shader shader = new(Path.Combine(Folders.Shaders, "SpriteRenderer.glsl"));
 		material.SetShader(shader);
 	}
+
 	public virtual void LoadTexture(string _texturePath)
 	{
 		if (_texturePath.Contains("Assets") == false)

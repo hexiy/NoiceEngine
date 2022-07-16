@@ -55,7 +55,7 @@ public class ParticleSystem : Component
 			time -= SpawnRate;
 		}
 
-		for (var i = 0; i < particles.Count; i++)
+		for (int i = 0; i < particles.Count; i++)
 			//Parallel.For(0, particles.Count, new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount * 20}, (i) =>
 			//{
 
@@ -87,7 +87,7 @@ public class ParticleSystem : Component
 
 	private void SpawnParticle()
 	{
-		var p = pool.GetObject();
+		Particle p = pool.GetObject();
 		latestParticle = p;
 		p.visible = true;
 		p.lifetime = 0;
@@ -104,8 +104,8 @@ public class ParticleSystem : Component
 
 			if (particles.Count > MaxParticles)
 			{
-				var num = particles.Count - MaxParticles;
-				for (var i = 0; i < num; i++)
+				int num = particles.Count - MaxParticles;
+				for (int i = 0; i < num; i++)
 				{
 					pool.PutObject(particles[i]);
 					particles.RemoveAt(i);

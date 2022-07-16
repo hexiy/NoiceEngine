@@ -74,12 +74,12 @@ public class BatchingManager
 			return;
 		}
 
-		attribsSkeleton_Sprite[0] =0;
-		attribsSkeleton_Sprite[1] =0;
+		attribsSkeleton_Sprite[0] = 0;
+		attribsSkeleton_Sprite[1] = 0;
 		attribsSkeleton_Sprite[2] = 0;
 		attribsSkeleton_Sprite[3] = 0;
 		attribsSkeleton_Sprite[4] = 0;
-		attribsSkeleton_Sprite[5] =0;
+		attribsSkeleton_Sprite[5] = 0;
 		attribsSkeleton_Sprite[6] = 0;
 		attribsSkeleton_Sprite[7] = 0;
 		/*attribsSkeleton = new float[]
@@ -119,6 +119,6 @@ public class BatchingManager
 
 	public static void RenderAllBatchers()
 	{
-		for (var i = 0; i < batchers.Count; i++) batchers.ElementAt(i).Value.Render();
+		for (int i = 0; i < batchers.Count; i++) batchers.ElementAt(i).Value.Render();
 	}
 }

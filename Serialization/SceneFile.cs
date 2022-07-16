@@ -10,13 +10,13 @@ public struct SceneFile
 
 	public static SceneFile CreateForOneGameObject(GameObject go)
 	{
-		var sceneFile = new SceneFile();
+		SceneFile sceneFile = new SceneFile();
 		sceneFile.GameObjects = new List<GameObject>();
 		sceneFile.Components = new List<Component>();
 		sceneFile.GameObjects.Add(go);
 		sceneFile.Components.AddRange(go.components);
 
-		for (var i = 0; i < go.transform.children.Count; i++)
+		for (int i = 0; i < go.transform.children.Count; i++)
 		{
 			sceneFile.GameObjects.Add(go.transform.children[i].gameObject);
 			sceneFile.Components.AddRange(go.transform.children[i].gameObject.components);

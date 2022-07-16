@@ -144,7 +144,7 @@ public static class MouseInput
 
 	public static void Update()
 	{
-		var state = Window.I.MouseState;
+		MouseState state = Window.I.MouseState;
 
 		ScreenDelta = new Vector2(state.Delta.X, -state.Delta.Y);
 

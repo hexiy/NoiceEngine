@@ -28,8 +28,8 @@ public class EditorWindow_Console : EditorWindow
 			Debug.ClearLogs();
 		}
 
-		var logsCount = Debug.GetLogs().Count;
-		for (var i = 0; i < Mathf.Min(logsCount, Debug.LOG_LIMIT - 1); i++) ImGui.Text(Debug.GetLogs()[logsCount - i - 1]);
+		int logsCount = Debug.GetLogs().Count;
+		for (int i = 0; i < Mathf.Min(logsCount, Debug.LOG_LIMIT - 1); i++) ImGui.Text(Debug.GetLogs()[logsCount - i - 1]);
 		//ResetID();
 
 		ImGui.End();

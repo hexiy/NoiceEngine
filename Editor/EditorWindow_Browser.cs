@@ -37,21 +37,22 @@ public class EditorWindow_Browser : EditorWindow
 		RefreshAssets();
 	}
 
-	void CreateContextItems()
+	private void CreateContextItems()
 	{
-		BrowserContextItem createSceneContextItem = new BrowserContextItem("Create Scene", "scene", ".scene", (filePath) =>
+		BrowserContextItem createSceneContextItem = new("Create Scene", "scene", ".scene", filePath =>
 		{
 			Scene.I.CreateEmptySceneAndOpenIt(filePath);
 			RefreshAssets();
 		});
-		BrowserContextItem createMaterialContextItem = new BrowserContextItem("Create Material", "mat", ".mat", (filePath) =>
+		BrowserContextItem createMaterialContextItem = new("Create Material", "mat", ".mat", filePath =>
 		{
-			Material createdMaterial = new Material();
+			Material createdMaterial = new();
 			createdMaterial.path = filePath;
 			MaterialAssetManager.SaveMaterial(createdMaterial);
 			RefreshAssets();
 		});
-		contextItems = new List<BrowserContextItem>() {createSceneContextItem, createMaterialContextItem};
+		contextItems = new List<BrowserContextItem>
+		               {createSceneContextItem, createMaterialContextItem};
 	}
 
 	public override void Update()
@@ -68,16 +69,16 @@ public class EditorWindow_Browser : EditorWindow
 		assets = Directory.GetDirectories(currentDirectory.FullName);
 		assets = assets.Concat(Directory.GetFiles(currentDirectory.FullName, "", SearchOption.TopDirectoryOnly)).ToArray();
 
-		for (var i = 0; i < textures.Length; i++)
+		for (int i = 0; i < textures.Length; i++)
 			if (textures[i] != null && textures[i].loaded)
 			{
 				textures[i].Delete();
 			}
 
 		textures = new Texture[assets.Length];
-		for (var i = 0; i < assets.Length; i++)
+		for (int i = 0; i < assets.Length; i++)
 		{
-			var assetExtension = Path.GetExtension(assets[i]).ToLower();
+			string assetExtension = Path.GetExtension(assets[i]).ToLower();
 
 			if (assetExtension.ToLower().Contains(".jpg") || assetExtension.ToLower().Contains(".png") || assetExtension.ToLower().Contains(".jpeg"))
 			{
@@ -152,19 +153,19 @@ public class EditorWindow_Browser : EditorWindow
 		//
 		//	ImGui.EndGroup();
 		//}
-		for (var i = 0; i < assets.Length; i++)
+		for (int assetIndex = 0; assetIndex < assets.Length; assetIndex++)
 		{
-			if (i != 0 && i % 8 != 0)
+			if (assetIndex != 0 && assetIndex % 8 != 0)
 			{
 				ImGui.SameLine();
 			}
 
-			var directoryInfo = new DirectoryInfo(assets[i]);
-			var isDirectory = directoryInfo.Exists;
+			DirectoryInfo directoryInfo = new(assets[assetIndex]);
+			bool isDirectory = directoryInfo.Exists;
 
 			ImGui.BeginGroup();
-			var assetName = Path.GetFileNameWithoutExtension(assets[i]);
-			var assetExtension = Path.GetExtension(assets[i]).ToLower();
+			string assetName = Path.GetFileNameWithoutExtension(assets[assetIndex]);
+			string assetExtension = Path.GetExtension(assets[assetIndex]).ToLower();
 			PushNextID();
 
 			if (isDirectory)
@@ -176,9 +177,9 @@ public class EditorWindow_Browser : EditorWindow
 			}
 			else
 			{
-				if (textures[i] != null && textures[i].loaded)
+				if (textures[assetIndex] != null && textures[assetIndex].loaded)
 				{
-					ImGui.ImageButton((IntPtr) textures[i].id, new Vector2(100, 90));
+					ImGui.ImageButton((IntPtr) textures[assetIndex].id, new Vector2(100, 90));
 				}
 				else
 				{
@@ -190,14 +191,14 @@ public class EditorWindow_Browser : EditorWindow
 			{
 				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
 				{
-					var itemPath = assets[i];
-					var stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
+					string itemPath = assets[assetIndex];
+					IntPtr stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
 
 					ImGui.SetDragDropPayload("CONTENT_BROWSER_TEXTURE", stringPointer, (uint) (sizeof(char) * itemPath.Length));
 
-					var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+					string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 
-					ImGui.Image((IntPtr) textures[i].id, new Vector2(100, 90));
+					ImGui.Image((IntPtr) textures[assetIndex].id, new Vector2(100, 90));
 
 					//ImGui.Text(Path.GetFileNameWithoutExtension(itemPath));
 
@@ -211,12 +212,12 @@ public class EditorWindow_Browser : EditorWindow
 			{
 				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
 				{
-					var itemPath = assets[i];
-					var stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
+					string itemPath = assets[assetIndex];
+					IntPtr stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
 
 					ImGui.SetDragDropPayload("CONTENT_BROWSER_MATERIAL", stringPointer, (uint) (sizeof(char) * itemPath.Length));
 
-					var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+					string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 
 					ImGui.Image((IntPtr) fileIcon.id, new Vector2(100, 90));
 
@@ -232,12 +233,12 @@ public class EditorWindow_Browser : EditorWindow
 			{
 				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
 				{
-					var itemPath = assets[i];
-					var stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
+					string itemPath = assets[assetIndex];
+					IntPtr stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
 
 					ImGui.SetDragDropPayload("CONTENT_BROWSER_SHADER", stringPointer, (uint) (sizeof(char) * itemPath.Length));
 
-					var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+					string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 
 					ImGui.Image((IntPtr) fileIcon.id, new Vector2(100, 90));
 
@@ -246,6 +247,13 @@ public class EditorWindow_Browser : EditorWindow
 					Marshal.FreeHGlobal(stringPointer);
 
 					ImGui.EndDragDropSource();
+				}
+			}
+			if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+			{
+				if (assetExtension.ToLower().Contains(".mat"))
+				{
+					EditorWindow_Inspector.I.OnMaterialSelected(assets[assetIndex]);
 				}
 			}
 
@@ -260,20 +268,20 @@ public class EditorWindow_Browser : EditorWindow
 
 				if (assetExtension == ".prefab")
 				{
-					var go = Serializer.I.LoadPrefab(assets[i]);
+					GameObject go = Serializer.I.LoadPrefab(assets[assetIndex]);
 					EditorWindow_Hierarchy.I.SelectGameObject(go.id);
 				}
 
 				if (assetExtension == ".scene")
 				{
-					Scene.I.LoadScene(assets[i]);
+					Scene.I.LoadScene(assets[assetIndex]);
 				}
 			}
 
 			//ImGui.SetCursorPosY(ImGui.GetCursorPosY() - 25);
 			//ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 5);
 
-			var a = assetName.Substring(0, Math.Clamp(assetName.Length, 1, 12));
+			string a = assetName.Substring(0, Math.Clamp(assetName.Length, 1, 12));
 			ImGui.Text(a);
 			ImGui.EndGroup();
 		}

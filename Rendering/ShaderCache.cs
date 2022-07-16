@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-
-namespace Engine;
+﻿namespace Engine;
 
 public static class ShaderCache
 {

@@ -22,7 +22,7 @@ public class CharacterController : Component
 			return;
 		}
 
-		var input = Vector2.Zero;
+		Vector2 input = Vector2.Zero;
 		if (KeyboardInput.IsKeyDown(Keys.A))
 		{
 			input.X = -moveSpeed;

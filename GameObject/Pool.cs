@@ -10,8 +10,8 @@ public class Pool
 
 	private void AddNewObject()
 	{
-		var gameObject = GameObject.Create(name: "Pooled object");
-		for (var i = 0; i < model.components.Count; i++) gameObject.AddComponent(model.components[i].GetType());
+		GameObject gameObject = GameObject.Create(name: "Pooled object");
+		for (int i = 0; i < model.components.Count; i++) gameObject.AddComponent(model.components[i].GetType());
 		gameObject.Awake();
 		freeObjects.Push(gameObject);
 	}
@@ -23,7 +23,7 @@ public class Pool
 			AddNewObject();
 		}
 
-		var gameObject = freeObjects.Pop();
+		GameObject gameObject = freeObjects.Pop();
 		gameObject.activeSelf = true;
 		usedObjects.Push(gameObject);
 		return gameObject;

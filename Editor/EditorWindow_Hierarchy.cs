@@ -7,26 +7,20 @@ namespace Engine;
 public class EditorWindow_Hierarchy : EditorWindow
 {
 	private bool canDelete = true;
+
+	private GameObject clipboardGameObject;
+	private int gameObjectIndexSelectedBefore;
 	public Action<int> GameObjectSelected;
 	private List<GameObject> gameObjectsChildrened = new();
 
 	private int selectedGameObjectIndex;
 	private bool showUpdatePrefabPopup;
 	public static EditorWindow_Hierarchy I { get; private set; }
-	private int gameObjectIndexSelectedBefore = 0;
-
-	private enum MoveDirection
-	{
-		up,
-		down
-	}
 
 	public override void Init()
 	{
 		I = this;
 	}
-
-	private GameObject clipboardGameObject;
 
 	public override void Update()
 	{
@@ -62,7 +56,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 	private void DestroySelectedGameObjects()
 	{
-		foreach (var selectedGameObject in Editor.I.GetSelectedGameObjects())
+		foreach (GameObject selectedGameObject in Editor.I.GetSelectedGameObjects())
 		{
 			selectedGameObject.Destroy();
 			selectedGameObjectIndex--;
@@ -77,14 +71,14 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 	private void MoveSelectedGameObject(int addToIndex = 1)
 	{
-		var direction = addToIndex;
+		int direction = addToIndex;
 		if (Editor.I.GetSelectedGameObjects().Count == 0)
 		{
 			return;
 		}
 
-		var go = Editor.I.GetSelectedGameObjects()[0];
-		var oldIndex = go.indexInHierarchy;
+		GameObject go = Editor.I.GetSelectedGameObjects()[0];
+		int oldIndex = go.indexInHierarchy;
 
 		if (oldIndex + direction >= Scene.I.gameObjects.Count || oldIndex + direction < 0)
 		{
@@ -104,7 +98,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 	{
 		selectedGameObjectIndex = Editor.I.GetGameObjectIndexInHierarchy(id);
 		GameObjectSelected.Invoke(id);
-		Debug.Log("Selected go: "+id);
+		Debug.Log("Selected go: " + id);
 	}
 
 	public override void Draw()
@@ -121,7 +115,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 		ImGui.Begin("Hierarchy", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize);
 		if (ImGui.Button("+"))
 		{
-			var go = GameObject.Create(name: "GameObject");
+			GameObject go = GameObject.Create(name: "GameObject");
 			go.Awake();
 			go.transform.position = Camera.I.CenterOfScreenToWorld();
 		}
@@ -150,12 +144,12 @@ public class EditorWindow_Hierarchy : EditorWindow
 		ImGui.SameLine();
 		if (ImGui.Button("Add children"))
 		{
-			var go = GameObject.Create(name: "Children");
+			GameObject go = GameObject.Create(name: "Children");
 			go.Awake();
 			go.transform.SetParent(Scene.I.gameObjects[selectedGameObjectIndex].transform);
 		}
 
-		for (var goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)
+		for (int goIndex = 0; goIndex < Scene.I.gameObjects.Count; goIndex++)
 		{
 			if (Scene.I.gameObjects[goIndex].transform.parent != null)
 			{
@@ -167,8 +161,8 @@ public class EditorWindow_Hierarchy : EditorWindow
 				continue;
 			}
 
-			var hasAnyChildren = false; //Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
-			var flags = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.OpenOnArrow;
+			bool hasAnyChildren = false; //Scene.I.GetChildrenOfGameObject(Scene.I.gameObjects[goIndex]).Count != 0;
+			ImGuiTreeNodeFlags flags = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.OpenOnArrow;
 			if (hasAnyChildren == false)
 			{
 				flags = (selectedGameObjectIndex == goIndex ? ImGuiTreeNodeFlags.Selected : 0) | ImGuiTreeNodeFlags.Leaf;
@@ -192,11 +186,11 @@ public class EditorWindow_Hierarchy : EditorWindow
 
 				// select gameobject selected before
 				string gameObjectID = Scene.I.gameObjects[goIndex].id.ToString();
-				var stringPointer = Marshal.StringToHGlobalAnsi(gameObjectID);
+				IntPtr stringPointer = Marshal.StringToHGlobalAnsi(gameObjectID);
 
 				ImGui.SetDragDropPayload("GAMEOBJECT", stringPointer, (uint) (sizeof(char) * gameObjectID.Length));
 
-				var payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+				string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 
 
 				Marshal.FreeHGlobal(stringPointer);
@@ -248,5 +242,11 @@ public class EditorWindow_Hierarchy : EditorWindow
 		}
 
 		ImGui.End();
+	}
+
+	private enum MoveDirection
+	{
+		up,
+		down
 	}
 }

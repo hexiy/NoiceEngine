@@ -29,9 +29,9 @@ public class Editor
 		ImGui.GetStyle().WindowBorderSize = 0.2f;
 		//ImGui.GetStyle().WindowPadding = new Vector2(0,0;
 
-		var style = ImGui.GetStyle();
-		var colors = style.Colors;
-		var theme = 1;
+		ImGuiStylePtr style = ImGui.GetStyle();
+		RangeAccessor<System.Numerics.Vector4> colors = style.Colors;
+		int theme = 1;
 		if (theme == 0)
 		{
 			colors[(int) ImGuiCol.Text] = new Vector4(1.000f, 1.000f, 1.000f, 1.000f);
@@ -159,7 +159,7 @@ public class Editor
 			                };
 		}
 
-		for (var i = 0; i < editorWindows.Length; i++) editorWindows[i].Init();
+		for (int i = 0; i < editorWindows.Length; i++) editorWindows[i].Init();
 
 		if (Global.EditorAttached)
 		{
@@ -170,7 +170,7 @@ public class Editor
 
 	public void Update()
 	{
-		for (var i = 0; i < editorWindows.Length; i++) editorWindows[i].Update();
+		for (int i = 0; i < editorWindows.Length; i++) editorWindows[i].Update();
 
 		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
 		{
@@ -187,7 +187,7 @@ public class Editor
 	{
 		if (Global.EditorAttached)
 		{
-			for (var i = 0; i < editorWindows.Length; i++)
+			for (int i = 0; i < editorWindows.Length; i++)
 				editorWindows[i].Draw();
 		}
 		else
@@ -200,7 +200,7 @@ public class Editor
 	{
 		if (go != null)
 		{
-			for (var i = 0; i < Scene.I.gameObjects.Count; i++)
+			for (int i = 0; i < Scene.I.gameObjects.Count; i++)
 				if (Scene.I.gameObjects[i].id != go.id)
 				{
 					Scene.I.gameObjects[i].selected = false;
@@ -244,7 +244,7 @@ public class Editor
 
 	public int GetGameObjectIndexInHierarchy(int id)
 	{
-		for (var i = 0; i < Scene.I.gameObjects.Count; i++)
+		for (int i = 0; i < Scene.I.gameObjects.Count; i++)
 			if (Scene.I.gameObjects[i].id == id)
 			{
 				return i;
@@ -255,8 +255,8 @@ public class Editor
 
 	public List<GameObject> GetSelectedGameObjects()
 	{
-		var selectedGameObjects = new List<GameObject>();
-		for (var i = 0; i < Scene.I.gameObjects.Count; i++)
+		List<GameObject> selectedGameObjects = new List<GameObject>();
+		for (int i = 0; i < Scene.I.gameObjects.Count; i++)
 			if (Scene.I.gameObjects[i].selected)
 			{
 				selectedGameObjects.Add(Scene.I.gameObjects[i]);
@@ -267,7 +267,7 @@ public class Editor
 
 	public GameObject GetSelectedGameObject()
 	{
-		for (var i = 0; i < Scene.I.gameObjects.Count; i++)
+		for (int i = 0; i < Scene.I.gameObjects.Count; i++)
 			if (Scene.I.gameObjects[i].selected)
 			{
 				return Scene.I.gameObjects[i];

@@ -39,7 +39,7 @@ public static class Debug
 		}
 		else
 		{
-			var sw = new Stopwatch();
+			Stopwatch sw = new Stopwatch();
 			sw.Start();
 			timers.Add(timerName, sw);
 		}

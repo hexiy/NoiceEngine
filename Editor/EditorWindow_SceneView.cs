@@ -26,10 +26,10 @@ public class EditorWindow_SceneView : EditorWindow
 
 			ImGui.SetCursorPosX(Camera.I.size.X / 2 - 150);
 
-			var activeColor = new Color(0.21f, 0.9f, 0.98f, 1f).ToVector4();
-			var inactiveColor = new Color(1f, 1f, 1f, 1f).ToVector4();
+			Vector4 activeColor = new Color(0.21f, 0.9f, 0.98f, 1f).ToVector4();
+			Vector4 inactiveColor = new Color(1f, 1f, 1f, 1f).ToVector4();
 			ImGui.PushStyleColor(ImGuiCol.Text, Physics.Running ? activeColor : inactiveColor);
-			var physicsButtonClicked = ImGui.Button("physics");
+			bool physicsButtonClicked = ImGui.Button("physics");
 			if (physicsButtonClicked)
 			{
 				if (Physics.Running == false)
@@ -48,7 +48,7 @@ public class EditorWindow_SceneView : EditorWindow
 
 			ImGui.PushStyleColor(ImGuiCol.Text, Global.GameRunning ? activeColor : inactiveColor);
 
-			var playButtonClicked = ImGui.Button("play");
+			bool playButtonClicked = ImGui.Button("play");
 			if (playButtonClicked)
 			{
 				Global.GameRunning = !Global.GameRunning;
@@ -57,7 +57,7 @@ public class EditorWindow_SceneView : EditorWindow
 			ImGui.PopStyleColor();
 
 			ImGui.SameLine();
-			var resetDataButtonClicked = ImGui.Button("delete data");
+			bool resetDataButtonClicked = ImGui.Button("delete data");
 			if (resetDataButtonClicked)
 			{
 				PersistentData.DeleteAll();

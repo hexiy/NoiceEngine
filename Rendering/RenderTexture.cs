@@ -10,18 +10,18 @@ public class RenderTexture
 
 	public Material renderTextureMaterial;
 
-	private void CreateMaterial()
-	{
-		renderTextureMaterial = new Material();
-		Shader shader = new Shader(Path.Combine(Folders.Shaders, "RenderTexture.glsl"));
-		renderTextureMaterial.SetShader(shader);
-	}
-
 	public RenderTexture(Vector2 size)
 	{
 		GL.DeleteFramebuffers(1, ref id);
 		CreateMaterial();
 		Invalidate(size);
+	}
+
+	private void CreateMaterial()
+	{
+		renderTextureMaterial = new Material();
+		Shader shader = new(Path.Combine(Folders.Shaders, "RenderTexture.glsl"));
+		renderTextureMaterial.SetShader(shader);
 	}
 
 	public void Invalidate(Vector2 size)
@@ -64,6 +64,7 @@ public class RenderTexture
 		{
 			return;
 		}
+
 		ShaderCache.UseShader(renderTextureMaterial.shader);
 		renderTextureMaterial.shader.SetVector2("u_resolution", Camera.I.size);
 		renderTextureMaterial.shader.SetMatrix4x4("u_mvp", GetModelViewProjection(sampleSize));

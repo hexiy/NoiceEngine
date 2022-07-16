@@ -141,3 +141,4 @@ public class SpriteSheetRenderer : SpriteRenderer
 
 	base.OnTextureLoaded(_texture, _path);
 }#1#*/
+
