@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using Engine.Components.Renderers;
 
 namespace Engine;
 
@@ -11,7 +13,10 @@ public class BoxRenderer : Renderer
 
 	public override void CreateMaterial()
 	{
-		material = MaterialAssetManager.LoadMaterial(Path.Combine(Folders.Materials,"BoxMaterial.mat"));
+		if (material == null)
+		{
+			material = MaterialCache.GetMaterial("BoxMaterial");
+		}
 	}
 
 	public override void Render()
@@ -22,9 +27,15 @@ public class BoxRenderer : Renderer
 		}
 
 		ShaderCache.UseShader(material.shader);
+
 		material.shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
 		material.shader.SetColor("u_color", color.ToVector4());
+		material.shader.SetVector4("u_tint", (Vector4) material.shader.uniforms["u_tint"]);
+		if (material.shader.uniforms.ContainsKey("time"))
+		{
+			material.shader.SetFloat("time", (float) material.shader.uniforms["time"]);
 
+		}
 		BufferCache.BindVAO(material.vao);
 
 		GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);

@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
+using System.Xml.Serialization;
 
 namespace Engine;
 
@@ -12,6 +15,11 @@ public class Shader : IDisposable
 	private int uLocation_u_color = -1;
 
 	private int uLocation_u_mvp = -1;
+	
+	[XmlIgnore] public Dictionary<string, object> uniforms = new Dictionary<string, object>()
+	                                                                {
+		                                                                {"u_tint", new Vector4(1, 1, 1, 1)}
+	                                                                };
 
 	public Shader()
 	{
@@ -30,6 +38,17 @@ public class Shader : IDisposable
 
 	public void Load()
 	{
+		if (File.Exists(path) == false)
+		{
+			path = Path.Combine("Assets", path);
+		}
+
+		if (path.Contains(".mat")) // IF ITS mat  not .glsl, just assign SpriteRenderer so we can fix it without crashing
+		{
+			path = Path.Combine("Assets", "Shaders", "SpriteRenderer.glsl");
+		}
+
+		GetAllUniforms();
 		string shaderFile = File.ReadAllText(path);
 
 		string vertexCode = GetVertexShaderFromFileString(shaderFile);
@@ -83,30 +102,35 @@ public class Shader : IDisposable
 		}
 
 		GL.UniformMatrix4(uLocation_u_mvp, 1, false, GetMatrix4x4Values(mat));
+		uniforms[uniformName] = mat;
 	}
 
 	public void SetFloat(string uniformName, float fl)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform1(location, fl);
+		uniforms[uniformName] = fl;
 	}
 
 	public void SetVector2(string uniformName, Vector2 vec)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform2(location, vec.X, vec.Y);
+		uniforms[uniformName] = vec;
 	}
 
 	public void SetVector3(string uniformName, Vector3 vec)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform3(location, vec.X, vec.Y, vec.Z);
+		uniforms[uniformName] = vec;
 	}
 
 	public void SetVector4(string uniformName, Vector4 vec)
 	{
 		int location = GL.GetUniformLocation(ProgramID, uniformName);
 		GL.Uniform4(location, vec.X, vec.Y, vec.Z, vec.W);
+		uniforms[uniformName] = vec;
 	}
 
 	public void SetColor(string uniformName, Vector4 vec)
@@ -118,6 +142,77 @@ public class Shader : IDisposable
 		}
 
 		GL.Uniform4(uLocation_u_color, vec.X, vec.Y, vec.Z, vec.W);
+		uniforms[uniformName] = vec;
+	}
+
+	// uniform sampler2D textureObject;
+	// just find "uniform" and 2 words after; then we know the variables and we can display it 
+	// todo
+	public ShaderUniform[] GetAllUniforms()
+	{
+		List<ShaderUniform> uniforms = new List<ShaderUniform>();
+
+		using (StreamReader sr = new StreamReader(path))
+		{
+			string shaderString = sr.ReadToEnd();
+			int currentIndexInString = 0;
+			string trimmedShaderString = shaderString;
+
+			while (trimmedShaderString.Contains("uniform"))
+			{
+				int startIndex = trimmedShaderString.IndexOf("uniform");
+				int endIndex = startIndex + trimmedShaderString.Substring(startIndex).IndexOf(";");
+
+				int endIndexWithEqualsOperator = startIndex + trimmedShaderString.Substring(startIndex).IndexOf("=");
+
+				if (endIndexWithEqualsOperator < endIndex) // if we have "=", trim it so it isnt in the name
+				{
+					endIndex = endIndexWithEqualsOperator;
+				}
+
+				if (startIndex > endIndex)
+				{
+					break;
+				}
+
+				ShaderUniform uniform = new ShaderUniform();
+
+				string[] uniformString = trimmedShaderString.Substring(startIndex, endIndex - startIndex).Split(' ');
+
+				uniform.name = uniformString[2];
+				uniform.type = GetUniformType(uniformString[1]);
+				currentIndexInString = endIndex + (shaderString.Length - trimmedShaderString.Length);
+				trimmedShaderString = shaderString.Substring(currentIndexInString);
+
+				uniforms.Add(uniform);
+			}
+		}
+
+		return uniforms.ToArray();
+	}
+
+	private Type GetUniformType(string typeName)
+	{
+		if (typeName == "vec4")
+		{
+			return typeof(Vector4);
+		}
+
+		if (typeName == "vec3")
+		{
+			return typeof(Vector3);
+		}
+
+		if (typeName == "mat4")
+		{
+			return typeof(Matrix4x4);
+		}
+		if (typeName == "float")
+		{
+			return typeof(float);
+		}
+
+		return typeof(string);
 	}
 
 	private float[] GetMatrix4x4Values(Matrix4x4 m)

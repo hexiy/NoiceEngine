@@ -108,7 +108,7 @@ public class SpriteRenderer : Renderer
 		material.shader.SetVector2("u_resolution", texture.size);
 		material.shader.SetMatrix4x4("u_mvp", LatestModelViewProjection);
 		material.shader.SetColor("u_color", color.ToVector4());
-
+		
 		BufferCache.BindVAO(material.vao);
 
 		if (material.additive)

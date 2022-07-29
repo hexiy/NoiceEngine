@@ -208,14 +208,23 @@ public class EditorWindow_Browser : EditorWindow
 				}
 			}
 
-			if (assetExtension.ToLower().Contains(".mat"))
+			bool isMaterial = assetExtension.ToLower().Contains(".mat");
+			bool isShader = assetExtension.ToLower().Contains(".glsl");
+			if (isShader || isMaterial)
 			{
 				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
 				{
 					string itemPath = assets[assetIndex];
 					IntPtr stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
 
-					ImGui.SetDragDropPayload("CONTENT_BROWSER_MATERIAL", stringPointer, (uint) (sizeof(char) * itemPath.Length));
+					if (isMaterial)
+					{
+						ImGui.SetDragDropPayload("CONTENT_BROWSER_MATERIAL", stringPointer, (uint) (sizeof(char) * itemPath.Length));
+					}
+					if(isShader)
+					{
+						ImGui.SetDragDropPayload("CONTENT_BROWSER_SHADER", stringPointer, (uint) (sizeof(char) * itemPath.Length));
+					}
 
 					string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 
@@ -229,27 +238,7 @@ public class EditorWindow_Browser : EditorWindow
 				}
 			}
 
-			if (assetExtension.ToLower().Contains(".glsl"))
-			{
-				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
-				{
-					string itemPath = assets[assetIndex];
-					IntPtr stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
-
-					ImGui.SetDragDropPayload("CONTENT_BROWSER_SHADER", stringPointer, (uint) (sizeof(char) * itemPath.Length));
-
-					string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
-
-					ImGui.Image((IntPtr) fileIcon.id, new Vector2(100, 90));
-
-					//ImGui.Text(Path.GetFileNameWithoutExtension(itemPath));
-
-					Marshal.FreeHGlobal(stringPointer);
-
-					ImGui.EndDragDropSource();
-				}
-			}
-			if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+			if (ImGui.IsItemHovered() && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 			{
 				if (assetExtension.ToLower().Contains(".mat"))
 				{

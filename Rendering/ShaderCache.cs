@@ -14,4 +14,14 @@ public static class ShaderCache
 		shaderInUse = shader.ProgramID;
 		GL.UseProgram(shader.ProgramID);
 	}
+	public static void UseShader(int programID)
+	{
+		if (programID == shaderInUse)
+		{
+			return;
+		}
+
+		shaderInUse = programID;
+		GL.UseProgram(programID);
+	}
 }

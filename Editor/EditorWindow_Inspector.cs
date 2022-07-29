@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Engine.Components.Renderers;
 using ImGuiNET;
 
 namespace Engine;
@@ -42,7 +43,7 @@ public class EditorWindow_Inspector : EditorWindow
 
 	public void OnMaterialSelected(string materialPath)
 	{
-		selectedMaterial = MaterialAssetManager.LoadMaterial(materialPath);
+		selectedMaterial = MaterialCache.GetMaterial(Path.GetFileName(materialPath)); //MaterialAssetManager.LoadMaterial(materialPath);
 
 		selectedGameObject = null;
 	}
@@ -101,7 +102,7 @@ public class EditorWindow_Inspector : EditorWindow
 			shaderPath = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 			if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && shaderPath.Length > 0)
 			{
-				shaderPath = Path.GetRelativePath("Assets", shaderPath);
+				//shaderPath = Path.GetRelativePath("Assets", shaderPath);
 				Shader shader = new Shader(shaderPath);
 
 				selectedMaterial.shader = shader;
@@ -109,6 +110,65 @@ public class EditorWindow_Inspector : EditorWindow
 			}
 
 			ImGui.EndDragDropTarget();
+		}
+
+		if (selectedMaterial.shader != null)
+		{
+			ShaderUniform[] shaderUniforms = selectedMaterial.shader.GetAllUniforms();
+			for (int i = 0; i < shaderUniforms.Length; i++)
+			{
+				PushNextID();
+
+				ImGui.Text(shaderUniforms[i].name);
+
+				if (shaderUniforms[i].type == typeof(Vector4))
+				{
+					ImGui.SameLine(ImGui.GetWindowWidth() - 200 - 5);
+					ImGui.SetNextItemWidth(itemWidth);
+
+					if (selectedMaterial.shader.uniforms.ContainsKey(shaderUniforms[i].name) == false)
+					{
+						continue;
+					}
+
+					object uniformValue = selectedMaterial.shader.uniforms[shaderUniforms[i].name];
+					System.Numerics.Vector4 col = ((Vector4) uniformValue).ToNumerics();
+
+					if (ImGui.ColorEdit4("", ref col))
+					{
+						//selectedMaterial
+						int lastShader = ShaderCache.shaderInUse;
+						ShaderCache.UseShader(selectedMaterial.shader);
+
+						selectedMaterial.shader.SetColor(shaderUniforms[i].name, col);
+						ShaderCache.UseShader(lastShader);
+					}
+				}
+
+				if (shaderUniforms[i].type == typeof(float))
+				{
+					ImGui.SameLine(ImGui.GetWindowWidth() - 200 - 5);
+					ImGui.SetNextItemWidth(itemWidth);
+
+					if (selectedMaterial.shader.uniforms.ContainsKey(shaderUniforms[i].name) == false)
+					{
+						selectedMaterial.shader.uniforms[shaderUniforms[i].name] = Activator.CreateInstance(shaderUniforms[i].type);
+					}
+
+					object uniformValue = selectedMaterial.shader.uniforms[shaderUniforms[i].name];
+					float fl = ((float) uniformValue);
+
+					if (ImGui.InputFloat("xxx", ref fl))
+					{
+						//selectedMaterial
+						int lastShader = ShaderCache.shaderInUse;
+						ShaderCache.UseShader(selectedMaterial.shader);
+
+						selectedMaterial.shader.SetFloat(shaderUniforms[i].name, fl);
+						ShaderCache.UseShader(lastShader);
+					}
+				}
+			}
 		}
 	}
 
@@ -167,7 +227,9 @@ public class EditorWindow_Inspector : EditorWindow
 						                                     typeof(bool),
 						                                     typeof(float),
 						                                     typeof(int),
-						                                     typeof(string)
+						                                     typeof(string),
+						                                     typeof(List<GameObject>),
+						                                     typeof(Action),
 					                                     };
 					for (int fieldIndex = 0; fieldIndex < _fields.Length; fieldIndex++)
 					{
@@ -228,6 +290,66 @@ public class EditorWindow_Inspector : EditorWindow
 							infos[infoIndex].SetValue(selectedGameObject.components[i], (Vector2) systemv2);
 						}
 					}
+					else if (infos[infoIndex].FieldOrPropertyType == typeof(List<GameObject>))
+					{
+						float itemWidth = 200;
+						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
+						ImGui.SetNextItemWidth(itemWidth);
+
+						List<GameObject> listOfGameObjects = (List<GameObject>) infos[infoIndex].GetValue(selectedGameObject.components[i]);
+						if (ImGui.CollapsingHeader(infos[infoIndex].FieldOrPropertyType.Name, ImGuiTreeNodeFlags.DefaultOpen))
+						{
+							for (int j = 0; j < listOfGameObjects.Count; j++)
+							{
+								ImGui.PushStyleColor(ImGuiCol.TextSelectedBg, Color.Aqua.ToVector4());
+								PushNextID();
+								bool xClicked = ImGui.Button("x", new System.Numerics.Vector2(ImGui.GetFrameHeight(), ImGui.GetFrameHeight()));
+
+								if (xClicked)
+								{
+									listOfGameObjects.RemoveAt(j);
+									infos[infoIndex].SetValue(selectedGameObject.components[i], listOfGameObjects);
+									continue;
+								}
+								ImGui.SameLine();
+
+								bool selectableClicked = ImGui.Selectable(listOfGameObjects[j].name);
+								if (selectableClicked)
+								{
+									EditorWindow_Hierarchy.I.SelectGameObject(listOfGameObjects[j].id);
+									return;
+								}
+
+								if (ImGui.BeginDragDropTarget())
+								{
+									ImGui.AcceptDragDropPayload("GAMEOBJECT", ImGuiDragDropFlags.None);
+									string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+									if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && payload.Length > 0)
+									{
+										GameObject foundGO = Scene.I.GetGameObject(int.Parse(payload));
+										listOfGameObjects[j] = foundGO;
+										infos[infoIndex].SetValue(selectedGameObject.components[i], listOfGameObjects);
+									}
+
+									ImGui.EndDragDropTarget();
+								}
+
+								ImGui.PopStyleColor();
+							}
+						}
+					}
+					else if (infos[infoIndex].FieldOrPropertyType == typeof(Action))
+					{
+						float itemWidth = 200;
+						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
+						ImGui.SetNextItemWidth(itemWidth);
+
+						Action action = (Action) infos[infoIndex].GetValue(selectedGameObject.components[i]);
+						if (ImGui.Button(infos[infoIndex].FieldOrPropertyType.Name))
+						{
+							action.Invoke();
+						}
+					}
 					else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture) && selectedGameObject.components[i] is SpriteRenderer)
 					{
 						float itemWidth = 200;
@@ -265,12 +387,12 @@ public class EditorWindow_Inspector : EditorWindow
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						string shaderPath = Path.GetFileName((selectedGameObject.components[i] as Renderer).material.shader.path);
+						string materialPath = Path.GetFileName((selectedGameObject.components[i] as Renderer).material.path);
 
-						bool clicked = ImGui.Button(shaderPath, new Vector2(ImGui.GetContentRegionAvail().X, 20));
+						bool clicked = ImGui.Button(materialPath, new Vector2(ImGui.GetContentRegionAvail().X, 20));
 						if (clicked)
 						{
-							EditorWindow_Browser.I.GoToFile(shaderPath);
+							EditorWindow_Browser.I.GoToFile(materialPath);
 						}
 
 						if (ImGui.BeginDragDropTarget())
@@ -279,7 +401,7 @@ public class EditorWindow_Inspector : EditorWindow
 							string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
 							if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && payload.Length > 0)
 							{
-								payload = Path.GetRelativePath("Assets", payload);
+								payload = payload;
 								string materialName = Path.GetFileName(payload);
 								Material draggedMaterial = MaterialAssetManager.LoadMaterial(payload);
 								if (draggedMaterial.shader == null)
