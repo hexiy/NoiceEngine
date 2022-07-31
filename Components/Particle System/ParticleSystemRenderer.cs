@@ -1,4 +1,6 @@
-﻿namespace Scripts;
+﻿using System.IO;
+
+namespace Scripts;
 
 public class ParticleSystemRenderer : SpriteRenderer
 {
@@ -13,6 +15,12 @@ public class ParticleSystemRenderer : SpriteRenderer
 		BatchingManager.AddObjectToBatcher(texture.id, this);
 
 		base.Awake();
+	}
+	public override void CreateMaterial()
+	{
+		material = new Material();
+		Shader shader = new(Path.Combine(Folders.Shaders, "BoxRenderer.glsl"));
+		material.SetShader(shader);
 	}
 
 	public override void Render()

@@ -22,6 +22,7 @@ public class MaterialCache
 		}
 
 		loadedMaterials.Add(MaterialAssetManager.LoadMaterial(Path.Combine(Folders.Materials, name)));
+
 		for (int i = 0; i < loadedMaterials.Count; i++)
 		{
 			if (loadedMaterials[i].path.Contains(name))

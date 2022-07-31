@@ -15,11 +15,11 @@ public class Shader : IDisposable
 	private int uLocation_u_color = -1;
 
 	private int uLocation_u_mvp = -1;
-	
+
 	[XmlIgnore] public Dictionary<string, object> uniforms = new Dictionary<string, object>()
-	                                                                {
-		                                                                {"u_tint", new Vector4(1, 1, 1, 1)}
-	                                                                };
+	                                                         {
+		                                                         {"u_tint", new Vector4(1, 1, 1, 1)}
+	                                                         };
 
 	public Shader()
 	{
@@ -133,6 +133,11 @@ public class Shader : IDisposable
 		uniforms[uniformName] = vec;
 	}
 
+	public void SetColor(string uniformName, Color col)
+	{
+		SetColor(uniformName, col.ToVector4());
+	}
+
 	public void SetColor(string uniformName, Vector4 vec)
 	{
 		if (uLocation_u_color == -1)
@@ -207,6 +212,7 @@ public class Shader : IDisposable
 		{
 			return typeof(Matrix4x4);
 		}
+
 		if (typeName == "float")
 		{
 			return typeof(float);

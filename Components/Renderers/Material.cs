@@ -17,4 +17,9 @@ public class Material
 		shader.Load();
 		BufferCache.CreateBufferForShader(this);
 	}
+
+	public void InitShader()
+	{
+		SetShader(shader);
+	}
 }

@@ -3,12 +3,13 @@
 #version 460 core
 
 layout(location = 0) in vec4 position;
-
 layout(location = 1) in vec4 aTexCoord;
+
+uniform mat4 u_mvp = mat4(1.0);
 
 out vec4 texCoord;
 out vec4 frag_color;
-uniform mat4 u_mvp = mat4(1.0);
+
 void main(void)
 {
     texCoord = aTexCoord;
