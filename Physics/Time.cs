@@ -3,6 +3,7 @@
 public static class Time
 {
 	public static float deltaTime = 0.01666666f;
+	public static float editorDeltaTime = 0.01666666f;
 	public static float fixedDeltaTime = 0.02f;
 	public static float elapsedTime;
 	public static float elapsedSeconds;
@@ -11,6 +12,8 @@ public static class Time
 
 	public static void Update()
 	{
+
+		editorDeltaTime = (float) Window.I.UpdateTime;
 		if (Global.GameRunning == false)
 		{
 			return;

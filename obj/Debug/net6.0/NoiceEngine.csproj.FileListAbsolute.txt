@@ -212,3 +212,9 @@ C:\dev\Noice\NoiceEngine\obj\Debug\net6.0\refint\NoiceEngine.dll
 C:\dev\Noice\NoiceEngine\obj\Debug\net6.0\NoiceEngine.pdb
 C:\dev\Noice\NoiceEngine\obj\Debug\net6.0\NoiceEngine.genruntimeconfig.cache
 C:\dev\Noice\NoiceEngine\obj\Debug\net6.0\ref\NoiceEngine.dll
+C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NAudio.dll
+C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NAudio.Asio.dll
+C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NAudio.Core.dll
+C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NAudio.Midi.dll
+C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NAudio.Wasapi.dll
+C:\dev\Noice\NoiceEngine\bin\Debug\net6.0\NAudio.WinMM.dll

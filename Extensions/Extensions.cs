@@ -198,30 +198,30 @@ public static class Extensions
 
 		if (hi == 0)
 		{
-			return new Color(255, v, t, p);
+			return new Color( v, t, p, 255);
 		}
 
 		if (hi == 1)
 		{
-			return new Color(255, q, v, p);
+			return new Color( q, v, p, 255);
 		}
 
 		if (hi == 2)
 		{
-			return new Color(255, p, v, t);
+			return new Color( p, v, t,255);
 		}
 
 		if (hi == 3)
 		{
-			return new Color(255, p, q, v);
+			return new Color( p, q, v,255);
 		}
 
 		if (hi == 4)
 		{
-			return new Color(255, t, p, v);
+			return new Color( t, p, v,255);
 		}
 
-		return new Color(255, v, p, q);
+		return new Color( v, p, q,255);
 	}
 
 	public static int Clamp(int value, int min, int max)

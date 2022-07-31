@@ -51,7 +51,14 @@ public class EditorWindow_SceneView : EditorWindow
 			bool playButtonClicked = ImGui.Button("play");
 			if (playButtonClicked)
 			{
-				Global.GameRunning = !Global.GameRunning;
+				if (Global.GameRunning)
+				{
+					Playmode.PlayMode_Stop();
+				}
+				else
+				{
+					Playmode.PlayMode_Start();
+				}
 			}
 
 			ImGui.PopStyleColor();

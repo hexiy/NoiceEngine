@@ -139,6 +139,10 @@ internal class Scene
 		for (int i = 0; i < renderQueue.Count; i++)
 			if (renderQueue[i].enabled && renderQueue[i].awoken && renderQueue[i].gameObject.activeInHierarchy)
 			{
+				if (Global.GameRunning == false)
+				{
+					renderQueue[i].Update(); // update matrix when game is no playing
+				}
 				renderQueue[i].Render();
 			}
 	}

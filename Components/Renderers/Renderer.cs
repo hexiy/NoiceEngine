@@ -42,6 +42,7 @@ public class Renderer : Component, IComparable<Renderer>
 	public override void Awake()
 	{
 		CreateMaterial();
+		
 		base.Awake();
 	}
 

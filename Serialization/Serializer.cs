@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace Engine;
@@ -27,6 +28,10 @@ public class Serializer
 
 		SerializableTypes.AddRange(typeof(GameObject).Assembly.GetTypes()
 		                                             .Where(type => type.IsSubclassOf(typeof(Component))));
+
+		// delegates
+		//SerializableTypes.AddRange(typeof(GameObject).Assembly.GetTypes()
+		//                                             .Where(type => { return type.GetCustomAttribute<SerializableType>() != null; }));
 
 		SerializableTypes.AddRange(typeof(Component).Assembly.GetTypes()
 		                                            .Where(type => type.IsSubclassOf(typeof(Component)) || type.IsSubclassOf(typeof(GameObject)))
@@ -58,8 +63,6 @@ public class Serializer
 		using (StreamReader sr = new StreamReader(prefabPath))
 		{
 			UpdateSerializableTypes();
-
-			Type[] bb = SerializableTypes.ToArray();
 
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(SceneFile), SerializableTypes.ToArray());
 
@@ -211,5 +214,8 @@ public class Serializer
 					gos[i].LinkComponents(gos[i], comps[j]);
 				}
 		}
+
+		sf.GameObjects = gos.ToList();
+		sf.Components = comps.ToList();
 	}
 }

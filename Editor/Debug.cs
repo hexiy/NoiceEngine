@@ -25,6 +25,19 @@ public static class Debug
 			logs.RemoveAt(0);
 		}
 	}
+	public static void Log(object message)
+	{
+		if (Global.EditorAttached == false)
+		{
+			return;
+		}
+
+		logs.Add($"[{DateTime.Now.ToString("HH:mm:ss")}]   " + message);
+		if (logs.Count > LOG_LIMIT + 1)
+		{
+			logs.RemoveAt(0);
+		}
+	}
 
 	public static void StartTimer(string timerName)
 	{

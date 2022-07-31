@@ -156,6 +156,7 @@ public class GameObject
 
 			FieldInfo[] infos = sourceType1.GetFields();
 			for (int i = 0; i < infos.Length; i++)
+			{
 				if (infos[i].FieldType == typeof(GameObject) && infos[i].Name != "gameObject")
 				{
 					GameObject goFieldValue = infos[i].GetValue(component) as GameObject;
@@ -172,6 +173,27 @@ public class GameObject
 
 					infos[i].SetValue(component, foundGameObject);
 				}
+			}
+
+			for (int i = 0; i < infos.Length; i++)
+			{
+				if (infos[i].FieldType == typeof(List<GameObject>))
+				{
+					List<GameObject> gosFieldValue = infos[i].GetValue(component) as List<GameObject>;
+					if (gosFieldValue == null)
+					{
+						continue;
+					}
+
+					for (int goIndex = 0; goIndex < gosFieldValue.Count; goIndex++)
+					{
+						gosFieldValue[goIndex] = Scene.I.GetGameObject(gosFieldValue[goIndex].id);
+					//	gosFieldValue[i].Components();
+					}
+
+					infos[i].SetValue(component, gosFieldValue);
+				}
+			}
 		}
 	}
 
@@ -339,6 +361,11 @@ public class GameObject
 	public virtual void Update()
 	{
 		if (activeInHierarchy == false && updateWhenDisabled == false)
+		{
+			return;
+		}
+
+		if (awoken == false)
 		{
 			return;
 		}

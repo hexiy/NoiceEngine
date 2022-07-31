@@ -51,6 +51,7 @@
         <PackageReference Include="ImGui.NET" Version="1.86.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.0.1" />
         <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="3.6.0" />
+        <PackageReference Include="NAudio" Version="2.1.0" />
         <PackageReference Include="OpenTK" Version="4.6.7" />
         <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
         <PackageReference Include="System.CodeDom" Version="6.0.0" />

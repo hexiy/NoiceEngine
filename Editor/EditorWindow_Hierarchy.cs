@@ -98,7 +98,7 @@ public class EditorWindow_Hierarchy : EditorWindow
 	{
 		selectedGameObjectIndex = Editor.I.GetGameObjectIndexInHierarchy(id);
 		GameObjectSelected.Invoke(id);
-		Debug.Log("Selected go: " + id);
+		//Debug.Log("Selected go: " + id);
 	}
 
 	public override void Draw()

@@ -9,11 +9,22 @@ public class InspectorObjectReferencesTest : Component
 
 	[XmlIgnore] public Action AddGameObjectToList;
 
+	private Vector2 snakePos;
+	private List<Vector2> mouseCachedPositions = new List<Vector2>();
+
 	public override void Awake()
 	{
+
+		//gos = new List<GameObject>();
 		AddGameObjectToList = () =>
 		{
 			GameObject go = GameObject.Create(name: "testGO" + Scene.I.gameObjects.Count);
+			go.transform.pivot = new Vector3(0.5f, 0.5f, 0.5f);
+			BoxShape boxShape = go.AddComponent<BoxShape>();
+			boxShape.size = new Vector2(100, 100);
+			BoxRenderer boxRenderer = go.AddComponent<BoxRenderer>();
+			boxRenderer.Layer = 100 - gos.Count;
+			boxRenderer.color = Extensions.ColorFromHSV(gos.Count * 33f, 0.7f, 0.8f);
 			go.Awake();
 			gos.Add(go);
 		};
@@ -22,23 +33,6 @@ public class InspectorObjectReferencesTest : Component
 
 	public override void Update()
 	{
-		/*
-		if (go1 != null)
-		{
-			go1.transform.scale = Vector3.One * 3 * (float) Math.Sin(Time.elapsedTime);
-		}
-
-		if (go2 != null)
-		{
-			go2.transform.scale = Vector3.One * 3 * (float) Math.Sin(Time.elapsedTime + 0.3f);
-		}
-
-		if (go3 != null)
-		{
-			go3.transform.scale = Vector3.One * 3 * (float) Math.Sin(Time.elapsedTime + 0.7f);
-		}
-		*/
-
 		base.Update();
 	}
 }

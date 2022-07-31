@@ -21,6 +21,8 @@ public class Camera : Component
 	public override void Awake()
 	{
 		I = this;
+
+		gameObject.alwaysUpdate = true;
 		if (Global.EditorAttached == false)
 		{
 			size = new Vector2(Window.I.ClientSize.X, Window.I.ClientSize.Y);

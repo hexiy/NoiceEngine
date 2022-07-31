@@ -174,12 +174,18 @@ public class Editor
 
 		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.S))
 		{
-			Scene.I.SaveScene();
+			if (Global.GameRunning == false)
+			{
+				Scene.I.SaveScene();
+			}
 		}
 
 		if (KeyboardInput.IsKeyDown(Keys.LeftControl) && KeyboardInput.IsKeyDown(Keys.R))
 		{
-			Scene.I.LoadScene(Serializer.lastScene);
+			if (Global.GameRunning == false)
+			{
+				Scene.I.LoadScene(Serializer.lastScene);
+			}
 		}
 	}
 

@@ -193,28 +193,29 @@ public class EditorWindow_Inspector : EditorWindow
 			selectedGameObject.name = gameObjectName;
 		}
 
-		for (int i = 0; i < selectedGameObject.components.Count; i++)
+		for (int componentIndex = 0; componentIndex < selectedGameObject.components.Count; componentIndex++)
 		{
+			Component currentComponent = selectedGameObject.components[componentIndex];
 			PushNextID();
 
 			//ImGui.SetNextItemWidth (300);
-			ImGui.Checkbox("", ref selectedGameObject.components[i].enabled);
+			ImGui.Checkbox("", ref currentComponent.enabled);
 			ImGui.SameLine();
 
 			if (ImGui.Button("-"))
 			{
-				selectedGameObject.RemoveComponent(selectedGameObject.components[i]);
+				selectedGameObject.RemoveComponent(currentComponent);
 				continue;
 			}
 
 			ImGui.SameLine();
 			PushNextID();
-			if (ImGui.CollapsingHeader(selectedGameObject.components[i].GetType().Name, ImGuiTreeNodeFlags.DefaultOpen))
+			if (ImGui.CollapsingHeader(currentComponent.GetType().Name, ImGuiTreeNodeFlags.DefaultOpen))
 			{
 				FieldOrPropertyInfo[] infos;
 				{
-					FieldInfo[] _fields = selectedGameObject.components[i].GetType().GetFields();
-					PropertyInfo[] properties = selectedGameObject.components[i].GetType().GetProperties();
+					FieldInfo[] _fields = currentComponent.GetType().GetFields();
+					PropertyInfo[] properties = currentComponent.GetType().GetProperties();
 					infos = new FieldOrPropertyInfo[_fields.Length + properties.Length];
 					List<Type> inspectorSupportedTypes = new List<Type>
 					                                     {
@@ -230,11 +231,12 @@ public class EditorWindow_Inspector : EditorWindow
 						                                     typeof(string),
 						                                     typeof(List<GameObject>),
 						                                     typeof(Action),
+						                                     typeof(AudioClip),
 					                                     };
 					for (int fieldIndex = 0; fieldIndex < _fields.Length; fieldIndex++)
 					{
 						infos[fieldIndex] = new FieldOrPropertyInfo(_fields[fieldIndex]);
-						if (_fields[fieldIndex].GetValue(selectedGameObject.components[i]) == null)
+						if (_fields[fieldIndex].GetValue(currentComponent) == null)
 						{
 							//infos[fieldIndex].canShowInEditor = false;
 						}
@@ -243,7 +245,7 @@ public class EditorWindow_Inspector : EditorWindow
 					for (int propertyIndex = 0; propertyIndex < properties.Length; propertyIndex++)
 					{
 						infos[_fields.Length + propertyIndex] = new FieldOrPropertyInfo(properties[propertyIndex]);
-						if (properties[propertyIndex].GetValue(selectedGameObject.components[i]) == null)
+						if (properties[propertyIndex].GetValue(currentComponent) == null)
 						{
 							infos[_fields.Length + propertyIndex].canShowInEditor = false;
 						}
@@ -257,47 +259,82 @@ public class EditorWindow_Inspector : EditorWindow
 				}
 				for (int infoIndex = 0; infoIndex < infos.Length; infoIndex++)
 				{
-					if (infos[infoIndex].canShowInEditor == false)
+					FieldOrPropertyInfo info = infos[infoIndex];
+					Type fieldOrPropertyType = info.FieldOrPropertyType;
+					if (info.canShowInEditor == false)
 					{
 						continue;
 					}
 
 					PushNextID();
 
-					ImGui.Text(infos[infoIndex].Name);
+					ImGui.Text(info.Name);
 
-					if (infos[infoIndex].FieldOrPropertyType == typeof(Vector3))
+					if (fieldOrPropertyType == typeof(Vector3))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						System.Numerics.Vector3 systemv3 = (Vector3) infos[infoIndex].GetValue(selectedGameObject.components[i]);
+						System.Numerics.Vector3 systemv3 = (Vector3) info.GetValue(currentComponent);
 						if (ImGui.DragFloat3("", ref systemv3, 0.01f))
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], (Vector3) systemv3);
+							info.SetValue(currentComponent, (Vector3) systemv3);
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(Vector2))
+					else if (fieldOrPropertyType == typeof(Vector2))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						System.Numerics.Vector2 systemv2 = (Vector2) infos[infoIndex].GetValue(selectedGameObject.components[i]);
+						System.Numerics.Vector2 systemv2 = (Vector2) info.GetValue(currentComponent);
 						if (ImGui.DragFloat2("", ref systemv2, 0.01f))
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], (Vector2) systemv2);
+							info.SetValue(currentComponent, (Vector2) systemv2);
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(List<GameObject>))
+					else if (fieldOrPropertyType == typeof(AudioClip))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						List<GameObject> listOfGameObjects = (List<GameObject>) infos[infoIndex].GetValue(selectedGameObject.components[i]);
-						if (ImGui.CollapsingHeader(infos[infoIndex].FieldOrPropertyType.Name, ImGuiTreeNodeFlags.DefaultOpen))
+						AudioClip audioClip = (AudioClip) info.GetValue(currentComponent);
+						if (audioClip == null)
+						{
+							audioClip = new AudioClip();
+							info.SetValue(currentComponent, audioClip);
+						}
+
+						string clipName = Path.GetFileName(audioClip?.path);
+
+						bool clicked = ImGui.Button(clipName, new Vector2(ImGui.GetContentRegionAvail().X, 20));
+
+
+						if (ImGui.BeginDragDropTarget())
+						{
+							ImGui.AcceptDragDropPayload("CONTENT_BROWSER_AUDIOCLIP", ImGuiDragDropFlags.None);
+							string fileName = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+							if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && fileName.Length > 0)
+							{
+								fileName = Path.GetRelativePath("Assets", fileName);
+
+								audioClip.path = fileName;
+								info.SetValue(currentComponent, audioClip);
+							}
+
+							ImGui.EndDragDropTarget();
+						}
+					}
+					else if (fieldOrPropertyType == typeof(List<GameObject>))
+					{
+						float itemWidth = 200;
+						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
+						ImGui.SetNextItemWidth(itemWidth);
+
+						List<GameObject> listOfGameObjects = (List<GameObject>) info.GetValue(currentComponent);
+						if (ImGui.CollapsingHeader("List<GameObject>", ImGuiTreeNodeFlags.DefaultOpen))
 						{
 							for (int j = 0; j < listOfGameObjects.Count; j++)
 							{
@@ -308,9 +345,10 @@ public class EditorWindow_Inspector : EditorWindow
 								if (xClicked)
 								{
 									listOfGameObjects.RemoveAt(j);
-									infos[infoIndex].SetValue(selectedGameObject.components[i], listOfGameObjects);
+									info.SetValue(currentComponent, listOfGameObjects);
 									continue;
 								}
+
 								ImGui.SameLine();
 
 								bool selectableClicked = ImGui.Selectable(listOfGameObjects[j].name);
@@ -328,7 +366,7 @@ public class EditorWindow_Inspector : EditorWindow
 									{
 										GameObject foundGO = Scene.I.GetGameObject(int.Parse(payload));
 										listOfGameObjects[j] = foundGO;
-										infos[infoIndex].SetValue(selectedGameObject.components[i], listOfGameObjects);
+										info.SetValue(currentComponent, listOfGameObjects);
 									}
 
 									ImGui.EndDragDropTarget();
@@ -338,31 +376,31 @@ public class EditorWindow_Inspector : EditorWindow
 							}
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(Action))
+					else if (fieldOrPropertyType == typeof(Action))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						Action action = (Action) infos[infoIndex].GetValue(selectedGameObject.components[i]);
-						if (ImGui.Button(infos[infoIndex].FieldOrPropertyType.Name))
+						Action action = (Action) info.GetValue(currentComponent);
+						if (ImGui.Button(fieldOrPropertyType.Name))
 						{
 							action.Invoke();
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(Texture) && selectedGameObject.components[i] is SpriteRenderer)
+					else if (fieldOrPropertyType == typeof(Texture) && currentComponent is SpriteRenderer)
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						string textureName = Path.GetFileName((selectedGameObject.components[i] as SpriteRenderer).texture.path);
+						string textureName = Path.GetFileName((currentComponent as SpriteRenderer).texture.path);
 
 						bool clicked = ImGui.Button(textureName, new Vector2(ImGui.GetContentRegionAvail().X, 20));
 						//ImiGui.Text(textureName);
 						if (clicked)
 						{
-							EditorWindow_Browser.I.GoToFile((selectedGameObject.components[i] as SpriteRenderer).texture.path);
+							EditorWindow_Browser.I.GoToFile((currentComponent as SpriteRenderer).texture.path);
 						}
 
 						if (ImGui.BeginDragDropTarget())
@@ -375,20 +413,21 @@ public class EditorWindow_Inspector : EditorWindow
 
 								textureName = payload;
 
-								(selectedGameObject.components[i] as SpriteRenderer).LoadTexture(textureName);
+								(currentComponent as SpriteRenderer).LoadTexture(textureName);
 							}
 
 							ImGui.EndDragDropTarget();
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(Material))
+					else if (fieldOrPropertyType == typeof(Material))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						string materialPath = Path.GetFileName((selectedGameObject.components[i] as Renderer).material.path);
+						string materialPath = Path.GetFileName((currentComponent as Renderer).material.path);
 
+						materialPath = materialPath ?? "";
 						bool clicked = ImGui.Button(materialPath, new Vector2(ImGui.GetContentRegionAvail().X, 20));
 						if (clicked)
 						{
@@ -410,7 +449,7 @@ public class EditorWindow_Inspector : EditorWindow
 								}
 								else
 								{
-									(selectedGameObject.components[i] as Renderer).material = draggedMaterial;
+									(currentComponent as Renderer).material = draggedMaterial;
 								}
 								// load new material
 							}
@@ -418,13 +457,13 @@ public class EditorWindow_Inspector : EditorWindow
 							ImGui.EndDragDropTarget();
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(GameObject))
+					else if (fieldOrPropertyType == typeof(GameObject))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						GameObject goObject = infos[infoIndex].GetValue(selectedGameObject.components[i]) as GameObject;
+						GameObject goObject = info.GetValue(currentComponent) as GameObject;
 						string fieldGoName = goObject?.name ?? "";
 						bool clicked = ImGui.Button(fieldGoName, new Vector2(ImGui.GetContentRegionAvail().X, 20));
 						if (clicked && goObject != null)
@@ -440,73 +479,95 @@ public class EditorWindow_Inspector : EditorWindow
 							if (ImGui.IsMouseReleased(ImGuiMouseButton.Left) && payload.Length > 0)
 							{
 								GameObject foundGO = Scene.I.GetGameObject(int.Parse(payload));
-								infos[infoIndex].SetValue(selectedGameObject.components[i], foundGO);
+								info.SetValue(currentComponent, foundGO);
 							}
 
 							ImGui.EndDragDropTarget();
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(Color))
+					else if (fieldOrPropertyType == typeof(Color))
 					{
 						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth - 5);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						System.Numerics.Vector4 fieldValue = ((Color) infos[infoIndex].GetValue(selectedGameObject.components[i])).ToVector4();
+						System.Numerics.Vector4 fieldValue = ((Color) info.GetValue(currentComponent)).ToVector4();
 
 						if (ImGui.ColorEdit4("", ref fieldValue))
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue.ToColor());
+							info.SetValue(currentComponent, fieldValue.ToColor());
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(bool))
+					else if (fieldOrPropertyType == typeof(bool))
 					{
 						ImGui.SameLine(ImGui.GetWindowWidth() - 25);
 
-						bool fieldValue = (bool) infos[infoIndex].GetValue(selectedGameObject.components[i]);
+						bool fieldValue = (bool) info.GetValue(currentComponent);
 
 						if (ImGui.Checkbox("", ref fieldValue))
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
+							info.SetValue(currentComponent, fieldValue);
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(float))
+					else if (fieldOrPropertyType == typeof(float))
 					{
-						float itemWidth = 100;
+						float itemWidth = 200;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						float fieldValue = (float) infos[infoIndex].GetValue(selectedGameObject.components[i]);
-
-						if (ImGui.DragFloat("", ref fieldValue, 0.01f, float.NegativeInfinity, float.PositiveInfinity, "%.05f"))
+						float fieldValue = (float) info.GetValue(currentComponent);
+						
+						SliderF sliderAttrib = null;
+						var a = fieldOrPropertyType.CustomAttributes.ToList();
+						for (int i = 0; i < info.CustomAttributes.Count(); i++)
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
+							if (info.CustomAttributes.ElementAtOrDefault(i).AttributeType == typeof(SliderF))
+							{
+								FieldInfo fieldType = currentComponent.GetType().GetField(info.Name);
+								sliderAttrib = fieldType.GetCustomAttribute<SliderF>();
+							}
+						}
+
+						if (sliderAttrib != null)
+						{
+							if (ImGui.SliderFloat("", ref fieldValue, sliderAttrib.minValue, sliderAttrib.maxValue))
+							{
+								info.SetValue(currentComponent, fieldValue);
+							}
+						}
+						else
+						{
+							if (ImGui.DragFloat("", ref fieldValue, 0.01f, float.NegativeInfinity, float.PositiveInfinity, "%.05f"))
+							{
+								info.SetValue(currentComponent, fieldValue);
+							}
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(int))
+					else if (fieldOrPropertyType == typeof(int))
 					{
 						float itemWidth = 100;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						int fieldValue = (int) infos[infoIndex].GetValue(selectedGameObject.components[i]);
+						int fieldValue = (int) info.GetValue(currentComponent);
+
 
 						if (ImGui.DragInt("", ref fieldValue))
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
+							info.SetValue(currentComponent, fieldValue);
 						}
 					}
-					else if (infos[infoIndex].FieldOrPropertyType == typeof(string))
+					else if (fieldOrPropertyType == typeof(string))
 					{
 						float itemWidth = 150;
 						ImGui.SameLine(ImGui.GetWindowWidth() - itemWidth);
 						ImGui.SetNextItemWidth(itemWidth);
 
-						string fieldValue = infos[infoIndex].GetValue(selectedGameObject.components[i]).ToString();
+						string fieldValue = info.GetValue(currentComponent).ToString();
 
 						if (ImGui.InputText("", ref fieldValue, 100))
 						{
-							infos[infoIndex].SetValue(selectedGameObject.components[i], fieldValue);
+							info.SetValue(currentComponent, fieldValue);
 						}
 					}
 					//ImGui.PopID();

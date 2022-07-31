@@ -208,6 +208,27 @@ public class EditorWindow_Browser : EditorWindow
 				}
 			}
 
+			if (assetExtension.ToLower().Contains(".mp3"))
+			{
+				if (ImGui.BeginDragDropSource(ImGuiDragDropFlags.None)) // DRAG N DROP
+				{
+					string itemPath = assets[assetIndex];
+					IntPtr stringPointer = Marshal.StringToHGlobalAnsi(itemPath);
+
+					ImGui.SetDragDropPayload("CONTENT_BROWSER_AUDIOCLIP", stringPointer, (uint) (sizeof(char) * itemPath.Length));
+
+					string payload = Marshal.PtrToStringAnsi(ImGui.GetDragDropPayload().Data);
+
+					ImGui.Image((IntPtr) fileIcon.id, new Vector2(100, 90));
+
+
+					Marshal.FreeHGlobal(stringPointer);
+
+					ImGui.EndDragDropSource();
+				}
+			}
+
+
 			bool isMaterial = assetExtension.ToLower().Contains(".mat");
 			bool isShader = assetExtension.ToLower().Contains(".glsl");
 			if (isShader || isMaterial)
@@ -221,7 +242,8 @@ public class EditorWindow_Browser : EditorWindow
 					{
 						ImGui.SetDragDropPayload("CONTENT_BROWSER_MATERIAL", stringPointer, (uint) (sizeof(char) * itemPath.Length));
 					}
-					if(isShader)
+
+					if (isShader)
 					{
 						ImGui.SetDragDropPayload("CONTENT_BROWSER_SHADER", stringPointer, (uint) (sizeof(char) * itemPath.Length));
 					}

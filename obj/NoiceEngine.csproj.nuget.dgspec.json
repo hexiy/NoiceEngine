@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[3.6.0, )"
             },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "OpenTK": {
               "target": "Package",
               "version": "[4.6.7, )"
